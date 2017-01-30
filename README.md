@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/mvescovo/item-reaper.svg?branch=master)](https://travis-ci.org/mvescovo/item-reaper)
+[![AUR](https://img.shields.io/aur/license/yaourt.svg)](https://choosealicense.com/licenses/gpl-3.0/)
 
 # Item Reaper
 Have things in your house you no longer need or use? Want to be more efficient with your
@@ -28,8 +29,3 @@ These are the types of questions Item Reaper intends to answer.
 
 # Install
 Standard Android studio project.
-
-# Licence
-[![AUR](https://img.shields.io/aur/license/yaourt.svg)]()
-
-[GNU General Public License v3.0](http://choosealicense.com/licenses/gpl-3.0/)
