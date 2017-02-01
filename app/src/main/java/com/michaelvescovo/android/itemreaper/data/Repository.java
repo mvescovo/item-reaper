@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,8 +38,10 @@ class Repository implements DataSource {
             mRemoteDataSource.getItemIds(userId, new GetItemIdsCallback() {
                 @Override
                 public void onItemIdsLoaded(@Nullable List<String> itemIds) {
-                    mCachedItemIds = itemIds;
-                    callback.onItemIdsLoaded(mCachedItemIds);
+                    if (itemIds != null) {
+                        mCachedItemIds = ImmutableList.copyOf(itemIds);
+                        callback.onItemIdsLoaded(mCachedItemIds);
+                    }
                 }
             });
         }
@@ -61,8 +65,10 @@ class Repository implements DataSource {
             mRemoteDataSource.getItem(itemId, new GetItemCallback() {
                 @Override
                 public void onItemLoaded(@Nullable Item item) {
-                    mCachedItems.put(itemId, item);
-                    callback.onItemLoaded(mCachedItems.get(itemId));
+                    if (item != null) {
+                        mCachedItems.put(itemId, item);
+                        callback.onItemLoaded(mCachedItems.get(itemId));
+                    }
                 }
             });
         }
