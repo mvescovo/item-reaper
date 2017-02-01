@@ -73,7 +73,8 @@ public class RepositoryTest {
 
     @Test
     public void stopGetItemIds() {
-        mRepository.getItemIds(USER_ID, mGetItemIdsCallback);
+        // Call repository.
+        mRepository.stopGetItemIds();
         // Confirm remote data source called.
         verify(mRemoteDataSource).stopGetItemIds();
     }
@@ -87,7 +88,7 @@ public class RepositoryTest {
         // Refresh itemIds.
         mRepository.refreshItemIds();
         // Confirm cache is now empty.
-        assertThat(mRepository.mCachedItemIds.size(), is(1));
+        assertThat(mRepository.mCachedItemIds.size(), is(0));
     }
 
     @Test
@@ -106,7 +107,8 @@ public class RepositoryTest {
 
     @Test
     public void stopGetItem() {
-        mRepository.getItem(ITEM_ID_1, mGetItemCallback);
+        // Cal repository.
+        mRepository.stopGetItem();
         // Confirm remote data source called.
         verify(mRemoteDataSource).stopGetItem();
     }

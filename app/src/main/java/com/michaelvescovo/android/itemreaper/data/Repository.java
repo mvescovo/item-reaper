@@ -1,6 +1,7 @@
 package com.michaelvescovo.android.itemreaper.data;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 
 import java.util.HashMap;
@@ -15,7 +16,7 @@ import javax.inject.Inject;
 
 class Repository implements DataSource {
 
-    private DataSource mRemoteDataSource;
+    private final DataSource mRemoteDataSource;
     @VisibleForTesting
     List<String> mCachedItemIds;
     @VisibleForTesting
@@ -28,42 +29,62 @@ class Repository implements DataSource {
     }
 
     @Override
-    public void getItemIds(@NonNull String userId, @NonNull GetItemIdsCallback callback) {
-
+    public void getItemIds(@NonNull String userId, @NonNull final GetItemIdsCallback callback) {
+        if (mCachedItemIds != null) {
+            callback.onItemIdsLoaded(mCachedItemIds);
+        } else {
+            mRemoteDataSource.getItemIds(userId, new GetItemIdsCallback() {
+                @Override
+                public void onItemIdsLoaded(@Nullable List<String> itemIds) {
+                    mCachedItemIds = itemIds;
+                    callback.onItemIdsLoaded(mCachedItemIds);
+                }
+            });
+        }
     }
 
     @Override
     public void stopGetItemIds() {
-
+        mRemoteDataSource.stopGetItemIds();
     }
 
     @Override
     public void refreshItemIds() {
-
+        mCachedItemIds.clear();
     }
 
     @Override
-    public void getItem(@NonNull String itemId, @NonNull GetItemCallback callback) {
-
+    public void getItem(@NonNull final String itemId, @NonNull final GetItemCallback callback) {
+        if (mCachedItems.containsKey(itemId)) {
+            callback.onItemLoaded(mCachedItems.get(itemId));
+        } else {
+            mRemoteDataSource.getItem(itemId, new GetItemCallback() {
+                @Override
+                public void onItemLoaded(@Nullable Item item) {
+                    mCachedItems.put(itemId, item);
+                    callback.onItemLoaded(mCachedItems.get(itemId));
+                }
+            });
+        }
     }
 
     @Override
     public void stopGetItem() {
-
+        mRemoteDataSource.stopGetItem();
     }
 
     @Override
     public void refreshItems() {
-
+        mCachedItems.clear();
     }
 
     @Override
     public void saveItem(@NonNull String userId, @NonNull Item item) {
-
+        mRemoteDataSource.saveItem(userId, item);
     }
 
     @Override
     public void deleteItem(@NonNull String userId, @NonNull String itemId) {
-
+        mRemoteDataSource.deleteItem(userId, itemId);
     }
 }
