@@ -3,7 +3,7 @@ package com.michaelvescovo.android.itemreaper.data;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * @author Michael Vescovo
@@ -12,11 +12,7 @@ import java.util.Map;
 interface DataSource {
 
     interface GetItemIdsCallback {
-        void onItemIdsLoaded(@Nullable Map<String, Boolean> itemIds);
-    }
-
-    interface GetItemsCallback {
-        void onItemsLoaded(@Nullable Map<String, Item> items);
+        void onItemIdsLoaded(@Nullable List<String> itemIds);
     }
 
     interface GetItemCallback {
@@ -24,8 +20,11 @@ interface DataSource {
     }
 
     void getItemIds(@NonNull String userId, @NonNull GetItemIdsCallback callback);
-    void getItems(@NonNull GetItemsCallback callback);
+    void stopGetItemIds();
+    void refreshItemIds();
     void getItem(@NonNull String itemId, @NonNull GetItemCallback callback);
-    void addItem(@NonNull Item item);
-    void deleteItem(@NonNull String itemId);
+    void stopGetItem();
+    void refreshItems();
+    void saveItem(@NonNull String userId, @NonNull Item item);
+    void deleteItem(@NonNull String userId, @NonNull String itemId);
 }

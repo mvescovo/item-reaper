@@ -1,7 +1,9 @@
 package com.michaelvescovo.android.itemreaper.data;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -13,7 +15,10 @@ import javax.inject.Inject;
 class Repository implements DataSource {
 
     private DataSource mRemoteDataSource;
-    private Map<String, Item> mCachedItems;
+    @VisibleForTesting
+    List<String> mCachedItemIds;
+    @VisibleForTesting
+    Map<String, Item> mCachedItems;
 
     @Inject
     Repository(DataSource remoteDataSource) {
@@ -26,7 +31,12 @@ class Repository implements DataSource {
     }
 
     @Override
-    public void getItems(@NonNull GetItemsCallback callback) {
+    public void stopGetItemIds() {
+
+    }
+
+    @Override
+    public void refreshItemIds() {
 
     }
 
@@ -36,12 +46,22 @@ class Repository implements DataSource {
     }
 
     @Override
-    public void addItem(@NonNull Item item) {
+    public void stopGetItem() {
 
     }
 
     @Override
-    public void deleteItem(@NonNull String itemId) {
+    public void refreshItems() {
+
+    }
+
+    @Override
+    public void saveItem(@NonNull String userId, @NonNull Item item) {
+
+    }
+
+    @Override
+    public void deleteItem(@NonNull String userId, @NonNull String itemId) {
 
     }
 }

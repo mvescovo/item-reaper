@@ -14,7 +14,12 @@ class FakeDataSource implements DataSource {
     }
 
     @Override
-    public void getItems(@NonNull GetItemsCallback callback) {
+    public void stopGetItemIds() {
+
+    }
+
+    @Override
+    public void refreshItemIds() {
 
     }
 
@@ -24,12 +29,22 @@ class FakeDataSource implements DataSource {
     }
 
     @Override
-    public void addItem(@NonNull Item item) {
+    public void stopGetItem() {
 
     }
 
     @Override
-    public void deleteItem(@NonNull String itemId) {
+    public void refreshItems() {
+
+    }
+
+    @Override
+    public void saveItem(@NonNull String userId, @NonNull Item item) {
+
+    }
+
+    @Override
+    public void deleteItem(@NonNull String userId, @NonNull String itemId) {
 
     }
 }
