@@ -3,6 +3,7 @@ package com.michaelvescovo.android.itemreaper.data;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,7 @@ class Repository implements DataSource {
     @Inject
     Repository(DataSource remoteDataSource) {
         mRemoteDataSource = remoteDataSource;
+        mCachedItems = new HashMap<>();
     }
 
     @Override
