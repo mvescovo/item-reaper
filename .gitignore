@@ -42,3 +42,7 @@ captures/
 
 .DS_Store
 .externalNativeBuild
+
+# Google services with API key inside
+app/src/mock/google-services.json
+app/src/prod/google-services.json
