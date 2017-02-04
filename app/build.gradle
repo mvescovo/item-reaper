@@ -18,15 +18,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    buildTypes.each {
-        it.buildConfigField 'String', 'WEB_CLIENT_ID', itemReaper_WebClientId
-    }
     productFlavors {
         mock {
             applicationIdSuffix = ".mock"
+            it.buildConfigField 'String', 'WEB_CLIENT_ID', '"fakeId"'
         }
         prod {
-
+            it.buildConfigField 'String', 'WEB_CLIENT_ID', itemReaper_WebClientId
         }
     }
     // Remove mockRelease as it's not needed.
