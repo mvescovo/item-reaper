@@ -1,7 +1,5 @@
 package com.michaelvescovo.android.itemreaper.auth;
 
-import android.content.Intent;
-
 /**
  * @author Michael Vescovo
  */
@@ -14,13 +12,23 @@ public interface AuthContract {
 
         void setProgressIndicator(boolean active);
 
-        void showSignInUi(Intent signInIntent, int requestCode);
+        void showSignInButton(boolean visible);
+
+        void showGoogleSignInUi();
+
+        void showFailMessage();
+
+        void showFireBaseAuthUi();
 
         void showItemsUi();
     }
 
     interface Presenter {
 
-        void signIn();
+        void googleSignIn();
+
+        void handleGoogleSignInResult(boolean signedIn);
+
+        void handleFirebaseSignInResult(boolean signedIn);
     }
 }
