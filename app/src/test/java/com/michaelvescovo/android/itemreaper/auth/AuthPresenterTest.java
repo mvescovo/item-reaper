@@ -80,8 +80,20 @@ public class AuthPresenterTest {
     }
 
     @Test
-    public void firebaseAuthSignInFailsOrSucceeds_HidesProgressBar() {
-        mAuthPresenter.handleFirebaseSignInResult(anyBoolean());
+    public void firebaseAuthSignInSucceeds_ShowsSignInButton() {
+        mAuthPresenter.handleFirebaseSignInResult(true);
+        verify(mView).showSignInButton(true);
+    }
+
+    @Test
+    public void firebaseAuthSignInFails_HidesProgressBar() {
+        mAuthPresenter.handleFirebaseSignInResult(false);
+        verify(mView).setProgressIndicator(false);
+    }
+
+    @Test
+    public void firebaseAuthSignInSucceeds_HidesProgressBar() {
+        mAuthPresenter.handleFirebaseSignInResult(true);
         verify(mView).setProgressIndicator(false);
     }
 
