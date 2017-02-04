@@ -18,6 +18,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildTypes.each {
+        it.buildConfigField 'String', 'WEB_CLIENT_ID', itemReaper_WebClientId
+    }
     productFlavors {
         mock {
             applicationIdSuffix = ".mock"
