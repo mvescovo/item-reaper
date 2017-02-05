@@ -8,7 +8,7 @@ android:
 #  - sys-img-x86_64-google_apis-25
   - extra-android-m2repository
 #  - extra-google-google_play_services
-#  - extra-google-m2repository
+  - extra-google-m2repository
 jdk:
 - oraclejdk8
 script:
