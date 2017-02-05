@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
+def webClientIdVal = hasProperty('webClientId') ? webClientId : System.getenv('WEB_CLIENT_ID')
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -18,13 +20,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildTypes.each {
+        it.buildConfigField 'String', 'WEB_CLIENT_ID', webClientIdVal
+    }
     productFlavors {
         mock {
             applicationIdSuffix = ".mock"
-            it.buildConfigField 'String', 'WEB_CLIENT_ID', '"fakeId"'
         }
         prod {
-            it.buildConfigField 'String', 'WEB_CLIENT_ID', itemReaper_WebClientId
+
         }
     }
     // Remove mockRelease as it's not needed.

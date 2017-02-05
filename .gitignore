@@ -45,3 +45,4 @@ captures/
 
 # Google services with API key inside
 app/src/prod/google-services.json
+keys.properties

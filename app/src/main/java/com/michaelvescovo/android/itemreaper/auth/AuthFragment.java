@@ -26,6 +26,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.michaelvescovo.android.itemreaper.BuildConfig;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.items.ItemsActivity;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
@@ -69,7 +70,7 @@ public class AuthFragment extends Fragment implements AuthContract.View,
         // Google sign in
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
-                .requestIdToken(com.michaelvescovo.android.itemreaper.BuildConfig.WEB_CLIENT_ID)
+                .requestIdToken(BuildConfig.WEB_CLIENT_ID)
                 .build();
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .enableAutoManage(getActivity(), this)

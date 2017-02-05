@@ -10,15 +10,18 @@ android:
     - extra-google-google_play_services
     - extra-google-m2repository
 jdk:
-  - oraclejdk8
+- oraclejdk8
 script:
-  - ./gradlew testMockDebugUnitTest
+- "./gradlew testMockDebugUnitTest"
 before_cache:
-  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+- rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
-    - $HOME/.m2
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
-    - $HOME/.android/build-cache
+  - "$HOME/.m2"
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+  - "$HOME/.android/build-cache"
+env:
+  global:
+    secure: OaP628Ko7i5byzP4fpDur75rLPFj9nKgm9LPQZ7yF+VVmGqOQa/RO31/V59QZiagMNQRKab8J0jUd+8Vl9p33vQGiVHP4e05du/y/s8aS5c9SAWIENdhrLDU9k97P79zEvYKPHY1M34kqP7liFJccJwd7ZT5Zn15K63HEYtaHh3qvxHtqzA19+wKls1zPTOzsisFcC7sl1XVWRe+NoW/fVkSDrxSQkwe5aewK9quy2fMxPkAGad8e2pPNGonsXpGUjPkWQTxxa7c1iAGnPTX9xOwIjhEiE6yLo66ylvkBsMCMYgQEFjrOnl6GvhF0zZVbx7uBjnhmuqKMfqZpUikyqvtkytYKODngnTRP+YP0UfIiJxT7CuHeJ2x7GdowZamPvFBPyK4RyyUqp41rYszchs+MsUCE5o89gO1WGt0dlVKyjE4dY/0GmPdblKMAUhSj6rHPy/W3925NdR5M4sSbsCUAAyYEIivkYYlsI78CNvBLDHv7WZYjNCke8PEV2Jtdo7As1sQwYDLAnKYCPuHMZgPHIJyQq+Y2FP11BbNyQ0DMg76XgIvwhtvDMzvlKl/gHqGpAGTfjn9Xxtg7pSp6fPqJ72rc3Xs8e9w+VQ8CPkxBmIHO9X6PN+zbSD7di8s6eeIrFNnFgSuPML8sQDJfLclYlfAZg0XiORoO6XPZNw=
