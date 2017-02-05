@@ -22,6 +22,6 @@ cache:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
   - "$HOME/.android/build-cache"
-env:
-  global:
-  - secure: l0v0FPQe35vBrqQrGNCjcChcPKINRY5bDFpanlY1txb4/4jpIz4XMWC+k0HxC8ymlmGRvpj/qRt8Ft044GIgjeOoJol83DSSW93crHORd2rb7UkkNI0F9klYBku5bLzR6/A357gUbnozK8C+gzlFnrMj4VEJYcYWxLGCSNjvEMEr64q65damqTuu1qiLy4nrWqO5cPJ74KwB19781pa9ScL01PBCt5nfLDao/5QjuhWoYttfkuIZ0NkdIcPpgQrJr52HP2ChEn2J/CJNRGeZTBtCxQshwG8EEwMOC7V3fpz9OStofpCn1fCLrvHOMteatT1MIC73Gp1MSNLWT/QH4wQSZftJ++5DAcAajlcULT0Nzzr6GuwQ9/NNr9whraVhn4dz3ai7pXQDp7CZS22T/iCgtxm2nQeuH6c930BDHbPWDXc7xLq1PUVbf5t7w/ROm4+KP0enFq8We5s6lO640nkg+uixXWmG6R38ip+peoxKBw3M07niOs8Drg8yDjU2chMCsXUcfqmemSvw18j9zPRlvu4rPJ96qGQgLFqgzrUxkaXMpUkJSILCrQ0mWvtk8g1HsHVp+xwrTVCsU+jUTVpwCHvOeJQPSMThUHu+isMyd6G9NVav+teiyAlQ3zk5U/8OlkTTRn3jcfJrY7biu/5muQiQvqTOyO2hHaA4aJ4=
+before_install:
+- openssl aes-256-cbc -K $encrypted_cddd94d4e3da_key -iv $encrypted_cddd94d4e3da_iv
+  -in keys.properties.enc -out keys.properties -d

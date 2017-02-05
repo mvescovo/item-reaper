@@ -1,7 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
-def webClientIdVal = hasProperty('webClientId') ? webClientId : System.getenv('WEB_CLIENT_ID')
+def keysPropertiesFile = rootProject.file("keys.properties")
+def keysProperties = new Properties()
+keysProperties.load(new FileInputStream(keysPropertiesFile))
 
 android {
     compileSdkVersion 25
@@ -21,7 +23,7 @@ android {
         }
     }
     buildTypes.each {
-        it.buildConfigField 'String', 'WEB_CLIENT_ID', webClientIdVal
+        it.buildConfigField 'String', 'WEB_CLIENT_ID', keysProperties['WEB_CLIENT_ID']
     }
     productFlavors {
         mock {
