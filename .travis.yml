@@ -1,14 +1,14 @@
 language: android
 android:
   components:
-    - tools
-    - platform-tools
-    - build-tools-25.0.2
-    - android-25
-    - sys-img-x86_64-google_apis-25
-    - extra-android-m2repository
-    - extra-google-google_play_services
-    - extra-google-m2repository
+  - tools
+  - platform-tools
+  - build-tools-25.0.2
+  - android-25
+  - sys-img-x86_64-google_apis-25
+  - extra-android-m2repository
+  - extra-google-google_play_services
+  - extra-google-m2repository
 jdk:
 - oraclejdk8
 script:
@@ -24,4 +24,4 @@ cache:
   - "$HOME/.android/build-cache"
 env:
   global:
-    secure: OaP628Ko7i5byzP4fpDur75rLPFj9nKgm9LPQZ7yF+VVmGqOQa/RO31/V59QZiagMNQRKab8J0jUd+8Vl9p33vQGiVHP4e05du/y/s8aS5c9SAWIENdhrLDU9k97P79zEvYKPHY1M34kqP7liFJccJwd7ZT5Zn15K63HEYtaHh3qvxHtqzA19+wKls1zPTOzsisFcC7sl1XVWRe+NoW/fVkSDrxSQkwe5aewK9quy2fMxPkAGad8e2pPNGonsXpGUjPkWQTxxa7c1iAGnPTX9xOwIjhEiE6yLo66ylvkBsMCMYgQEFjrOnl6GvhF0zZVbx7uBjnhmuqKMfqZpUikyqvtkytYKODngnTRP+YP0UfIiJxT7CuHeJ2x7GdowZamPvFBPyK4RyyUqp41rYszchs+MsUCE5o89gO1WGt0dlVKyjE4dY/0GmPdblKMAUhSj6rHPy/W3925NdR5M4sSbsCUAAyYEIivkYYlsI78CNvBLDHv7WZYjNCke8PEV2Jtdo7As1sQwYDLAnKYCPuHMZgPHIJyQq+Y2FP11BbNyQ0DMg76XgIvwhtvDMzvlKl/gHqGpAGTfjn9Xxtg7pSp6fPqJ72rc3Xs8e9w+VQ8CPkxBmIHO9X6PN+zbSD7di8s6eeIrFNnFgSuPML8sQDJfLclYlfAZg0XiORoO6XPZNw=
+  - secure: l0v0FPQe35vBrqQrGNCjcChcPKINRY5bDFpanlY1txb4/4jpIz4XMWC+k0HxC8ymlmGRvpj/qRt8Ft044GIgjeOoJol83DSSW93crHORd2rb7UkkNI0F9klYBku5bLzR6/A357gUbnozK8C+gzlFnrMj4VEJYcYWxLGCSNjvEMEr64q65damqTuu1qiLy4nrWqO5cPJ74KwB19781pa9ScL01PBCt5nfLDao/5QjuhWoYttfkuIZ0NkdIcPpgQrJr52HP2ChEn2J/CJNRGeZTBtCxQshwG8EEwMOC7V3fpz9OStofpCn1fCLrvHOMteatT1MIC73Gp1MSNLWT/QH4wQSZftJ++5DAcAajlcULT0Nzzr6GuwQ9/NNr9whraVhn4dz3ai7pXQDp7CZS22T/iCgtxm2nQeuH6c930BDHbPWDXc7xLq1PUVbf5t7w/ROm4+KP0enFq8We5s6lO640nkg+uixXWmG6R38ip+peoxKBw3M07niOs8Drg8yDjU2chMCsXUcfqmemSvw18j9zPRlvu4rPJ96qGQgLFqgzrUxkaXMpUkJSILCrQ0mWvtk8g1HsHVp+xwrTVCsU+jUTVpwCHvOeJQPSMThUHu+isMyd6G9NVav+teiyAlQ3zk5U/8OlkTTRn3jcfJrY7biu/5muQiQvqTOyO2hHaA4aJ4=
