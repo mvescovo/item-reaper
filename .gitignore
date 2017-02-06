@@ -44,6 +44,5 @@ captures/
 .externalNativeBuild
 
 # Google services with API key inside
-app/src/prod/google-services.json
-app/src/mock/google-services.json
+app/google-services.json
 keys.properties
