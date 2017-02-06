@@ -5,9 +5,7 @@ android:
   - platform-tools
   - build-tools-25.0.2
   - android-25
-#  - sys-img-x86_64-google_apis-25
   - extra-android-m2repository
-#  - extra-google-google_play_services
   - extra-google-m2repository
 jdk:
 - oraclejdk8
@@ -23,5 +21,9 @@ cache:
   - "$HOME/.gradle/wrapper/"
   - "$HOME/.android/build-cache"
 before_install:
+- openssl aes-256-cbc -K $encrypted_80cb7c3a6869_key -iv $encrypted_80cb7c3a6869_iv
+  -in google-services.json.enc -out google-services.json -d
+- openssl aes-256-cbc -K $encrypted_e36d12a60f36_key -iv $encrypted_e36d12a60f36_iv
+  -in google-services.json.enc -out google-services.json -d
 - openssl aes-256-cbc -K $encrypted_cddd94d4e3da_key -iv $encrypted_cddd94d4e3da_iv
   -in keys.properties.enc -out keys.properties -d
