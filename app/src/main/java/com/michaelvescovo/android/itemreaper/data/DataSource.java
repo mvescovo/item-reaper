@@ -9,7 +9,7 @@ import java.util.List;
  * @author Michael Vescovo
  */
 
-interface DataSource {
+public interface DataSource {
 
     interface GetItemIdsCallback {
         void onItemIdsLoaded(@Nullable List<String> itemIds);

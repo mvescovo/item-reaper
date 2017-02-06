@@ -16,7 +16,7 @@ import javax.inject.Inject;
  * @author Michael Vescovo
  */
 
-class Repository implements DataSource {
+public class Repository implements DataSource {
 
     private final DataSource mRemoteDataSource;
     @VisibleForTesting

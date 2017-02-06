@@ -18,9 +18,9 @@ class FakeDataSource implements DataSource {
     private final static List<String> ITEM_IDS = Lists.newArrayList();
     private final static Map<String, Item> ITEMS = Maps.newHashMap();
     private final static String ITEM_ID_1 = "1";
-    private final static Item ITEM_1 = new Item("1", "1/1/1", "clothing", "t-shirt");
+    private final static Item ITEM_1 = new Item("1", "1/1/1", "Clothing", "T-shirt");
     private final static String ITEM_ID_2 = "2";
-    private final static Item ITEM_2 = new Item("1", "2/2/2", "bathroom", "towel");
+    private final static Item ITEM_2 = new Item("2", "2/2/2", "Bathroom", "Towel");
 
     FakeDataSource() {
         ITEM_IDS.add(ITEM_ID_1);
