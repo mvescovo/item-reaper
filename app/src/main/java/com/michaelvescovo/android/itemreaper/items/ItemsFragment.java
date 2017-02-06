@@ -36,4 +36,9 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     public void showItems(Map<String, Item> items) {
 
     }
+
+    @Override
+    public void showItemDetailsUi(String itemId) {
+
+    }
 }

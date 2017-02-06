@@ -17,13 +17,15 @@ public class ItemsContract {
         void setProgressBar(boolean visible);
 
         void showItems(Map<String, Item> items);
+
+        void showItemDetailsUi(String itemId);
     }
 
     interface Presenter {
 
         void getItems();
 
-        void getItem(String itemId);
+        void openItemDetails(Item item);
     }
 
 }

@@ -45,12 +45,14 @@ public class ItemsPresenterTest {
     private ArgumentCaptor<DataSource.GetItemCallback> mGetItemCallbackCaptor;
 
     private static List<String> ITEM_IDS;
+    private static Item ITEM;
 
     @Before
     public void setItemsPresenter() {
         MockitoAnnotations.initMocks(this);
         mItemsPresenter = new ItemsPresenter(mView, mRepository, mSharedPreferencesHelper);
         ITEM_IDS = Lists.newArrayList("1");
+        ITEM = new Item("1", "1/1/1", "Clothing", "T-shirt");
     }
 
     @Test
@@ -73,5 +75,11 @@ public class ItemsPresenterTest {
         verify(mView).setProgressBar(false);
 
         verify(mView).showItems(anyMapOf(String.class, Item.class));
+    }
+
+    @Test
+    public void clickItem_ShowsItemDetailsUi() {
+        mItemsPresenter.openItemDetails(ITEM);
+        verify(mView).showItemDetailsUi(anyString());
     }
 }
