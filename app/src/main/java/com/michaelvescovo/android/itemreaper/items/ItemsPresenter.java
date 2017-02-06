@@ -24,7 +24,8 @@ class ItemsPresenter implements ItemsContract.Presenter {
     private SharedPreferencesHelper mSharedPreferencesHelper;
 
     @Inject
-    ItemsPresenter(ItemsContract.View view, Repository repository, SharedPreferencesHelper sharedPreferencesHelper) {
+    ItemsPresenter(ItemsContract.View view, Repository repository,
+                   SharedPreferencesHelper sharedPreferencesHelper) {
         mView = view;
         mRepository = repository;
         mSharedPreferencesHelper = sharedPreferencesHelper;
