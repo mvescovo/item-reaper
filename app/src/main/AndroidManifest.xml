@@ -21,6 +21,10 @@
             android:label="@string/title_activity_items"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".add_item.AddItemActivity"
+            android:label="@string/title_activity_add_item">
+        </activity>
     </application>
 
 </manifest>
