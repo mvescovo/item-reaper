@@ -7,6 +7,7 @@ import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.michaelvescovo.android.itemreaper.R;
+import com.michaelvescovo.android.itemreaper.items.ItemsActivity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -20,7 +21,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.doesNotExis
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.Intents.intending;
-import static android.support.test.espresso.intent.matcher.ComponentNameMatchers.hasShortClassName;
+import static android.support.test.espresso.intent.matcher.ComponentNameMatchers.hasClassName;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -36,8 +37,6 @@ import static org.hamcrest.core.IsNot.not;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class AuthScreenTest {
-
-    private static final String PACKAGE_NAME = "com.michaelvescovo.android.itemreaper";
 
     @Rule
     public IntentsTestRule<AuthActivity> mActivityRule = new IntentsTestRule<>(
@@ -130,9 +129,7 @@ public class AuthScreenTest {
         onView(withId(R.id.sign_in_button)).perform(click());
 
         // Confirm Items Activity is launched
-        intended(allOf(
-                hasComponent(hasShortClassName(".items.ItemsActivity")),
-                toPackage(PACKAGE_NAME)));
+        intended(hasComponent(hasClassName(ItemsActivity.class.getName())));
     }
 
     @After
