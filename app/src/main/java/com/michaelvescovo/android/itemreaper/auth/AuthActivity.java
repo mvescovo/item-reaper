@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 
@@ -31,6 +32,7 @@ public class AuthActivity extends AppCompatActivity {
         // Sets authPresenter as the presenter for authFragment.
         AuthComponent authComponent = DaggerAuthComponent.builder()
                 .authModule(new AuthModule(authFragment))
+                .applicationComponent(((ItemReaperApplication)getApplication()).getApplicationComponent())
                 .build();
         authComponent.getAuthPresenter();
     }

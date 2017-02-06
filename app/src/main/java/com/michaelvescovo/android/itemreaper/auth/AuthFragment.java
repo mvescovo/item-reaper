@@ -138,10 +138,14 @@ public class AuthFragment extends Fragment implements AuthContract.View,
     private void handleGoogleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
             mGoogleSignInAccount = result.getSignInAccount();
+            if (mGoogleSignInAccount != null) {
+                String userId = mGoogleSignInAccount.getId();
+                mPresenter.handleGoogleSignInResult(result.isSuccess(), userId);
+            }
         } else {
             mGoogleSignInAccount = null;
+            mPresenter.handleGoogleSignInResult(result.isSuccess(), null);
         }
-        mPresenter.handleGoogleSignInResult(result.isSuccess());
     }
 
     @Override
