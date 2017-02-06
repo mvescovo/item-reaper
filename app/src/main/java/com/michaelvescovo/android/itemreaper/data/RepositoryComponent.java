@@ -9,8 +9,8 @@ import dagger.Component;
  */
 
 @Singleton
-public @Component(modules = DataSourceModule.class)
-interface RepositoryComponent {
+@Component(modules = DataSourceModule.class)
+public interface RepositoryComponent {
 
     Repository getRepository();
 }
