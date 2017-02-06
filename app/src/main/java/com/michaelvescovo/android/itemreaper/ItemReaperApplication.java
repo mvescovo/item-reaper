@@ -1,6 +1,7 @@
 package com.michaelvescovo.android.itemreaper;
 
 import android.app.Application;
+import android.preference.PreferenceManager;
 
 import com.michaelvescovo.android.itemreaper.data.DaggerRepositoryComponent;
 import com.michaelvescovo.android.itemreaper.data.RepositoryComponent;
@@ -11,14 +12,19 @@ import com.michaelvescovo.android.itemreaper.data.RepositoryComponent;
 
 public class ItemReaperApplication extends Application {
 
+    private ApplicationComponent mApplicationComponent;
     private RepositoryComponent mRepositoryComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mRepositoryComponent = DaggerRepositoryComponent.builder()
-                .build();
+        mApplicationComponent = DaggerApplicationComponent.builder().applicationModule(
+                new ApplicationModule(PreferenceManager.getDefaultSharedPreferences(this))).build();
+        mRepositoryComponent = DaggerRepositoryComponent.builder().build();
+    }
 
+    public ApplicationComponent getApplicationComponent() {
+        return mApplicationComponent;
     }
 
     public RepositoryComponent getRepositoryComponent() {
