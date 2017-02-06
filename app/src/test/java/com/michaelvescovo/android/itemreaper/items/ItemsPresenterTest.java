@@ -82,4 +82,10 @@ public class ItemsPresenterTest {
         mItemsPresenter.openItemDetails(ITEM);
         verify(mView).showItemDetailsUi(anyString());
     }
+
+    @Test
+    public void clickAddItem_ShowsAddItemUI() {
+        mItemsPresenter.openAddItem();
+        verify(mView).showAddItemUi();
+    }
 }

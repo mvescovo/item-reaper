@@ -19,6 +19,8 @@ public class ItemsContract {
         void showItems(Map<String, Item> items);
 
         void showItemDetailsUi(String itemId);
+
+        void showAddItemUi();
     }
 
     interface Presenter {
@@ -26,6 +28,8 @@ public class ItemsContract {
         void getItems();
 
         void openItemDetails(Item item);
+
+        void openAddItem();
     }
 
 }

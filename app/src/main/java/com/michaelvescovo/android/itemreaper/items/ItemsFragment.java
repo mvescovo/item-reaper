@@ -41,4 +41,9 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     public void showItemDetailsUi(String itemId) {
 
     }
+
+    @Override
+    public void showAddItemUi() {
+
+    }
 }
