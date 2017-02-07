@@ -18,8 +18,7 @@
         </activity>
         <activity
             android:name=".items.ItemsActivity"
-            android:label="@string/title_activity_items"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/title_activity_items">
         </activity>
         <activity
             android:name=".add_item.AddItemActivity"
