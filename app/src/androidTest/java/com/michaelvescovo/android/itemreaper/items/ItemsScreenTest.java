@@ -6,6 +6,7 @@ import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.michaelvescovo.android.itemreaper.R;
+import com.michaelvescovo.android.itemreaper.about.AboutActivity;
 import com.michaelvescovo.android.itemreaper.add_item.AddItemActivity;
 
 import org.junit.After;
@@ -34,8 +35,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 @LargeTest
 public class ItemsScreenTest {
 
-    private static final String PACKAGE_NAME = "com.michaelvescovo.android.itemreaper.mock";
-
     @Rule
     public IntentsTestRule<ItemsActivity> mActivityRule = new IntentsTestRule<>(
             ItemsActivity.class);
@@ -58,9 +57,16 @@ public class ItemsScreenTest {
     }
 
     @Test
-    public void aboutPageMenuItemVisible() {
+    public void aboutMenuItemVisible() {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         onView(withText(R.string.menu_about)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void clickAboutMenuItem_LaunchesAboutUi() {
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+        onView(withText(R.string.menu_about)).perform(click());
+        intended(hasComponent(hasClassName(AboutActivity.class.getName())));
     }
 
     @After

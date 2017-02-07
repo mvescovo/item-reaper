@@ -1,6 +1,7 @@
 package com.michaelvescovo.android.itemreaper.items;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -23,8 +25,8 @@ import java.util.Map;
 
 public class ItemsFragment extends Fragment implements ItemsContract.View {
 
-    ItemsContract.Presenter mPresenter;
-    FloatingActionButton mAddItem;
+    private Callback mCallback;
+    private ItemsContract.Presenter mPresenter;
 
     public ItemsFragment() {}
 
@@ -39,18 +41,43 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_items, container, false);
 
-        mAddItem = (FloatingActionButton) getActivity().findViewById(R.id.add_item);
-        mAddItem.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton addItem = (FloatingActionButton) getActivity().findViewById(
+                R.id.add_item);
+        addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mPresenter.openAddItem();
             }
         });
 
+        setHasOptionsMenu(true);
+
         return root;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mCallback = (Callback) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement callback");
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_about:
+                mPresenter.openAbout();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -72,5 +99,15 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     public void showAddItemUi() {
         Intent intent = new Intent(getContext(), AddItemActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void showAboutUi() {
+        mCallback.onAboutSelected();
+    }
+
+    public interface Callback {
+
+        void onAboutSelected();
     }
 }

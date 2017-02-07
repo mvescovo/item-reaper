@@ -21,6 +21,8 @@ public class ItemsContract {
         void showItemDetailsUi(String itemId);
 
         void showAddItemUi();
+
+        void showAboutUi();
     }
 
     interface Presenter {
@@ -30,6 +32,8 @@ public class ItemsContract {
         void openItemDetails(Item item);
 
         void openAddItem();
+
+        void openAbout();
     }
 
 }

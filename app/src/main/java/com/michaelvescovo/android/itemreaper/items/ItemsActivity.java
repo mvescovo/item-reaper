@@ -1,5 +1,6 @@
 package com.michaelvescovo.android.itemreaper.items;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
 import android.support.test.espresso.IdlingResource;
@@ -12,11 +13,12 @@ import android.view.Menu;
 
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
 import com.michaelvescovo.android.itemreaper.R;
+import com.michaelvescovo.android.itemreaper.about.AboutActivity;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 
 import butterknife.ButterKnife;
 
-public class ItemsActivity extends AppCompatActivity {
+public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Callback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,5 +63,11 @@ public class ItemsActivity extends AppCompatActivity {
     @VisibleForTesting
     public IdlingResource getCountingIdlingResource() {
         return EspressoIdlingResource.getIdlingResource();
+    }
+
+    @Override
+    public void onAboutSelected() {
+        Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
     }
 }

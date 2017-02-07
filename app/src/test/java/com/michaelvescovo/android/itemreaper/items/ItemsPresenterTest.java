@@ -84,8 +84,14 @@ public class ItemsPresenterTest {
     }
 
     @Test
-    public void clickAddItem_ShowsAddItemUI() {
+    public void clickAddItem_ShowsAddItemUi() {
         mItemsPresenter.openAddItem();
         verify(mView).showAddItemUi();
+    }
+
+    @Test
+    public void clickAboutMenuItem_ShowsMenuUi() {
+        mItemsPresenter.openAbout();
+        verify(mView).showAboutUi();
     }
 }
