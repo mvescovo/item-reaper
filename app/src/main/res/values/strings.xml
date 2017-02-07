@@ -13,4 +13,7 @@
     <!--AddItem-->
     <string name="title_activity_add_item">Add Item</string>
 
+    <!--About-->
+    <string name="menu_about">About</string>
+
 </resources>
