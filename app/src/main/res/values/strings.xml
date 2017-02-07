@@ -15,5 +15,7 @@
 
     <!--About-->
     <string name="menu_about">About</string>
+    <string name="reaper_icon_attribution">Reaper and scythe icons made by Loc. Available on http://game-icons.net</string>
+    <string name="title_attributions">Attributions</string>
 
 </resources>
