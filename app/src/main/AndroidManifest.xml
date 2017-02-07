@@ -22,7 +22,8 @@
         </activity>
         <activity
             android:name=".add_item.AddItemActivity"
-            android:label="@string/title_activity_add_item">
+            android:label="@string/title_activity_add_item"
+            android:parentActivityName=".items.ItemsActivity">
         </activity>
         <activity
             android:name=".about.AboutActivity"

@@ -63,6 +63,13 @@ public class ItemsScreenTest {
     }
 
     @Test
+    public void clickAddItemButtonAndThenClickUpButton_NavigatesBackHere() {
+        onView(withId(R.id.add_item)).perform(click());
+        onView(withContentDescription("Navigate up")).perform(click());
+        onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
+    }
+
+    @Test
     public void aboutMenuItemVisible() {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         onView(withText(R.string.menu_about)).check(matches(isDisplayed()));
