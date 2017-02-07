@@ -28,6 +28,11 @@ public class AboutScreenTest {
             AboutActivity.class);
 
     @Test
+    public void titleVisible() {
+        onView(withText(R.string.title_activity_about)).check(matches(isDisplayed()));
+    }
+
+    @Test
     public void attributionsTitleVisible() {
         onView(withText(R.string.title_attributions)).check(matches(isDisplayed()));
     }

@@ -49,6 +49,11 @@ public class AuthScreenTest {
     }
 
     @Test
+    public void titleVisible() {
+        onView(withText(R.string.app_name)).check(matches(isDisplayed()));
+    }
+
+    @Test
     public void signInButtonVisible() {
         onView(withId(R.id.sign_in_button)).check(matches(isDisplayed()));
     }

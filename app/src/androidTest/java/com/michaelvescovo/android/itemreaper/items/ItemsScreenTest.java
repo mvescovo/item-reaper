@@ -46,6 +46,11 @@ public class ItemsScreenTest {
     }
 
     @Test
+    public void titleVisible() {
+        onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
+    }
+
+    @Test
     public void addItemButtonVisible() {
         onView(withId(R.id.add_item)).check(matches(isDisplayed()));
     }
