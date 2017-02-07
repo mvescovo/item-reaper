@@ -24,6 +24,7 @@ import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.ComponentNameMatchers.hasClassName;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
@@ -72,6 +73,14 @@ public class ItemsScreenTest {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         onView(withText(R.string.menu_about)).perform(click());
         intended(hasComponent(hasClassName(AboutActivity.class.getName())));
+    }
+
+    @Test
+    public void clickAboutMenuItemAndThenClickUpButton_NavigatesBackHere() {
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+        onView(withText(R.string.menu_about)).perform(click());
+        onView(withContentDescription("Navigate up")).perform(click());
+        onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
     }
 
     @After
