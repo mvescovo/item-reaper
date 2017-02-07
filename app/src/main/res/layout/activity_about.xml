@@ -46,6 +46,7 @@
 
             <TextView
                 android:id="@+id/reaper_icon_attribution"
+                style="@style/content_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/reaper_icon_attribution"/>
