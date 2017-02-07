@@ -39,33 +39,33 @@
 
             <TextView
                 style="@style/content_title"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_item_reaper"/>
 
             <TextView
                 style="@style/content_text"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/open_source_statement"/>
 
             <TextView
                 style="@style/content_text"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/fork_statement"/>
 
             <TextView
                 android:id="@+id/title_attributions"
                 style="@style/content_title"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_attributions"/>
 
             <TextView
                 android:id="@+id/reaper_icon_attribution"
                 style="@style/content_text"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/reaper_icon_attribution"/>
 
