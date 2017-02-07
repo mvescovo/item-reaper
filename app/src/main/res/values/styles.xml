@@ -12,10 +12,14 @@
 
     <!--Standard content titles-->
     <style name="content_title" parent="Base.TextAppearance.AppCompat.Title">
+        <item name="android:maxEms">24</item>
+        <item name="android:layout_marginBottom">8dp</item>
     </style>
 
     <!--Standard content text-->
     <style name="content_text" parent="Base.TextAppearance.AppCompat.Body1">
+        <item name="android:maxEms">24</item>
+        <item name="android:layout_marginBottom">8dp</item>
     </style>
 
 </resources>
