@@ -39,6 +39,7 @@
 
             <TextView
                 android:id="@+id/title_attributions"
+                style="@style/content_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/title_attributions"/>
