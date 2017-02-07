@@ -38,6 +38,24 @@
             android:orientation="vertical">
 
             <TextView
+                style="@style/content_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_item_reaper"/>
+
+            <TextView
+                style="@style/content_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/open_source_statement"/>
+
+            <TextView
+                style="@style/content_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/fork_statement"/>
+
+            <TextView
                 android:id="@+id/title_attributions"
                 style="@style/content_title"
                 android:layout_width="match_parent"
