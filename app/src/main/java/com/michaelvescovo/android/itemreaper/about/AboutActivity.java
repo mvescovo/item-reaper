@@ -19,35 +19,35 @@ import static java.util.regex.Pattern.compile;
 
 public class AboutActivity extends AppCompatActivity {
 
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.appbar_title)
+    TextView mAppbarTitle;
     @BindView(R.id.open_source_statement)
     TextView mOpenSourceStatement;
     @BindView(R.id.fork_statement)
     TextView mForkStatement;
     @BindView(R.id.reaper_icon_attribution)
     TextView mReaperIconAttribution;
-    @BindView(R.id.appbar_title)
-    TextView mAppbarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         ButterKnife.bind(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
+        Typeface appbarTitle = Typeface.createFromAsset(getAssets(), "Nosifer-Regular.ttf");
+        mAppbarTitle.setTypeface(appbarTitle);
 
         Pattern pattern = compile("");
         String scheme = "";
         Linkify.addLinks(mOpenSourceStatement, pattern, scheme);
         Linkify.addLinks(mForkStatement, pattern, scheme);
         Linkify.addLinks(mReaperIconAttribution, pattern, scheme);
-
-        Typeface appbarTitle = Typeface.createFromAsset(getAssets(), "Nosifer-Regular.ttf");
-        mAppbarTitle.setTypeface(appbarTitle);
     }
 }

@@ -18,7 +18,16 @@ tools:context="com.michaelvescovo.android.itemreaper.add_item.AddItemActivity">
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:popupTheme="@style/AppTheme.PopupOverlay"/>
+        app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        <TextView
+            android:id="@+id/appbar_title"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_activity_add_item"/>
+
+        </android.support.v7.widget.Toolbar>
 
 </android.support.design.widget.AppBarLayout>
 
