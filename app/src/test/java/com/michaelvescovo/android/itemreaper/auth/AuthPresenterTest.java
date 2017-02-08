@@ -26,7 +26,7 @@ public class AuthPresenterTest {
     private static final String USER_ID = "testUser";
 
     @Before
-    public void setUpEditTriggerPresenter() {
+    public void setUpPresenter() {
         MockitoAnnotations.initMocks(this);
         mAuthPresenter = new AuthPresenter(mView, mSharedPreferencesHelper);
     }
