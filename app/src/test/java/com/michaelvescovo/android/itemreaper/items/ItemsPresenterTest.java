@@ -94,4 +94,10 @@ public class ItemsPresenterTest {
         mItemsPresenter.openAbout();
         verify(mView).showAboutUi();
     }
+
+    @Test
+    public void clickSignOutMenuItem_SignsOut() {
+        mItemsPresenter.openSignOut();
+        verify(mView).showAuthUi();
+    }
 }

@@ -92,12 +92,6 @@ public class AuthPresenterTest {
     }
 
     @Test
-    public void firebaseAuthSignInSucceeds_ShowsSignInButton() {
-        mAuthPresenter.handleFirebaseSignInResult(true);
-        verify(mView).showSignInButton(true);
-    }
-
-    @Test
     public void firebaseAuthSignInFails_HidesProgressBar() {
         mAuthPresenter.handleFirebaseSignInResult(false);
         verify(mView).setProgressIndicator(false);

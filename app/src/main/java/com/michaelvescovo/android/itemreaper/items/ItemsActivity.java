@@ -14,6 +14,7 @@ import android.view.Menu;
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.about.AboutActivity;
+import com.michaelvescovo.android.itemreaper.auth.AuthActivity;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 
 public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Callback {
@@ -66,5 +67,12 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     public void onAboutSelected() {
         Intent intent = new Intent(this, AboutActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onSignOutSelected() {
+        Intent intent = new Intent(this, AuthActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

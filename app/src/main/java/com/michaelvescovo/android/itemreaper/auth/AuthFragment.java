@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.michaelvescovo.android.itemreaper.BuildConfig;
 import com.michaelvescovo.android.itemreaper.R;
@@ -50,6 +51,7 @@ public class AuthFragment extends Fragment implements AuthContract.View,
     private GoogleApiClient mGoogleApiClient;
     private GoogleSignInAccount mGoogleSignInAccount;
     private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     @BindView(R.id.sign_in_button)
     SignInButton mSignInButton;
@@ -79,6 +81,15 @@ public class AuthFragment extends Fragment implements AuthContract.View,
 
         // Firebase auth
         mAuth = FirebaseAuth.getInstance();
+        mAuthStateListener =  new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    mPresenter.handleFirebaseSignInResult(true);
+                }
+            }
+        };
     }
 
     @Nullable
@@ -98,6 +109,20 @@ public class AuthFragment extends Fragment implements AuthContract.View,
     @Override
     public void setPresenter(@NonNull AuthContract.Presenter presenter) {
         mPresenter = presenter;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mAuth.addAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mAuthStateListener != null) {
+            mAuth.removeAuthStateListener(mAuthStateListener);
+        }
     }
 
     @Override
@@ -177,6 +202,7 @@ public class AuthFragment extends Fragment implements AuthContract.View,
     public void showItemsUi() {
         Intent intent = new Intent(getContext(), ItemsActivity.class);
         startActivity(intent);
+        getActivity().finish();
     }
 
     @Override

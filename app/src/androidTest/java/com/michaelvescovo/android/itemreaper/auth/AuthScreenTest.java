@@ -2,6 +2,7 @@ package com.michaelvescovo.android.itemreaper.auth;
 
 import android.app.Instrumentation;
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
@@ -15,12 +16,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.Intents.intending;
+import static android.support.test.espresso.intent.Intents.times;
 import static android.support.test.espresso.intent.matcher.ComponentNameMatchers.hasClassName;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
@@ -46,6 +50,14 @@ public class AuthScreenTest {
     public void registerIdlingResource() {
         Espresso.registerIdlingResources(
                 mActivityRule.getActivity().getCountingIdlingResource());
+    }
+
+    @Before
+    public void signOut() {
+        try {
+            openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+            onView(withText(R.string.menu_sign_out)).perform(click());
+        } catch (NoMatchingViewException ignored) {}
     }
 
     @Test
@@ -134,7 +146,7 @@ public class AuthScreenTest {
         onView(withId(R.id.sign_in_button)).perform(click());
 
         // Confirm Items Activity is launched
-        intended(hasComponent(hasClassName(ItemsActivity.class.getName())));
+        intended(hasComponent(hasClassName(ItemsActivity.class.getName())), times(2));
     }
 
     @After

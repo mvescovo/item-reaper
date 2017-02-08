@@ -2,6 +2,7 @@ package com.michaelvescovo.android.itemreaper.items;
 
 import android.support.annotation.Nullable;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.michaelvescovo.android.itemreaper.SharedPreferencesHelper;
 import com.michaelvescovo.android.itemreaper.data.DataSource;
 import com.michaelvescovo.android.itemreaper.data.Item;
@@ -74,5 +75,11 @@ class ItemsPresenter implements ItemsContract.Presenter {
     @Override
     public void openAbout() {
         mView.showAboutUi();
+    }
+
+    @Override
+    public void openSignOut() {
+        FirebaseAuth.getInstance().signOut();
+        mView.showAuthUi();
     }
 }

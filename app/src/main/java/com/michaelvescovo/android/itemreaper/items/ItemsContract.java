@@ -23,6 +23,8 @@ public class ItemsContract {
         void showAddItemUi();
 
         void showAboutUi();
+
+        void showAuthUi();
     }
 
     interface Presenter {
@@ -34,6 +36,8 @@ public class ItemsContract {
         void openAddItem();
 
         void openAbout();
+
+        void openSignOut();
     }
 
 }

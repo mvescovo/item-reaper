@@ -75,6 +75,10 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         switch (item.getItemId()) {
             case R.id.action_about:
                 mPresenter.openAbout();
+                break;
+            case R.id.action_sign_out:
+                mPresenter.openSignOut();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -106,8 +110,15 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         mCallback.onAboutSelected();
     }
 
+    @Override
+    public void showAuthUi() {
+        mCallback.onSignOutSelected();
+    }
+
     public interface Callback {
 
         void onAboutSelected();
+
+        void onSignOutSelected();
     }
 }

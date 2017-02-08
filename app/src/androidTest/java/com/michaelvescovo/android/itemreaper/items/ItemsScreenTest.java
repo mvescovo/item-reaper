@@ -90,6 +90,19 @@ public class ItemsScreenTest {
         onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
     }
 
+    @Test
+    public void SignOutMenuItemVisible() {
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+        onView(withText(R.string.menu_sign_out)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void clickSignOutMenuItem_SignsOutAndShowsAuthUi() {
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+        onView(withText(R.string.menu_sign_out)).perform(click());
+        onView(withText(R.string.app_name)).check(matches(isDisplayed()));
+    }
+
     @After
     public void unregisterIdlingResource() {
         Espresso.unregisterIdlingResources(
