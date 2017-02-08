@@ -1,6 +1,7 @@
 package com.michaelvescovo.android.itemreaper.items;
 
 import com.google.common.collect.Lists;
+import com.google.firebase.auth.FirebaseAuth;
 import com.michaelvescovo.android.itemreaper.SharedPreferencesHelper;
 import com.michaelvescovo.android.itemreaper.data.DataSource;
 import com.michaelvescovo.android.itemreaper.data.Item;
@@ -38,6 +39,9 @@ public class ItemsPresenterTest {
     @Mock
     private SharedPreferencesHelper mSharedPreferencesHelper;
 
+    @Mock
+    private FirebaseAuth mFirebaseAuth;
+
     @Captor
     private ArgumentCaptor<DataSource.GetItemIdsCallback> mGetItemIdsCallbackCaptor;
 
@@ -50,7 +54,8 @@ public class ItemsPresenterTest {
     @Before
     public void setItemsPresenter() {
         MockitoAnnotations.initMocks(this);
-        mItemsPresenter = new ItemsPresenter(mView, mRepository, mSharedPreferencesHelper);
+        mItemsPresenter = new ItemsPresenter(mView, mRepository, mSharedPreferencesHelper,
+                mFirebaseAuth);
         ITEM_IDS = Lists.newArrayList("1");
         ITEM = new Item("1", "1/1/1", "Clothing", "T-shirt");
     }
@@ -98,6 +103,7 @@ public class ItemsPresenterTest {
     @Test
     public void clickSignOutMenuItem_SignsOut() {
         mItemsPresenter.openSignOut();
+        verify(mFirebaseAuth).signOut();
         verify(mView).showAuthUi();
     }
 }

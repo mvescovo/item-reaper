@@ -1,5 +1,7 @@
 package com.michaelvescovo.android.itemreaper.items;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -19,5 +21,10 @@ public class ItemsModule {
     @Provides
     ItemsContract.View provideItemsView() {
         return mView;
+    }
+
+    @Provides
+    FirebaseAuth provideFirebaseAuth() {
+        return FirebaseAuth.getInstance();
     }
 }

@@ -23,13 +23,15 @@ class ItemsPresenter implements ItemsContract.Presenter {
     private ItemsContract.View mView;
     private Repository mRepository;
     private SharedPreferencesHelper mSharedPreferencesHelper;
+    private FirebaseAuth mFirebaseAuth;
 
     @Inject
     ItemsPresenter(ItemsContract.View view, Repository repository,
-                   SharedPreferencesHelper sharedPreferencesHelper) {
+                   SharedPreferencesHelper sharedPreferencesHelper, FirebaseAuth firebaseAuth) {
         mView = view;
         mRepository = repository;
         mSharedPreferencesHelper = sharedPreferencesHelper;
+        mFirebaseAuth = firebaseAuth;
     }
 
     @Inject
@@ -79,7 +81,7 @@ class ItemsPresenter implements ItemsContract.Presenter {
 
     @Override
     public void openSignOut() {
-        FirebaseAuth.getInstance().signOut();
+        mFirebaseAuth.signOut();
         mView.showAuthUi();
     }
 }
