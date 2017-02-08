@@ -146,7 +146,7 @@ public class AuthScreenTest {
         onView(withId(R.id.sign_in_button)).perform(click());
 
         // Confirm Items Activity is launched
-        intended(hasComponent(hasClassName(ItemsActivity.class.getName())), times(2));
+        intended(hasComponent(hasClassName(ItemsActivity.class.getName())), times(1));
     }
 
     @After

@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +33,6 @@ import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.google.android.gms.internal.zzs.TAG;
 
 /**
  * @author Michael Vescovo
@@ -84,7 +81,7 @@ public class AuthFragment extends Fragment implements AuthContract.View,
         mAuthStateListener =  new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null) {
                     mPresenter.handleFirebaseSignInResult(true);
                 }
@@ -188,12 +185,6 @@ public class AuthFragment extends Fragment implements AuthContract.View,
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         EspressoIdlingResource.decrement();
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithCredential", task.getException());
-                            mPresenter.handleFirebaseSignInResult(false);
-                        } else {
-                            mPresenter.handleFirebaseSignInResult(true);
-                        }
                     }
                 });
     }
