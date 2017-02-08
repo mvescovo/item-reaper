@@ -1,5 +1,6 @@
 package com.michaelvescovo.android.itemreaper.about;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,8 @@ public class AboutActivity extends AppCompatActivity {
     TextView mForkStatement;
     @BindView(R.id.reaper_icon_attribution)
     TextView mReaperIconAttribution;
+    @BindView(R.id.appbar_title)
+    TextView mAppbarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,7 @@ public class AboutActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
         }
 
         Pattern pattern = compile("");
@@ -42,5 +46,8 @@ public class AboutActivity extends AppCompatActivity {
         Linkify.addLinks(mOpenSourceStatement, pattern, scheme);
         Linkify.addLinks(mForkStatement, pattern, scheme);
         Linkify.addLinks(mReaperIconAttribution, pattern, scheme);
+
+        Typeface appbarTitle = Typeface.createFromAsset(getAssets(), "Nosifer-Regular.ttf");
+        mAppbarTitle.setTypeface(appbarTitle);
     }
 }
