@@ -90,7 +90,7 @@ public class ItemsPresenterTest {
     }
 
     @Test
-    public void clickAboutMenuItem_ShowsMenuUi() {
+    public void clickAboutMenuItem_ShowsAboutUi() {
         mItemsPresenter.openAbout();
         verify(mView).showAboutUi();
     }
