@@ -21,8 +21,6 @@
     <string name="fork_statement">If you would like to contribute or fork, visit <a href="https://github.com/mvescovo/item-reaper">https://github.com/mvescovo/item-reaper</a>.</string>
     <string name="title_activity_about">About</string>
     <string name="title_attributions">Attributions</string>
-    <string name="reaper_icon_attribution">Reaper and scythe icons made by Loc. Available on <a href="http://game-icons.net">http://game-icons.net</a></string>
-    <string name="reaper_icon_attribution_url">http://game-icons.net</string>
-    <string name="reaper_icon_attribution_key">http://game-icons.net</string>
+    <string name="reaper_icon_attribution">Reaper and scythe icons made by Loc. Available on <a href="http://game-icons.net">http://game-icons.net</a>.</string>
 
 </resources>
