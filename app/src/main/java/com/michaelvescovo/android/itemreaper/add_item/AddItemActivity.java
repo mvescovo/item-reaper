@@ -12,6 +12,10 @@ import com.michaelvescovo.android.itemreaper.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * @author Michael Vescovo
+ */
+
 public class AddItemActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar)

@@ -13,28 +13,37 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.TextView;
-
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.about.AboutActivity;
+import com.michaelvescovo.android.itemreaper.about.AboutFragment;
 import com.michaelvescovo.android.itemreaper.auth.AuthActivity;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Callback {
+/**
+ * @author Michael Vescovo
+ */
+
+public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Callback,
+        AboutFragment.Callback {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.appbar_title)
     TextView mAppbarTitle;
 
+    private boolean mIsLargeLayout;
+    private boolean mDialogOpen;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items);
         ButterKnife.bind(this);
+        mIsLargeLayout = getResources().getBoolean(R.bool.large_layout);
+        mDialogOpen = false;
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -56,8 +65,10 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
         // Sets itemsPresenter as the presenter for itemsFragment.
         ItemsComponent itemsComponent = DaggerItemsComponent.builder()
                 .itemsModule(new ItemsModule(itemsFragment))
-                .applicationComponent(((ItemReaperApplication)getApplication()).getApplicationComponent())
-                .repositoryComponent(((ItemReaperApplication)getApplication()).getRepositoryComponent())
+                .applicationComponent(((ItemReaperApplication)getApplication())
+                        .getApplicationComponent())
+                .repositoryComponent(((ItemReaperApplication)getApplication())
+                        .getRepositoryComponent())
                 .build();
         itemsComponent.getItemsPresenter();
     }
@@ -71,19 +82,21 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.items_fragment_menu, menu);
+        if (!mDialogOpen) {
+            getMenuInflater().inflate(R.menu.items_fragment_menu, menu);
+        }
         return true;
-    }
-
-    @VisibleForTesting
-    public IdlingResource getCountingIdlingResource() {
-        return EspressoIdlingResource.getIdlingResource();
     }
 
     @Override
     public void onAboutSelected() {
-        Intent intent = new Intent(this, AboutActivity.class);
-        startActivity(intent);
+        AboutFragment aboutFragment = AboutFragment.newInstance();
+        if (mIsLargeLayout) {
+            aboutFragment.show(getSupportFragmentManager(), "dialog");
+        } else {
+            Intent intent = new Intent(this, AboutActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -91,5 +104,23 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
         Intent intent = new Intent(this, AuthActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void configureSupportActionBar(Toolbar toolbar) {
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
+        }
+        mDialogOpen = true;
+        invalidateOptionsMenu();
+    }
+
+    @VisibleForTesting
+    public IdlingResource getCountingIdlingResource() {
+        return EspressoIdlingResource.getIdlingResource();
     }
 }
