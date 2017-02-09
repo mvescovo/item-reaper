@@ -36,9 +36,16 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 @LargeTest
 public class ItemsScreenTest {
 
+    private boolean mIsLargeScreen;
+
     @Rule
     public IntentsTestRule<ItemsActivity> mActivityRule = new IntentsTestRule<>(
             ItemsActivity.class);
+
+    @Before
+    public void setup() {
+        mIsLargeScreen = mActivityRule.getActivity().getResources().getBoolean(R.bool.large_layout);
+    }
 
     @Before
     public void registerIdlingResource() {
@@ -79,7 +86,11 @@ public class ItemsScreenTest {
     public void clickAboutMenuItem_LaunchesAboutUi() {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         onView(withText(R.string.menu_about)).perform(click());
-        intended(hasComponent(hasClassName(AboutActivity.class.getName())));
+        if (mIsLargeScreen) {
+            onView(withText(R.string.title_activity_about)).check(matches(isDisplayed()));
+        } else {
+            intended(hasComponent(hasClassName(AboutActivity.class.getName())));
+        }
     }
 
     @Test
