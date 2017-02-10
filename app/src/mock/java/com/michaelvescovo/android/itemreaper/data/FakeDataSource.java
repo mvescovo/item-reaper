@@ -23,10 +23,10 @@ class FakeDataSource implements DataSource {
     private final static Item ITEM_2 = new Item("2", "2/2/2", "Bathroom", "Towel");
 
     FakeDataSource() {
-        ITEM_IDS.add(ITEM_ID_1);
         ITEMS.put(ITEM_ID_1, ITEM_1);
-        ITEM_IDS.add(ITEM_ID_2);
         ITEMS.put(ITEM_ID_2, ITEM_2);
+//        ITEM_IDS.add(ITEM_ID_1);
+//        ITEM_IDS.add(ITEM_ID_2);
     }
 
     @Override

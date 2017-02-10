@@ -27,14 +27,15 @@
                 android:layout_height="wrap_content"
                 android:text="@string/title_activity_items"/>
 
-            </android.support.v7.widget.Toolbar>
+        </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
     <FrameLayout
         android:id="@+id/contentFrame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="?actionBarSize"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_item"

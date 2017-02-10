@@ -14,5 +14,6 @@
 
     <!--Items-->
     <dimen name="margin_horizontal_items">28dp</dimen>
+    <dimen name="gutter_items">12dp</dimen>
 
 </resources>

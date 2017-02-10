@@ -8,7 +8,7 @@ import java.util.Map;
  * @author Michael Vescovo
  */
 
-public class ItemsContract {
+interface ItemsContract {
 
     interface View {
 
@@ -25,6 +25,8 @@ public class ItemsContract {
         void showAboutUi();
 
         void showAuthUi();
+
+        void showNoItemsText();
     }
 
     interface Presenter {

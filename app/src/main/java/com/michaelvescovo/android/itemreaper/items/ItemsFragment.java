@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.add_item.AddItemActivity;
@@ -19,11 +20,17 @@ import com.michaelvescovo.android.itemreaper.data.Item;
 
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * @author Michael Vescovo
  */
 
 public class ItemsFragment extends Fragment implements ItemsContract.View {
+
+    @BindView(R.id.no_items)
+    TextView mNoItems;
 
     private Callback mCallback;
     private ItemsContract.Presenter mPresenter;
@@ -44,6 +51,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_items, container, false);
+        ButterKnife.bind(this, root);
 
         FloatingActionButton addItem = (FloatingActionButton) getActivity().findViewById(
                 R.id.add_item);
@@ -57,6 +65,12 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         setHasOptionsMenu(true);
 
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.getItems();
     }
 
     @Override
@@ -113,6 +127,11 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     @Override
     public void showAuthUi() {
         mCallback.onSignOutSelected();
+    }
+
+    @Override
+    public void showNoItemsText() {
+        mNoItems.setVisibility(View.VISIBLE);
     }
 
     public interface Callback {

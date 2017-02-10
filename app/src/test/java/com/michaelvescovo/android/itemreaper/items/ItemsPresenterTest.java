@@ -1,6 +1,5 @@
 package com.michaelvescovo.android.itemreaper.items;
 
-import com.google.common.collect.Lists;
 import com.google.firebase.auth.FirebaseAuth;
 import com.michaelvescovo.android.itemreaper.SharedPreferencesHelper;
 import com.michaelvescovo.android.itemreaper.data.DataSource;
@@ -9,11 +8,14 @@ import com.michaelvescovo.android.itemreaper.data.Repository;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
@@ -26,6 +28,7 @@ import static org.mockito.Mockito.verify;
  * @author Michael Vescovo
  */
 
+@RunWith(Parameterized.class)
 public class ItemsPresenterTest {
 
     private ItemsPresenter mItemsPresenter;
@@ -48,7 +51,24 @@ public class ItemsPresenterTest {
     @Captor
     private ArgumentCaptor<DataSource.GetItemCallback> mGetItemCallbackCaptor;
 
-    private static List<String> ITEM_IDS;
+    @Parameterized.Parameters
+    public static Object[] data() {
+        return new Object[] {
+                new ArrayList<String>() {{
+                    add("1");
+                }},
+                new ArrayList<String>() {{
+
+                }},
+        };
+    }
+
+    private List mItemIds;
+
+    public ItemsPresenterTest(List itemIds) {
+        mItemIds = itemIds;
+    }
+
     private static Item ITEM;
 
     @Before
@@ -56,10 +76,10 @@ public class ItemsPresenterTest {
         MockitoAnnotations.initMocks(this);
         mItemsPresenter = new ItemsPresenter(mView, mRepository, mSharedPreferencesHelper,
                 mFirebaseAuth);
-        ITEM_IDS = Lists.newArrayList("1");
         ITEM = new Item("1", "1/1/1", "Clothing", "T-shirt");
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void getItemsFromRepositoryAndDisplayInView() {
         mItemsPresenter.getItems();
@@ -71,15 +91,21 @@ public class ItemsPresenterTest {
 
         // Get all itemIds for that userId and stub the result.
         verify(mRepository).getItemIds(anyString(), mGetItemIdsCallbackCaptor.capture());
-        mGetItemIdsCallbackCaptor.getValue().onItemIdsLoaded(ITEM_IDS);
+        mGetItemIdsCallbackCaptor.getValue().onItemIdsLoaded(mItemIds);
 
-        // Get an item for each itemId.
-        verify(mRepository, times(ITEM_IDS.size())).getItem(anyString(),
-                any(DataSource.GetItemCallback.class));
+        if (mItemIds.size() > 0) {
+            // Get an item for each itemId.
+            verify(mRepository, times(mItemIds.size())).getItem(anyString(),
+                    any(DataSource.GetItemCallback.class));
 
-        verify(mView).setProgressBar(false);
+            verify(mView).setProgressBar(false);
 
-        verify(mView).showItems(anyMapOf(String.class, Item.class));
+            verify(mView).showItems(anyMapOf(String.class, Item.class));
+        } else {
+            verify(mView).setProgressBar(false);
+
+            verify(mView).showNoItemsText();
+        }
     }
 
     @Test

@@ -53,6 +53,12 @@ public class ItemsScreenTest {
                 mActivityRule.getActivity().getCountingIdlingResource());
     }
 
+    @After
+    public void unregisterIdlingResource() {
+        Espresso.unregisterIdlingResources(
+                mActivityRule.getActivity().getCountingIdlingResource());
+    }
+
     @Test
     public void titleVisible() {
         onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
@@ -114,9 +120,8 @@ public class ItemsScreenTest {
         onView(withText(R.string.app_name)).check(matches(isDisplayed()));
     }
 
-    @After
-    public void unregisterIdlingResource() {
-        Espresso.unregisterIdlingResources(
-                mActivityRule.getActivity().getCountingIdlingResource());
+    @Test
+    public void noItems_ShowsNoItemsText() {
+        onView(withId(R.id.no_items)).check(matches(isDisplayed()));
     }
 }

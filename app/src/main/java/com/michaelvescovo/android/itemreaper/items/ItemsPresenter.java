@@ -47,18 +47,23 @@ class ItemsPresenter implements ItemsContract.Presenter {
             @Override
             public void onItemIdsLoaded(@Nullable List<String> itemIds) {
                 if (itemIds != null) {
-                    final Map<String, Item> items = new HashMap<>();
-                    for (final String itemId :
-                            itemIds) {
-                        mRepository.getItem(itemId, new DataSource.GetItemCallback() {
-                            @Override
-                            public void onItemLoaded(@Nullable Item item) {
-                                items.put(itemId, item);
-                            }
-                        });
+                    if (itemIds.size() > 0) {
+                        final Map<String, Item> items = new HashMap<>();
+                        for (final String itemId :
+                                itemIds) {
+                            mRepository.getItem(itemId, new DataSource.GetItemCallback() {
+                                @Override
+                                public void onItemLoaded(@Nullable Item item) {
+                                    items.put(itemId, item);
+                                }
+                            });
+                        }
+                        mView.setProgressBar(false);
+                        mView.showItems(items);
+                    } else {
+                        mView.setProgressBar(false);
+                        mView.showNoItemsText();
                     }
-                    mView.setProgressBar(false);
-                    mView.showItems(items);
                 }
             }
         });
