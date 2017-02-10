@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Keylines-->
+    <dimen name="keyline_1">24dp</dimen>
+    <dimen name="keyline_2">80dp</dimen>
+
+    <!--Margins and gutters-->
+    <dimen name="margin_horizontal">24dp</dimen>
+    <dimen name="gutter">12dp</dimen>
+
+    <!--Padding-->
+    <dimen name="padding">16dp</dimen>
+
+    <!--Heights-->
+    <dimen name="height_toolbar">64dp</dimen>
+
+    <!--Items-->
+    <dimen name="margin_horizontal_items">28dp</dimen>
+
+</resources>
