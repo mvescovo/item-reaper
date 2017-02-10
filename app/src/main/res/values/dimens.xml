@@ -14,7 +14,6 @@
     <dimen name="padding">8dp</dimen>
 
     <!--Heights-->
-    <dimen name="height_toolbar">56dp</dimen>
     <dimen name="height_list_item">72dp</dimen>
 
     <!--Items-->

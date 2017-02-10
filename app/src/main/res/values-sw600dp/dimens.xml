@@ -12,9 +12,6 @@
     <!--Padding-->
     <dimen name="padding">16dp</dimen>
 
-    <!--Heights-->
-    <dimen name="height_toolbar">64dp</dimen>
-
     <!--Items-->
     <dimen name="margin_horizontal_items">28dp</dimen>
 
