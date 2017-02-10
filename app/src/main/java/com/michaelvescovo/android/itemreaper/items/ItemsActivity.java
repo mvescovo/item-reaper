@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.TextView;
@@ -36,6 +37,10 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
 
     private boolean mIsLargeLayout;
     private boolean mDialogOpen;
+
+    static {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
