@@ -23,4 +23,16 @@
         <item name="android:textColorLink">@color/linkColour</item>
     </style>
 
+    <!--Card-->
+    <style name="card_caption" parent="Base.TextAppearance.AppCompat.Caption">
+        <item name="android:textColor">@color/subTitle</item>
+        <item name="android:paddingBottom">@dimen/padding_text</item>
+    </style>
+    <style name="card_content_primary" parent="Base.TextAppearance.AppCompat.Title">
+        <item name="android:paddingBottom">@dimen/padding_text</item>
+    </style>
+    <style name="card_content_secondary" parent="Base.TextAppearance.AppCompat.Body1">
+        <item name="android:paddingBottom">@dimen/padding_text</item>
+    </style>
+
 </resources>
