@@ -85,6 +85,12 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallback = null;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_about:
