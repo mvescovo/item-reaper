@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.michaelvescovo.android.itemreaper.R;
-import com.michaelvescovo.android.itemreaper.add_item.AddItemActivity;
+import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
 import com.michaelvescovo.android.itemreaper.data.Item;
 
 import java.util.Map;
@@ -115,7 +115,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
     @Override
     public void showAddItemUi() {
-        Intent intent = new Intent(getContext(), AddItemActivity.class);
+        Intent intent = new Intent(getContext(), EditItemActivity.class);
         startActivity(intent);
     }
 

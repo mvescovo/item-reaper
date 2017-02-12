@@ -16,8 +16,8 @@
     <string name="undo">Undo</string>
     <string name="item_unexpired">Item restored.</string>
 
-    <!--AddItem-->
-    <string name="title_activity_add_item">Add Item</string>
+    <!--EditItem-->
+    <string name="title_activity_edit_item">Edit Item</string>
 
     <!--About-->
     <string name="title_item_reaper">Item Reaper</string>

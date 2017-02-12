@@ -9,7 +9,7 @@ import android.support.test.runner.AndroidJUnit4;
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.about.AboutActivity;
-import com.michaelvescovo.android.itemreaper.add_item.AddItemActivity;
+import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
 import com.michaelvescovo.android.itemreaper.data.FakeDataSource;
 
 import org.junit.After;
@@ -84,7 +84,7 @@ public class ItemsScreenTest {
     @Test
     public void clickAddItemButton_LaunchesAddItemUi() {
         onView(withId(R.id.add_item)).perform(click());
-        intended(hasComponent(hasClassName(AddItemActivity.class.getName())));
+        intended(hasComponent(hasClassName(EditItemActivity.class.getName())));
     }
 
     @Test
