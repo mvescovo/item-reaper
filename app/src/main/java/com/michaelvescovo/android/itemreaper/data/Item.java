@@ -52,14 +52,46 @@ public class Item {
     private Map<String, String> mPhotoUrls;
     private boolean mDeceased;
 
-    public Item(@NonNull String id, @NonNull String expiry, @NonNull String category,
-                @NonNull String type) {
+    public Item(@NonNull String id, @Nullable String purchaseDate, int pricePaid, int discount,
+                @NonNull String expiry, @NonNull String category, @Nullable String subCategory,
+                @NonNull String type, @Nullable String subtype, @Nullable String subtype2,
+                @Nullable String subtype3, @Nullable String primaryColour,
+                @Nullable String primaryColourShade, @Nullable String secondaryColour,
+                @Nullable String size, @Nullable String brand, @Nullable String shop,
+                @Nullable String description, @Nullable String note,
+                @Nullable Map<String, String> photoUrls, boolean deceased) {
         mId = id;
+        mPurchaseDate = purchaseDate;
+        mPricePaid = pricePaid;
+        mDiscount = discount;
         mExpiry = expiry;
         mCategory = category;
+        mSubCategory = subCategory;
         mType = type;
-        mDeceased = false;
+        mSubtype = subtype;
+        mSubtype2 = subtype2;
+        mSubtype3 = subtype3;
+        mPrimaryColour = primaryColour;
+        mPrimaryColourShade = primaryColourShade;
+        mSecondaryColour = secondaryColour;
+        mSize = size;
+        mBrand = brand;
+        mShop = shop;
+        mDescription = description;
+        mNote = note;
+        mPhotoUrls = photoUrls;
+        mDeceased = deceased;
     }
+
+    //    public Item(@NonNull String id, @NonNull String expiry, @NonNull String category,
+//                @NonNull String type, @Nullable String primaryColour, @Nullable) {
+//        mId = id;
+//        mExpiry = expiry;
+//        mCategory = category;
+//        mType = type;
+//        mPrimaryColour = primaryColour;
+//        mDeceased = false;
+//    }
 
     @NonNull
     public String getId() {

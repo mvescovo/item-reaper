@@ -76,7 +76,9 @@ public class ItemsPresenterTest {
         MockitoAnnotations.initMocks(this);
         mItemsPresenter = new ItemsPresenter(mView, mRepository, mSharedPreferencesHelper,
                 mFirebaseAuth);
-        ITEM = new Item("1", "1/1/1", "Clothing", "T-shirt");
+        ITEM = new Item("1", null, 20, 0, "1/1/1", "Clothing", null,
+                "T-shirt", null, null, null, "Black", null, null, null, null, null, null, null, null,
+                false);
     }
 
     @SuppressWarnings("unchecked")
