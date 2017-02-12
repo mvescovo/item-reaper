@@ -6,5 +6,8 @@
     <color name="colorAccent">#69F0AE</color>
     <color name="linkColour">#4285F4</color>
     <color name="divider">#FFCCCCCC</color>
+    <color name="white">#fff</color>
+    <color name="subTitle">#6000</color>
+    <color name="red">#FF5252</color>
 
 </resources>
