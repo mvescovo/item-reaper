@@ -27,4 +27,5 @@ public interface DataSource {
     void refreshItems();
     void saveItem(@NonNull String userId, @NonNull Item item);
     void deleteItem(@NonNull String userId, @NonNull String itemId);
+    void deleteAllItems(@NonNull String userId);
 }

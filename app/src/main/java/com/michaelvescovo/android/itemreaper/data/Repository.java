@@ -54,7 +54,9 @@ public class Repository implements DataSource {
 
     @Override
     public void refreshItemIds() {
-        mCachedItemIds.clear();
+        if (mCachedItemIds != null) {
+            mCachedItemIds.clear();
+        }
     }
 
     @Override
@@ -92,5 +94,12 @@ public class Repository implements DataSource {
     @Override
     public void deleteItem(@NonNull String userId, @NonNull String itemId) {
         mRemoteDataSource.deleteItem(userId, itemId);
+    }
+
+    @Override
+    public void deleteAllItems(@NonNull String userId) {
+        refreshItemIds();
+        refreshItems();
+        mRemoteDataSource.deleteAllItems(userId);
     }
 }

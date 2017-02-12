@@ -47,4 +47,10 @@ class RemoteDataSource implements DataSource {
     public void deleteItem(@NonNull String userId, @NonNull String itemId) {
 
     }
+
+    @Override
+    public void deleteAllItems(@NonNull String userId) {
+        refreshItemIds();
+        refreshItems();
+    }
 }
