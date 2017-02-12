@@ -10,7 +10,7 @@ import dagger.Provides;
  */
 
 @Module
-public class ItemsModule {
+class ItemsModule {
 
     private ItemsContract.View mView;
 
