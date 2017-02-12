@@ -1,5 +1,7 @@
 package com.michaelvescovo.android.itemreaper.data;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -10,8 +12,9 @@ import dagger.Provides;
 @Module
 class DataSourceModule {
 
+    @Singleton
     @Provides
-    static DataSource provideDataSource() {
+    DataSource provideDataSource() {
         return new RemoteDataSource();
     }
 }
