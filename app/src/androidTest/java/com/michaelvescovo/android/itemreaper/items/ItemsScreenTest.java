@@ -1,13 +1,16 @@
 package com.michaelvescovo.android.itemreaper.items;
 
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.about.AboutActivity;
 import com.michaelvescovo.android.itemreaper.add_item.AddItemActivity;
+import com.michaelvescovo.android.itemreaper.data.FakeDataSource;
 
 import org.junit.After;
 import org.junit.Before;
@@ -36,11 +39,20 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 @LargeTest
 public class ItemsScreenTest {
 
-    private boolean mIsLargeScreen;
-
     @Rule
-    public IntentsTestRule<ItemsActivity> mActivityRule = new IntentsTestRule<>(
-            ItemsActivity.class);
+    public IntentsTestRule<ItemsActivity> mActivityRule =
+            new IntentsTestRule<ItemsActivity>(ItemsActivity.class) {
+
+                @Override
+                protected void beforeActivityLaunched() {
+                    super.beforeActivityLaunched();
+                    ((ItemReaperApplication) InstrumentationRegistry.getTargetContext()
+                                    .getApplicationContext()).getRepositoryComponent()
+                                    .getRepository().deleteAllItems(FakeDataSource.USER_ID);
+                }
+            };
+
+    private boolean mIsLargeScreen;
 
     @Before
     public void setup() {
