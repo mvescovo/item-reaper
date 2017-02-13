@@ -14,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 import java.util.Map;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
@@ -92,7 +93,7 @@ public class RepositoryTest {
         // Refresh itemIds.
         mRepository.refreshItemIds();
         // Confirm cache is now empty.
-        assertThat(mRepository.mCachedItemIds.size(), is(0));
+        assertThat(mRepository.mCachedItemIds, equalTo(null));
     }
 
     @Test

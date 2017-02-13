@@ -55,7 +55,7 @@ public class Repository implements DataSource {
     @Override
     public void refreshItemIds() {
         if (mCachedItemIds != null) {
-            mCachedItemIds.clear();
+            mCachedItemIds =  null;
         }
     }
 
