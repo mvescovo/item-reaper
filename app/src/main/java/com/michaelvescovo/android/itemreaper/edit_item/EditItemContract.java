@@ -22,6 +22,6 @@ interface EditItemContract {
 
     interface Presenter {
 
-        void saveItem(@NonNull String userId, @NonNull Item item);
+        void saveItem(@NonNull Item item);
     }
 }

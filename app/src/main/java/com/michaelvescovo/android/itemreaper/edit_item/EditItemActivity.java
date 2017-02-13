@@ -57,6 +57,8 @@ public class EditItemActivity extends AppCompatActivity
         // Sets itemsPresenter as the presenter for itemsFragment.
         EditItemComponent editItemComponent = DaggerEditItemComponent.builder()
                 .editItemModule(new EditItemModule(editItemFragment))
+                .applicationComponent(((ItemReaperApplication)getApplication())
+                        .getApplicationComponent())
                 .repositoryComponent(((ItemReaperApplication) getApplication())
                         .getRepositoryComponent())
                 .build();

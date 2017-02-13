@@ -1,5 +1,6 @@
 package com.michaelvescovo.android.itemreaper.edit_item;
 
+import com.michaelvescovo.android.itemreaper.SharedPreferencesHelper;
 import com.michaelvescovo.android.itemreaper.data.FakeDataSource;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.data.Repository;
@@ -27,15 +28,18 @@ public class EditItemPresenterTest {
     @Mock
     private Repository mRepository;
 
+    @Mock
+    private SharedPreferencesHelper mSharedPreferencesHelper;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        mEditItemPresenter = new EditItemPresenter(mView, mRepository);
+        mEditItemPresenter = new EditItemPresenter(mView, mRepository, mSharedPreferencesHelper);
     }
 
     @Test
     public void clickSave_SavesItem() {
-        mEditItemPresenter.saveItem(FakeDataSource.USER_ID, FakeDataSource.ITEM_1);
+        mEditItemPresenter.saveItem(FakeDataSource.ITEM_1);
         verify(mView).setProgressBar(true);
         verify(mRepository).saveItem(anyString(), any(Item.class));
         verify(mView).setProgressBar(false);

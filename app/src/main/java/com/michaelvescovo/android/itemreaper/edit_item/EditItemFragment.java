@@ -9,8 +9,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.michaelvescovo.android.itemreaper.R;
+import com.michaelvescovo.android.itemreaper.data.Item;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +25,12 @@ public class EditItemFragment extends Fragment implements EditItemContract.View 
 
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
+    @BindView(R.id.category)
+    TextView mCategory;
+    @BindView(R.id.type)
+    TextView mType;
+    @BindView(R.id.expiry)
+    TextView mExpiry;
 
     private OnFragmentInteractionListener mListener;
     private EditItemContract.Presenter mPresenter;
@@ -76,7 +84,31 @@ public class EditItemFragment extends Fragment implements EditItemContract.View 
     }
 
     private void validateItem() {
+        boolean itemOk = true;
+        if (mCategory.getText().toString().contentEquals("")) {
+            mCategory.setError(getString(R.string.edit_category_error));
+            mCategory.requestFocus();
+            itemOk = false;
+        }
 
+        if (mType.getText().toString().contentEquals("")) {
+            mType.setError(getString(R.string.edit_type_error));
+            mType.requestFocus();
+            itemOk = false;
+        }
+
+        if (mExpiry.getText().toString().contentEquals("")) {
+            mExpiry.setError(getString(R.string.edit_expiry_error));
+            mExpiry.requestFocus();
+            itemOk = false;
+        }
+
+        if (itemOk) {
+            Item newItem = new Item("-1", null, 0, 0, mExpiry.getText().toString(),
+                    mCategory.getText().toString(), null, mType.getText().toString(), null, null,
+                    null, null, null, null, null, null, null, null, null, null, false);
+            mPresenter.saveItem(newItem);
+        }
     }
 
     @Override
