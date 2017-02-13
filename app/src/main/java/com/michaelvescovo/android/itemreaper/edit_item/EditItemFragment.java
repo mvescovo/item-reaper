@@ -25,11 +25,11 @@ public class EditItemFragment extends Fragment implements EditItemContract.View 
 
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
-    @BindView(R.id.category)
+    @BindView(R.id.edit_category)
     TextView mCategory;
-    @BindView(R.id.type)
+    @BindView(R.id.edit_type)
     TextView mType;
-    @BindView(R.id.expiry)
+    @BindView(R.id.edit_expiry)
     TextView mExpiry;
 
     private OnFragmentInteractionListener mListener;
