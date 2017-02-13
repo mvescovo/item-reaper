@@ -27,10 +27,10 @@ public class FakeDataSource implements DataSource {
             false);
 
     FakeDataSource() {
-        ITEM_IDS.add(ITEM_ID_1);
-        ITEM_IDS.add(ITEM_ID_2);
-        ITEMS.put(ITEM_ID_1, ITEM_1);
-        ITEMS.put(ITEM_ID_2, ITEM_2);
+//        ITEM_IDS.add(ITEM_ID_1);
+//        ITEM_IDS.add(ITEM_ID_2);
+//        ITEMS.put(ITEM_ID_1, ITEM_1);
+//        ITEMS.put(ITEM_ID_2, ITEM_2);
     }
 
     @Override
@@ -69,7 +69,8 @@ public class FakeDataSource implements DataSource {
 
     @Override
     public void saveItem(@NonNull String userId, @NonNull Item item) {
-        ITEMS.put(userId, item);
+        ITEM_IDS.add(item.getId());
+        ITEMS.put(item.getId(), item);
     }
 
     @Override

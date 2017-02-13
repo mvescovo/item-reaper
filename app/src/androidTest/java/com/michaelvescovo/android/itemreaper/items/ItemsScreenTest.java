@@ -2,6 +2,7 @@ package com.michaelvescovo.android.itemreaper.items;
 
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
@@ -9,8 +10,8 @@ import android.support.test.runner.AndroidJUnit4;
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.about.AboutActivity;
-import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
 import com.michaelvescovo.android.itemreaper.data.FakeDataSource;
+import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -22,10 +23,13 @@ import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
+import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.ComponentNameMatchers.hasClassName;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -135,5 +139,17 @@ public class ItemsScreenTest {
     @Test
     public void noItems_ShowsNoItemsText() {
         onView(withId(R.id.no_items)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void addItem_ShowsItemCategory() {
+        onView(withId(R.id.add_item)).perform(click());
+        onView(withId(R.id.edit_category)).perform(scrollTo()).perform(typeText(FakeDataSource.ITEM_1.getCategory()));
+        onView(withId(R.id.edit_type)).perform(scrollTo()).perform(typeText(FakeDataSource.ITEM_1.getType()));
+        onView(withId(R.id.edit_expiry)).perform(scrollTo()).perform(typeText(FakeDataSource.ITEM_1.getExpiry()));
+        onView(withId(R.id.action_save)).perform(click());
+        onView(withId(R.id.recycler_view)).perform(RecyclerViewActions
+                .scrollTo(hasDescendant(withText(FakeDataSource.ITEM_1.getCategory()))));
+        onView(withText(FakeDataSource.ITEM_1.getCategory())).check(matches(isDisplayed()));
     }
 }
