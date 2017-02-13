@@ -122,7 +122,7 @@ public class EditItemFragment extends Fragment implements EditItemContract.View 
 
     @Override
     public void showItemsUi() {
-
+        getActivity().finish();
     }
 
     public interface OnFragmentInteractionListener {
