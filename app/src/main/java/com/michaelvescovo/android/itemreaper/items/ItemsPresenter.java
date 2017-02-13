@@ -40,8 +40,11 @@ class ItemsPresenter implements ItemsContract.Presenter {
     }
 
     @Override
-    public void getItems() {
+    public void getItems(boolean forceUpdate) {
         mView.setProgressBar(true);
+        if (forceUpdate) {
+            mRepository.refreshItemIds();
+        }
         String userId = mSharedPreferencesHelper.getUserId();
         mRepository.getItemIds(userId, new DataSource.GetItemIdsCallback() {
             @Override

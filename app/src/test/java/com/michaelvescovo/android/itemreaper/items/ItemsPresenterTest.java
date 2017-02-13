@@ -84,9 +84,11 @@ public class ItemsPresenterTest {
     @SuppressWarnings("unchecked")
     @Test
     public void getItemsFromRepositoryAndDisplayInView() {
-        mItemsPresenter.getItems();
+        mItemsPresenter.getItems(true);
 
         verify(mView).setProgressBar(true);
+
+        verify(mRepository).refreshItemIds();
 
         // Make sure to get the correct userId to pass in.
         verify(mSharedPreferencesHelper).getUserId();

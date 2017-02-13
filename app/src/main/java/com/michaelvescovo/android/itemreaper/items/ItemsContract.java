@@ -31,7 +31,7 @@ interface ItemsContract {
 
     interface Presenter {
 
-        void getItems();
+        void getItems(boolean forceUpdate);
 
         void openItemDetails(Item item);
 
