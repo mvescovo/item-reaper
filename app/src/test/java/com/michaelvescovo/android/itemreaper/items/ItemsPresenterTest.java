@@ -98,6 +98,8 @@ public class ItemsPresenterTest {
         mGetItemIdsCallbackCaptor.getValue().onItemIdsLoaded(mItemIds);
 
         if (mItemIds.size() > 0) {
+            verify(mView).showNoItemsText(false);
+
             // Get an item for each itemId.
             verify(mRepository, times(mItemIds.size())).getItem(anyString(),
                     any(DataSource.GetItemCallback.class));
@@ -108,7 +110,7 @@ public class ItemsPresenterTest {
         } else {
             verify(mView).setProgressBar(false);
 
-            verify(mView).showNoItemsText();
+            verify(mView).showNoItemsText(true);
         }
     }
 

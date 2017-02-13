@@ -40,7 +40,7 @@ class ItemsPresenter implements ItemsContract.Presenter {
     }
 
     @Override
-    public void getItems(boolean forceUpdate) {
+    public void getItems(final boolean forceUpdate) {
         mView.setProgressBar(true);
         if (forceUpdate) {
             mRepository.refreshItemIds();
@@ -51,6 +51,7 @@ class ItemsPresenter implements ItemsContract.Presenter {
             public void onItemIdsLoaded(@Nullable List<String> itemIds) {
                 if (itemIds != null) {
                     if (itemIds.size() > 0) {
+                        mView.showNoItemsText(false);
                         final Map<String, Item> items = new HashMap<>();
                         for (final String itemId :
                                 itemIds) {
@@ -65,7 +66,7 @@ class ItemsPresenter implements ItemsContract.Presenter {
                         mView.showItems(items);
                     } else {
                         mView.setProgressBar(false);
-                        mView.showNoItemsText();
+                        mView.showNoItemsText(true);
                     }
                 }
             }

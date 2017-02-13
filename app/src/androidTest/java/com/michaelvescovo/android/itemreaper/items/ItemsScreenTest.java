@@ -152,4 +152,23 @@ public class ItemsScreenTest {
                 .scrollTo(hasDescendant(withText(FakeDataSource.ITEM_1.getCategory()))));
         onView(withText(FakeDataSource.ITEM_1.getCategory())).check(matches(isDisplayed()));
     }
+
+    @Test
+    public void addSecondItem_ShowsSecondItem() {
+        onView(withId(R.id.add_item)).perform(click());
+        onView(withId(R.id.edit_category)).perform(scrollTo()).perform(typeText(FakeDataSource.ITEM_1.getCategory()));
+        onView(withId(R.id.edit_type)).perform(scrollTo()).perform(typeText(FakeDataSource.ITEM_1.getType()));
+        onView(withId(R.id.edit_expiry)).perform(scrollTo()).perform(typeText(FakeDataSource.ITEM_1.getExpiry()));
+        onView(withId(R.id.action_save)).perform(click());
+
+        onView(withId(R.id.add_item)).perform(click());
+        onView(withId(R.id.edit_category)).perform(scrollTo()).perform(typeText(FakeDataSource.ITEM_1.getCategory()));
+        onView(withId(R.id.edit_type)).perform(scrollTo()).perform(typeText(FakeDataSource.ITEM_1.getType()));
+        onView(withId(R.id.edit_expiry)).perform(scrollTo()).perform(typeText(FakeDataSource.ITEM_1.getExpiry()));
+        onView(withId(R.id.action_save)).perform(click());
+
+        onView(withId(R.id.recycler_view)).perform(RecyclerViewActions
+                .scrollTo(hasDescendant(withText(FakeDataSource.ITEM_1.getCategory()))));
+        onView(withText(FakeDataSource.ITEM_1.getCategory())).check(matches(isDisplayed()));
+    }
 }

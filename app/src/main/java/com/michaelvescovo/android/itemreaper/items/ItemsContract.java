@@ -26,7 +26,7 @@ interface ItemsContract {
 
         void showAuthUi();
 
-        void showNoItemsText();
+        void showNoItemsText(boolean active);
     }
 
     interface Presenter {
