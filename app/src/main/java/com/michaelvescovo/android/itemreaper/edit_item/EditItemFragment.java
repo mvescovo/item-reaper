@@ -8,8 +8,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.michaelvescovo.android.itemreaper.R;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * @author Michael Vescovo
@@ -17,10 +21,14 @@ import com.michaelvescovo.android.itemreaper.R;
 
 public class EditItemFragment extends Fragment implements EditItemContract.View {
 
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
+
     private OnFragmentInteractionListener mListener;
     private EditItemContract.Presenter mPresenter;
 
-    public EditItemFragment() {}
+    public EditItemFragment() {
+    }
 
     public static EditItemFragment newInstance() {
         return new EditItemFragment();
@@ -35,6 +43,7 @@ public class EditItemFragment extends Fragment implements EditItemContract.View 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_edit_item, container, false);
+        ButterKnife.bind(this, root);
         setHasOptionsMenu(true);
         return root;
     }
@@ -60,13 +69,27 @@ public class EditItemFragment extends Fragment implements EditItemContract.View 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
+                validateItem();
                 break;
         }
+        return super.onOptionsItemSelected(item);
+    }
 
-        return super.onOptionsItemSelected(item);    }
+    private void validateItem() {
+
+    }
 
     @Override
-    public void setProgressBar(boolean visible) {
+    public void setProgressBar(boolean active) {
+        if (active) {
+            mProgressBar.setVisibility(View.VISIBLE);
+        } else {
+            mProgressBar.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void showItemsUi() {
 
     }
 

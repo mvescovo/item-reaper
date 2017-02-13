@@ -14,7 +14,7 @@ interface ItemsContract {
 
         void setPresenter(Presenter presenter);
 
-        void setProgressBar(boolean visible);
+        void setProgressBar(boolean active);
 
         void showItems(Map<String, Item> items);
 

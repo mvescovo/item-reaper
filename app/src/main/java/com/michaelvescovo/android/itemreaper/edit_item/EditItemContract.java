@@ -14,7 +14,9 @@ interface EditItemContract {
 
         void setPresenter(Presenter presenter);
 
-        void setProgressBar(boolean visible);
+        void setProgressBar(boolean active);
+
+        void showItemsUi();
 
     }
 

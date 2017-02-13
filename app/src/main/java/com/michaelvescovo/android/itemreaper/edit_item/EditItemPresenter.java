@@ -27,5 +27,6 @@ class EditItemPresenter implements EditItemContract.Presenter {
         mView.setProgressBar(true);
         mRepository.saveItem(userId, item);
         mView.setProgressBar(false);
+        mView.showItemsUi();
     }
 }

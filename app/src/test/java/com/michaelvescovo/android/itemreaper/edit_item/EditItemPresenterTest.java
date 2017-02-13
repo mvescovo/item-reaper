@@ -39,5 +39,6 @@ public class EditItemPresenterTest {
         verify(mView).setProgressBar(true);
         verify(mRepository).saveItem(anyString(), any(Item.class));
         verify(mView).setProgressBar(false);
+        verify(mView).showItemsUi();
     }
 }
