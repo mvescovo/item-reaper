@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.Item;
 
+import java.util.UUID;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -104,7 +106,8 @@ public class EditItemFragment extends Fragment implements EditItemContract.View 
         }
 
         if (itemOk) {
-            Item newItem = new Item("-1", null, 0, 0, mExpiry.getText().toString(),
+            String uniqueID = UUID.randomUUID().toString();
+            Item newItem = new Item(uniqueID, null, 0, 0, mExpiry.getText().toString(),
                     mCategory.getText().toString(), null, mType.getText().toString(), null, null,
                     null, null, null, null, null, null, null, null, null, null, false);
             mPresenter.saveItem(newItem);
