@@ -26,6 +26,11 @@ class EditItemPresenter implements EditItemContract.Presenter {
         mSharedPreferencesHelper = sharedPreferencesHelper;
     }
 
+    @Inject
+    void setupListeners() {
+        mView.setPresenter(this);
+    }
+
     @Override
     public void saveItem(@NonNull Item item) {
         mView.setProgressBar(true);
