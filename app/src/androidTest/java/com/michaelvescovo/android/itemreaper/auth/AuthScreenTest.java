@@ -60,6 +60,12 @@ public class AuthScreenTest {
         } catch (NoMatchingViewException ignored) {}
     }
 
+    @After
+    public void unregisterIdlingResource() {
+        Espresso.unregisterIdlingResources(
+                mActivityRule.getActivity().getCountingIdlingResource());
+    }
+
     @Test
     public void titleVisible() {
         onView(withText(R.string.app_name)).check(matches(isDisplayed()));
@@ -147,11 +153,5 @@ public class AuthScreenTest {
 
         // Confirm Items Activity is launched
         intended(hasComponent(hasClassName(ItemsActivity.class.getName())), times(1));
-    }
-
-    @After
-    public void unregisterIdlingResource() {
-        Espresso.unregisterIdlingResources(
-                mActivityRule.getActivity().getCountingIdlingResource());
     }
 }
