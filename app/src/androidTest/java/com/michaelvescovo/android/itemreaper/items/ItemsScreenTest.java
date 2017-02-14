@@ -9,7 +9,6 @@ import android.support.test.filters.LargeTest;
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.about.AboutActivity;
-import com.michaelvescovo.android.itemreaper.data.FakeDataSource;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
 
@@ -38,6 +37,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withContentDesc
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
+import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_2;
+import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.USER_ID;
 
 /**
  * @author Michael Vescovo
@@ -56,7 +57,7 @@ public class ItemsScreenTest {
                     super.beforeActivityLaunched();
                     ((ItemReaperApplication) InstrumentationRegistry.getTargetContext()
                                     .getApplicationContext()).getRepositoryComponent()
-                                    .getRepository().deleteAllItems(FakeDataSource.USER_ID);
+                                    .getRepository().deleteAllItems(USER_ID);
                 }
             };
 
@@ -64,7 +65,7 @@ public class ItemsScreenTest {
     public static Iterable<?> data() {
         return Arrays.asList(
                 ITEM_1,
-                FakeDataSource.ITEM_2
+                ITEM_2
         );
     }
 
@@ -160,12 +161,25 @@ public class ItemsScreenTest {
     }
 
     @Test
-    public void addItem_ShowsItem() {
+    public void addItem_ShowsItemInList() {
         // Add item
         onView(withId(R.id.add_item)).perform(click());
-        onView(withId(R.id.edit_category)).perform(scrollTo()).perform(typeText(mItem.getCategory()));
-        onView(withId(R.id.edit_type)).perform(scrollTo()).perform(typeText(mItem.getType()));
-        onView(withId(R.id.edit_expiry)).perform(scrollTo()).perform(typeText(mItem.getExpiry()));
+
+        onView(withId(R.id.edit_category)).perform(scrollTo())
+                .perform(typeText(mItem.getCategory()));
+        onView(withId(R.id.edit_type)).perform(scrollTo())
+                .perform(typeText(mItem.getType()));
+        if (mItem.getPrimaryColour() != null) {
+            onView(withId(R.id.edit_primary_colour)).perform(scrollTo())
+                    .perform(typeText(mItem.getPrimaryColour()));
+        }
+        onView(withId(R.id.edit_expiry)).perform(scrollTo())
+                .perform(typeText(String.valueOf(mItem.getExpiry())));
+        if (mItem.getPricePaid() != -1) {
+            onView(withId(R.id.edit_price_paid)).perform(scrollTo())
+                    .perform(typeText(String.valueOf(mItem.getPricePaid())));
+        }
+
         onView(withId(R.id.action_save)).perform(click());
 
         // Confirm item show in list
@@ -173,6 +187,12 @@ public class ItemsScreenTest {
                 .scrollTo(hasDescendant(withText(mItem.getCategory()))));
         onView(withText(mItem.getCategory())).check(matches(isDisplayed()));
         onView(withText(mItem.getType())).check(matches(isDisplayed()));
+        if (mItem.getPrimaryColour() != null) {
+            onView(withText(mItem.getPrimaryColour())).check(matches(isDisplayed()));
+        }
         onView(withText("Expires: " + mItem.getExpiry())).check(matches(isDisplayed()));
+        if (mItem.getPricePaid() != -1) {
+            onView(withText("Paid: $" + mItem.getPricePaid())).check(matches(isDisplayed()));
+        }
     }
 }
