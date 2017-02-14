@@ -77,6 +77,18 @@ public class Repository implements DataSource {
     }
 
     @Override
+    public void getNewItemId(@NonNull String userId, @NonNull final GetNewItemIdCallback callback) {
+        mRemoteDataSource.getNewItemId(userId, new GetNewItemIdCallback() {
+            @Override
+            public void onNewItemIdLoaded(@Nullable String newItemId) {
+                if (newItemId != null) {
+                    callback.onNewItemIdLoaded(newItemId);
+                }
+            }
+        });
+    }
+
+    @Override
     public void stopGetItem() {
         mRemoteDataSource.stopGetItem();
     }

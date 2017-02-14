@@ -7,6 +7,7 @@ import com.google.common.collect.Maps;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Michael Vescovo
@@ -18,19 +19,19 @@ public class FakeDataSource implements DataSource {
     private final static List<String> ITEM_IDS = Lists.newArrayList();
     private final static Map<String, Item> ITEMS = Maps.newHashMap();
     private final static String ITEM_ID_1 = "1";
-    public final static Item ITEM_1 = new Item("1", null, 20, 0, "1/1/1", "Clothing", null,
+    public final static Item ITEM_1 = new Item("-1", null, 20, 0, "1/1/1", "Clothing", null,
             "T-shirt", null, null, null, "Black", null, null, null, null, null, null, null, null,
             false);
     private final static String ITEM_ID_2 = "2";
-    private final static Item ITEM_2 = new Item("2", null, 30, 0, "2/2/2", "Bathroom", null,
+    public final static Item ITEM_2 = new Item("2", null, 30, 0, "2/2/2", "Bathroom", null,
             "Towel", null, null, null, "White", null, null, null, null, null, null, null, null,
             false);
 
     FakeDataSource() {
-//        ITEM_IDS.add(ITEM_ID_1);
-//        ITEM_IDS.add(ITEM_ID_2);
-//        ITEMS.put(ITEM_ID_1, ITEM_1);
-//        ITEMS.put(ITEM_ID_2, ITEM_2);
+        ITEM_IDS.add(ITEM_ID_1);
+        ITEM_IDS.add(ITEM_ID_2);
+        ITEMS.put(ITEM_ID_1, ITEM_1);
+        ITEMS.put(ITEM_ID_2, ITEM_2);
     }
 
     @Override
@@ -58,6 +59,11 @@ public class FakeDataSource implements DataSource {
     }
 
     @Override
+    public void getNewItemId(@NonNull String userId, @NonNull GetNewItemIdCallback callback) {
+
+    }
+
+    @Override
     public void stopGetItem() {
         // Nothing to do here since this data source doesn't have listeners.
     }
@@ -69,6 +75,8 @@ public class FakeDataSource implements DataSource {
 
     @Override
     public void saveItem(@NonNull String userId, @NonNull Item item) {
+        String uniqueID = UUID.randomUUID().toString();
+        item.setId(uniqueID);
         ITEM_IDS.add(item.getId());
         ITEMS.put(item.getId(), item);
     }

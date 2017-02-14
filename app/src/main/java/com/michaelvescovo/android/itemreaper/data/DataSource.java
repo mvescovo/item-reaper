@@ -19,10 +19,15 @@ public interface DataSource {
         void onItemLoaded(@Nullable Item item);
     }
 
+    interface GetNewItemIdCallback {
+        void onNewItemIdLoaded(@Nullable String newItemId);
+    }
+
     void getItemIds(@NonNull String userId, @NonNull GetItemIdsCallback callback);
     void stopGetItemIds();
     void refreshItemIds();
     void getItem(@NonNull String itemId, @NonNull GetItemCallback callback);
+    void getNewItemId(@NonNull String userId, @NonNull GetNewItemIdCallback callback);
     void stopGetItem();
     void refreshItems();
     void saveItem(@NonNull String userId, @NonNull Item item);

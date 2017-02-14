@@ -49,6 +49,8 @@ public class RepositoryTest {
     private DataSource mRemoteDataSource;
     @Mock
     private DataSource.GetItemIdsCallback mGetItemIdsCallback;
+    @Mock
+    private DataSource.GetNewItemIdCallback mGetNewItemIdCallback;
     @Captor
     private ArgumentCaptor<DataSource.GetItemIdsCallback> mItemIdsCallbackCaptor;
     @Captor
@@ -164,5 +166,12 @@ public class RepositoryTest {
         mRepository.deleteItem(USER_ID, ITEM_ID_1);
         // Confirm remote data source called.
         verify(mRemoteDataSource).deleteItem(anyString(), anyString());
+    }
+
+    @Test
+    public void getNewItemId() {
+        mRepository.getNewItemId(USER_ID, mGetNewItemIdCallback);
+        verify(mRemoteDataSource).getNewItemId(anyString(),
+                any(DataSource.GetNewItemIdCallback.class));
     }
 }

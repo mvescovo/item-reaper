@@ -29,6 +29,11 @@ class RemoteDataSource implements DataSource {
     }
 
     @Override
+    public void getNewItemId(@NonNull String userId, @NonNull GetNewItemIdCallback callback) {
+
+    }
+
+    @Override
     public void stopGetItem() {
 
     }

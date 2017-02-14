@@ -1,11 +1,14 @@
 package com.michaelvescovo.android.itemreaper.edit_item;
 
+import android.support.test.espresso.Espresso;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.michaelvescovo.android.itemreaper.R;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +31,17 @@ public class EditItemScreenTest {
     @Rule
     public IntentsTestRule<EditItemActivity> mActivityRule =
             new IntentsTestRule<>(EditItemActivity.class);
+
+    @Before
+    public void registerIdlingResource() {
+        Espresso.registerIdlingResources(
+                mActivityRule.getActivity().getCountingIdlingResource());
+    }
+    @After
+    public void unregisterIdlingResource() {
+        Espresso.unregisterIdlingResources(
+                mActivityRule.getActivity().getCountingIdlingResource());
+    }
 
     @Test
     public void saveMenuOptionVisible() {
