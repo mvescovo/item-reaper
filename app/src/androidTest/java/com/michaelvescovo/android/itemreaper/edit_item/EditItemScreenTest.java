@@ -50,7 +50,7 @@ public class EditItemScreenTest {
 
     @Test
     public void purchaseDateEditTextVisible() {
-        onView(withId(R.id.edit_purchase_date)).perform(scrollTo()).check(matches(isDisplayed()));
+        onView(withId(R.id.edit_purchase_date_title)).perform(scrollTo()).check(matches(isDisplayed()));
     }
 
     @Test
@@ -65,7 +65,7 @@ public class EditItemScreenTest {
 
     @Test
     public void expiryEditTextVisible() {
-        onView(withId(R.id.edit_expiry)).perform(scrollTo()).check(matches(isDisplayed()));
+        onView(withId(R.id.edit_expiry_date_title)).perform(scrollTo()).check(matches(isDisplayed()));
     }
 
     @Test

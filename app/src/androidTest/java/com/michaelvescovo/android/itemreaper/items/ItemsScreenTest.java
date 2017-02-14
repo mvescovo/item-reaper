@@ -173,7 +173,7 @@ public class ItemsScreenTest {
             onView(withId(R.id.edit_primary_colour)).perform(scrollTo())
                     .perform(typeText(mItem.getPrimaryColour()));
         }
-        onView(withId(R.id.edit_expiry)).perform(scrollTo())
+        onView(withId(R.id.edit_expiry_date_day)).perform(scrollTo())
                 .perform(typeText(String.valueOf(mItem.getExpiry())));
         if (mItem.getPricePaid() != -1) {
             onView(withId(R.id.edit_price_paid)).perform(scrollTo())

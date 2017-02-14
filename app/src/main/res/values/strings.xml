@@ -10,11 +10,18 @@
 
     <!--EditItem-->
     <string name="menu_save">Save</string>
-    <string name="edit_purchase_date_hint">Purchase Date</string>
+    <string name="edit_required">Required</string>
+    <string name="edit_optional">Optional</string>
+    <string name="edit_purchase_date_title">Purchase Date</string>
+    <string name="edit_date_day_hint">Day</string>
+    <string name="edit_date_day_error">Day Required</string>
+    <string name="edit_date_month_hint">Month</string>
+    <string name="edit_date_month_error">Month Required</string>
+    <string name="edit_date_year_hint">Year</string>
+    <string name="edit_date_year_error">Year Required</string>
     <string name="edit_price_paid_hint">Price Paid</string>
     <string name="edit_discount_hint">Discount</string>
-    <string name="edit_expiry_hint">Expiry *</string>
-    <string name="edit_expiry_error">Expiry must not be empty</string>
+    <string name="edit_expiry_date_title">Expiry *</string>
     <string name="edit_category_hint">Category *</string>
     <string name="edit_category_error">Category must not be empty</string>
     <string name="edit_sub_category_hint">Sub Category</string>

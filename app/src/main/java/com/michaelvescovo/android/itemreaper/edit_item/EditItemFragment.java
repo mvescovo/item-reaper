@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.Item;
 
+import java.util.Calendar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -25,14 +27,22 @@ public class EditItemFragment extends Fragment implements EditItemContract.View 
 
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
-    @BindView(R.id.edit_purchase_date)
-    TextView mPurchaseDate;
+    @BindView(R.id.edit_purchase_date_day)
+    TextView mPurchaseDateDay;
+    @BindView(R.id.edit_purchase_date_month)
+    TextView mPurchaseDateMonth;
+    @BindView(R.id.edit_purchase_date_year)
+    TextView mPurchaseDateYear;
     @BindView(R.id.edit_price_paid)
     TextView mPricePaid;
     @BindView(R.id.edit_discount)
     TextView mDiscount;
-    @BindView(R.id.edit_expiry)
-    TextView mExpiry;
+    @BindView(R.id.edit_expiry_date_day)
+    TextView mExpiryDay;
+    @BindView(R.id.edit_expiry_date_month)
+    TextView mExpiryMonth;
+    @BindView(R.id.edit_expiry_date_year)
+    TextView mExpiryYear;
     @BindView(R.id.edit_category)
     TextView mCategory;
     @BindView(R.id.edit_sub_category)
@@ -127,19 +137,52 @@ public class EditItemFragment extends Fragment implements EditItemContract.View 
             itemOk = false;
         }
 
+        int expiryDateDay = -1;
+        int expiryDateMonth = -1;
+        int expiryDateYear = -1;
         long expiry = -1;
-        if (mExpiry.getText().toString().contentEquals("")) {
-            mExpiry.setError(getString(R.string.edit_expiry_error));
-            mExpiry.requestFocus();
-            itemOk = false;
+        Calendar expiryDate = null;
+        if (!mExpiryDay.getText().toString().contentEquals("")) {
+            expiryDateDay = Integer.parseInt(mExpiryDay.getText().toString());
         } else {
-            expiry = Long.parseLong(mExpiry.getText().toString());
+            mExpiryDay.setError(getString(R.string.edit_date_day_error));
+        }
+        if (!mExpiryMonth.getText().toString().contentEquals("")) {
+            expiryDateMonth = Integer.parseInt(mExpiryMonth.getText().toString());
+        } else {
+            mExpiryMonth.setError(getString(R.string.edit_date_month_error));
+        }
+        if (!mExpiryYear.getText().toString().contentEquals("")) {
+            expiryDateYear = Integer.parseInt(mExpiryYear.getText().toString());
+        } else {
+            mExpiryYear.setError(getString(R.string.edit_date_year_error));
+        }
+        if (expiryDateDay != -1 && expiryDateMonth != -1 && expiryDateYear != -1) {
+            expiryDate = Calendar.getInstance();
+            expiryDate.set(expiryDateYear, expiryDateMonth, expiryDateDay);
+        }
+        if (expiryDate == null) {
+            itemOk = false;
         }
 
-        long purchaseDate = -1;
-        if (!mPurchaseDate.getText().toString().equals("")) {
-            purchaseDate = Long.parseLong(mPurchaseDate.getText().toString());
+        int purchaseDateDay = -1;
+        int purchaseDateMonth = -1;
+        int purchaseDateYear = -1;
+        Calendar purchaseDate = null;
+        if (!mPurchaseDateDay.getText().toString().equals("")) {
+            purchaseDateDay = Integer.parseInt(mPurchaseDateDay.getText().toString());
         }
+        if (!mPurchaseDateMonth.getText().toString().equals("")) {
+            purchaseDateMonth = Integer.parseInt(mPurchaseDateMonth.getText().toString());
+        }
+        if (!mPurchaseDateYear.getText().toString().equals("")) {
+            purchaseDateYear = Integer.parseInt(mPurchaseDateYear.getText().toString());
+        }
+        if (purchaseDateDay != -1 && purchaseDateMonth != -1 && purchaseDateYear != -1) {
+            purchaseDate = Calendar.getInstance();
+            purchaseDate.set(purchaseDateYear, purchaseDateMonth, purchaseDateDay);
+        }
+
         int pricePaid = -1;
         if (!mPricePaid.getText().toString().equals("")) {
             pricePaid = Integer.parseInt(mPricePaid.getText().toString());
@@ -153,7 +196,7 @@ public class EditItemFragment extends Fragment implements EditItemContract.View 
             // Use "-1" as temporary ID. The real ID is set by the remote DataSource.
             Item newItem = new Item(
                     "-1",
-                    purchaseDate,
+                    purchaseDate == null ? -1 : purchaseDate.getTimeInMillis(),
                     pricePaid,
                     discount,
                     expiry,

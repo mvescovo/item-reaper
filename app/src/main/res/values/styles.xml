@@ -8,6 +8,7 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <!--Standard content titles-->
@@ -28,11 +29,22 @@
         <item name="android:textColor">@color/subTitle</item>
         <item name="android:paddingBottom">@dimen/padding_text</item>
     </style>
+
     <style name="card_content_primary" parent="Base.TextAppearance.AppCompat.Title">
         <item name="android:paddingBottom">@dimen/padding_text</item>
     </style>
+
     <style name="card_content_secondary" parent="Base.TextAppearance.AppCompat.Body1">
         <item name="android:paddingBottom">@dimen/padding_text</item>
+    </style>
+
+    <!--Edit Item-->
+    <style name="content_text_edit_item" parent="Base.TextAppearance.AppCompat.Body1">
+        <item name="android:paddingStart">@dimen/padding_text</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/subTitle</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <!--<item name="android:layout_marginTop">16dp</item>-->
     </style>
 
 </resources>
