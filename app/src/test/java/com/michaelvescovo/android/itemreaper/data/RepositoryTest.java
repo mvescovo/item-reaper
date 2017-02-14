@@ -1,9 +1,6 @@
 package com.michaelvescovo.android.itemreaper.data;
 
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -11,9 +8,12 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.List;
-import java.util.Map;
-
+import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEMS;
+import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
+import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_IDS;
+import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_ID_1;
+import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_ID_2;
+import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.USER_ID;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -29,21 +29,6 @@ import static org.mockito.Mockito.verify;
 
 public class RepositoryTest {
 
-    private final static String USER_ID = "testUser";
-    private final static String ITEM_ID_1 = "1";
-    private final static String ITEM_ID_2 = "2";
-    private final static List<String> ITEM_IDS = Lists.newArrayList(ITEM_ID_1, ITEM_ID_2);
-    private static Item ITEM_1 = new Item("1", null, 20, 0, "1/1/1", "Clothing", null,
-            "T-shirt", null, null, null, "Black", null, null, null, null, null, null, null, null,
-            false);
-    private static Item ITEM_2 = new Item("2", null, 30, 0, "2/2/2", "Bathroom", null,
-            "Towel", null, null, null, "White", null, null, null, null, null, null, null, null,
-            false);
-    private final static Map<String, Item> ITEMS = Maps.newHashMap();
-    static {
-        ITEMS.put(ITEM_ID_1, ITEM_1);
-        ITEMS.put(ITEM_ID_2, ITEM_2);
-    }
     private Repository mRepository;
     @Mock
     private DataSource mRemoteDataSource;

@@ -18,6 +18,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyMapOf;
 import static org.mockito.Matchers.anyString;
@@ -69,16 +70,11 @@ public class ItemsPresenterTest {
         mItemIds = itemIds;
     }
 
-    private static Item ITEM;
-
     @Before
     public void setItemsPresenter() {
         MockitoAnnotations.initMocks(this);
         mItemsPresenter = new ItemsPresenter(mView, mRepository, mSharedPreferencesHelper,
                 mFirebaseAuth);
-        ITEM = new Item("1", null, 20, 0, "1/1/1", "Clothing", null,
-                "T-shirt", null, null, null, "Black", null, null, null, null, null, null, null, null,
-                false);
     }
 
     @SuppressWarnings("unchecked")
@@ -116,7 +112,7 @@ public class ItemsPresenterTest {
 
     @Test
     public void clickItem_ShowsItemDetailsUi() {
-        mItemsPresenter.openItemDetails(ITEM);
+        mItemsPresenter.openItemDetails(ITEM_1);
         verify(mView).showItemDetailsUi(anyString());
     }
 
