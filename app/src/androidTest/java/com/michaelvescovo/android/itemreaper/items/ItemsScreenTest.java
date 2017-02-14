@@ -5,12 +5,12 @@ import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.filters.LargeTest;
-import android.support.test.runner.AndroidJUnit4;
 
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.about.AboutActivity;
 import com.michaelvescovo.android.itemreaper.data.FakeDataSource;
+import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
 
 import org.junit.After;
@@ -18,6 +18,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+
+import java.util.Arrays;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
@@ -34,12 +37,13 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
 
 /**
  * @author Michael Vescovo
  */
 
-@RunWith(AndroidJUnit4.class)
+@RunWith(Parameterized.class)
 @LargeTest
 public class ItemsScreenTest {
 
@@ -55,6 +59,20 @@ public class ItemsScreenTest {
                                     .getRepository().deleteAllItems(FakeDataSource.USER_ID);
                 }
             };
+
+    @Parameterized.Parameters
+    public static Iterable<?> data() {
+        return Arrays.asList(
+                ITEM_1,
+                FakeDataSource.ITEM_2
+        );
+    }
+
+    private Item mItem;
+
+    public ItemsScreenTest(Item item) {
+        mItem = item;
+    }
 
     private boolean mIsLargeScreen;
 
@@ -142,33 +160,19 @@ public class ItemsScreenTest {
     }
 
     @Test
-    public void addItem_ShowsItemCategory() {
+    public void addItem_ShowsItem() {
+        // Add item
         onView(withId(R.id.add_item)).perform(click());
-        onView(withId(R.id.edit_category)).perform(scrollTo()).perform(typeText(FakeDataSource.ITEM_1.getCategory()));
-        onView(withId(R.id.edit_type)).perform(scrollTo()).perform(typeText(FakeDataSource.ITEM_1.getType()));
-        onView(withId(R.id.edit_expiry)).perform(scrollTo()).perform(typeText(FakeDataSource.ITEM_1.getExpiry()));
+        onView(withId(R.id.edit_category)).perform(scrollTo()).perform(typeText(mItem.getCategory()));
+        onView(withId(R.id.edit_type)).perform(scrollTo()).perform(typeText(mItem.getType()));
+        onView(withId(R.id.edit_expiry)).perform(scrollTo()).perform(typeText(mItem.getExpiry()));
         onView(withId(R.id.action_save)).perform(click());
+
+        // Confirm item show in list
         onView(withId(R.id.recycler_view)).perform(RecyclerViewActions
-                .scrollTo(hasDescendant(withText(FakeDataSource.ITEM_1.getCategory()))));
-        onView(withText(FakeDataSource.ITEM_1.getCategory())).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void addSecondItem_ShowsSecondItem() {
-        onView(withId(R.id.add_item)).perform(click());
-        onView(withId(R.id.edit_category)).perform(scrollTo()).perform(typeText(FakeDataSource.ITEM_1.getCategory()));
-        onView(withId(R.id.edit_type)).perform(scrollTo()).perform(typeText(FakeDataSource.ITEM_1.getType()));
-        onView(withId(R.id.edit_expiry)).perform(scrollTo()).perform(typeText(FakeDataSource.ITEM_1.getExpiry()));
-        onView(withId(R.id.action_save)).perform(click());
-
-        onView(withId(R.id.add_item)).perform(click());
-        onView(withId(R.id.edit_category)).perform(scrollTo()).perform(typeText(FakeDataSource.ITEM_2.getCategory()));
-        onView(withId(R.id.edit_type)).perform(scrollTo()).perform(typeText(FakeDataSource.ITEM_2.getType()));
-        onView(withId(R.id.edit_expiry)).perform(scrollTo()).perform(typeText(FakeDataSource.ITEM_2.getExpiry()));
-        onView(withId(R.id.action_save)).perform(click());
-
-        onView(withId(R.id.recycler_view)).perform(RecyclerViewActions
-                .scrollTo(hasDescendant(withText(FakeDataSource.ITEM_2.getCategory()))));
-        onView(withText(FakeDataSource.ITEM_2.getCategory())).check(matches(isDisplayed()));
+                .scrollTo(hasDescendant(withText(mItem.getCategory()))));
+        onView(withText(mItem.getCategory())).check(matches(isDisplayed()));
+        onView(withText(mItem.getType())).check(matches(isDisplayed()));
+        onView(withText("Expires: " + mItem.getExpiry())).check(matches(isDisplayed()));
     }
 }
