@@ -142,18 +142,33 @@ public class EditItemFragment extends Fragment implements EditItemContract.View 
         int expiryDateYear = -1;
         Calendar expiryDate = null;
         if (!mExpiryDay.getText().toString().contentEquals("")) {
-            expiryDateDay = Integer.parseInt(mExpiryDay.getText().toString());
+            try {
+                expiryDateDay = Integer.parseInt(mExpiryDay.getText().toString());
+            } catch (NumberFormatException e) {
+                itemOk = false;
+                mExpiryDay.setError(getString(R.string.edit_date_day_error_invalid));
+            }
         } else {
             mExpiryDay.setError(getString(R.string.edit_date_day_error));
         }
         if (!mExpiryMonth.getText().toString().contentEquals("")) {
-            expiryDateMonth = Integer.parseInt(mExpiryMonth.getText().toString());
-            expiryDateMonth--; // Java month starts at 0
+            try {
+                expiryDateMonth = Integer.parseInt(mExpiryMonth.getText().toString());
+                expiryDateMonth--; // Java month starts at 0
+            } catch (NumberFormatException e) {
+                itemOk = false;
+                mExpiryMonth.setError(getString(R.string.edit_date_month_error_invalid));
+            }
         } else {
             mExpiryMonth.setError(getString(R.string.edit_date_month_error));
         }
         if (!mExpiryYear.getText().toString().contentEquals("")) {
-            expiryDateYear = Integer.parseInt(mExpiryYear.getText().toString());
+            try {
+                expiryDateYear = Integer.parseInt(mExpiryYear.getText().toString());
+            } catch (NumberFormatException e) {
+                itemOk = false;
+                mExpiryYear.setError(getString(R.string.edit_date_year_error_invalid));
+            }
         } else {
             mExpiryYear.setError(getString(R.string.edit_date_year_error));
         }
