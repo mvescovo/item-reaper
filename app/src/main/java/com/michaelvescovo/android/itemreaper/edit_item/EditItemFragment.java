@@ -133,20 +133,20 @@ public class EditItemFragment extends Fragment implements EditItemContract.View 
             mExpiry.requestFocus();
             itemOk = false;
         } else {
-            expiry = Long.getLong(mExpiry.getText().toString());
+            expiry = Long.parseLong(mExpiry.getText().toString());
         }
 
         long purchaseDate = -1;
         if (!mPurchaseDate.getText().toString().equals("")) {
-            purchaseDate = Long.getLong(mPurchaseDate.getText().toString());
+            purchaseDate = Long.parseLong(mPurchaseDate.getText().toString());
         }
         int pricePaid = -1;
         if (!mPricePaid.getText().toString().equals("")) {
-            pricePaid = Integer.getInteger(mPricePaid.getText().toString());
+            pricePaid = Integer.parseInt(mPricePaid.getText().toString());
         }
         int discount = -1;
         if (!mDiscount.getText().toString().equals("")) {
-            discount = Integer.getInteger(mDiscount.getText().toString());
+            discount = Integer.parseInt(mDiscount.getText().toString());
         }
 
         if (itemOk) {
