@@ -191,6 +191,7 @@ public class ItemsScreenTest {
         expiry.setTimeInMillis(mItem.getExpiry());
         int expiryDay = expiry.get(Calendar.DAY_OF_MONTH);
         int expiryMonth = expiry.get(Calendar.MONTH);
+        expiryMonth++; // Java months start at 0.
         int expiryYear = expiry.get(Calendar.YEAR);
         onView(withId(R.id.edit_expiry_date_day)).perform(scrollTo())
                 .perform(typeText(String.valueOf(expiryDay)));
