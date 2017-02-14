@@ -19,7 +19,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Locale;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
@@ -162,35 +165,73 @@ public class ItemsScreenTest {
 
     @Test
     public void addItem_ShowsItemInList() {
-        // Add item
+        /*
+        * Add item
+        * */
+
+        // Click to add item
         onView(withId(R.id.add_item)).perform(click());
 
+        // Type category
         onView(withId(R.id.edit_category)).perform(scrollTo())
                 .perform(typeText(mItem.getCategory()));
+
+        // Type type
         onView(withId(R.id.edit_type)).perform(scrollTo())
                 .perform(typeText(mItem.getType()));
+
+        // Type primary colour
         if (mItem.getPrimaryColour() != null) {
             onView(withId(R.id.edit_primary_colour)).perform(scrollTo())
                     .perform(typeText(mItem.getPrimaryColour()));
         }
+
+        // Type expiry
+        Calendar expiry = Calendar.getInstance();
+        expiry.setTimeInMillis(mItem.getExpiry());
+        int expiryDay = expiry.get(Calendar.DAY_OF_MONTH);
+        int expiryMonth = expiry.get(Calendar.MONTH);
+        int expiryYear = expiry.get(Calendar.YEAR);
         onView(withId(R.id.edit_expiry_date_day)).perform(scrollTo())
-                .perform(typeText(String.valueOf(mItem.getExpiry())));
+                .perform(typeText(String.valueOf(expiryDay)));
+        onView(withId(R.id.edit_expiry_date_month)).perform(scrollTo())
+                .perform(typeText(String.valueOf(expiryMonth)));
+        onView(withId(R.id.edit_expiry_date_year)).perform(scrollTo())
+                .perform(typeText(String.valueOf(expiryYear)));
+
+        // Type price paid
         if (mItem.getPricePaid() != -1) {
             onView(withId(R.id.edit_price_paid)).perform(scrollTo())
                     .perform(typeText(String.valueOf(mItem.getPricePaid())));
         }
 
+        // Click to save item
         onView(withId(R.id.action_save)).perform(click());
 
-        // Confirm item show in list
+        /*
+        * Confirm item shows in list
+        * */
+
+        // Scroll to item
         onView(withId(R.id.recycler_view)).perform(RecyclerViewActions
                 .scrollTo(hasDescendant(withText(mItem.getCategory()))));
+
+        // Check category
         onView(withText(mItem.getCategory())).check(matches(isDisplayed()));
+
+        // Check type
         onView(withText(mItem.getType())).check(matches(isDisplayed()));
+
+        // Check primary colour
         if (mItem.getPrimaryColour() != null) {
             onView(withText(mItem.getPrimaryColour())).check(matches(isDisplayed()));
         }
-        onView(withText("Expires: " + mItem.getExpiry())).check(matches(isDisplayed()));
+
+        // Check expiry
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yy", Locale.getDefault());
+        onView(withText("Expires: " + simpleDateFormat.format(expiry.getTime()))).check(matches(isDisplayed()));
+
+        // Check price paid
         if (mItem.getPricePaid() != -1) {
             onView(withText("Paid: $" + mItem.getPricePaid())).check(matches(isDisplayed()));
         }

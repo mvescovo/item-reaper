@@ -21,16 +21,21 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.michaelvescovo.android.itemreaper.R;
-import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
 import com.michaelvescovo.android.itemreaper.data.Item;
+import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.michaelvescovo.android.itemreaper.R.id.expiry;
 
 /**
  * @author Michael Vescovo
@@ -224,7 +229,10 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             holder.mCategory.setText(mItems.get(mItemIds.get(position)).getCategory());
             holder.mType.setText(mItems.get(mItemIds.get(position)).getType());
             holder.mColour.setText(mItems.get(mItemIds.get(position)).getPrimaryColour());
-            String expiry = "Expires: " + mItems.get(mItemIds.get(position)).getExpiry();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(mItems.get(mItemIds.get(position)).getExpiry());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yy", Locale.getDefault());
+            String expiry = "Expires: " + simpleDateFormat.format(calendar.getTime());
             holder.mExpiry.setText(expiry);
             String price = "Paid: $" + String.valueOf(mItems.get(mItemIds.get(position)).getPricePaid());
             holder.mPaid.setText(price);
@@ -257,7 +265,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 mCategory = (TextView) itemView.findViewById(R.id.category);
                 mType = (TextView) itemView.findViewById(R.id.type);
                 mColour = (TextView) itemView.findViewById(R.id.colour);
-                mExpiry = (TextView) itemView.findViewById(R.id.expiry);
+                mExpiry = (TextView) itemView.findViewById(expiry);
                 mPaid = (TextView) itemView.findViewById(R.id.paid);
                 mExpire = (ImageView) itemView.findViewById(R.id.expire);
                 mExpire.setOnClickListener(new View.OnClickListener() {

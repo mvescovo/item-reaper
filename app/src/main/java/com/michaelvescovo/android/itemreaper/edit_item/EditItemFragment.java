@@ -140,7 +140,6 @@ public class EditItemFragment extends Fragment implements EditItemContract.View 
         int expiryDateDay = -1;
         int expiryDateMonth = -1;
         int expiryDateYear = -1;
-        long expiry = -1;
         Calendar expiryDate = null;
         if (!mExpiryDay.getText().toString().contentEquals("")) {
             expiryDateDay = Integer.parseInt(mExpiryDay.getText().toString());
@@ -149,6 +148,7 @@ public class EditItemFragment extends Fragment implements EditItemContract.View 
         }
         if (!mExpiryMonth.getText().toString().contentEquals("")) {
             expiryDateMonth = Integer.parseInt(mExpiryMonth.getText().toString());
+            expiryDateMonth--; // Java month starts at 0
         } else {
             mExpiryMonth.setError(getString(R.string.edit_date_month_error));
         }
@@ -174,6 +174,7 @@ public class EditItemFragment extends Fragment implements EditItemContract.View 
         }
         if (!mPurchaseDateMonth.getText().toString().equals("")) {
             purchaseDateMonth = Integer.parseInt(mPurchaseDateMonth.getText().toString());
+            purchaseDateMonth--; // Java month starts at 0
         }
         if (!mPurchaseDateYear.getText().toString().equals("")) {
             purchaseDateYear = Integer.parseInt(mPurchaseDateYear.getText().toString());
@@ -199,7 +200,7 @@ public class EditItemFragment extends Fragment implements EditItemContract.View 
                     purchaseDate == null ? -1 : purchaseDate.getTimeInMillis(),
                     pricePaid,
                     discount,
-                    expiry,
+                    expiryDate.getTimeInMillis(),
                     mCategory.getText().toString(),
                     mSubCategory.getText().toString(),
                     mType.getText().toString(),
