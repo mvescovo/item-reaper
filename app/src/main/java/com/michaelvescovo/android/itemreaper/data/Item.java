@@ -14,12 +14,10 @@ public class Item {
 
     @NonNull
     private String mId;
-    @Nullable
-    private String mPurchaseDate;
+    private long mPurchaseDate;
     private int mPricePaid;
     private int mDiscount;
-    @NonNull
-    private String mExpiry;
+    private long mExpiry;
     @NonNull
     private String mCategory;
     @Nullable
@@ -52,8 +50,8 @@ public class Item {
     private Map<String, String> mPhotoUrls;
     private boolean mDeceased;
 
-    public Item(@NonNull String id, @Nullable String purchaseDate, int pricePaid, int discount,
-                @NonNull String expiry, @NonNull String category, @Nullable String subCategory,
+    public Item(@NonNull String id, long purchaseDate, int pricePaid, int discount,
+                long expiry, @NonNull String category, @Nullable String subCategory,
                 @NonNull String type, @Nullable String subtype, @Nullable String subtype2,
                 @Nullable String subtype3, @Nullable String primaryColour,
                 @Nullable String primaryColourShade, @Nullable String secondaryColour,
@@ -83,16 +81,6 @@ public class Item {
         mDeceased = deceased;
     }
 
-    //    public Item(@NonNull String id, @NonNull String expiry, @NonNull String category,
-//                @NonNull String type, @Nullable String primaryColour, @Nullable) {
-//        mId = id;
-//        mExpiry = expiry;
-//        mCategory = category;
-//        mType = type;
-//        mPrimaryColour = primaryColour;
-//        mDeceased = false;
-//    }
-
     @NonNull
     public String getId() {
         return mId;
@@ -102,12 +90,11 @@ public class Item {
         mId = id;
     }
 
-    @Nullable
-    public String getPurchaseDate() {
+    public long getPurchaseDate() {
         return mPurchaseDate;
     }
 
-    public void setPurchaseDate(@Nullable String purchaseDate) {
+    public void setPurchaseDate(long purchaseDate) {
         mPurchaseDate = purchaseDate;
     }
 
@@ -127,12 +114,11 @@ public class Item {
         mDiscount = discount;
     }
 
-    @NonNull
-    public String getExpiry() {
+    public long getExpiry() {
         return mExpiry;
     }
 
-    public void setExpiry(@NonNull String expiry) {
+    public void setExpiry(long expiry) {
         mExpiry = expiry;
     }
 
