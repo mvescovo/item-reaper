@@ -60,7 +60,8 @@ public class FakeDataSource implements DataSource {
 
     @Override
     public void getNewItemId(@NonNull String userId, @NonNull GetNewItemIdCallback callback) {
-
+        String uniqueID = UUID.randomUUID().toString();
+        callback.onNewItemIdLoaded(uniqueID);
     }
 
     @Override
@@ -75,8 +76,6 @@ public class FakeDataSource implements DataSource {
 
     @Override
     public void saveItem(@NonNull String userId, @NonNull Item item) {
-        String uniqueID = UUID.randomUUID().toString();
-        item.setId(uniqueID);
         ITEM_IDS.add(item.getId());
         ITEMS.put(item.getId(), item);
     }
