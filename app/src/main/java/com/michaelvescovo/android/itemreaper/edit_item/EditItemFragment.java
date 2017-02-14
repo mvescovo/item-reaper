@@ -25,12 +25,42 @@ public class EditItemFragment extends Fragment implements EditItemContract.View 
 
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
-    @BindView(R.id.edit_category)
-    TextView mCategory;
-    @BindView(R.id.edit_type)
-    TextView mType;
+    @BindView(R.id.edit_purchase_date)
+    TextView mPurchaseDate;
+    @BindView(R.id.edit_price_paid)
+    TextView mPricePaid;
+    @BindView(R.id.edit_discount)
+    TextView mDiscount;
     @BindView(R.id.edit_expiry)
     TextView mExpiry;
+    @BindView(R.id.edit_category)
+    TextView mCategory;
+    @BindView(R.id.edit_sub_category)
+    TextView mSubCategory;
+    @BindView(R.id.edit_type)
+    TextView mType;
+    @BindView(R.id.edit_sub_type)
+    TextView mSubType;
+    @BindView(R.id.edit_sub_type2)
+    TextView mSubType2;
+    @BindView(R.id.edit_sub_type3)
+    TextView mSubType3;
+    @BindView(R.id.edit_primary_colour)
+    TextView mPrimaryColour;
+    @BindView(R.id.edit_primary_colour_shade)
+    TextView mPrimaryColourShade;
+    @BindView(R.id.edit_secondary_colour)
+    TextView mSecondaryColour;
+    @BindView(R.id.edit_size)
+    TextView mSize;
+    @BindView(R.id.edit_brand)
+    TextView mBrand;
+    @BindView(R.id.edit_shop)
+    TextView mShop;
+    @BindView(R.id.edit_description)
+    TextView mDescription;
+    @BindView(R.id.edit_note)
+    TextView mNote;
 
     private OnFragmentInteractionListener mListener;
     private EditItemContract.Presenter mPresenter;
@@ -97,17 +127,53 @@ public class EditItemFragment extends Fragment implements EditItemContract.View 
             itemOk = false;
         }
 
+        long expiry = -1;
         if (mExpiry.getText().toString().contentEquals("")) {
             mExpiry.setError(getString(R.string.edit_expiry_error));
             mExpiry.requestFocus();
             itemOk = false;
+        } else {
+            expiry = Long.getLong(mExpiry.getText().toString());
+        }
+
+        long purchaseDate = -1;
+        if (!mPurchaseDate.getText().toString().equals("")) {
+            purchaseDate = Long.getLong(mPurchaseDate.getText().toString());
+        }
+        int pricePaid = -1;
+        if (!mPricePaid.getText().toString().equals("")) {
+            pricePaid = Integer.getInteger(mPricePaid.getText().toString());
+        }
+        int discount = -1;
+        if (!mDiscount.getText().toString().equals("")) {
+            discount = Integer.getInteger(mDiscount.getText().toString());
         }
 
         if (itemOk) {
             // Use "-1" as temporary ID. The real ID is set by the remote DataSource.
-            Item newItem = new Item("-1", null, 0, 0, mExpiry.getText().toString(),
-                    mCategory.getText().toString(), null, mType.getText().toString(), null, null,
-                    null, null, null, null, null, null, null, null, null, null, false);
+            Item newItem = new Item(
+                    "-1",
+                    purchaseDate,
+                    pricePaid,
+                    discount,
+                    expiry,
+                    mCategory.getText().toString(),
+                    mSubCategory.getText().toString(),
+                    mType.getText().toString(),
+                    mSubType.getText().toString(),
+                    mSubType2.getText().toString(),
+                    mSubType3.getText().toString(),
+                    mPrimaryColour.getText().toString(),
+                    mPrimaryColourShade.getText().toString(),
+                    mSecondaryColour.getText().toString(),
+                    mSize.getText().toString(),
+                    mBrand.getText().toString(),
+                    mShop.getText().toString(),
+                    mDescription.getText().toString(),
+                    mNote.getText().toString(),
+                    null,
+                    false
+            );
             mPresenter.saveItem(newItem);
         }
     }
