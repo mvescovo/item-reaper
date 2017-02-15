@@ -131,6 +131,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
         EditItemFragment editItemFragment = EditItemFragment.newInstance();
         if (mIsLargeLayout) {
             editItemFragment.show(getSupportFragmentManager(), "dialog");
+            editItemFragment.setCancelable(false);
         } else {
             Intent intent = new Intent(this, EditItemActivity.class);
             startActivity(intent);
