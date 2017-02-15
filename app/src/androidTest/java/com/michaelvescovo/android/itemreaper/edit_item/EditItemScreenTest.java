@@ -139,7 +139,7 @@ public class EditItemScreenTest {
     }
 
     @Test
-    public void clickSave_ShowsItemInList() {
-        fail("Can't test this until the items feature is working");
+    public void clickSave_ShowsAllItemDetailsInDetailView() {
+        fail("Can't test this until the item details feature is working");
     }
 }
