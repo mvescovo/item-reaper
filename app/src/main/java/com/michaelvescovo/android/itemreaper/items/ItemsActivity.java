@@ -37,6 +37,8 @@ import butterknife.ButterKnife;
 public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Callback,
         AboutFragment.Callback, EditItemFragment.Callback {
 
+    private static final String EDIT_ITEM_DIALOG = "edit_item_dialog";
+
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.appbar_title)
@@ -48,6 +50,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     ItemsPresenter mItemsPresenter;
     private boolean mIsLargeLayout;
     private boolean mDialogOpen;
+    private String mCurrentDialogName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +94,8 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
                 mItemsPresenter.openAddItem();
             }
         });
+
+        mCurrentDialogName = "";
     }
 
     private void initFragment(Fragment fragment) {
@@ -104,6 +109,8 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mDialogOpen) {
             getMenuInflater().inflate(R.menu.items_fragment_menu, menu);
+        } else if (mCurrentDialogName.equals(EDIT_ITEM_DIALOG)) {
+            getMenuInflater().inflate(R.menu.edit_item_fragment_menu, menu);
         }
         return true;
     }
@@ -130,6 +137,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     public void onEditItemSelected() {
         EditItemFragment editItemFragment = EditItemFragment.newInstance();
         if (mIsLargeLayout) {
+            mCurrentDialogName = EDIT_ITEM_DIALOG;
             editItemFragment.show(getSupportFragmentManager(), "dialog");
             editItemFragment.setCancelable(false);
         } else {
