@@ -72,7 +72,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     @BindView(R.id.edit_note)
     TextView mNote;
 
-    private OnFragmentInteractionListener mListener;
+    private Callback mCallback;
     private EditItemContract.Presenter mPresenter;
 
     public EditItemFragment() {
@@ -99,18 +99,18 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof Callback) {
+            mCallback = (Callback) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement Callback");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        mCallback = null;
     }
 
     @Override
@@ -251,7 +251,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         getActivity().finish();
     }
 
-    public interface OnFragmentInteractionListener {
+    public interface Callback {
 
     }
 }

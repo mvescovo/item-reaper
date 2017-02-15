@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
  */
 
 public class EditItemActivity extends AppCompatActivity
-        implements EditItemFragment.OnFragmentInteractionListener {
+        implements EditItemFragment.Callback {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
