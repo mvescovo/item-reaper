@@ -27,7 +27,9 @@ import butterknife.ButterKnife;
 
 public class EditItemFragment extends AppCompatDialogFragment implements EditItemContract.View {
 
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.appbar_title)
     TextView mAppbarTitle;
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
@@ -96,24 +98,19 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root;
-        mIsLargeScreen = getResources().getBoolean(R.bool.large_layout);
-        root = mIsLargeScreen
-                ? inflater.inflate(R.layout.dialog_fragment_edit_item, container, false)
-                : inflater.inflate(R.layout.fragment_edit_item, container, false);
+        View root = inflater.inflate(R.layout.fragment_edit_item, container, false);
         ButterKnife.bind(this, root);
+        mCallback.configureSupportActionBar(mToolbar);
+        mAppbarTitle.setTypeface(mAppbarTypeface);
 
+        mIsLargeScreen = getResources().getBoolean(R.bool.large_layout);
         if (mIsLargeScreen) {
-            mToolbar = (Toolbar) root.findViewById(R.id.edit_item_toolbar);
-            mAppbarTitle = (TextView) root.findViewById(R.id.edit_item_appbar_title);
-            mCallback.configureSupportActionBar(mToolbar);
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dismiss();
                 }
             });
-            mAppbarTitle.setTypeface(mAppbarTypeface);
         }
 
         setHasOptionsMenu(true);

@@ -40,7 +40,8 @@ import butterknife.ButterKnife;
 public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Callback,
         AboutFragment.Callback, EditItemFragment.Callback {
 
-    private static final String EDIT_ITEM_DIALOG = "edit_item_dialog";
+    private static final String ABOUT_DIALOG = "edit_item_dialog";
+    private static final String EDIT_ITEM_DIALOG = "about_dialog";
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -122,6 +123,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     public void onAboutSelected() {
         AboutFragment aboutFragment = AboutFragment.newInstance();
         if (mIsLargeLayout) {
+            mCurrentDialogName = ABOUT_DIALOG;
             aboutFragment.show(getSupportFragmentManager(), "dialog");
         } else {
             Intent intent = new Intent(this, AboutActivity.class);
@@ -146,7 +148,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
             // from this Activity.
             EditItemComponent editItemComponent = DaggerEditItemComponent.builder()
                     .editItemModule(new EditItemModule(editItemFragment))
-                    .applicationComponent(((ItemReaperApplication)getApplication())
+                    .applicationComponent(((ItemReaperApplication) getApplication())
                             .getApplicationComponent())
                     .repositoryComponent(((ItemReaperApplication) getApplication())
                             .getRepositoryComponent())

@@ -1,6 +1,5 @@
 package com.michaelvescovo.android.itemreaper.edit_item;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
 import android.support.test.espresso.IdlingResource;
@@ -11,14 +10,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.widget.TextView;
 
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * @author Michael Vescovo
@@ -27,25 +22,10 @@ import butterknife.ButterKnife;
 public class EditItemActivity extends AppCompatActivity
         implements EditItemFragment.Callback {
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.appbar_title)
-    TextView mAppbarTitle;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_item);
-        ButterKnife.bind(this);
-        setSupportActionBar(mToolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayShowTitleEnabled(false);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
-        }
-        Typeface appbarTitle = Typeface.createFromAsset(getAssets(), "Nosifer-Regular.ttf");
-        mAppbarTitle.setTypeface(appbarTitle);
 
         // Create the View
         EditItemFragment editItemFragment = (EditItemFragment) getSupportFragmentManager()
@@ -88,7 +68,13 @@ public class EditItemActivity extends AppCompatActivity
 
     @Override
     public void configureSupportActionBar(Toolbar toolbar) {
-        // Not used in this activity.
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
+        }
     }
 
     @Override

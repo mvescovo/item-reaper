@@ -1,403 +1,434 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:fitsSystemWindows="true"
     tools:context="com.michaelvescovo.android.itemreaper.edit_item.EditItemFragment">
 
-    <ScrollView
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/margin_vertical"
-            android:paddingEnd="@dimen/margin_horizontal"
-            android:paddingStart="@dimen/margin_horizontal"
-            android:paddingTop="@dimen/margin_vertical">
-
-            <TextView
-                android:id="@+id/edit_required"
-                style="@style/content_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/edit_required"/>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_category"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/edit_category_hint"
-                    android:inputType="textAutoComplete"
-                    tools:hint="@string/edit_category_hint"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/edit_type_hint"
-                    android:inputType="textAutoComplete"
-                    tools:hint="@string/edit_type_hint"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/edit_expiry_date_title"
-                    style="@style/content_text_edit_item"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="2"
-                    android:text="@string/edit_expiry_date_title"/>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3">
-
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <android.support.design.widget.TextInputEditText
-                            android:id="@+id/edit_expiry_date_day"
-                            android:layout_width="75dp"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/edit_date_day_hint"
-                            android:inputType="date"
-                            tools:hint="@string/edit_date_day_hint"/>
-
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <android.support.design.widget.TextInputEditText
-                            android:id="@+id/edit_expiry_date_month"
-                            android:layout_width="75dp"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/edit_date_month_hint"
-                            android:inputType="date"
-                            tools:hint="@string/edit_date_month_hint"/>
-
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <android.support.design.widget.TextInputEditText
-                            android:id="@+id/edit_expiry_date_year"
-                            android:layout_width="75dp"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/edit_date_year_hint"
-                            android:inputType="date"
-                            tools:hint="@string/edit_date_year_hint"/>
-
-                    </android.support.design.widget.TextInputLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/edit_optional"
-                style="@style/content_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/edit_optional"/>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_primary_colour"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/edit_primary_colour_hint"
-                    android:inputType="textAutoComplete"
-                    tools:hint="@string/edit_primary_colour_hint"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/edit_purchase_date_title"
-                    style="@style/content_text_edit_item"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="2"
-                    android:text="@string/edit_purchase_date_title"/>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3">
-
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <android.support.design.widget.TextInputEditText
-                            android:id="@+id/edit_purchase_date_day"
-                            android:layout_width="75dp"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/edit_date_day_hint"
-                            android:inputType="date"
-                            tools:hint="@string/edit_date_day_hint"/>
-
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <android.support.design.widget.TextInputEditText
-                            android:id="@+id/edit_purchase_date_month"
-                            android:layout_width="75dp"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/edit_date_month_hint"
-                            android:inputType="date"
-                            tools:hint="@string/edit_date_month_hint"/>
-
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <android.support.design.widget.TextInputEditText
-                            android:id="@+id/edit_purchase_date_year"
-                            android:layout_width="75dp"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/edit_date_year_hint"
-                            android:inputType="date"
-                            tools:hint="@string/edit_date_year_hint"/>
-
-                    </android.support.design.widget.TextInputLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_price_paid"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/edit_price_paid_hint"
-                    android:inputType="numberDecimal"
-                    tools:hint="@string/edit_price_paid_hint"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_discount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/edit_discount_hint"
-                    android:inputType="numberDecimal"
-                    tools:hint="@string/edit_discount_hint"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_sub_category"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/edit_sub_category_hint"
-                    android:inputType="textAutoComplete"
-                    tools:hint="@string/edit_sub_category_hint"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_sub_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/edit_sub_type_hint"
-                    android:inputType="textAutoComplete"
-                    tools:hint="@string/edit_sub_type_hint"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_sub_type2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/edit_sub_type2_hint"
-                    android:inputType="textAutoComplete"
-                    tools:hint="@string/edit_sub_type2_hint"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_sub_type3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/edit_sub_type3_hint"
-                    android:inputType="textAutoComplete"
-                    tools:hint="@string/edit_sub_type3_hint"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_primary_colour_shade"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/edit_primary_colour_shade_hint"
-                    android:inputType="textAutoComplete"
-                    tools:hint="@string/edit_primary_colour_shade_hint"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_secondary_colour"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/edit_secondary_colour_hint"
-                    android:inputType="textAutoComplete"
-                    tools:hint="@string/edit_secondary_colour_hint"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_size"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/edit_size_hint"
-                    android:inputType="textAutoComplete"
-                    tools:hint="@string/edit_size_hint"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_brand"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/edit_brand_hint"
-                    android:inputType="textAutoComplete"
-                    tools:hint="@string/edit_brand_hint"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_shop"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/edit_shop_hint"
-                    android:inputType="textAutoComplete"
-                    tools:hint="@string/edit_shop_hint"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/edit_description_hint"
-                    android:inputType="textAutoComplete"
-                    tools:hint="@string/edit_description_hint"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_note"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/edit_note_hint"
-                    android:inputType="textAutoComplete"
-                    tools:hint="@string/edit_note_hint"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-        </LinearLayout>
-
-    </ScrollView>
-
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone"/>
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-</RelativeLayout>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <TextView
+                android:id="@+id/appbar_title"
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_activity_edit_item"/>
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/margin_vertical"
+                android:paddingEnd="@dimen/margin_horizontal"
+                android:paddingStart="@dimen/margin_horizontal"
+                android:paddingTop="@dimen/margin_vertical">
+
+                <TextView
+                    android:id="@+id/edit_required"
+                    style="@style/content_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/edit_required"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_category"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/edit_category_hint"
+                        android:inputType="textAutoComplete"
+                        tools:hint="@string/edit_category_hint"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/edit_type_hint"
+                        android:inputType="textAutoComplete"
+                        tools:hint="@string/edit_type_hint"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/edit_expiry_date_title"
+                        style="@style/content_text_edit_item"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="2"
+                        android:text="@string/edit_expiry_date_title"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3">
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <android.support.design.widget.TextInputEditText
+                                android:id="@+id/edit_expiry_date_day"
+                                android:layout_width="75dp"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/edit_date_day_hint"
+                                android:inputType="date"
+                                tools:hint="@string/edit_date_day_hint"/>
+
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <android.support.design.widget.TextInputEditText
+                                android:id="@+id/edit_expiry_date_month"
+                                android:layout_width="75dp"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/edit_date_month_hint"
+                                android:inputType="date"
+                                tools:hint="@string/edit_date_month_hint"/>
+
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <android.support.design.widget.TextInputEditText
+                                android:id="@+id/edit_expiry_date_year"
+                                android:layout_width="75dp"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/edit_date_year_hint"
+                                android:inputType="date"
+                                tools:hint="@string/edit_date_year_hint"/>
+
+                        </android.support.design.widget.TextInputLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/edit_optional"
+                    style="@style/content_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/edit_optional"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_primary_colour"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/edit_primary_colour_hint"
+                        android:inputType="textAutoComplete"
+                        tools:hint="@string/edit_primary_colour_hint"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/edit_purchase_date_title"
+                        style="@style/content_text_edit_item"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="2"
+                        android:text="@string/edit_purchase_date_title"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3">
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <android.support.design.widget.TextInputEditText
+                                android:id="@+id/edit_purchase_date_day"
+                                android:layout_width="75dp"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/edit_date_day_hint"
+                                android:inputType="date"
+                                tools:hint="@string/edit_date_day_hint"/>
+
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <android.support.design.widget.TextInputEditText
+                                android:id="@+id/edit_purchase_date_month"
+                                android:layout_width="75dp"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/edit_date_month_hint"
+                                android:inputType="date"
+                                tools:hint="@string/edit_date_month_hint"/>
+
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <android.support.design.widget.TextInputEditText
+                                android:id="@+id/edit_purchase_date_year"
+                                android:layout_width="75dp"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/edit_date_year_hint"
+                                android:inputType="date"
+                                tools:hint="@string/edit_date_year_hint"/>
+
+                        </android.support.design.widget.TextInputLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_price_paid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/edit_price_paid_hint"
+                        android:inputType="numberDecimal"
+                        tools:hint="@string/edit_price_paid_hint"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_discount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/edit_discount_hint"
+                        android:inputType="numberDecimal"
+                        tools:hint="@string/edit_discount_hint"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_sub_category"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/edit_sub_category_hint"
+                        android:inputType="textAutoComplete"
+                        tools:hint="@string/edit_sub_category_hint"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_sub_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/edit_sub_type_hint"
+                        android:inputType="textAutoComplete"
+                        tools:hint="@string/edit_sub_type_hint"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_sub_type2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/edit_sub_type2_hint"
+                        android:inputType="textAutoComplete"
+                        tools:hint="@string/edit_sub_type2_hint"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_sub_type3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/edit_sub_type3_hint"
+                        android:inputType="textAutoComplete"
+                        tools:hint="@string/edit_sub_type3_hint"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_primary_colour_shade"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/edit_primary_colour_shade_hint"
+                        android:inputType="textAutoComplete"
+                        tools:hint="@string/edit_primary_colour_shade_hint"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_secondary_colour"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/edit_secondary_colour_hint"
+                        android:inputType="textAutoComplete"
+                        tools:hint="@string/edit_secondary_colour_hint"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_size"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/edit_size_hint"
+                        android:inputType="textAutoComplete"
+                        tools:hint="@string/edit_size_hint"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_brand"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/edit_brand_hint"
+                        android:inputType="textAutoComplete"
+                        tools:hint="@string/edit_brand_hint"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_shop"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/edit_shop_hint"
+                        android:inputType="textAutoComplete"
+                        tools:hint="@string/edit_shop_hint"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/edit_description_hint"
+                        android:inputType="textAutoComplete"
+                        tools:hint="@string/edit_description_hint"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_note"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/edit_note_hint"
+                        android:inputType="textAutoComplete"
+                        tools:hint="@string/edit_note_hint"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>
+

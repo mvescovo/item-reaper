@@ -31,6 +31,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.ComponentNameMatchers.hasClassName;
@@ -147,6 +148,16 @@ public class ItemsScreenTest {
         onView(withText(R.string.menu_about)).perform(click());
         onView(withContentDescription("Navigate up")).perform(click());
         onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void checkSaveMenuOptionDoesNotExistInDialogMode() {
+        // This happened so I put a test in.
+        if (mIsLargeScreen) {
+            openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+            onView(withText(R.string.menu_about)).perform(click());
+            onView(withId(R.id.action_save)).check(doesNotExist());
+        }
     }
 
     @Test
