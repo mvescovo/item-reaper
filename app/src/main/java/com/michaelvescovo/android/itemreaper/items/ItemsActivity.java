@@ -21,6 +21,7 @@ import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.about.AboutActivity;
 import com.michaelvescovo.android.itemreaper.about.AboutFragment;
 import com.michaelvescovo.android.itemreaper.auth.AuthActivity;
+import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 
 import javax.inject.Inject;
@@ -43,7 +44,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     FloatingActionButton mEditItemButton;
 
     @Inject
-    public ItemsContract.Presenter mPresenter;
+    ItemsPresenter mItemsPresenter;
     private boolean mIsLargeLayout;
     private boolean mDialogOpen;
 
@@ -79,13 +80,14 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
                         .getApplicationComponent())
                 .repositoryComponent(((ItemReaperApplication) getApplication())
                         .getRepositoryComponent())
-                .build();
+                .build()
+                .inject(this);
 
         // Setup FAB
         mEditItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPresenter.openAddItem();
+                mItemsPresenter.openAddItem();
             }
         });
     }
@@ -121,6 +123,12 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
         Intent intent = new Intent(this, AuthActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onEditItemSelected() {
+        Intent intent = new Intent(this, EditItemActivity.class);
+        startActivity(intent);
     }
 
     @Override

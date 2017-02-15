@@ -15,5 +15,5 @@ import dagger.Component;
         ApplicationComponent.class})
 interface ItemsComponent {
 
-    ItemsPresenter getItemsPresenter();
+    void inject(ItemsActivity activity);
 }

@@ -2,7 +2,6 @@ package com.michaelvescovo.android.itemreaper.items;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,7 +20,6 @@ import android.widget.TextView;
 
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.Item;
-import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -159,8 +157,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
     @Override
     public void showEditItemUi() {
-        Intent intent = new Intent(getContext(), EditItemActivity.class);
-        startActivity(intent);
+        mCallback.onEditItemSelected();
     }
 
     @Override
@@ -187,6 +184,8 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         void onAboutSelected();
 
         void onSignOutSelected();
+
+        void onEditItemSelected();
     }
 
     private interface ItemListener {
