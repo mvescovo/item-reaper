@@ -168,7 +168,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     }
 
     @Override
-    public void showAddItemUi() {
+    public void showEditItemUi() {
         Intent intent = new Intent(getContext(), EditItemActivity.class);
         startActivity(intent);
     }
