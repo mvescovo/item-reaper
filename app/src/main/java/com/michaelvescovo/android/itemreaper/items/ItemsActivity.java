@@ -22,6 +22,7 @@ import com.michaelvescovo.android.itemreaper.about.AboutActivity;
 import com.michaelvescovo.android.itemreaper.about.AboutFragment;
 import com.michaelvescovo.android.itemreaper.auth.AuthActivity;
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
+import com.michaelvescovo.android.itemreaper.edit_item.EditItemFragment;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 
 import javax.inject.Inject;
@@ -34,7 +35,7 @@ import butterknife.ButterKnife;
  */
 
 public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Callback,
-        AboutFragment.Callback {
+        AboutFragment.Callback, EditItemFragment.Callback {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -127,8 +128,13 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
 
     @Override
     public void onEditItemSelected() {
-        Intent intent = new Intent(this, EditItemActivity.class);
-        startActivity(intent);
+        EditItemFragment editItemFragment = EditItemFragment.newInstance();
+        if (mIsLargeLayout) {
+            editItemFragment.show(getSupportFragmentManager(), "dialog");
+        } else {
+            Intent intent = new Intent(this, EditItemActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
