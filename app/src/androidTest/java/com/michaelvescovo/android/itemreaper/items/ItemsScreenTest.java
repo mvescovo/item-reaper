@@ -104,18 +104,18 @@ public class ItemsScreenTest {
 
     @Test
     public void addItemButtonVisible() {
-        onView(withId(R.id.add_item)).check(matches(isDisplayed()));
+        onView(withId(R.id.edit_item)).check(matches(isDisplayed()));
     }
 
     @Test
     public void clickAddItemButton_LaunchesAddItemUi() {
-        onView(withId(R.id.add_item)).perform(click());
+        onView(withId(R.id.edit_item)).perform(click());
         intended(hasComponent(hasClassName(EditItemActivity.class.getName())));
     }
 
     @Test
     public void clickAddItemButtonAndThenClickUpButton_NavigatesBackHere() {
-        onView(withId(R.id.add_item)).perform(click());
+        onView(withId(R.id.edit_item)).perform(click());
         onView(withContentDescription("Navigate up")).perform(click());
         onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
     }
@@ -170,7 +170,7 @@ public class ItemsScreenTest {
         * */
 
         // Click to add item
-        onView(withId(R.id.add_item)).perform(click());
+        onView(withId(R.id.edit_item)).perform(click());
 
         // Type category
         onView(withId(R.id.edit_category)).perform(scrollTo())

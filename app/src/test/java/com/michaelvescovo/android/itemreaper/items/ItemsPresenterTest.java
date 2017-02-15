@@ -119,7 +119,7 @@ public class ItemsPresenterTest {
     @Test
     public void clickAddItem_ShowsAddItemUi() {
         mItemsPresenter.openAddItem();
-        verify(mView).showAddItemUi();
+        verify(mView).showEditItemUi();
     }
 
     @Test

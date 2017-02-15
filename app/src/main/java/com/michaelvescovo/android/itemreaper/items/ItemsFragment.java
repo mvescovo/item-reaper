@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
@@ -90,15 +89,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_items, container, false);
         ButterKnife.bind(this, root);
-
-        FloatingActionButton addItem = (FloatingActionButton) getActivity().findViewById(
-                R.id.add_item);
-        addItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPresenter.openAddItem();
-            }
-        });
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.addItemDecoration(mDividerItemDecoration);

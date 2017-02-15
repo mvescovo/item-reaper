@@ -80,7 +80,7 @@ class ItemsPresenter implements ItemsContract.Presenter {
 
     @Override
     public void openAddItem() {
-        mView.showAddItemUi();
+        mView.showEditItemUi();
     }
 
     @Override
