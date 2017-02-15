@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
+import android.support.design.widget.FloatingActionButton;
 import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,6 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.View;
 import android.widget.TextView;
 
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
@@ -20,6 +22,8 @@ import com.michaelvescovo.android.itemreaper.about.AboutActivity;
 import com.michaelvescovo.android.itemreaper.about.AboutFragment;
 import com.michaelvescovo.android.itemreaper.auth.AuthActivity;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +39,11 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     Toolbar mToolbar;
     @BindView(R.id.appbar_title)
     TextView mAppbarTitle;
+    @BindView(R.id.edit_item)
+    FloatingActionButton mEditItemButton;
 
+    @Inject
+    public ItemsContract.Presenter mPresenter;
     private boolean mIsLargeLayout;
     private boolean mDialogOpen;
 
@@ -62,17 +70,24 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
             initFragment(itemsFragment);
         }
 
-        // Create the Presenter which does the following:
+        // The Presenter in injected (because it's used in this class) which does the following:
         // Sets itemsFragment as the View for itemsPresenter.
         // Sets itemsPresenter as the presenter for itemsFragment.
-        ItemsComponent itemsComponent = DaggerItemsComponent.builder()
+        DaggerItemsComponent.builder()
                 .itemsModule(new ItemsModule(itemsFragment))
-                .applicationComponent(((ItemReaperApplication)getApplication())
+                .applicationComponent(((ItemReaperApplication) getApplication())
                         .getApplicationComponent())
-                .repositoryComponent(((ItemReaperApplication)getApplication())
+                .repositoryComponent(((ItemReaperApplication) getApplication())
                         .getRepositoryComponent())
                 .build();
-        itemsComponent.getItemsPresenter();
+
+        // Setup FAB
+        mEditItemButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.openAddItem();
+            }
+        });
     }
 
     private void initFragment(Fragment fragment) {
