@@ -40,7 +40,6 @@ public class AboutFragment extends AppCompatDialogFragment {
 
     private Callback mCallback;
     private Typeface mAppbarTypeface;
-    private boolean mIsLargeScreen;
 
     public AboutFragment() {}
 
@@ -68,8 +67,8 @@ public class AboutFragment extends AppCompatDialogFragment {
         View root = inflater.inflate(R.layout.fragment_about, container, false);
         ButterKnife.bind(this, root);
         mCallback.configureSupportActionBar(mToolbar);
-        mIsLargeScreen = getResources().getBoolean(R.bool.large_layout);
-        if (mIsLargeScreen) {
+        boolean isLargeScreen = getResources().getBoolean(R.bool.large_layout);
+        if (isLargeScreen) {
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
