@@ -8,11 +8,11 @@ import dagger.Provides;
  */
 
 @Module
-class EditItemModule {
+public class EditItemModule {
 
     private EditItemContract.View mView;
 
-    EditItemModule(EditItemContract.View view) {
+    public EditItemModule(EditItemContract.View view) {
         mView = view;
     }
 

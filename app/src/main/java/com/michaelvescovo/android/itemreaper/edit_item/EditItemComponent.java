@@ -13,7 +13,7 @@ import dagger.Component;
 @FragmentScoped
 @Component(modules = EditItemModule.class, dependencies = {RepositoryComponent.class,
         ApplicationComponent.class})
-interface EditItemComponent {
+public interface EditItemComponent {
 
     EditItemPresenter getEditItemPresenter();
 }

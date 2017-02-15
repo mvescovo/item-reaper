@@ -28,6 +28,7 @@ import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -174,16 +175,16 @@ public class ItemsScreenTest {
 
         // Type category
         onView(withId(R.id.edit_category)).perform(scrollTo())
-                .perform(typeText(mItem.getCategory()));
+                .perform(typeText(mItem.getCategory()), closeSoftKeyboard());
 
         // Type type
         onView(withId(R.id.edit_type)).perform(scrollTo())
-                .perform(typeText(mItem.getType()));
+                .perform(typeText(mItem.getType()), closeSoftKeyboard());
 
         // Type primary colour
         if (mItem.getPrimaryColour() != null) {
             onView(withId(R.id.edit_primary_colour)).perform(scrollTo())
-                    .perform(typeText(mItem.getPrimaryColour()));
+                    .perform(typeText(mItem.getPrimaryColour()), closeSoftKeyboard());
         }
 
         // Type expiry
@@ -194,16 +195,16 @@ public class ItemsScreenTest {
         expiryMonth++; // Java months start at 0.
         int expiryYear = expiry.get(Calendar.YEAR);
         onView(withId(R.id.edit_expiry_date_day)).perform(scrollTo())
-                .perform(typeText(String.valueOf(expiryDay)));
+                .perform(typeText(String.valueOf(expiryDay)), closeSoftKeyboard());
         onView(withId(R.id.edit_expiry_date_month)).perform(scrollTo())
-                .perform(typeText(String.valueOf(expiryMonth)));
+                .perform(typeText(String.valueOf(expiryMonth)), closeSoftKeyboard());
         onView(withId(R.id.edit_expiry_date_year)).perform(scrollTo())
-                .perform(typeText(String.valueOf(expiryYear)));
+                .perform(typeText(String.valueOf(expiryYear)), closeSoftKeyboard());
 
         // Type price paid
         if (mItem.getPricePaid() != -1) {
             onView(withId(R.id.edit_price_paid)).perform(scrollTo())
-                    .perform(typeText(String.valueOf(mItem.getPricePaid())));
+                    .perform(typeText(String.valueOf(mItem.getPricePaid())), closeSoftKeyboard());
         }
 
         // Click to save item

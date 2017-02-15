@@ -90,4 +90,9 @@ public class EditItemActivity extends AppCompatActivity
     public void configureSupportActionBar(Toolbar toolbar) {
         // Not used in this activity.
     }
+
+    @Override
+    public void refresh() {
+        // Not used in this activity.
+    }
 }

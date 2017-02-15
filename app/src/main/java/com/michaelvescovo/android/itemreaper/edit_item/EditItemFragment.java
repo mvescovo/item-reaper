@@ -80,6 +80,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
 
     private EditItemContract.Presenter mPresenter;
     private Callback mCallback;
+    private boolean mIsLargeScreen;
     private Typeface mAppbarTypeface;
 
     public EditItemFragment() {
@@ -98,13 +99,13 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root;
-        boolean isLargeScreen = getResources().getBoolean(R.bool.large_layout);
-        root = isLargeScreen
+        mIsLargeScreen = getResources().getBoolean(R.bool.large_layout);
+        root = mIsLargeScreen
                 ? inflater.inflate(R.layout.dialog_fragment_edit_item, container, false)
                 : inflater.inflate(R.layout.fragment_edit_item, container, false);
         ButterKnife.bind(this, root);
         mCallback.configureSupportActionBar(mToolbar);
-        if (isLargeScreen) {
+        if (mIsLargeScreen) {
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -271,10 +272,18 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
 
     @Override
     public void showItemsUi() {
-        getActivity().finish();
+        if (mIsLargeScreen) {
+            dismiss();
+            mCallback.refresh();
+        } else {
+            getActivity().finish();
+        }
     }
 
     public interface Callback {
+
         void configureSupportActionBar(Toolbar toolbar);
+
+        void refresh();
     }
 }

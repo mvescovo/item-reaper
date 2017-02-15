@@ -21,8 +21,11 @@ import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.about.AboutActivity;
 import com.michaelvescovo.android.itemreaper.about.AboutFragment;
 import com.michaelvescovo.android.itemreaper.auth.AuthActivity;
+import com.michaelvescovo.android.itemreaper.edit_item.DaggerEditItemComponent;
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
+import com.michaelvescovo.android.itemreaper.edit_item.EditItemComponent;
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemFragment;
+import com.michaelvescovo.android.itemreaper.edit_item.EditItemModule;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 
 import javax.inject.Inject;
@@ -138,6 +141,18 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
         EditItemFragment editItemFragment = EditItemFragment.newInstance();
         if (mIsLargeLayout) {
             mCurrentDialogName = EDIT_ITEM_DIALOG;
+
+            // Need to create an EditItemsPresenter for when the fragment is run as dialog
+            // from this Activity.
+            EditItemComponent editItemComponent = DaggerEditItemComponent.builder()
+                    .editItemModule(new EditItemModule(editItemFragment))
+                    .applicationComponent(((ItemReaperApplication)getApplication())
+                            .getApplicationComponent())
+                    .repositoryComponent(((ItemReaperApplication) getApplication())
+                            .getRepositoryComponent())
+                    .build();
+            editItemComponent.getEditItemPresenter();
+
             editItemFragment.show(getSupportFragmentManager(), "dialog");
             editItemFragment.setCancelable(false);
         } else {
@@ -157,6 +172,11 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
         }
         mDialogOpen = true;
         invalidateOptionsMenu();
+    }
+
+    @Override
+    public void refresh() {
+        mItemsPresenter.getItems(true);
     }
 
     @VisibleForTesting
