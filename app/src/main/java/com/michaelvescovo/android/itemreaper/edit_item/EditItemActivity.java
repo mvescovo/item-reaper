@@ -85,4 +85,9 @@ public class EditItemActivity extends AppCompatActivity
     public IdlingResource getCountingIdlingResource() {
         return EspressoIdlingResource.getIdlingResource();
     }
+
+    @Override
+    public void configureSupportActionBar(Toolbar toolbar) {
+        // Not used in this activity.
+    }
 }

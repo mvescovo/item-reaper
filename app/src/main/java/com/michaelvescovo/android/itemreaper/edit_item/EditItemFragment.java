@@ -1,9 +1,11 @@
 package com.michaelvescovo.android.itemreaper.edit_item;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatDialogFragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +27,10 @@ import butterknife.ButterKnife;
 
 public class EditItemFragment extends AppCompatDialogFragment implements EditItemContract.View {
 
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.appbar_title)
+    TextView mAppbarTitle;
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
     @BindView(R.id.edit_purchase_date_day)
@@ -72,8 +78,9 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     @BindView(R.id.edit_note)
     TextView mNote;
 
-    private Callback mCallback;
     private EditItemContract.Presenter mPresenter;
+    private Callback mCallback;
+    private Typeface mAppbarTypeface;
 
     public EditItemFragment() {
     }
@@ -90,8 +97,22 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_edit_item, container, false);
+        View root;
+        boolean isLargeScreen = getResources().getBoolean(R.bool.large_layout);
+        root = isLargeScreen
+                ? inflater.inflate(R.layout.dialog_fragment_edit_item, container, false)
+                : inflater.inflate(R.layout.fragment_edit_item, container, false);
         ButterKnife.bind(this, root);
+        mCallback.configureSupportActionBar(mToolbar);
+        if (isLargeScreen) {
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismiss();
+                }
+            });
+        }
+        mAppbarTitle.setTypeface(mAppbarTypeface);
         setHasOptionsMenu(true);
         return root;
     }
@@ -105,6 +126,8 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
             throw new RuntimeException(context.toString()
                     + " must implement Callback");
         }
+        mAppbarTypeface = Typeface.createFromAsset(getActivity().getAssets(),
+                "Nosifer-Regular.ttf");
     }
 
     @Override
@@ -252,6 +275,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     }
 
     public interface Callback {
-
+        void configureSupportActionBar(Toolbar toolbar);
     }
 }
