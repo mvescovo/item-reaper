@@ -104,18 +104,21 @@ public class ItemsScreenTest {
     }
 
     @Test
-    public void addItemButtonVisible() {
+    public void editItemButtonVisible() {
         onView(withId(R.id.edit_item)).check(matches(isDisplayed()));
     }
 
     @Test
-    public void clickAddItemButton_LaunchesAddItemUi() {
+    public void clickEditItemButton_LaunchesAddItemUi() {
         onView(withId(R.id.edit_item)).perform(click());
-        intended(hasComponent(hasClassName(EditItemActivity.class.getName())));
+        if (!mIsLargeScreen) {
+            intended(hasComponent(hasClassName(EditItemActivity.class.getName())));
+        }
+        onView(withText(R.string.title_activity_edit_item)).check(matches(isDisplayed()));
     }
 
     @Test
-    public void clickAddItemButtonAndThenClickUpButton_NavigatesBackHere() {
+    public void clickEditItemButtonAndThenClickUpButton_NavigatesBackHere() {
         onView(withId(R.id.edit_item)).perform(click());
         onView(withContentDescription("Navigate up")).perform(click());
         onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
