@@ -3,7 +3,7 @@ package com.michaelvescovo.android.itemreaper.edit_item;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
  * @author Michael Vescovo
  */
 
-public class EditItemFragment extends Fragment implements EditItemContract.View {
+public class EditItemFragment extends AppCompatDialogFragment implements EditItemContract.View {
 
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
