@@ -22,11 +22,13 @@ public class FakeDataSource implements DataSource {
     public final static List<String> ITEM_IDS = Lists.newArrayList();
     public final static Map<String, Item> ITEMS = Maps.newHashMap();
     public final static String ITEM_ID_1 = "1";
-    public final static Item ITEM_1 = new Item("-1", -1, 20, -1, 1, "Clothing", null,
-            "T-shirt", null, null, null, "Black", null, null, null, null, null, null, null,
+    public final static Item ITEM_1 = new Item("1", 1453208400000L, 20,
+            0, 1496325600000L, "Clothing", "Casual", "T-shirt",
+            "Short sleeve", "V-neck", "Plain", "Black", "Dark", "None", "Small", "Industrie",
+            "Industrie", "Standard plain T-shirt", "Some note",
             "https://image.freepik.com/free-vector/black-vector-t-shirt_6646.jpg", false);
     public final static String ITEM_ID_2 = "2";
-    public final static Item ITEM_2 = new Item("2", -1, 30, -1, 2, "Bathroom", null,
+    public final static Item ITEM_2 = new Item("2", -1, 30, -1, 1496325600000L, "Bathroom", null,
             "Towel", null, null, null, "White", null, null, null, null, null, null, null, null,
             false);
 
