@@ -145,9 +145,9 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_save:
-                validateItem();
-                break;
+//            case R.id.action_save:
+//                validateItem();
+//                break;
         }
         return super.onOptionsItemSelected(item);
     }
