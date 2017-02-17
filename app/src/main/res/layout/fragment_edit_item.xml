@@ -417,6 +417,13 @@
 
                 </android.support.design.widget.TextInputLayout>
 
+                <ImageView
+                    android:id="@+id/edit_item_image"
+                    android:layout_width="400dp"
+                    android:layout_height="300dp"
+                    android:contentDescription="@string/edit_item_image_description"
+                    android:visibility="gone"/>
+
             </LinearLayout>
 
         </ScrollView>
