@@ -35,29 +35,50 @@ class EditItemPresenter implements EditItemContract.Presenter {
     }
 
     @Override
-    public void saveItem(@NonNull final Item item) {
-        mView.setProgressBar(true);
-        if (item.getId().equals("-1")) {
-            EspressoIdlingResource.increment();
-            mRepository.getNewItemId(mSharedPreferencesHelper.getUserId(),
-                    new DataSource.GetNewItemIdCallback() {
-                @Override
-                public void onNewItemIdLoaded(@Nullable String newItemId) {
-                    EspressoIdlingResource.decrement();
-                    if (newItemId != null) {
-                        item.setId(newItemId);
-                        finishSavingItem(item);
-                    }
-                }
-            });
+    public void editItem(@Nullable String itemId) {
+        if (itemId == null) {
+            createNewItem();
         } else {
-            finishSavingItem(item);
+            loadExistingItem(itemId);
         }
     }
 
-    private void finishSavingItem(@NonNull final Item item) {
+    @Override
+    public void saveItem(@NonNull Item item) {
         mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
-        mView.setProgressBar(false);
+    }
+
+    @Override
+    public void doneEditing() {
         mView.showItemsUi();
+    }
+
+    private void createNewItem() {
+        EspressoIdlingResource.increment();
+        mRepository.getNewItemId(mSharedPreferencesHelper.getUserId(), new DataSource.GetNewItemIdCallback() {
+            @Override
+            public void onNewItemIdLoaded(@Nullable String newItemId) {
+                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                    EspressoIdlingResource.decrement();
+                }
+                if (newItemId != null) {
+                    Item newItem = new Item(newItemId);
+                    mRepository.saveItem(mSharedPreferencesHelper.getUserId(), newItem);
+                }
+            }
+        });
+    }
+
+    private void loadExistingItem(String itemId) {
+        EspressoIdlingResource.increment();
+        mRepository.getItem(itemId, new DataSource.GetItemCallback() {
+            @Override
+            public void onItemLoaded(@Nullable Item item) {
+                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                    EspressoIdlingResource.decrement();
+                }
+                mView.showExistingItem(item);
+            }
+        });
     }
 }

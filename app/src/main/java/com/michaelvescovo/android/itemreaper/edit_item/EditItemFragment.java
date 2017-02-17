@@ -118,6 +118,12 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof Callback) {
@@ -267,6 +273,11 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         } else {
             mProgressBar.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void showExistingItem(Item item) {
+
     }
 
     @Override

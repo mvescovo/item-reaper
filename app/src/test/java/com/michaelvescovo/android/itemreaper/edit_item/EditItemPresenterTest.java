@@ -17,11 +17,11 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
+import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
+import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_ID_1;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -45,10 +45,13 @@ public class EditItemPresenterTest {
     @Captor
     private ArgumentCaptor<DataSource.GetNewItemIdCallback> mNewItemIdCallbackCaptor;
 
+    @Captor
+    private ArgumentCaptor<DataSource.GetItemCallback> mItemCallbackCaptor;
+
     @Parameterized.Parameters
     public static Iterable<?> data() {
         return Arrays.asList(
-                FakeDataSource.ITEM_1,
+                ITEM_1,
                 FakeDataSource.ITEM_2
         );
     }
@@ -66,16 +69,46 @@ public class EditItemPresenterTest {
     }
 
     @Test
-    public void clickSave_SavesItem() {
-        mEditItemPresenter.saveItem(mItem);
-        verify(mView).setProgressBar(true);
-        if (mItem.getId().equals("-1")) {
-            verify(mRepository).getNewItemId(anyString(), mNewItemIdCallbackCaptor.capture());
-            mNewItemIdCallbackCaptor.getValue().onNewItemIdLoaded("newId");
-        }
-        assertThat(mItem.getId(), not(equalTo("-1")));
+    public void invalidId_createsItem() {
+        mEditItemPresenter.editItem(null);
+
+        // Gets a new itemId
+        verify(mRepository).getNewItemId(anyString(), mNewItemIdCallbackCaptor.capture());
+
+        // New itemId comes back
+        mNewItemIdCallbackCaptor.getValue().onNewItemIdLoaded(ITEM_ID_1);
+
+        // Saves the new item
         verify(mRepository).saveItem(anyString(), any(Item.class));
-        verify(mView).setProgressBar(false);
+    }
+
+    @Test
+    public void validId_ItemIsLoadedForEditing() {
+        mEditItemPresenter.editItem(mItem.getId());
+
+        // Does not get new ID
+        verify(mRepository, never()).getNewItemId(anyString(),
+                any(DataSource.GetNewItemIdCallback.class));
+
+        // Gets the existing item
+        verify(mRepository).getItem(anyString(), mItemCallbackCaptor.capture());
+
+        // New item comes back
+        mItemCallbackCaptor.getValue().onItemLoaded(mItem);
+
+        // Displays the existing item in the view
+        verify(mView).showExistingItem(any(Item.class));
+    }
+
+    @Test
+    public void itemChanged_SavesItem() {
+        mEditItemPresenter.saveItem(mItem);
+        verify(mRepository).saveItem(anyString(), any(Item.class));
+    }
+
+    @Test
+    public void clickDone_ShowsItemsUi() {
+        mEditItemPresenter.doneEditing();
         verify(mView).showItemsUi();
     }
 }
