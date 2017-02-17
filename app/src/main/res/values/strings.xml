@@ -10,6 +10,7 @@
 
     <!--EditItem-->
     <string name="menu_take_photo">Take Photo</string>
+    <string name="menu_select_image">Select Image</string>
     <string name="edit_required">Required</string>
     <string name="edit_optional">Optional</string>
     <string name="edit_purchase_date_title">Purchase Date</string>
