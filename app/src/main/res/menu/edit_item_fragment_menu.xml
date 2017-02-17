@@ -6,12 +6,12 @@
         android:id="@+id/action_take_photo"
         android:icon="@drawable/ic_add_a_photo_white_24dp"
         android:title="@string/menu_take_photo"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/action_select_image"
         android:icon="@drawable/ic_image_white_24dp"
         android:title="@string/menu_select_image"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 
 </menu>
