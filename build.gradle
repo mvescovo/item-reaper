@@ -40,4 +40,5 @@ ext {
     butterKnifeVersion = '8.4.0'
     googleAuthVersion = '10.0.1'
     firebaseVersion = '10.0.1'
+    glide = '3.6.1'
 }
