@@ -3,6 +3,12 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_take_photo"
+        android:icon="@drawable/ic_add_a_photo_white_24dp"
+        android:title="@string/menu_take_photo"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/action_save"
         android:icon="@drawable/ic_done_white_24dp"
         android:title="@string/menu_save"

@@ -10,6 +10,7 @@
 
     <!--EditItem-->
     <string name="menu_save">Save</string>
+    <string name="menu_take_photo">Take Photo</string>
     <string name="edit_required">Required</string>
     <string name="edit_optional">Optional</string>
     <string name="edit_purchase_date_title">Purchase Date</string>
@@ -60,8 +61,5 @@
     <string name="title_activity_about">About</string>
     <string name="title_attributions">Attributions</string>
     <string name="reaper_icon_attribution">Reaper and scythe icons made by Loc. Available on <a href="http://game-icons.net">http://game-icons.net</a>.</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
