@@ -127,12 +127,12 @@ public class Item {
         mExpiry = expiry;
     }
 
-    @NonNull
+    @Nullable
     public String getCategory() {
         return mCategory;
     }
 
-    public void setCategory(@NonNull String category) {
+    public void setCategory(@Nullable String category) {
         mCategory = category;
     }
 
@@ -145,12 +145,12 @@ public class Item {
         mSubCategory = subCategory;
     }
 
-    @NonNull
+    @Nullable
     public String getType() {
         return mType;
     }
 
-    public void setType(@NonNull String type) {
+    public void setType(@Nullable String type) {
         mType = type;
     }
 
