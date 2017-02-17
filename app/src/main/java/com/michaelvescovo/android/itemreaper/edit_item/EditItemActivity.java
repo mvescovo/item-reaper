@@ -1,5 +1,6 @@
 package com.michaelvescovo.android.itemreaper.edit_item;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
 import android.support.test.espresso.IdlingResource;
@@ -67,13 +68,13 @@ public class EditItemActivity extends AppCompatActivity
     }
 
     @Override
-    public void configureSupportActionBar(Toolbar toolbar) {
+    public void configureSupportActionBar(Toolbar toolbar, Drawable icon) {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
+            actionBar.setHomeAsUpIndicator(icon);
         }
     }
 

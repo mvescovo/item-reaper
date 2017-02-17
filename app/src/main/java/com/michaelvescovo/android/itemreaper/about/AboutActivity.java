@@ -1,5 +1,6 @@
 package com.michaelvescovo.android.itemreaper.about;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -38,7 +39,7 @@ public class AboutActivity extends AppCompatActivity implements AboutFragment.Ca
     }
 
     @Override
-    public void configureSupportActionBar(Toolbar toolbar) {
+    public void configureSupportActionBar(Toolbar toolbar, Drawable icon) {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

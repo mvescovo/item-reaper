@@ -2,8 +2,10 @@ package com.michaelvescovo.android.itemreaper.edit_item;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -100,7 +102,8 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_edit_item, container, false);
         ButterKnife.bind(this, root);
-        mCallback.configureSupportActionBar(mToolbar);
+        mCallback.configureSupportActionBar(mToolbar, ContextCompat.getDrawable(getContext(),
+                R.drawable.ic_done_white_24dp));
         mAppbarTitle.setTypeface(mAppbarTypeface);
 
         mIsLargeScreen = getResources().getBoolean(R.bool.large_layout);
@@ -292,7 +295,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
 
     public interface Callback {
 
-        void configureSupportActionBar(Toolbar toolbar);
+        void configureSupportActionBar(Toolbar toolbar, Drawable icon);
 
         void refresh();
     }

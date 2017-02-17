@@ -2,8 +2,10 @@ package com.michaelvescovo.android.itemreaper.about;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.Toolbar;
 import android.text.util.Linkify;
@@ -66,7 +68,8 @@ public class AboutFragment extends AppCompatDialogFragment {
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_about, container, false);
         ButterKnife.bind(this, root);
-        mCallback.configureSupportActionBar(mToolbar);
+        mCallback.configureSupportActionBar(mToolbar, ContextCompat.getDrawable(getContext(),
+                R.drawable.ic_close_white_24dp));
         boolean isLargeScreen = getResources().getBoolean(R.bool.large_layout);
         if (isLargeScreen) {
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -87,6 +90,6 @@ public class AboutFragment extends AppCompatDialogFragment {
 
     public interface Callback {
 
-        void configureSupportActionBar(Toolbar toolbar);
+        void configureSupportActionBar(Toolbar toolbar, Drawable icon);
     }
 }

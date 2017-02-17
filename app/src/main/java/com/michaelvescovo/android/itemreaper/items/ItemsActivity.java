@@ -2,6 +2,7 @@ package com.michaelvescovo.android.itemreaper.items;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.FloatingActionButton;
@@ -164,13 +165,13 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     }
 
     @Override
-    public void configureSupportActionBar(Toolbar toolbar) {
+    public void configureSupportActionBar(Toolbar toolbar, Drawable icon) {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(false);
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
+            actionBar.setHomeAsUpIndicator(icon);
         }
         mDialogOpen = true;
         invalidateOptionsMenu();
