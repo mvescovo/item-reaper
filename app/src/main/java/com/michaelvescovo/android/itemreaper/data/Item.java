@@ -52,6 +52,7 @@ public class Item {
 
     public Item(@NonNull String id) {
         mId = id;
+        mDeceased = false;
     }
 
     public Item(@NonNull String id, long purchaseDate, int pricePaid, int discount,
