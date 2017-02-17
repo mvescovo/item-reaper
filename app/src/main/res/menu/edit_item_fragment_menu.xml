@@ -12,6 +12,6 @@
         android:id="@+id/action_select_image"
         android:icon="@drawable/ic_image_white_24dp"
         android:title="@string/menu_select_image"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
 
 </menu>
