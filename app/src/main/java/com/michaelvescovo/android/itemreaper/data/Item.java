@@ -47,7 +47,7 @@ public class Item {
     @Nullable
     private String mNote;
     @Nullable
-    private Map<String, String> mPhotoUrls;
+    private String mImageUrl;
     private boolean mDeceased;
 
     public Item(@NonNull String id) {
@@ -61,7 +61,7 @@ public class Item {
                 @Nullable String primaryColourShade, @Nullable String secondaryColour,
                 @Nullable String size, @Nullable String brand, @Nullable String shop,
                 @Nullable String description, @Nullable String note,
-                @Nullable Map<String, String> photoUrls, boolean deceased) {
+                @Nullable String imageUrl, boolean deceased) {
         mId = id;
         mPurchaseDate = purchaseDate;
         mPricePaid = pricePaid;
@@ -81,7 +81,7 @@ public class Item {
         mShop = shop;
         mDescription = description;
         mNote = note;
-        mPhotoUrls = photoUrls;
+        mImageUrl = imageUrl;
         mDeceased = deceased;
     }
 
@@ -253,12 +253,12 @@ public class Item {
     }
 
     @Nullable
-    public Map<String, String> getPhotoUrls() {
-        return mPhotoUrls;
+    public String getImageUrl() {
+        return mImageUrl;
     }
 
-    public void setPhotoUrls(@Nullable Map<String, String> photoUrls) {
-        mPhotoUrls = photoUrls;
+    public void setPhotoUrls(@Nullable String imageUrl) {
+        mImageUrl = imageUrl;
     }
 
     public boolean getDeceased() {
@@ -291,7 +291,7 @@ public class Item {
         result.put("shop", mShop);
         result.put("description", mDescription);
         result.put("note", mNote);
-        result.put("photoUrls", mPhotoUrls);
+        result.put("imageUrl", mImageUrl);
         result.put("deceased", mDeceased);
         return result;
     }
