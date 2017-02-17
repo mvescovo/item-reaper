@@ -18,11 +18,11 @@ public class Item {
     private int mPricePaid;
     private int mDiscount;
     private long mExpiry;
-    @NonNull
+    @Nullable
     private String mCategory;
     @Nullable
     private String mSubCategory;
-    @NonNull
+    @Nullable
     private String mType;
     @Nullable
     private String mSubtype;
@@ -50,8 +50,12 @@ public class Item {
     private Map<String, String> mPhotoUrls;
     private boolean mDeceased;
 
+    public Item(@NonNull String id) {
+        mId = id;
+    }
+
     public Item(@NonNull String id, long purchaseDate, int pricePaid, int discount,
-                long expiry, @NonNull String category, @Nullable String subCategory,
+                long expiry, @Nullable String category, @Nullable String subCategory,
                 @NonNull String type, @Nullable String subtype, @Nullable String subtype2,
                 @Nullable String subtype3, @Nullable String primaryColour,
                 @Nullable String primaryColourShade, @Nullable String secondaryColour,
