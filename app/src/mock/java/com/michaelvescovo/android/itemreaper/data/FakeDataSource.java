@@ -24,7 +24,7 @@ public class FakeDataSource implements DataSource {
     public final static String ITEM_ID_1 = "1";
     public final static Item ITEM_1 = new Item("-1", -1, 20, -1, 1, "Clothing", null,
             "T-shirt", null, null, null, "Black", null, null, null, null, null, null, null,
-            "http://www.freepik.com/free-vector/black-vector-t-shirt_333389.htm", false);
+            "https://image.freepik.com/free-vector/black-vector-t-shirt_6646.jpg", false);
     public final static String ITEM_ID_2 = "2";
     public final static Item ITEM_2 = new Item("2", -1, 30, -1, 2, "Bathroom", null,
             "Towel", null, null, null, "White", null, null, null, null, null, null, null, null,
