@@ -18,7 +18,7 @@ import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static junit.framework.Assert.fail;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
  * @author Michael Vescovo
@@ -37,6 +37,7 @@ public class EditItemScreenTest {
         Espresso.registerIdlingResources(
                 mActivityRule.getActivity().getCountingIdlingResource());
     }
+
     @After
     public void unregisterIdlingResource() {
         Espresso.unregisterIdlingResources(
@@ -44,13 +45,73 @@ public class EditItemScreenTest {
     }
 
     @Test
-    public void saveMenuOptionVisible() {
-        onView(withId(R.id.action_save)).check(matches(isDisplayed()));
+    public void titleVisible() {
+        onView(withText(R.string.title_activity_edit_item)).check(matches(isDisplayed()));
     }
 
     @Test
-    public void purchaseDateEditTextVisible() {
+    public void requiredTitleVisible() {
+        onView(withId(R.id.edit_required)).perform(scrollTo()).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void categoryEditTextVisible() {
+        onView(withId(R.id.edit_category)).perform(scrollTo()).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void typeEditTextVisible() {
+        onView(withId(R.id.edit_type)).perform(scrollTo()).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void expiryTitleTextVisible() {
+        onView(withId(R.id.edit_expiry_date_title)).perform(scrollTo()).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void expiryDayEditTextVisible() {
+        onView(withId(R.id.edit_expiry_date_day)).perform(scrollTo()).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void expiryMonthEditTextVisible() {
+        onView(withId(R.id.edit_expiry_date_month)).perform(scrollTo()).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void expiryYearEditTextVisible() {
+        onView(withId(R.id.edit_expiry_date_year)).perform(scrollTo()).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void optionalTitleVisible() {
+        onView(withId(R.id.edit_optional)).perform(scrollTo()).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void mainColourEditTextVisible() {
+        onView(withId(R.id.edit_primary_colour)).perform(scrollTo()).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void purchaseDateTitleVisible() {
         onView(withId(R.id.edit_purchase_date_title)).perform(scrollTo()).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void purchaseDateDayEditTextVisible() {
+        onView(withId(R.id.edit_purchase_date_day)).perform(scrollTo()).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void purchaseDateMonthEditTextVisible() {
+        onView(withId(R.id.edit_purchase_date_month)).perform(scrollTo()).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void purchaseDateYearEditTextVisible() {
+        onView(withId(R.id.edit_purchase_date_year)).perform(scrollTo()).check(matches(isDisplayed()));
     }
 
     @Test
@@ -64,23 +125,8 @@ public class EditItemScreenTest {
     }
 
     @Test
-    public void expiryEditTextVisible() {
-        onView(withId(R.id.edit_expiry_date_title)).perform(scrollTo()).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void categoryEditTextVisible() {
-        onView(withId(R.id.edit_category)).perform(scrollTo()).check(matches(isDisplayed()));
-    }
-
-    @Test
     public void subCategoryEditTextVisible() {
         onView(withId(R.id.edit_sub_category)).perform(scrollTo()).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void typeEditTextVisible() {
-        onView(withId(R.id.edit_type)).perform(scrollTo()).check(matches(isDisplayed()));
     }
 
     @Test
@@ -96,11 +142,6 @@ public class EditItemScreenTest {
     @Test
     public void subType3EditTextVisible() {
         onView(withId(R.id.edit_sub_type3)).perform(scrollTo()).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void primaryColourEditTextVisible() {
-        onView(withId(R.id.edit_primary_colour)).perform(scrollTo()).check(matches(isDisplayed()));
     }
 
     @Test
@@ -139,7 +180,12 @@ public class EditItemScreenTest {
     }
 
     @Test
-    public void clickSave_ShowsAllItemDetailsInDetailView() {
-        fail("Can't test this until the item details feature is working");
+    public void takePhotoMenuOptionVisible() {
+        onView(withId(R.id.action_take_photo)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void selectImageMenuOptionVisible() {
+        onView(withId(R.id.action_select_image)).check(matches(isDisplayed()));
     }
 }
