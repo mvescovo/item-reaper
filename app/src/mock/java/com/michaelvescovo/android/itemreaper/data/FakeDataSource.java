@@ -21,6 +21,11 @@ public class FakeDataSource implements DataSource {
     public final static String USER_ID = "testUser";
     public final static List<String> ITEM_IDS = Lists.newArrayList();
     public final static Map<String, Item> ITEMS = Maps.newHashMap();
+
+    /*
+    * Test item 1.
+    * - Has all fields filled in (each must be unique to prevent ambiguous matcher exceptions).
+    * */
     public final static String ITEM_ID_1 = "1";
     public final static Item ITEM_1 = new Item("1",
             1452776400000L, // 15/1/2016
@@ -31,6 +36,11 @@ public class FakeDataSource implements DataSource {
             "Short sleeve", "V-neck", "Plain", "Black", "Dark", "None", "Small", "Industrie",
             "Industrie Outlet", "Standard plain T-shirt", "Some note",
             "https://image.freepik.com/free-vector/black-vector-t-shirt_6646.jpg", false);
+
+    /*
+    * Test item 2.
+    * - Has some fields filled in but not all.
+    * */
     public final static String ITEM_ID_2 = "2";
     public final static Item ITEM_2 = new Item("2",
             -1,
