@@ -530,10 +530,10 @@ public class EditItemScreenTest {
 
     @Test
     public void itemHasImage_ShowsImage() {
-//        closeSoftKeyboard();
-//        if (mItem.getImageUrl() != null) {
-//            onView(withId(R.id.edit_item_image)).perform(scrollTo())
-//                    .check(matches(isDisplayed()));
-//        }
+        closeSoftKeyboard();
+        if (mItem.getImageUrl() != null) {
+            onView(withId(R.id.edit_item_image)).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+        }
     }
 }

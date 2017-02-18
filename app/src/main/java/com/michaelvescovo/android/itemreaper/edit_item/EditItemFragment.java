@@ -12,9 +12,11 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.Item;
 
@@ -79,6 +81,8 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     TextView mDescription;
     @BindView(R.id.edit_note)
     TextView mNote;
+    @BindView(R.id.edit_item_image)
+    ImageView mItemImage;
 
     private EditItemContract.Presenter mPresenter;
     private Callback mCallback;
@@ -379,6 +383,13 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         if (item.getNote() != null
                 && !item.getNote().equals(mNote.getText().toString())) {
             mNote.setText(item.getNote());
+        }
+        if (item.getImageUrl() != null) {
+            mItemImage.setVisibility(View.VISIBLE);
+            Glide.with(this)
+                    .load(item.getImageUrl())
+                    .crossFade()
+                    .into(mItemImage);
         }
     }
 
