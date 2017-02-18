@@ -84,6 +84,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     private Callback mCallback;
     private boolean mIsLargeScreen;
     private Typeface mAppbarTypeface;
+    private String mItemId;
 
     public EditItemFragment() {
     }
@@ -117,13 +118,22 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         }
 
         setHasOptionsMenu(true);
+
+        if (getArguments() != null
+                && getArguments().getString(EditItemActivity.EXTRA_ITEM_ID) != null) {
+            mItemId = getArguments().getString(EditItemActivity.EXTRA_ITEM_ID);
+        }
+
+        /* TEMP */
+//        mItemId = "1";
+
         return root;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
+        mPresenter.editItem(mItemId);
     }
 
     @Override
@@ -280,7 +290,96 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
 
     @Override
     public void showExistingItem(Item item) {
+        if (item.getCategory() != null
+                && !item.getCategory().equals(mCategory.getText().toString())) {
+            mCategory.setText(item.getCategory());
+        }
+        if (item.getType() != null
+                && !item.getType().equals(mType.getText().toString())) {
+            mType.setText(item.getType());
+        }
 
+        if (item.getExpiry() != -1) {
+            Calendar expiry = Calendar.getInstance();
+            expiry.setTimeInMillis(item.getExpiry());
+            int day = expiry.get(Calendar.DAY_OF_MONTH);
+            int month = expiry.get(Calendar.MONTH);
+            month++; // Months start at 0.
+            int year = expiry.get(Calendar.YEAR);
+            mExpiryDay.setText(String.valueOf(day));
+            mExpiryMonth.setText(String.valueOf(month));
+            mExpiryYear.setText(String.valueOf(year));
+        }
+
+        if (item.getPrimaryColour() != null
+                && !item.getPrimaryColour().equals(mPrimaryColour.getText().toString())) {
+            mPrimaryColour.setText(item.getPrimaryColour());
+        }
+
+        if (item.getPurchaseDate() != -1) {
+            Calendar purchaseDate = Calendar.getInstance();
+            purchaseDate.setTimeInMillis(item.getPurchaseDate());
+            int day = purchaseDate.get(Calendar.DAY_OF_MONTH);
+            int month = purchaseDate.get(Calendar.MONTH);
+            month++; // Months start at 0.
+            int year = purchaseDate.get(Calendar.YEAR);
+            mPurchaseDateDay.setText(String.valueOf(day));
+            mPurchaseDateMonth.setText(String.valueOf(month));
+            mPurchaseDateYear.setText(String.valueOf(year));
+        }
+
+        if (item.getPricePaid() != -1
+                && !String.valueOf(item.getPricePaid()).equals(mPricePaid.getText().toString())) {
+            mPricePaid.setText(String.valueOf(item.getPricePaid()));
+        }
+        if (item.getDiscount() != -1
+                && !String.valueOf(item.getDiscount()).equals(mDiscount.getText().toString())) {
+            mDiscount.setText(String.valueOf(item.getDiscount()));
+        }
+        if (item.getSubCategory() != null
+                && !item.getSubCategory().equals(mSubCategory.getText().toString())) {
+            mSubCategory.setText(item.getSubCategory());
+        }
+        if (item.getSubtype() != null
+                && !item.getSubtype().equals(mSubType.getText().toString())) {
+            mSubType.setText(item.getSubtype());
+        }
+        if (item.getSubtype2() != null
+                && !item.getSubtype2().equals(mSubType2.getText().toString())) {
+            mSubType2.setText(item.getSubtype2());
+        }
+        if (item.getSubtype3() != null
+                && !item.getSubtype3().equals(mSubType3.getText().toString())) {
+            mSubType3.setText(item.getSubtype3());
+        }
+        if (item.getPrimaryColourShade() != null
+                && !item.getPrimaryColourShade().equals(mPrimaryColourShade.getText().toString())) {
+            mPrimaryColourShade.setText(item.getPrimaryColourShade());
+        }
+        if (item.getSecondaryColour() != null
+                && !item.getSecondaryColour().equals(mSecondaryColour.getText().toString())) {
+            mSecondaryColour.setText(item.getSecondaryColour());
+        }
+        if (item.getSize() != null
+                && !item.getSize().equals(mSize.getText().toString())) {
+            mSize.setText(item.getSize());
+        }
+        if (item.getBrand() != null
+                && !item.getBrand().equals(mBrand.getText().toString())) {
+            mBrand.setText(item.getBrand());
+        }
+        if (item.getShop() != null
+                && !item.getShop().equals(mShop.getText().toString())) {
+            mShop.setText(item.getShop());
+        }
+        if (item.getDescription() != null
+                && !item.getDescription().equals(mDescription.getText().toString())) {
+            mDescription.setText(item.getDescription());
+        }
+        if (item.getNote() != null
+                && !item.getNote().equals(mNote.getText().toString())) {
+            mNote.setText(item.getNote());
+        }
     }
 
     @Override

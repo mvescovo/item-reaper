@@ -23,6 +23,8 @@ import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 public class EditItemActivity extends AppCompatActivity
         implements EditItemFragment.Callback {
 
+    public static final String EXTRA_ITEM_ID = "com.michaelvescovo.android.itemreaper.item_id";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +35,12 @@ public class EditItemActivity extends AppCompatActivity
                 .findFragmentById(R.id.contentFrame);
         if (editItemFragment == null) {
             editItemFragment = EditItemFragment.newInstance();
+            // Add itemId if it exists
+            if (getIntent().getStringExtra(EXTRA_ITEM_ID) != null) {
+                Bundle args = new Bundle();
+                args.putString(EXTRA_ITEM_ID, getIntent().getStringExtra(EXTRA_ITEM_ID));
+                editItemFragment.setArguments(args);
+            }
             initFragment(editItemFragment);
         }
 
@@ -41,7 +49,7 @@ public class EditItemActivity extends AppCompatActivity
         // Sets itemsPresenter as the presenter for itemsFragment.
         EditItemComponent editItemComponent = DaggerEditItemComponent.builder()
                 .editItemModule(new EditItemModule(editItemFragment))
-                .applicationComponent(((ItemReaperApplication)getApplication())
+                .applicationComponent(((ItemReaperApplication) getApplication())
                         .getApplicationComponent())
                 .repositoryComponent(((ItemReaperApplication) getApplication())
                         .getRepositoryComponent())
