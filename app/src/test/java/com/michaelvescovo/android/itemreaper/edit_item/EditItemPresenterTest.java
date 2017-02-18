@@ -2,7 +2,6 @@ package com.michaelvescovo.android.itemreaper.edit_item;
 
 import com.michaelvescovo.android.itemreaper.SharedPreferencesHelper;
 import com.michaelvescovo.android.itemreaper.data.DataSource;
-import com.michaelvescovo.android.itemreaper.data.FakeDataSource;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.data.Repository;
 
@@ -18,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.Arrays;
 
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
+import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_2;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_ID_1;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -52,7 +52,7 @@ public class EditItemPresenterTest {
     public static Iterable<?> data() {
         return Arrays.asList(
                 ITEM_1,
-                FakeDataSource.ITEM_2
+                ITEM_2
         );
     }
 
@@ -69,7 +69,7 @@ public class EditItemPresenterTest {
     }
 
     @Test
-    public void invalidId_createsItem() {
+    public void noId_createsItem() {
         mEditItemPresenter.editItem(null);
 
         // Gets a new itemId
