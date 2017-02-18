@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class Item {
 
-    @Nullable
+    @NonNull
     private String mId;
     private long mPurchaseDate;
     private int mPricePaid;
@@ -50,11 +50,12 @@ public class Item {
     private String mImageUrl;
     private boolean mDeceased;
 
-    public Item() {
+    public Item(@NonNull String id) {
+        mId = id;
         mDeceased = false;
     }
 
-    public Item(@Nullable String id, long purchaseDate, int pricePaid, int discount,
+    public Item(@NonNull String id, long purchaseDate, int pricePaid, int discount,
                 long expiry, @Nullable String category, @Nullable String subCategory,
                 @NonNull String type, @Nullable String subtype, @Nullable String subtype2,
                 @Nullable String subtype3, @Nullable String primaryColour,
@@ -85,12 +86,12 @@ public class Item {
         mDeceased = deceased;
     }
 
-    @Nullable
+    @NonNull
     public String getId() {
         return mId;
     }
 
-    public void setId(@Nullable String id) {
+    public void setId(@NonNull String id) {
         mId = id;
     }
 
