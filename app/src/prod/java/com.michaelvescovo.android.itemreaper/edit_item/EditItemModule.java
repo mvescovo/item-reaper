@@ -1,5 +1,9 @@
 package com.michaelvescovo.android.itemreaper.edit_item;
 
+import com.michaelvescovo.android.itemreaper.util.ImageFileImpl;
+import com.michaelvescovo.android.itemreaper.edit_item.EditItemContract;
+import com.michaelvescovo.android.itemreaper.util.ImageFile;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -19,5 +23,10 @@ public class EditItemModule {
     @Provides
     EditItemContract.View provideEditItemView() {
         return mView;
+    }
+
+    @Provides
+    ImageFile provideImageFile() {
+        return new ImageFileImpl();
     }
 }
