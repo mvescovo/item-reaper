@@ -12,11 +12,9 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * Modifications have been made.
  */
 
-package com.michaelvescovo.android.itemreaper.data.util;
+package com.michaelvescovo.android.itemreaper.util;
 
 import android.content.Context;
 import android.net.Uri;
@@ -29,49 +27,52 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Fake implementation of {@link ImageFile} to inject a fake image in a hermetic test.
+ * A thin wrapper around Android file APIs to make them more testable and allows the injection of a
+ * fake implementation for hermetic UI tests.
  */
-public class FakeImageFileImpl implements ImageFile {
+public class ImageFileImpl implements ImageFile {
 
     @SuppressWarnings("WeakerAccess")
     @VisibleForTesting
     File mImageFile;
+
     private Context mContext;
 
     @Override
     public void create(Context context, String name, String extension) {
         mContext = context;
+
         File storageDir = context.getFilesDir();
+
         try {
             mImageFile = File.createTempFile(
                     name,  /* prefix */
                     extension,        /* suffix */
                     storageDir      /* directory */
             );
-            mImageFile.deleteOnExit();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public String getPath() {
-        return "file:///android_asset/black-t-shirt.jpg";
-    }
-
-    @Override
     public boolean exists() {
-        return true;
+        return null != mImageFile && mImageFile.exists();
     }
 
     @Override
     public void delete() {
-        // Do nothing
+        mImageFile = null;
     }
 
     @Override
     public Uri getUri() {
         return FileProvider.getUriForFile(mContext,
                 mContext.getPackageName() + ".fileprovider", mImageFile);
+    }
+
+    @Override
+    public String getPath() {
+        return mImageFile.getAbsolutePath();
     }
 }
