@@ -1,9 +1,13 @@
 package com.michaelvescovo.android.itemreaper.edit_item;
 
+import android.content.Context;
+import android.net.Uri;
+
 import com.michaelvescovo.android.itemreaper.SharedPreferencesHelper;
 import com.michaelvescovo.android.itemreaper.data.DataSource;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.data.Repository;
+import com.michaelvescovo.android.itemreaper.util.ImageFile;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +18,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
@@ -21,8 +26,10 @@ import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_2;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_ID_1;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Michael Vescovo
@@ -48,6 +55,12 @@ public class EditItemPresenterTest {
     @Captor
     private ArgumentCaptor<DataSource.GetItemCallback> mItemCallbackCaptor;
 
+    @Mock
+    ImageFile mImageFile;
+
+    @Mock
+    Context mContext;
+
     @Parameterized.Parameters
     public static Iterable<?> data() {
         return Arrays.asList(
@@ -65,7 +78,8 @@ public class EditItemPresenterTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        mEditItemPresenter = new EditItemPresenter(mView, mRepository, mSharedPreferencesHelper);
+        mEditItemPresenter = new EditItemPresenter(mView, mRepository, mSharedPreferencesHelper,
+                mImageFile);
     }
 
     @Test
@@ -107,8 +121,46 @@ public class EditItemPresenterTest {
     }
 
     @Test
-    public void clickDone_ShowsItemsUi() {
+    public void doneEditing_ShowsItemsUi() {
         mEditItemPresenter.doneEditing();
         verify(mView).showItemsUi();
+    }
+
+    @Test
+    public void takePicture_CreatesFileAndOpensCamera() throws IOException {
+        mEditItemPresenter.takePicture(mContext);
+
+        verify(mImageFile).create(any(Context.class), anyString(), anyString());
+        verify(mImageFile).getUri();
+        verify(mView).openCamera(any(Uri.class));
+    }
+
+    @Test
+    public void imageAvailable_SavesImageAndShowsImage() {
+        String imageUrl = "path/to/file";
+        when(mImageFile.exists()).thenReturn(true);
+        when(mImageFile.getPath()).thenReturn(imageUrl);
+
+        mEditItemPresenter.imageAvailable();
+
+        verify(mView).showImage(contains(imageUrl));
+    }
+
+    @Test
+    public void imageAvailable_FileDoesNotExistShowsErrorUi() {
+        when(mImageFile.exists()).thenReturn(false);
+
+        mEditItemPresenter.imageAvailable();
+
+        verify(mView).showImageError();
+        verify(mImageFile).delete();
+    }
+
+    @Test
+    public void noImageAvailable_ShowsErrorUi() {
+        mEditItemPresenter.imageCaptureFailed();
+
+        verify(mView).showImageError();
+        verify(mImageFile).delete();
     }
 }

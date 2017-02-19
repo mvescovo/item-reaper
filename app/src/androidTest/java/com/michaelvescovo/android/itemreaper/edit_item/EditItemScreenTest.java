@@ -1,6 +1,9 @@
 package com.michaelvescovo.android.itemreaper.edit_item;
 
+import android.app.Activity;
+import android.app.Instrumentation;
 import android.content.Intent;
+import android.provider.MediaStore;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.PerformException;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
@@ -21,14 +24,19 @@ import java.util.Calendar;
 
 import static android.support.test.espresso.Espresso.closeSoftKeyboard;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.intent.Intents.intending;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_2;
+import static com.michaelvescovo.android.itemreaper.matcher.ImageViewHasDrawableMatcher.hasDrawable;
 import static junit.framework.Assert.fail;
+import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.IsNot.not;
 
 /**
@@ -42,6 +50,7 @@ public class EditItemScreenTest {
     @Rule
     public IntentsTestRule<EditItemActivity> mActivityRule =
             new IntentsTestRule<>(EditItemActivity.class, true, false);
+
     private Item mItem;
 
     public EditItemScreenTest(Item item) {
@@ -51,8 +60,8 @@ public class EditItemScreenTest {
     @Parameterized.Parameters
     public static Iterable<?> data() {
         return Arrays.asList(
-                ITEM_1
-                , ITEM_2
+                ITEM_1,
+                ITEM_2
         );
     }
 
@@ -535,5 +544,25 @@ public class EditItemScreenTest {
             onView(withId(R.id.edit_item_image)).perform(scrollTo())
                     .check(matches(isDisplayed()));
         }
+    }
+
+    @Test
+    public void takePicture_ShowsPicture() {
+        // Stub a result from taking a picture with the camera
+        Instrumentation.ActivityResult result =
+                new Instrumentation.ActivityResult(Activity.RESULT_OK, null);
+        intending(hasAction(MediaStore.ACTION_IMAGE_CAPTURE)).respondWith(result);
+
+        // Make sure to close the keyboard otherwise scrolling won't work
+        closeSoftKeyboard();
+
+        // Take picture with camera
+        onView(withId(R.id.action_take_photo)).perform(click());
+
+        // Check that the image is displayed in the UI
+        onView(withId(R.id.edit_item_image)).perform(scrollTo())
+                .check(matches(allOf(
+                        hasDrawable(),
+                        isDisplayed())));
     }
 }

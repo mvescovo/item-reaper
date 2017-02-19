@@ -1,5 +1,6 @@
 package com.michaelvescovo.android.itemreaper.edit_item;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -8,6 +9,11 @@ import com.michaelvescovo.android.itemreaper.data.DataSource;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.data.Repository;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
+import com.michaelvescovo.android.itemreaper.util.ImageFile;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -20,13 +26,16 @@ class EditItemPresenter implements EditItemContract.Presenter {
     private EditItemContract.View mView;
     private Repository mRepository;
     private SharedPreferencesHelper mSharedPreferencesHelper;
+    private ImageFile mImageFile;
 
     @Inject
-    EditItemPresenter(EditItemContract.View view, Repository repository,
-                      SharedPreferencesHelper sharedPreferencesHelper) {
+    EditItemPresenter(@NonNull EditItemContract.View view, @NonNull Repository repository,
+                      @NonNull SharedPreferencesHelper sharedPreferencesHelper,
+                      @NonNull ImageFile imageFile) {
         mView = view;
         mRepository = repository;
         mSharedPreferencesHelper = sharedPreferencesHelper;
+        mImageFile = imageFile;
     }
 
     @Inject
@@ -53,6 +62,30 @@ class EditItemPresenter implements EditItemContract.Presenter {
         mView.showItemsUi();
     }
 
+    @Override
+    public void takePicture(Context context) {
+        String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmmss",
+                Locale.getDefault()).format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        mImageFile.create(context, imageFileName, ".jpg");
+        mView.openCamera(mImageFile.getUri());
+    }
+
+    @Override
+    public void imageAvailable() {
+        if (mImageFile.exists()) {
+            mView.showImage(mImageFile.getPath());
+        } else {
+            imageCaptureFailed();
+        }
+    }
+
+    @Override
+    public void imageCaptureFailed() {
+        mView.showImageError();
+        mImageFile.delete();
+    }
+
     private void createNewItem() {
         EspressoIdlingResource.increment();
         mRepository.getNewItemId(mSharedPreferencesHelper.getUserId(), new DataSource.GetNewItemIdCallback() {
@@ -70,7 +103,10 @@ class EditItemPresenter implements EditItemContract.Presenter {
     }
 
     private void loadExistingItem(String itemId) {
-        EspressoIdlingResource.increment();
+        // When running tests the activity pauses and resumes. Make sure it only increments once.
+        if (EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+            EspressoIdlingResource.increment();
+        }
         mRepository.getItem(itemId, new DataSource.GetItemCallback() {
             @Override
             public void onItemLoaded(@Nullable Item item) {
