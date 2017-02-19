@@ -35,7 +35,7 @@ public class FakeDataSource implements DataSource {
             "Clothing", "Casual", "T-shirt",
             "Short sleeve", "V-neck", "Plain", "Black", "Dark", "None", "Small", "Industrie",
             "Industrie Outlet", "Standard plain T-shirt", "Some note",
-            "https://image.freepik.com/free-vector/black-vector-t-shirt_6646.jpg", false);
+            "file:///android_asset/black-t-shirt.jpg", false);
 
     /*
     * Test item 2.
