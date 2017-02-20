@@ -86,6 +86,11 @@ class EditItemPresenter implements EditItemContract.Presenter {
         mImageFile.delete();
     }
 
+    @Override
+    public void itemChanged() {
+        mView.validateItem();
+    }
+
     private void createNewItem() {
         EspressoIdlingResource.increment();
         mRepository.getNewItemId(mSharedPreferencesHelper.getUserId(), new DataSource.GetNewItemIdCallback() {

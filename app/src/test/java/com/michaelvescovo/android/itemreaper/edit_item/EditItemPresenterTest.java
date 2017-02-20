@@ -136,7 +136,7 @@ public class EditItemPresenterTest {
     }
 
     @Test
-    public void imageAvailable_SavesImageAndShowsImage() {
+    public void imageAvailable_ShowsImage() {
         String imageUrl = "path/to/file";
         when(mImageFile.exists()).thenReturn(true);
         when(mImageFile.getPath()).thenReturn(imageUrl);
@@ -162,5 +162,11 @@ public class EditItemPresenterTest {
 
         verify(mView).showImageError();
         verify(mImageFile).delete();
+    }
+
+    @Test
+    public void itemChanged_ItemValidated() {
+        mEditItemPresenter.itemChanged();
+        verify(mView).validateItem();
     }
 }

@@ -28,6 +28,8 @@ public interface EditItemContract {
         void showImage(@NonNull String imageUrl);
 
         void showImageError();
+
+        void validateItem();
     }
 
     interface Presenter {
@@ -43,5 +45,7 @@ public interface EditItemContract {
         void imageAvailable();
 
         void imageCaptureFailed();
+
+        void itemChanged();
     }
 }
