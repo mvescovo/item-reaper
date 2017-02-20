@@ -180,7 +180,8 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         return super.onOptionsItemSelected(item);
     }
 
-    private void validateItem() {
+    @Override
+    public void validateItem() {
         boolean itemOk = true;
         if (mCategory.getText().toString().contentEquals("")) {
             mCategory.setError(getString(R.string.edit_category_error));
