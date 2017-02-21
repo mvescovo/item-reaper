@@ -180,4 +180,10 @@ public class EditItemPresenterTest {
         mEditItemPresenter.imageSelected(mUri);
         verify(mView).showImage(anyString());
     }
+
+    @Test
+    public void deleteImage_DeletesImage() {
+        mEditItemPresenter.deleteImage();
+        verify(mView).removeImage();
+    }
 }

@@ -32,6 +32,8 @@ public interface EditItemContract {
         void showImageError();
 
         void validateItem();
+
+        void removeImage();
     }
 
     interface Presenter {
@@ -53,5 +55,7 @@ public interface EditItemContract {
         void imageCaptureFailed();
 
         void itemChanged();
+
+        void deleteImage();
     }
 }

@@ -570,7 +570,48 @@ public class EditItemScreenTest {
 
     @Test
     public void selectImage_ShowsImage() {
-        // Stub a result from selecting an image with the picker
+        stubResultFromSelectingImagePicker();
+
+        // Click to select an image
+        onView(withId(R.id.action_select_image)).perform(click());
+
+        // Check that the image is displayed in the UI
+        onView(withId(R.id.edit_item_image)).perform(scrollTo())
+                .check(matches(allOf(
+                        hasDrawable(),
+                        isDisplayed())));
+    }
+
+    @Test
+    public void clickRemoveImage_RemovesImage() {
+        stubResultFromSelectingImagePicker();
+
+        // Click to select an image
+        onView(withId(R.id.action_select_image)).perform(click());
+
+        // Click remove image
+        onView(withId(R.id.edit_item_remove_image_button)).perform(scrollTo()).perform(click());
+
+        // Check the image is not displayed
+        try {
+            onView(withId(R.id.edit_item_image)).perform(scrollTo())
+                    .check(matches(allOf(
+                            hasDrawable(),
+                            not(isDisplayed()))));
+        } catch (PerformException ignore) {
+        }
+
+        // Check the remove image button is not displayed
+        try {
+            onView(withId(R.id.edit_item_remove_image_button)).perform(scrollTo())
+                    .check(matches(allOf(
+                            hasDrawable(),
+                            not(isDisplayed()))));
+        } catch (PerformException ignore) {
+        }
+    }
+
+    private void stubResultFromSelectingImagePicker() {
         Intent resultData = new Intent();
         FakeImageFileImpl fakeImageFile = new FakeImageFileImpl();
         fakeImageFile.create(mActivityRule.getActivity(), "fake_image", ".jpg");
@@ -582,14 +623,5 @@ public class EditItemScreenTest {
 
         // Make sure to close the keyboard otherwise scrolling won't work
         closeSoftKeyboard();
-
-        // Click to select an image
-        onView(withId(R.id.action_select_image)).perform(click());
-
-        // Check that the image is displayed in the UI
-        onView(withId(R.id.edit_item_image)).perform(scrollTo())
-                .check(matches(allOf(
-                        hasDrawable(),
-                        isDisplayed())));
     }
 }

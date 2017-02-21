@@ -424,6 +424,13 @@
                     android:contentDescription="@string/edit_item_image_description"
                     android:visibility="gone"/>
 
+                <Button
+                    android:id="@+id/edit_item_remove_image_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/edit_item_remove_image_button"
+                    android:visibility="gone"/>
+
             </LinearLayout>
 
         </ScrollView>

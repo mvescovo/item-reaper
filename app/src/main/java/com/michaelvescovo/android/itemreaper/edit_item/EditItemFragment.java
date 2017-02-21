@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -97,6 +98,8 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     TextView mNote;
     @BindView(R.id.edit_item_image)
     ImageView mItemImage;
+    @BindView(R.id.edit_item_remove_image_button)
+    Button mRemoveImageButton;
 
     private EditItemContract.Presenter mPresenter;
     private Callback mCallback;
@@ -141,6 +144,13 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                 && getArguments().getString(EditItemActivity.EXTRA_ITEM_ID) != null) {
             mItemId = getArguments().getString(EditItemActivity.EXTRA_ITEM_ID);
         }
+
+        mRemoveImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.deleteImage();
+            }
+        });
 
         /* TEMP */
 //        mItemId = "1";
@@ -431,8 +441,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public void openImagePicker() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/jpeg");
-//        startActivityForResult(Intent.createChooser(intent, "Complete action using"),
-//                REQUEST_CODE_PHOTO_PICKER);
         startActivityForResult(intent, REQUEST_CODE_PHOTO_PICKER);
     }
 
@@ -458,6 +466,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     @Override
     public void showImage(@NonNull String imageUrl) {
         mItemImage.setVisibility(View.VISIBLE);
+        mRemoveImageButton.setVisibility(View.VISIBLE);
         EspressoIdlingResource.increment();
         Glide.with(this)
                 .load(imageUrl)
@@ -473,6 +482,12 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                         }
                     }
                 });
+    }
+
+    @Override
+    public void removeImage() {
+        mItemImage.setVisibility(View.GONE);
+        mRemoveImageButton.setVisibility(View.GONE);
     }
 
     @Override
