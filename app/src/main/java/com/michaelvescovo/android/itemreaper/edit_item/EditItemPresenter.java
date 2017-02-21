@@ -120,8 +120,7 @@ class EditItemPresenter implements EditItemContract.Presenter {
                     EspressoIdlingResource.decrement();
                 }
                 if (newItemId != null) {
-                    Item newItem = new Item(newItemId);
-                    mRepository.saveItem(mSharedPreferencesHelper.getUserId(), newItem);
+                    mView.setNewItemId(newItemId);
                 }
             }
         });

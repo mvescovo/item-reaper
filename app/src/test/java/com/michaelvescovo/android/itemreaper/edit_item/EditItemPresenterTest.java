@@ -95,8 +95,8 @@ public class EditItemPresenterTest {
         // New itemId comes back
         mNewItemIdCallbackCaptor.getValue().onNewItemIdLoaded(ITEM_ID_1);
 
-        // Saves the new item
-        verify(mRepository).saveItem(anyString(), any(Item.class));
+        // Set new itemId in view
+        verify(mView).setNewItemId(anyString());
     }
 
     @Test

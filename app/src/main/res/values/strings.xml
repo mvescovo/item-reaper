@@ -28,10 +28,8 @@
     <string name="edit_discount_hint">Discount</string>
     <string name="edit_expiry_date_title">Expiry</string>
     <string name="edit_category_hint">Category</string>
-    <string name="edit_category_error">Category must not be empty</string>
     <string name="edit_sub_category_hint">Sub Category</string>
     <string name="edit_type_hint">Type</string>
-    <string name="edit_type_error">Type must not be empty</string>
     <string name="edit_sub_type_hint">Sub Type</string>
     <string name="edit_sub_type2_hint">Sub Type 2</string>
     <string name="edit_sub_type3_hint">Sub Type 3</string>

@@ -19,6 +19,8 @@ public interface EditItemContract {
 
         void setProgressBar(boolean active);
 
+        void setNewItemId(String itemId);
+
         void showExistingItem(Item item);
 
         void showItemsUi();
