@@ -11,8 +11,8 @@
     <!--EditItem-->
     <string name="menu_take_photo">Take Photo</string>
     <string name="menu_select_image">Select Image</string>
-    <string name="edit_required">Required</string>
-    <string name="edit_optional">Optional</string>
+    <string name="edit_purchase_details_title">Purchase details</string>
+    <string name="edit_item_details_title">Item details</string>
     <string name="edit_purchase_date_title">Purchase Date</string>
     <string name="edit_date_day_hint">Day</string>
     <string name="edit_date_day_error">Day Required</string>
@@ -25,11 +25,11 @@
     <string name="edit_date_year_error_invalid">Year must be a number</string>
     <string name="edit_price_paid_hint">Price Paid</string>
     <string name="edit_discount_hint">Discount</string>
-    <string name="edit_expiry_date_title">Expiry *</string>
-    <string name="edit_category_hint">Category *</string>
+    <string name="edit_expiry_date_title">Expiry</string>
+    <string name="edit_category_hint">Category</string>
     <string name="edit_category_error">Category must not be empty</string>
     <string name="edit_sub_category_hint">Sub Category</string>
-    <string name="edit_type_hint">Type *</string>
+    <string name="edit_type_hint">Type</string>
     <string name="edit_type_error">Type must not be empty</string>
     <string name="edit_sub_type_hint">Sub Type</string>
     <string name="edit_sub_type2_hint">Sub Type 2</string>

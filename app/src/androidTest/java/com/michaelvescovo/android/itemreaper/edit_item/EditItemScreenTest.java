@@ -92,12 +92,6 @@ public class EditItemScreenTest {
     }
 
     @Test
-    public void requiredTitleVisible() {
-        closeSoftKeyboard();
-        onView(withId(R.id.edit_required)).perform(scrollTo()).check(matches(isDisplayed()));
-    }
-
-    @Test
     public void categoryEditTextVisible() {
         closeSoftKeyboard();
         onView(withId(R.id.edit_category)).perform(scrollTo()).check(matches(isDisplayed()));
@@ -188,9 +182,15 @@ public class EditItemScreenTest {
     }
 
     @Test
-    public void optionalTitleVisible() {
+    public void purchaseDetailsTitleVisible() {
         closeSoftKeyboard();
-        onView(withId(R.id.edit_optional)).perform(scrollTo()).check(matches(isDisplayed()));
+        onView(withId(R.id.edit_purchase_details_title)).perform(scrollTo()).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void itemDetailsTitleVisible() {
+        closeSoftKeyboard();
+        onView(withId(R.id.edit_item_details_title)).perform(scrollTo()).check(matches(isDisplayed()));
     }
 
     @Test
