@@ -61,6 +61,9 @@ public class EditItemPresenterTest {
     @Mock
     Context mContext;
 
+    @Mock
+    Uri mUri;
+
     @Parameterized.Parameters
     public static Iterable<?> data() {
         return Arrays.asList(
@@ -168,5 +171,13 @@ public class EditItemPresenterTest {
     public void itemChanged_ItemValidated() {
         mEditItemPresenter.itemChanged();
         verify(mView).validateItem();
+    }
+
+    @Test
+    public void selectImage_CreatesFileAndSelectsImage() {
+        mEditItemPresenter.selectImage(mContext);
+        verify(mView).openImagePicker();
+        mEditItemPresenter.imageSelected(mUri);
+        verify(mView).showImage(anyString());
     }
 }

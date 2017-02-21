@@ -25,6 +25,8 @@ public interface EditItemContract {
 
         void openCamera(Uri saveTo);
 
+        void openImagePicker();
+
         void showImage(@NonNull String imageUrl);
 
         void showImageError();
@@ -43,6 +45,10 @@ public interface EditItemContract {
         void takePicture(Context context);
 
         void imageAvailable();
+
+        void selectImage(Context context);
+
+        void imageSelected(Uri uri);
 
         void imageCaptureFailed();
 

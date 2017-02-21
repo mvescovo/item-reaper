@@ -3,6 +3,7 @@ package com.michaelvescovo.android.itemreaper.edit_item;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.PerformException;
@@ -11,6 +12,7 @@ import android.support.test.filters.LargeTest;
 
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.Item;
+import com.michaelvescovo.android.itemreaper.util.FakeImageFileImpl;
 
 import org.junit.After;
 import org.junit.Before;
@@ -558,6 +560,31 @@ public class EditItemScreenTest {
 
         // Take picture with camera
         onView(withId(R.id.action_take_photo)).perform(click());
+
+        // Check that the image is displayed in the UI
+        onView(withId(R.id.edit_item_image)).perform(scrollTo())
+                .check(matches(allOf(
+                        hasDrawable(),
+                        isDisplayed())));
+    }
+
+    @Test
+    public void selectImage_ShowsImage() {
+        // Stub a result from selecting an image with the picker
+        Intent resultData = new Intent();
+        FakeImageFileImpl fakeImageFile = new FakeImageFileImpl();
+        fakeImageFile.create(mActivityRule.getActivity(), "fake_image", ".jpg");
+        Uri selectedImageUri = fakeImageFile.getUri();
+        resultData.setData(selectedImageUri);
+        Instrumentation.ActivityResult result =
+                new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
+        intending(hasAction(Intent.ACTION_GET_CONTENT)).respondWith(result);
+
+        // Make sure to close the keyboard otherwise scrolling won't work
+        closeSoftKeyboard();
+
+        // Click to select an image
+        onView(withId(R.id.action_select_image)).perform(click());
 
         // Check that the image is displayed in the UI
         onView(withId(R.id.edit_item_image)).perform(scrollTo())

@@ -1,6 +1,7 @@
 package com.michaelvescovo.android.itemreaper.edit_item;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -64,11 +65,15 @@ class EditItemPresenter implements EditItemContract.Presenter {
 
     @Override
     public void takePicture(Context context) {
+        createFile(context);
+        mView.openCamera(mImageFile.getUri());
+    }
+
+    private void createFile(Context context) {
         String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmmss",
                 Locale.getDefault()).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         mImageFile.create(context, imageFileName, ".jpg");
-        mView.openCamera(mImageFile.getUri());
     }
 
     @Override
@@ -78,6 +83,16 @@ class EditItemPresenter implements EditItemContract.Presenter {
         } else {
             imageCaptureFailed();
         }
+    }
+
+    @Override
+    public void selectImage(Context context) {
+        mView.openImagePicker();
+    }
+
+    @Override
+    public void imageSelected(Uri uri) {
+        mView.showImage(uri.toString());
     }
 
     @Override

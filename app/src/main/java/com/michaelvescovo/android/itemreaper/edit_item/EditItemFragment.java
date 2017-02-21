@@ -1,6 +1,5 @@
 package com.michaelvescovo.android.itemreaper.edit_item;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -34,6 +33,8 @@ import java.util.Calendar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * @author Michael Vescovo
  */
@@ -41,6 +42,8 @@ import butterknife.ButterKnife;
 public class EditItemFragment extends AppCompatDialogFragment implements EditItemContract.View {
 
     public static final int REQUEST_CODE_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_CODE_PHOTO_PICKER = 2;
+
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -175,6 +178,9 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         switch (item.getItemId()) {
             case R.id.action_take_photo:
                 mPresenter.takePicture(getContext());
+                break;
+            case R.id.action_select_image:
+                mPresenter.selectImage(getContext());
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -422,12 +428,30 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     }
 
     @Override
+    public void openImagePicker() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/jpeg");
+//        startActivityForResult(Intent.createChooser(intent, "Complete action using"),
+//                REQUEST_CODE_PHOTO_PICKER);
+        startActivityForResult(intent, REQUEST_CODE_PHOTO_PICKER);
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            mPresenter.imageAvailable();
-        } else {
-            mPresenter.imageCaptureFailed();
+        if (requestCode == REQUEST_CODE_IMAGE_CAPTURE) {
+            if (resultCode == RESULT_OK) {
+                mPresenter.imageAvailable();
+            } else {
+                mPresenter.imageCaptureFailed();
+            }
+        } else if (requestCode == REQUEST_CODE_PHOTO_PICKER) {
+            if (resultCode == RESULT_OK) {
+                Uri selectedImageUri = data.getData();
+                mPresenter.imageSelected(selectedImageUri);
+            } else {
+                mPresenter.imageCaptureFailed();
+            }
         }
     }
 
