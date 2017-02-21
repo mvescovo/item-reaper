@@ -150,16 +150,6 @@ public class ItemsScreenTest {
     }
 
     @Test
-    public void checkSaveMenuOptionDoesNotExistInDialogMode() {
-        // This happened so I put a test in.
-        if (mIsLargeScreen) {
-            openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
-            onView(withText(R.string.menu_about)).perform(click());
-//            onView(withId(R.id.action_save)).check(doesNotExist());
-        }
-    }
-
-    @Test
     public void SignOutMenuItemVisible() {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         onView(withText(R.string.menu_sign_out)).check(matches(isDisplayed()));
