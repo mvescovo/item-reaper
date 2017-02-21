@@ -24,7 +24,10 @@ import android.support.annotation.VisibleForTesting;
 import android.support.v4.content.FileProvider;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Fake implementation of {@link ImageFile} to inject a fake image in a hermetic test.
@@ -49,6 +52,37 @@ public class FakeImageFileImpl implements ImageFile {
             mImageFile.deleteOnExit();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        // For the fake image file, copy the sample image in assets to the file.
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        try {
+            inputStream = context.getAssets().open("black-t-shirt.jpg");
+            outputStream = new FileOutputStream(mImageFile);
+            copyFile(inputStream, outputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException ignore) {}
+            }
+            if (outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (IOException ignore) {}
+            }
+        }
+    }
+
+    private void copyFile(InputStream inputStream, OutputStream outputStream) throws IOException {
+        byte[] buffer = new byte[1024];
+        int read;
+        while((read = inputStream.read(buffer)) != -1){
+            outputStream.write(buffer, 0, read);
         }
     }
 
