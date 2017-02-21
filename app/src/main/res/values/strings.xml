@@ -11,6 +11,7 @@
     <!--EditItem-->
     <string name="menu_take_photo">Take Photo</string>
     <string name="menu_select_image">Select Image</string>
+    <string name="menu_delete_item">Delete Item</string>
     <string name="edit_purchase_details_title">Purchase details</string>
     <string name="edit_item_details_title">Item details</string>
     <string name="edit_purchase_date_title">Purchase Date</string>
