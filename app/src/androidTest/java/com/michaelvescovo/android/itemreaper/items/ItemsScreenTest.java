@@ -176,18 +176,10 @@ public class ItemsScreenTest {
         // Click to add item
         onView(withId(R.id.edit_item)).perform(click());
 
-        // Type category
-        onView(withId(R.id.edit_category)).perform(scrollTo())
-                .perform(typeText(mItem.getCategory()), closeSoftKeyboard());
-
-        // Type type
-        onView(withId(R.id.edit_type)).perform(scrollTo())
-                .perform(typeText(mItem.getType()), closeSoftKeyboard());
-
-        // Type primary colour
-        if (mItem.getPrimaryColour() != null) {
-            onView(withId(R.id.edit_primary_colour)).perform(scrollTo())
-                    .perform(typeText(mItem.getPrimaryColour()), closeSoftKeyboard());
+        // Type price paid
+        if (mItem.getPricePaid() != -1) {
+            onView(withId(R.id.edit_price_paid)).perform(scrollTo())
+                    .perform(typeText(String.valueOf(mItem.getPricePaid())), closeSoftKeyboard());
         }
 
         // Type expiry
@@ -204,14 +196,19 @@ public class ItemsScreenTest {
         onView(withId(R.id.edit_expiry_date_year)).perform(scrollTo())
                 .perform(typeText(String.valueOf(expiryYear)), closeSoftKeyboard());
 
-        // Type price paid
-        if (mItem.getPricePaid() != -1) {
-            onView(withId(R.id.edit_price_paid)).perform(scrollTo())
-                    .perform(typeText(String.valueOf(mItem.getPricePaid())), closeSoftKeyboard());
-        }
+        // Type category
+        onView(withId(R.id.edit_category)).perform(scrollTo())
+                .perform(typeText(mItem.getCategory()), closeSoftKeyboard());
 
-        // Click to save item
-//        onView(withId(R.id.action_save)).perform(click());
+        // Type type
+        onView(withId(R.id.edit_type)).perform(scrollTo())
+                .perform(typeText(mItem.getType()), closeSoftKeyboard());
+
+        // Type primary colour
+        if (mItem.getPrimaryColour() != null) {
+            onView(withId(R.id.edit_primary_colour)).perform(scrollTo())
+                    .perform(typeText(mItem.getPrimaryColour()), closeSoftKeyboard());
+        }
 
         /*
         * Confirm item shows in list
@@ -220,6 +217,15 @@ public class ItemsScreenTest {
         // Scroll to item
         onView(withId(R.id.recycler_view)).perform(RecyclerViewActions
                 .scrollTo(hasDescendant(withText(mItem.getCategory()))));
+
+        // Check price paid
+        if (mItem.getPricePaid() != -1) {
+            onView(withText("Paid: $" + mItem.getPricePaid())).check(matches(isDisplayed()));
+        }
+
+        // Check expiry
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yy", Locale.getDefault());
+        onView(withText("Expires: " + simpleDateFormat.format(expiry.getTime()))).check(matches(isDisplayed()));
 
         // Check category
         onView(withText(mItem.getCategory())).check(matches(isDisplayed()));
@@ -230,15 +236,6 @@ public class ItemsScreenTest {
         // Check primary colour
         if (mItem.getPrimaryColour() != null) {
             onView(withText(mItem.getPrimaryColour())).check(matches(isDisplayed()));
-        }
-
-        // Check expiry
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yy", Locale.getDefault());
-        onView(withText("Expires: " + simpleDateFormat.format(expiry.getTime()))).check(matches(isDisplayed()));
-
-        // Check price paid
-        if (mItem.getPricePaid() != -1) {
-            onView(withText("Paid: $" + mItem.getPricePaid())).check(matches(isDisplayed()));
         }
     }
 }

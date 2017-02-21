@@ -11,6 +11,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,7 +42,8 @@ import static android.app.Activity.RESULT_OK;
  * @author Michael Vescovo
  */
 
-public class EditItemFragment extends AppCompatDialogFragment implements EditItemContract.View {
+public class EditItemFragment extends AppCompatDialogFragment implements EditItemContract.View,
+        TextWatcher {
 
     public static final int REQUEST_CODE_IMAGE_CAPTURE = 1;
     private static final int REQUEST_CODE_PHOTO_PICKER = 2;
@@ -145,17 +148,43 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
             mItemId = getArguments().getString(EditItemActivity.EXTRA_ITEM_ID);
         }
 
+        configureViews();
+
+        /* TEMP */
+//        mItemId = "1";
+
+        return root;
+    }
+
+    private void configureViews() {
+        mPurchaseDateDay.addTextChangedListener(this);
+        mPurchaseDateMonth.addTextChangedListener(this);
+        mPurchaseDateYear.addTextChangedListener(this);
+        mShop.addTextChangedListener(this);
+        mPricePaid.addTextChangedListener(this);
+        mDiscount.addTextChangedListener(this);
+        mExpiryDay.addTextChangedListener(this);
+        mExpiryMonth.addTextChangedListener(this);
+        mExpiryYear.addTextChangedListener(this);
+        mCategory.addTextChangedListener(this);
+        mSubCategory.addTextChangedListener(this);
+        mType.addTextChangedListener(this);
+        mSubType.addTextChangedListener(this);
+        mSubType2.addTextChangedListener(this);
+        mSubType3.addTextChangedListener(this);
+        mPrimaryColour.addTextChangedListener(this);
+        mPrimaryColourShade.addTextChangedListener(this);
+        mSecondaryColour.addTextChangedListener(this);
+        mSize.addTextChangedListener(this);
+        mBrand.addTextChangedListener(this);
+        mDescription.addTextChangedListener(this);
+        mNote.addTextChangedListener(this);
         mRemoveImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mPresenter.deleteImage();
             }
         });
-
-        /* TEMP */
-//        mItemId = "1";
-
-        return root;
     }
 
     @Override
@@ -199,60 +228,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     @Override
     public void validateItem() {
         boolean itemOk = true;
-        if (mCategory.getText().toString().contentEquals("")) {
-            mCategory.setError(getString(R.string.edit_category_error));
-            mCategory.requestFocus();
-            itemOk = false;
-        }
-
-        if (mType.getText().toString().contentEquals("")) {
-            mType.setError(getString(R.string.edit_type_error));
-            mType.requestFocus();
-            itemOk = false;
-        }
-
-        int expiryDateDay = -1;
-        int expiryDateMonth = -1;
-        int expiryDateYear = -1;
-        Calendar expiryDate = null;
-        if (!mExpiryDay.getText().toString().contentEquals("")) {
-            try {
-                expiryDateDay = Integer.parseInt(mExpiryDay.getText().toString());
-            } catch (NumberFormatException e) {
-                itemOk = false;
-                mExpiryDay.setError(getString(R.string.edit_date_day_error_invalid));
-            }
-        } else {
-            mExpiryDay.setError(getString(R.string.edit_date_day_error));
-        }
-        if (!mExpiryMonth.getText().toString().contentEquals("")) {
-            try {
-                expiryDateMonth = Integer.parseInt(mExpiryMonth.getText().toString());
-                expiryDateMonth--; // Java month starts at 0
-            } catch (NumberFormatException e) {
-                itemOk = false;
-                mExpiryMonth.setError(getString(R.string.edit_date_month_error_invalid));
-            }
-        } else {
-            mExpiryMonth.setError(getString(R.string.edit_date_month_error));
-        }
-        if (!mExpiryYear.getText().toString().contentEquals("")) {
-            try {
-                expiryDateYear = Integer.parseInt(mExpiryYear.getText().toString());
-            } catch (NumberFormatException e) {
-                itemOk = false;
-                mExpiryYear.setError(getString(R.string.edit_date_year_error_invalid));
-            }
-        } else {
-            mExpiryYear.setError(getString(R.string.edit_date_year_error));
-        }
-        if (expiryDateDay != -1 && expiryDateMonth != -1 && expiryDateYear != -1) {
-            expiryDate = Calendar.getInstance();
-            expiryDate.set(expiryDateYear, expiryDateMonth, expiryDateDay);
-        }
-        if (expiryDate == null) {
-            itemOk = false;
-        }
 
         int purchaseDateDay = -1;
         int purchaseDateMonth = -1;
@@ -282,14 +257,48 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
             discount = Integer.parseInt(mDiscount.getText().toString());
         }
 
+        int expiryDateDay = -1;
+        int expiryDateMonth = -1;
+        int expiryDateYear = -1;
+        Calendar expiryDate = null;
+        if (!mExpiryDay.getText().toString().contentEquals("")) {
+            try {
+                expiryDateDay = Integer.parseInt(mExpiryDay.getText().toString());
+            } catch (NumberFormatException e) {
+                itemOk = false;
+                mExpiryDay.setError(getString(R.string.edit_date_day_error_invalid));
+            }
+        }
+        if (!mExpiryMonth.getText().toString().contentEquals("")) {
+            try {
+                expiryDateMonth = Integer.parseInt(mExpiryMonth.getText().toString());
+                expiryDateMonth--; // Java month starts at 0
+            } catch (NumberFormatException e) {
+                itemOk = false;
+                mExpiryMonth.setError(getString(R.string.edit_date_month_error_invalid));
+            }
+        }
+        if (!mExpiryYear.getText().toString().contentEquals("")) {
+            try {
+                expiryDateYear = Integer.parseInt(mExpiryYear.getText().toString());
+            } catch (NumberFormatException e) {
+                itemOk = false;
+                mExpiryYear.setError(getString(R.string.edit_date_year_error_invalid));
+            }
+        }
+        if (expiryDateDay != -1 && expiryDateMonth != -1 && expiryDateYear != -1) {
+            expiryDate = Calendar.getInstance();
+            expiryDate.set(expiryDateYear, expiryDateMonth, expiryDateDay);
+        }
+
+
         if (itemOk) {
-            // Use "-1" as temporary ID. The real ID is set by the remote DataSource.
             Item newItem = new Item(
-                    "-1",
+                    mItemId,
                     purchaseDate == null ? -1 : purchaseDate.getTimeInMillis(),
                     pricePaid,
                     discount,
-                    expiryDate.getTimeInMillis(),
+                    expiryDate == null ? -1 : expiryDate.getTimeInMillis(),
                     mCategory.getText().toString(),
                     mSubCategory.getText().toString(),
                     mType.getText().toString(),
@@ -318,6 +327,11 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         } else {
             mProgressBar.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void setNewItemId(String itemId) {
+        mItemId = itemId;
     }
 
     @Override
@@ -493,6 +507,21 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     @Override
     public void showImageError() {
 
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        // Nothing to do here.
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        mPresenter.itemChanged();
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        // Nothing to do here.
     }
 
     public interface Callback {
