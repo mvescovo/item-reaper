@@ -14,4 +14,10 @@
         android:title="@string/menu_select_image"
         app:showAsAction="ifRoom"/>
 
+    <item
+        android:id="@+id/action_delete_item"
+        android:icon="@drawable/ic_delete_white_24dp"
+        android:title="@string/menu_select_image"
+        app:showAsAction="ifRoom"/>
+
 </menu>
