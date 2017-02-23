@@ -8,9 +8,7 @@ import com.michaelvescovo.android.itemreaper.data.DataSource;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.data.Repository;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -52,18 +50,10 @@ class ItemsPresenter implements ItemsContract.Presenter {
                 if (itemIds != null) {
                     if (itemIds.size() > 0) {
                         mView.showNoItemsText(false);
-                        final Map<String, Item> items = new HashMap<>();
-                        for (final String itemId :
-                                itemIds) {
-                            mRepository.getItem(itemId, new DataSource.GetItemCallback() {
-                                @Override
-                                public void onItemLoaded(@Nullable Item item) {
-                                    items.put(itemId, item);
-                                }
-                            });
+                        for (final String itemId : itemIds) {
+                            getItem(itemId);
                         }
                         mView.setProgressBar(false);
-                        mView.showItems(items);
                     } else {
                         mView.setProgressBar(false);
                         mView.showNoItemsText(true);
@@ -72,6 +62,16 @@ class ItemsPresenter implements ItemsContract.Presenter {
             }
         });
     }
+
+    private void getItem(String itemId) {
+        mRepository.getItem(itemId, new DataSource.GetItemCallback() {
+            @Override
+            public void onItemLoaded(@Nullable Item item) {
+                mView.showItem(item);
+            }
+        });
+    }
+
 
     @Override
     public void openItemDetails(Item item) {
@@ -92,5 +92,11 @@ class ItemsPresenter implements ItemsContract.Presenter {
     public void openSignOut() {
         mFirebaseAuth.signOut();
         mView.showAuthUi();
+    }
+
+    @Override
+    public void clearListeners() {
+        mRepository.stopGetItemIds();
+        mRepository.stopGetItem();
     }
 }

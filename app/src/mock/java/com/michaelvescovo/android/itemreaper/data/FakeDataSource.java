@@ -21,7 +21,6 @@ public class FakeDataSource implements DataSource {
     public final static String USER_ID = "testUser";
     public final static List<String> ITEM_IDS = Lists.newArrayList();
     public final static Map<String, Item> ITEMS = Maps.newHashMap();
-
     /*
     * Test item 1.
     * - Has all fields filled in (each must be unique to prevent ambiguous matcher exceptions).
@@ -36,7 +35,6 @@ public class FakeDataSource implements DataSource {
             "Short sleeve", "V-neck", "Plain", "Black", "Dark", "None", "Small", "Industrie",
             "Industrie Outlet", "Standard plain T-shirt", "Some note",
             "file:///android_asset/black-t-shirt.jpg", false);
-
     /*
     * Test item 2.
     * - Has some fields filled in but not all.
@@ -50,6 +48,8 @@ public class FakeDataSource implements DataSource {
             "Bathroom", null,
             "Towel", null, null, null, "White", null, null, null, null, null, null, null, null,
             false);
+    private ItemIdsListener mItemIdsListener;
+    private Map<String, ItemChangedListener> mItemChangedListeners = Maps.newHashMap();
 
     FakeDataSource() {
         ITEM_IDS.add(ITEM_ID_1);
@@ -59,15 +59,26 @@ public class FakeDataSource implements DataSource {
     }
 
     @Override
-    public void getItemIds(@NonNull String userId, @NonNull GetItemIdsCallback callback) {
-        if (ITEM_IDS != null) {
-            callback.onItemIdsLoaded(ITEM_IDS);
+    public void getItemIds(@NonNull String userId, @NonNull final GetItemIdsCallback callback) {
+        if (mItemIdsListener == null) {
+            mItemIdsListener = new ItemIdsListener() {
+                @Override
+                public void itemIdsChanged(List<String> itemIds) {
+                    if (itemIds != null) {
+                        callback.onItemIdsLoaded(itemIds);
+                    } else {
+                    }
+                }
+            };
+            mItemIdsListener.itemIdsChanged(ITEM_IDS);
+        } else {
+            mItemIdsListener.itemIdsChanged(ITEM_IDS);
         }
     }
 
     @Override
     public void stopGetItemIds() {
-        // Nothing to do here since this data source doesn't have listeners.
+        mItemIdsListener = null;
     }
 
     @Override
@@ -76,9 +87,20 @@ public class FakeDataSource implements DataSource {
     }
 
     @Override
-    public void getItem(@NonNull String itemId, @NonNull GetItemCallback callback) {
-        if (ITEMS.containsKey(itemId)) {
-            callback.onItemLoaded(ITEMS.get(itemId));
+    public void getItem(@NonNull final String itemId, @NonNull final GetItemCallback callback) {
+        if (mItemChangedListeners.get(itemId) == null) {
+            ItemChangedListener itemChangedListener = new ItemChangedListener() {
+                @Override
+                public void itemChanged(Item item) {
+                    if (item != null) {
+                        callback.onItemLoaded(item);
+                    }
+                }
+            };
+            mItemChangedListeners.put(itemId, itemChangedListener);
+            mItemChangedListeners.get(itemId).itemChanged(ITEMS.get(itemId));
+        } else {
+            mItemChangedListeners.get(itemId).itemChanged(ITEMS.get(itemId));
         }
     }
 
@@ -90,7 +112,7 @@ public class FakeDataSource implements DataSource {
 
     @Override
     public void stopGetItem() {
-        // Nothing to do here since this data source doesn't have listeners.
+        mItemChangedListeners.clear();
     }
 
     @Override
@@ -100,8 +122,16 @@ public class FakeDataSource implements DataSource {
 
     @Override
     public void saveItem(@NonNull String userId, @NonNull Item item) {
-        ITEM_IDS.add(item.getId());
-        ITEMS.put(item.getId(), item);
+        if (!ITEM_IDS.contains(item.getId())) {
+            ITEM_IDS.add(item.getId());
+            ITEMS.put(item.getId(), item);
+            if (mItemIdsListener != null) {
+                mItemIdsListener.itemIdsChanged(ITEM_IDS);
+            }
+        } else {
+            ITEMS.put(item.getId(), item);
+            mItemChangedListeners.get(item.getId()).itemChanged(item);
+        }
     }
 
     @Override
@@ -113,5 +143,15 @@ public class FakeDataSource implements DataSource {
     public void deleteAllItems(@NonNull String userId) {
         refreshItemIds();
         refreshItems();
+    }
+
+    private interface ItemIdsListener {
+
+        void itemIdsChanged(List<String> itemIds);
+    }
+
+    private interface ItemChangedListener {
+
+        void itemChanged(Item item);
     }
 }

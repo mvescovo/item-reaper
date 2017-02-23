@@ -20,7 +20,6 @@ import java.util.List;
 
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyMapOf;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -98,11 +97,17 @@ public class ItemsPresenterTest {
 
             // Get an item for each itemId.
             verify(mRepository, times(mItemIds.size())).getItem(anyString(),
-                    any(DataSource.GetItemCallback.class));
+                    mGetItemCallbackCaptor.capture());
+
+            // Stub a result for each getItem call
+            for (int i = 0; i < mItemIds.size(); i++) {
+                mGetItemCallbackCaptor.getValue().onItemLoaded(any(Item.class));
+            }
+
+            // Show an item for each itemId.
+            verify(mView, times(mItemIds.size())).showItem(any(Item.class));
 
             verify(mView).setProgressBar(false);
-
-            verify(mView).showItems(anyMapOf(String.class, Item.class));
         } else {
             verify(mView).setProgressBar(false);
 

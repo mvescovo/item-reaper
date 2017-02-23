@@ -2,8 +2,6 @@ package com.michaelvescovo.android.itemreaper.items;
 
 import com.michaelvescovo.android.itemreaper.data.Item;
 
-import java.util.Map;
-
 /**
  * @author Michael Vescovo
  */
@@ -16,7 +14,7 @@ interface ItemsContract {
 
         void setProgressBar(boolean active);
 
-        void showItems(Map<String, Item> items);
+        void showItem(Item item);
 
         void showItemDetailsUi(String itemId);
 
@@ -40,6 +38,8 @@ interface ItemsContract {
         void openAbout();
 
         void openSignOut();
+
+        void clearListeners();
     }
 
 }

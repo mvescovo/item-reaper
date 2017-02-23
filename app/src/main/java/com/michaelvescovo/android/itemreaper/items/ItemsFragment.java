@@ -120,6 +120,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     public void onDetach() {
         super.onDetach();
         mCallback = null;
+        mPresenter.clearListeners();
     }
 
     @Override
@@ -146,8 +147,8 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     }
 
     @Override
-    public void showItems(Map<String, Item> items) {
-        mItemsAdapter.replaceItems(items);
+    public void showItem(Item item) {
+        mItemsAdapter.replaceItem(item);
     }
 
     @Override
@@ -232,10 +233,11 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             return mItemIds.size();
         }
 
-        void replaceItems(@NonNull Map<String, Item> items) {
-            mItems = items;
-            mItemIds.clear();
-            mItemIds.addAll(mItems.keySet());
+        void replaceItem(@NonNull Item item) {
+            mItems.put(item.getId(), item);
+            if (!mItemIds.contains(item.getId())) {
+                mItemIds.add(item.getId());
+            }
             notifyDataSetChanged();
         }
 
@@ -247,7 +249,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             TextView mExpiry;
             TextView mPaid;
             ImageView mExpire;
-
 
             ViewHolder(final View itemView) {
                 super(itemView);
