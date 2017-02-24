@@ -106,6 +106,12 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.clearListeners();
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {

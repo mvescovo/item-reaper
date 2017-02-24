@@ -66,7 +66,6 @@ public class FakeDataSource implements DataSource {
                 public void itemIdsChanged(List<String> itemIds) {
                     if (itemIds != null) {
                         callback.onItemIdsLoaded(itemIds);
-                    } else {
                     }
                 }
             };
@@ -125,9 +124,7 @@ public class FakeDataSource implements DataSource {
         if (!ITEM_IDS.contains(item.getId())) {
             ITEM_IDS.add(item.getId());
             ITEMS.put(item.getId(), item);
-            if (mItemIdsListener != null) {
-                mItemIdsListener.itemIdsChanged(ITEM_IDS);
-            }
+            mItemIdsListener.itemIdsChanged(ITEM_IDS);
         } else {
             ITEMS.put(item.getId(), item);
             mItemChangedListeners.get(item.getId()).itemChanged(item);

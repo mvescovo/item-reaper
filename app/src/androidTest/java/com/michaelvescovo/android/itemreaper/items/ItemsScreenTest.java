@@ -60,10 +60,16 @@ public class ItemsScreenTest {
                 protected void beforeActivityLaunched() {
                     super.beforeActivityLaunched();
                     ((ItemReaperApplication) InstrumentationRegistry.getTargetContext()
-                                    .getApplicationContext()).getRepositoryComponent()
-                                    .getRepository().deleteAllItems(USER_ID);
+                            .getApplicationContext()).getRepositoryComponent()
+                            .getRepository().deleteAllItems(USER_ID);
                 }
             };
+    private Item mItem;
+    private boolean mIsLargeScreen;
+
+    public ItemsScreenTest(Item item) {
+        mItem = item;
+    }
 
     @Parameterized.Parameters
     public static Iterable<?> data() {
@@ -72,14 +78,6 @@ public class ItemsScreenTest {
                 ITEM_2
         );
     }
-
-    private Item mItem;
-
-    public ItemsScreenTest(Item item) {
-        mItem = item;
-    }
-
-    private boolean mIsLargeScreen;
 
     @Before
     public void setup() {
@@ -197,10 +195,12 @@ public class ItemsScreenTest {
                 .perform(typeText(String.valueOf(expiryYear)), closeSoftKeyboard());
 
         // Type category
+        //noinspection ConstantConditions
         onView(withId(R.id.edit_category)).perform(scrollTo())
                 .perform(typeText(mItem.getCategory()), closeSoftKeyboard());
 
         // Type type
+        //noinspection ConstantConditions
         onView(withId(R.id.edit_type)).perform(scrollTo())
                 .perform(typeText(mItem.getType()), closeSoftKeyboard());
 
@@ -213,6 +213,9 @@ public class ItemsScreenTest {
         /*
         * Confirm item shows in list
         * */
+
+        // Navigate back to the list
+        onView(withContentDescription("Navigate up")).perform(click());
 
         // Scroll to item
         onView(withId(R.id.recycler_view)).perform(RecyclerViewActions
