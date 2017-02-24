@@ -55,7 +55,6 @@ public class ItemsScreenTest {
     @Rule
     public IntentsTestRule<ItemsActivity> mActivityRule =
             new IntentsTestRule<ItemsActivity>(ItemsActivity.class) {
-
                 @Override
                 protected void beforeActivityLaunched() {
                     super.beforeActivityLaunched();
