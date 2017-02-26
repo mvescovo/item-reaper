@@ -48,7 +48,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public static final int REQUEST_CODE_IMAGE_CAPTURE = 1;
     private static final int REQUEST_CODE_PHOTO_PICKER = 2;
 
-
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.appbar_title)
@@ -151,7 +150,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         configureViews();
 
         /* TEMP */
-//        mItemId = "1";
+        mItemId = "1";
 
         return root;
     }
@@ -190,6 +189,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     @Override
     public void onResume() {
         super.onResume();
+        mPresenter.clearEditListeners();
         mPresenter.editItem(mItemId);
     }
 
@@ -352,9 +352,15 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
             int month = expiry.get(Calendar.MONTH);
             month++; // Months start at 0.
             int year = expiry.get(Calendar.YEAR);
-            mExpiryDay.setText(String.valueOf(day));
-            mExpiryMonth.setText(String.valueOf(month));
-            mExpiryYear.setText(String.valueOf(year));
+            if (!String.valueOf(day).equals(mExpiryDay.getText().toString())) {
+                mExpiryDay.setText(String.valueOf(day));
+            }
+            if (!String.valueOf(month).equals(mExpiryMonth.getText().toString())) {
+                mExpiryMonth.setText(String.valueOf(month));
+            }
+            if (!String.valueOf(year).equals(mExpiryYear.getText().toString())) {
+                mExpiryYear.setText(String.valueOf(year));
+            }
         }
 
         if (item.getPrimaryColour() != null
@@ -369,9 +375,15 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
             int month = purchaseDate.get(Calendar.MONTH);
             month++; // Months start at 0.
             int year = purchaseDate.get(Calendar.YEAR);
-            mPurchaseDateDay.setText(String.valueOf(day));
-            mPurchaseDateMonth.setText(String.valueOf(month));
-            mPurchaseDateYear.setText(String.valueOf(year));
+            if (!String.valueOf(day).equals(mPurchaseDateDay.getText().toString())) {
+                mPurchaseDateDay.setText(String.valueOf(day));
+            }
+            if (!String.valueOf(month).equals(mPurchaseDateMonth.getText().toString())) {
+                mPurchaseDateMonth.setText(String.valueOf(month));
+            }
+            if (!String.valueOf(year).equals(mPurchaseDateYear.getText().toString())) {
+                mPurchaseDateYear.setText(String.valueOf(year));
+            }
         }
 
         if (item.getPricePaid() != -1

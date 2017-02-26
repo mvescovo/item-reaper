@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEMS;
+import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEMS_CALLER;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_IDS;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_ID_1;
@@ -86,23 +87,23 @@ public class RepositoryTest {
     @Test
     public void getItem_CacheAfterFirstCall() {
         // First call.
-        mRepository.getItem(ITEM_ID_1, mGetItemCallback);
+        mRepository.getItem(ITEM_ID_1, ITEMS_CALLER, mGetItemCallback);
         // Trigger callback.
-        verify(mRemoteDataSource).getItem(anyString(), mItemCallbackCaptor.capture());
+        verify(mRemoteDataSource).getItem(anyString(), anyString(), mItemCallbackCaptor.capture());
         // Set the callback data.
         mItemCallbackCaptor.getValue().onItemLoaded(ITEM_1);
         // Second call.
-        mRepository.getItem(ITEM_ID_1, mGetItemCallback);
+        mRepository.getItem(ITEM_ID_1, ITEMS_CALLER, mGetItemCallback);
         // Confirm the total calls to the remote data source is only 1; the cache was used.
-        verify(mRemoteDataSource, times(1)).getItem(anyString(), any(DataSource.GetItemCallback.class));
+        verify(mRemoteDataSource, times(1)).getItem(anyString(), anyString(), any(DataSource.GetItemCallback.class));
     }
 
     @Test
     public void stopGetItem() {
         // Cal repository.
-        mRepository.stopGetItem();
+        mRepository.stopGetItem("items");
         // Confirm remote data source called.
-        verify(mRemoteDataSource).stopGetItem();
+        verify(mRemoteDataSource).stopGetItem(anyString());
     }
 
     @Test
@@ -110,9 +111,9 @@ public class RepositoryTest {
         // Make cache not empty.
         mRepository.mCachedItems.put(ITEM_ID_1, ITEM_1);
         // Call to get item not in cache.
-        mRepository.getItem(ITEM_ID_2, mGetItemCallback);
+        mRepository.getItem(ITEM_ID_2, ITEMS_CALLER, mGetItemCallback);
         // Confirm remote data source is called.
-        verify(mRemoteDataSource).getItem(anyString(), any(DataSource.GetItemCallback.class));
+        verify(mRemoteDataSource).getItem(anyString(), anyString(), any(DataSource.GetItemCallback.class));
     }
 
     @Test
@@ -120,9 +121,9 @@ public class RepositoryTest {
         // Make cache not empty.
         mRepository.mCachedItems.put(ITEM_ID_1, ITEM_1);
         // Call to get item in cache.
-        mRepository.getItem(ITEM_ID_1, mGetItemCallback);
+        mRepository.getItem(ITEM_ID_1, ITEMS_CALLER, mGetItemCallback);
         // Confirm remote data source is not called.
-        verify(mRemoteDataSource, never()).getItem(anyString(), any(DataSource.GetItemCallback.class));
+        verify(mRemoteDataSource, never()).getItem(anyString(), anyString(), any(DataSource.GetItemCallback.class));
     }
 
     @Test

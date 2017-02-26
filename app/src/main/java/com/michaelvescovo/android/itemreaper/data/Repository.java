@@ -60,11 +60,11 @@ public class Repository implements DataSource {
     }
 
     @Override
-    public void getItem(@NonNull final String itemId, @NonNull final GetItemCallback callback) {
+    public void getItem(@NonNull final String itemId, @NonNull String caller, @NonNull final GetItemCallback callback) {
         if (mCachedItems.containsKey(itemId)) {
             callback.onItemLoaded(mCachedItems.get(itemId));
         } else {
-            mRemoteDataSource.getItem(itemId, new GetItemCallback() {
+            mRemoteDataSource.getItem(itemId, caller, new GetItemCallback() {
                 @Override
                 public void onItemLoaded(@Nullable Item item) {
                     if (item != null) {
@@ -89,8 +89,8 @@ public class Repository implements DataSource {
     }
 
     @Override
-    public void stopGetItem() {
-        mRemoteDataSource.stopGetItem();
+    public void stopGetItem(@NonNull String caller) {
+        mRemoteDataSource.stopGetItem(caller);
     }
 
     @Override

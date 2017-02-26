@@ -111,6 +111,11 @@ class EditItemPresenter implements EditItemContract.Presenter {
         mView.removeImage();
     }
 
+    @Override
+    public void clearEditListeners() {
+        mRepository.stopGetItem("edit_item");
+    }
+
     private void createNewItem() {
         EspressoIdlingResource.increment();
         mRepository.getNewItemId(mSharedPreferencesHelper.getUserId(), new DataSource.GetNewItemIdCallback() {
@@ -131,7 +136,7 @@ class EditItemPresenter implements EditItemContract.Presenter {
         if (EspressoIdlingResource.getIdlingResource().isIdleNow()) {
             EspressoIdlingResource.increment();
         }
-        mRepository.getItem(itemId, new DataSource.GetItemCallback() {
+        mRepository.getItem(itemId, "edit_item", new DataSource.GetItemCallback() {
             @Override
             public void onItemLoaded(@Nullable Item item) {
                 if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {

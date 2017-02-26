@@ -96,7 +96,7 @@ public class ItemsPresenterTest {
             verify(mView).showNoItemsText(false);
 
             // Get an item for each itemId.
-            verify(mRepository, times(mItemIds.size())).getItem(anyString(),
+            verify(mRepository, times(mItemIds.size())).getItem(anyString(), anyString(),
                     mGetItemCallbackCaptor.capture());
 
             // Stub a result for each getItem call
@@ -145,6 +145,6 @@ public class ItemsPresenterTest {
         mItemsPresenter.clearListeners();
 
         verify(mRepository).stopGetItemIds();
-        verify(mRepository).stopGetItem();
+        verify(mRepository).stopGetItem(anyString());
     }
 }

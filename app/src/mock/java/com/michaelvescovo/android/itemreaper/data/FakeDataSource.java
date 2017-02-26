@@ -6,6 +6,7 @@ import android.support.annotation.VisibleForTesting;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -48,8 +49,10 @@ public class FakeDataSource implements DataSource {
             "Bathroom", null,
             "Towel", null, null, null, "White", null, null, null, null, null, null, null, null,
             false);
+    public final static String ITEMS_CALLER = "items";
+    public final static String EDIT_ITEM_CALLER = "edit_item";
     private ItemIdsListener mItemIdsListener;
-    private Map<String, ItemChangedListener> mItemChangedListeners = Maps.newHashMap();
+    private Map<String, Map<String, ItemChangedListener>> mItemCallbacks = Maps.newHashMap();
 
     FakeDataSource() {
         ITEM_IDS.add(ITEM_ID_1);
@@ -86,21 +89,32 @@ public class FakeDataSource implements DataSource {
     }
 
     @Override
-    public void getItem(@NonNull final String itemId, @NonNull final GetItemCallback callback) {
-        if (mItemChangedListeners.get(itemId) == null) {
-            ItemChangedListener itemChangedListener = new ItemChangedListener() {
-                @Override
-                public void itemChanged(Item item) {
-                    if (item != null) {
-                        callback.onItemLoaded(item);
-                    }
-                }
-            };
-            mItemChangedListeners.put(itemId, itemChangedListener);
-            mItemChangedListeners.get(itemId).itemChanged(ITEMS.get(itemId));
+    public void getItem(@NonNull final String itemId, @NonNull String caller,
+                        @NonNull final GetItemCallback callback) {
+        if (mItemCallbacks.get(itemId) == null) {
+            ItemChangedListener itemChangedListener = createItemChangedListener(callback);
+            Map<String, ItemChangedListener> changedListeners = new HashMap<>();
+            changedListeners.put(caller, itemChangedListener);
+            mItemCallbacks.put(itemId, changedListeners);
+            mItemCallbacks.get(itemId).get(caller).itemChanged(ITEMS.get(itemId));
+        } else if (mItemCallbacks.get(itemId).get(caller) == null) {
+            ItemChangedListener itemChangedListener = createItemChangedListener(callback);
+            mItemCallbacks.get(itemId).put(caller, itemChangedListener);
+            mItemCallbacks.get(itemId).get(caller).itemChanged(ITEMS.get(itemId));
         } else {
-            mItemChangedListeners.get(itemId).itemChanged(ITEMS.get(itemId));
+            mItemCallbacks.get(itemId).get(caller).itemChanged(ITEMS.get(itemId));
         }
+    }
+
+    private ItemChangedListener createItemChangedListener(final GetItemCallback callback) {
+        return new ItemChangedListener() {
+            @Override
+            public void itemChanged(Item item) {
+                if (item != null) {
+                    callback.onItemLoaded(item);
+                }
+            }
+        };
     }
 
     @Override
@@ -110,8 +124,11 @@ public class FakeDataSource implements DataSource {
     }
 
     @Override
-    public void stopGetItem() {
-        mItemChangedListeners.clear();
+    public void stopGetItem(@NonNull String caller) {
+        for (Map<String, ItemChangedListener> listeners :
+                mItemCallbacks.values()) {
+            listeners.remove(caller);
+        }
     }
 
     @Override
@@ -127,7 +144,10 @@ public class FakeDataSource implements DataSource {
             mItemIdsListener.itemIdsChanged(ITEM_IDS);
         } else {
             ITEMS.put(item.getId(), item);
-            mItemChangedListeners.get(item.getId()).itemChanged(item);
+            for (ItemChangedListener listener :
+                    mItemCallbacks.get(item.getId()).values()) {
+                listener.itemChanged(ITEMS.get(item.getId()));
+            }
         }
     }
 

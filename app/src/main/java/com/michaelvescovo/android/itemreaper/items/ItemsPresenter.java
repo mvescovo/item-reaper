@@ -64,7 +64,7 @@ class ItemsPresenter implements ItemsContract.Presenter {
     }
 
     private void getItem(String itemId) {
-        mRepository.getItem(itemId, new DataSource.GetItemCallback() {
+        mRepository.getItem(itemId, "items", new DataSource.GetItemCallback() {
             @Override
             public void onItemLoaded(@Nullable Item item) {
                 mView.showItem(item);
@@ -97,6 +97,6 @@ class ItemsPresenter implements ItemsContract.Presenter {
     @Override
     public void clearListeners() {
         mRepository.stopGetItemIds();
-        mRepository.stopGetItem();
+        mRepository.stopGetItem("items");
     }
 }

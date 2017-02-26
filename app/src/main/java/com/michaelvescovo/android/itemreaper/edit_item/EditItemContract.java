@@ -59,5 +59,7 @@ public interface EditItemContract {
         void itemChanged();
 
         void deleteImage();
+
+        void clearEditListeners();
     }
 }

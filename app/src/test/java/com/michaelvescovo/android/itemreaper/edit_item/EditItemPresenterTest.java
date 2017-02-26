@@ -108,7 +108,7 @@ public class EditItemPresenterTest {
                 any(DataSource.GetNewItemIdCallback.class));
 
         // Gets the existing item
-        verify(mRepository).getItem(anyString(), mItemCallbackCaptor.capture());
+        verify(mRepository).getItem(anyString(), anyString(), mItemCallbackCaptor.capture());
 
         // New item comes back
         mItemCallbackCaptor.getValue().onItemLoaded(mItem);
