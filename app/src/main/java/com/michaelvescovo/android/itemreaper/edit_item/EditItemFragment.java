@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.Toolbar;
@@ -122,6 +123,12 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_edit_item, container, false);
@@ -153,6 +160,14 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         mItemId = "1";
 
         return root;
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (getDialog() != null && getRetainInstance()) {
+            getDialog().setDismissMessage(null);
+        }
+        super.onDestroyView();
     }
 
     private void configureViews() {
