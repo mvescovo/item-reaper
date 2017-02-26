@@ -41,8 +41,8 @@ import butterknife.ButterKnife;
 public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Callback,
         AboutFragment.Callback, EditItemFragment.Callback {
 
-    private static final String ABOUT_DIALOG = "edit_item_dialog";
-    private static final String EDIT_ITEM_DIALOG = "about_dialog";
+    private static final String ABOUT_DIALOG = "about_dialog";
+    private static final String EDIT_ITEM_DIALOG = "edit_item_dialog";
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
