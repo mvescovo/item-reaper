@@ -116,6 +116,11 @@ class EditItemPresenter implements EditItemContract.Presenter {
         mRepository.stopGetItem("edit_item");
     }
 
+    @Override
+    public void clearEditItemCache(@NonNull String itemId) {
+        mRepository.refreshItem(itemId);
+    }
+
     private void createNewItem() {
         EspressoIdlingResource.increment();
         mRepository.getNewItemId(mSharedPreferencesHelper.getUserId(), new DataSource.GetNewItemIdCallback() {

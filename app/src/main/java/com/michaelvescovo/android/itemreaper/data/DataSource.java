@@ -30,6 +30,7 @@ public interface DataSource {
     void getNewItemId(@NonNull String userId, @NonNull GetNewItemIdCallback callback);
     void stopGetItem(@NonNull String caller);
     void refreshItems();
+    void refreshItem(@NonNull String itemId);
     void saveItem(@NonNull String userId, @NonNull Item item);
     void deleteItem(@NonNull String userId, @NonNull String itemId);
     void deleteAllItems(@NonNull String userId);

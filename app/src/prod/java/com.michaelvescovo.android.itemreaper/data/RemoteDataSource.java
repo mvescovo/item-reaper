@@ -24,7 +24,8 @@ class RemoteDataSource implements DataSource {
     }
 
     @Override
-    public void getItem(@NonNull String itemId, @NonNull GetItemCallback callback) {
+    public void getItem(@NonNull String itemId, @NonNull String caller,
+                        @NonNull GetItemCallback callback) {
 
     }
 
@@ -34,12 +35,17 @@ class RemoteDataSource implements DataSource {
     }
 
     @Override
-    public void stopGetItem() {
+    public void stopGetItem(@NonNull String caller) {
 
     }
 
     @Override
     public void refreshItems() {
+
+    }
+
+    @Override
+    public void refreshItem(@NonNull String itemId) {
 
     }
 

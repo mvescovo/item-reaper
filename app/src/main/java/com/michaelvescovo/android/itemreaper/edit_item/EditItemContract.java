@@ -61,5 +61,7 @@ public interface EditItemContract {
         void deleteImage();
 
         void clearEditListeners();
+
+        void clearEditItemCache(String itemId);
     }
 }

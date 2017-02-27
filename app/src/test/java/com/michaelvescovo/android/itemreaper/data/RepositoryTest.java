@@ -160,4 +160,19 @@ public class RepositoryTest {
         verify(mRemoteDataSource).getNewItemId(anyString(),
                 any(DataSource.GetNewItemIdCallback.class));
     }
+
+    @Test
+    public void clearItemCache_ClearsCacheForItem() {
+        // Add item 1 to the cache
+        mRepository.mCachedItems.put(ITEM_ID_1, ITEM_1);
+
+        // Confirm the item is there
+        assertThat(mRepository.mCachedItems.containsKey(ITEM_ID_1), is(true));
+
+        // Remove the item
+        mRepository.refreshItem(ITEM_ID_1);
+
+        // Confirm the item is gone
+        assertThat(mRepository.mCachedItems.containsKey(ITEM_ID_1), is(false));
+    }
 }

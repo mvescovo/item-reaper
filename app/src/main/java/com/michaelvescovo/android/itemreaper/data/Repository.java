@@ -99,6 +99,13 @@ public class Repository implements DataSource {
     }
 
     @Override
+    public void refreshItem(@NonNull String itemId) {
+        if (mCachedItems.containsKey(itemId)) {
+            mCachedItems.remove(itemId);
+        }
+    }
+
+    @Override
     public void saveItem(@NonNull String userId, @NonNull Item item) {
         mRemoteDataSource.saveItem(userId, item);
     }

@@ -137,6 +137,11 @@ public class FakeDataSource implements DataSource {
     }
 
     @Override
+    public void refreshItem(@NonNull String itemId) {
+        // Nothing to do here.
+    }
+
+    @Override
     public void saveItem(@NonNull String userId, @NonNull Item item) {
         if (!ITEM_IDS.contains(item.getId())) {
             ITEM_IDS.add(item.getId());

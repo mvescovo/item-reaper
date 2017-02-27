@@ -186,4 +186,10 @@ public class EditItemPresenterTest {
         mEditItemPresenter.deleteImage();
         verify(mView).removeImage();
     }
+
+    @Test
+    public void clearEditItemCache_RefersToRepository() {
+        mEditItemPresenter.clearEditItemCache(ITEM_ID_1);
+        verify(mRepository).refreshItem(anyString());
+    }
 }
