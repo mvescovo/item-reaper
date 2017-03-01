@@ -420,8 +420,8 @@
 
                 <ImageView
                     android:id="@+id/edit_item_image"
-                    android:layout_width="400dp"
-                    android:layout_height="300dp"
+                    android:layout_width="@dimen/edit_item_image_width"
+                    android:layout_height="@dimen/edit_item_image_height"
                     android:layout_marginTop="@dimen/margin_vertical"
                     android:contentDescription="@string/edit_item_image_description"
                     android:visibility="gone"/>

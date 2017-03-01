@@ -22,4 +22,8 @@
     <dimen name="margin_vertical_items">0dp</dimen>
     <dimen name="gutter_items">16dp</dimen>
 
+    <!--EditItem-->
+    <dimen name="edit_item_image_width">400dp</dimen>
+    <dimen name="edit_item_image_height">300dp</dimen>
+
 </resources>
