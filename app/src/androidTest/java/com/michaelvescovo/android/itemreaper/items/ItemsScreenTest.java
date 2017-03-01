@@ -227,7 +227,11 @@ public class ItemsScreenTest {
 
         // Check expiry
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yy", Locale.getDefault());
-        onView(withText("Expires: " + simpleDateFormat.format(expiry.getTime()))).check(matches(isDisplayed()));
+        if (mIsLargeScreen) {
+            onView(withText(simpleDateFormat.format(expiry.getTime()))).check(matches(isDisplayed()));
+        } else {
+            onView(withText("Expires: " + simpleDateFormat.format(expiry.getTime()))).check(matches(isDisplayed()));
+        }
 
         // Check category
         onView(withText(mItem.getCategory())).check(matches(isDisplayed()));
