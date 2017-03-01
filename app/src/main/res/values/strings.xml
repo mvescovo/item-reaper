@@ -51,6 +51,7 @@
     <string name="item_expired">Item Expired.</string>
     <string name="undo">Undo</string>
     <string name="item_unexpired">Item restored.</string>
+    <string name="item_image">Item image</string>
 
     <!--EditItem-->
     <string name="title_activity_edit_item">Edit Item</string>

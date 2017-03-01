@@ -2,5 +2,6 @@
 <resources>
 
     <integer name="max_ems">24</integer>
+    <integer name="card_item_columns">2</integer>
 
 </resources>

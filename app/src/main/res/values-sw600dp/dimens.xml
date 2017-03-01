@@ -13,8 +13,9 @@
     <dimen name="padding">16dp</dimen>
 
     <!--Items-->
-    <dimen name="margin_horizontal_items">28dp</dimen>
-    <dimen name="margin_vertical_items">@dimen/margin_vertical</dimen>
+    <dimen name="margin_horizontal_items">12dp</dimen>
+    <dimen name="margin_vertical_items">12dp</dimen>
     <dimen name="gutter_items">12dp</dimen>
+    <dimen name="card_image_height">225dp</dimen>
 
 </resources>

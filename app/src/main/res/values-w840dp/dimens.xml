@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <!--Margins and gutters-->
-    <dimen name="margin_horizontal">40dp</dimen>
-
-</resources>

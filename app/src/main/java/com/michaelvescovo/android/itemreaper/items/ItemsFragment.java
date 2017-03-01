@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,8 +19,14 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.Item;
+import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,8 +60,10 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     private ItemsContract.Presenter mPresenter;
     private ItemsAdapter mItemsAdapter;
     private DividerItemDecoration mDividerItemDecoration;
+    private boolean mLargeScreen;
 
-    public ItemsFragment() {}
+    public ItemsFragment() {
+    }
 
     public static ItemsFragment newInstance() {
         return new ItemsFragment();
@@ -68,6 +77,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mLargeScreen = getResources().getBoolean(R.bool.large_layout);
         ItemListener itemListener = new ItemListener() {
             @Override
             public void onItemClick(Item item) {
@@ -88,9 +98,15 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         View root = inflater.inflate(R.layout.fragment_items, container, false);
         ButterKnife.bind(this, root);
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.addItemDecoration(mDividerItemDecoration);
-        mRecyclerView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+        if (mLargeScreen) {
+            int numColumns = getResources().getInteger(R.integer.card_item_columns);
+            mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(numColumns,
+                    StaggeredGridLayoutManager.VERTICAL));
+        } else {
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            mRecyclerView.addItemDecoration(mDividerItemDecoration);
+            mRecyclerView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+        }
         mRecyclerView.setAdapter(mItemsAdapter);
         mRecyclerView.setHasFixedSize(true);
 
@@ -209,20 +225,44 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.card_item, parent, false);
+                    .inflate(mLargeScreen ? R.layout.card_item : R.layout.tile_item, parent, false);
             return new ViewHolder(v);
         }
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             mItems.keySet().toArray();
+            String imageUrl = mItems.get(mItemIds.get(position)).getImageUrl();
+            if (mLargeScreen && imageUrl != null) {
+                holder.mItemImage.setVisibility(View.VISIBLE);
+                EspressoIdlingResource.increment();
+                Glide.with(getContext())
+                        .load(imageUrl)
+                        .crossFade()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(new GlideDrawableImageViewTarget(holder.mItemImage) {
+                            @Override
+                            public void onResourceReady(GlideDrawable resource,
+                                                        GlideAnimation<? super GlideDrawable> animation) {
+                                super.onResourceReady(resource, animation);
+                                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                                    EspressoIdlingResource.decrement();
+                                }
+                            }
+                        });
+            }
             holder.mCategory.setText(mItems.get(mItemIds.get(position)).getCategory());
             holder.mType.setText(mItems.get(mItemIds.get(position)).getType());
             holder.mColour.setText(mItems.get(mItemIds.get(position)).getPrimaryColour());
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(mItems.get(mItemIds.get(position)).getExpiry());
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yy", Locale.getDefault());
-            String expiry = "Expires: " + simpleDateFormat.format(calendar.getTime());
+            String expiry;
+            if (mLargeScreen) {
+                expiry = simpleDateFormat.format(calendar.getTime());
+            } else {
+                expiry = "Expires: " + simpleDateFormat.format(calendar.getTime());
+            }
             holder.mExpiry.setText(expiry);
             String price = "Paid: $" + String.valueOf(mItems.get(mItemIds.get(position)).getPricePaid());
             holder.mPaid.setText(price);
@@ -243,6 +283,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
         class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+            ImageView mItemImage;
             TextView mCategory;
             TextView mType;
             TextView mColour;
@@ -252,6 +293,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
             ViewHolder(final View itemView) {
                 super(itemView);
+                mItemImage = (ImageView) itemView.findViewById(R.id.item_image);
                 mCategory = (TextView) itemView.findViewById(R.id.category);
                 mType = (TextView) itemView.findViewById(R.id.type);
                 mColour = (TextView) itemView.findViewById(R.id.colour);
