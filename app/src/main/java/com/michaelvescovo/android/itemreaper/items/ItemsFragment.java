@@ -232,24 +232,28 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             mItems.keySet().toArray();
-            String imageUrl = mItems.get(mItemIds.get(position)).getImageUrl();
-            if (mLargeScreen && imageUrl != null) {
-                holder.mItemImage.setVisibility(View.VISIBLE);
-                EspressoIdlingResource.increment();
-                Glide.with(getContext())
-                        .load(imageUrl)
-                        .crossFade()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(new GlideDrawableImageViewTarget(holder.mItemImage) {
-                            @Override
-                            public void onResourceReady(GlideDrawable resource,
-                                                        GlideAnimation<? super GlideDrawable> animation) {
-                                super.onResourceReady(resource, animation);
-                                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-                                    EspressoIdlingResource.decrement();
+            if (mLargeScreen) {
+                String imageUrl = mItems.get(mItemIds.get(position)).getImageUrl();
+                if (imageUrl != null) {
+                    holder.mItemImage.setVisibility(View.VISIBLE);
+                    EspressoIdlingResource.increment();
+                    Glide.with(getContext())
+                            .load(imageUrl)
+                            .crossFade()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(new GlideDrawableImageViewTarget(holder.mItemImage) {
+                                @Override
+                                public void onResourceReady(GlideDrawable resource,
+                                                            GlideAnimation<? super GlideDrawable> animation) {
+                                    super.onResourceReady(resource, animation);
+                                    if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                                        EspressoIdlingResource.decrement();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                } else {
+                    holder.mItemImage.setVisibility(View.GONE);
+                }
             }
             holder.mCategory.setText(mItems.get(mItemIds.get(position)).getCategory());
             holder.mType.setText(mItems.get(mItemIds.get(position)).getType());

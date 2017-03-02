@@ -109,6 +109,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     private boolean mIsLargeScreen;
     private Typeface mAppbarTypeface;
     private String mItemId;
+    private String mImageUrl;
 
     public EditItemFragment() {
     }
@@ -329,7 +330,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                     mShop.getText().toString(),
                     mDescription.getText().toString(),
                     mNote.getText().toString(),
-                    null,
+                    mImageUrl,
                     false
             );
             mPresenter.saveItem(newItem);
@@ -455,8 +456,14 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
             mNote.setText(item.getNote());
         }
         if (item.getImageUrl() != null) {
-            mItemImage.setVisibility(View.VISIBLE);
-            showImage(item.getImageUrl());
+            if (!item.getImageUrl().equals(mImageUrl)) {
+                mImageUrl = item.getImageUrl();
+                showImage(mImageUrl);
+            }
+        } else {
+            mImageUrl = null;
+            mItemImage.setVisibility(View.GONE);
+            mRemoveImageButton.setVisibility(View.GONE);
         }
     }
 
@@ -507,11 +514,13 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
 
     @Override
     public void showImage(@NonNull String imageUrl) {
+        mImageUrl = imageUrl;
         mItemImage.setVisibility(View.VISIBLE);
         mRemoveImageButton.setVisibility(View.VISIBLE);
+        mPresenter.itemChanged();
         EspressoIdlingResource.increment();
         Glide.with(this)
-                .load(imageUrl)
+                .load(mImageUrl)
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(new GlideDrawableImageViewTarget(mItemImage) {
@@ -528,8 +537,8 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
 
     @Override
     public void removeImage() {
-        mItemImage.setVisibility(View.GONE);
-        mRemoveImageButton.setVisibility(View.GONE);
+        mImageUrl = null;
+        mPresenter.itemChanged();
     }
 
     @Override
