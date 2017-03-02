@@ -205,8 +205,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.clearEditListeners();
-        mPresenter.clearEditItemCache(mItemId);
         mPresenter.editItem(mItemId);
     }
 
@@ -227,6 +225,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public void onDetach() {
         super.onDetach();
         mCallback = null;
+        mPresenter.clearEditListeners();
     }
 
     @Override

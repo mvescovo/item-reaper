@@ -118,7 +118,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.clearListeners();
         mPresenter.getItems(true);
     }
 
@@ -137,6 +136,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     public void onDetach() {
         super.onDetach();
         mCallback = null;
+        mPresenter.clearListeners();
     }
 
     @Override
