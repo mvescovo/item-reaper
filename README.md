@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/mvescovo/item-reaper.svg?branch=master)](https://travis-ci.org/mvescovo/item-reaper)
 [![AUR](https://img.shields.io/aur/license/yaourt.svg)](https://choosealicense.com/licenses/gpl-3.0/)
 
-# Item Reaper
+# Item Reaper (in progress...)
 Have things in your house you no longer need or use? Want to be more efficient with your
 shopping? Item Reaper is designed just for this purpose. It’s job is to let you know when an
 item’s time is up. It’s the Grim Reaper for items. Know what you need and when. Prioritise
