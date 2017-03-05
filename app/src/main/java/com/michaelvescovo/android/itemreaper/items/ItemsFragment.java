@@ -122,6 +122,12 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        mPresenter.clearListeners();
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
@@ -136,7 +142,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     public void onDetach() {
         super.onDetach();
         mCallback = null;
-        mPresenter.clearListeners();
+//        mPresenter.clearListeners();
     }
 
     @Override

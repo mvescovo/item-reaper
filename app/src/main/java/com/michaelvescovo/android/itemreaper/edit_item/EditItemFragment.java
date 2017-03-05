@@ -209,6 +209,12 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        mPresenter.clearEditListeners();
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof Callback) {
@@ -225,7 +231,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public void onDetach() {
         super.onDetach();
         mCallback = null;
-        mPresenter.clearEditListeners();
+//        mPresenter.clearEditListeners();
     }
 
     @Override
@@ -517,7 +523,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         mItemImage.setVisibility(View.VISIBLE);
         mRemoveImageButton.setVisibility(View.VISIBLE);
         mPresenter.itemChanged();
-        EspressoIdlingResource.increment();
         Glide.with(this)
                 .load(mImageUrl)
                 .crossFade()
