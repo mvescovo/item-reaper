@@ -110,6 +110,8 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     private Typeface mAppbarTypeface;
     private String mItemId;
     private String mImageUrl;
+    private boolean mImageAvailable;
+    private boolean mImageCaptureFailed;
 
     public EditItemFragment() {
     }
@@ -127,6 +129,8 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        mImageAvailable = false;
+        mImageCaptureFailed = false;
     }
 
     @Override
@@ -206,6 +210,12 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public void onResume() {
         super.onResume();
         mPresenter.editItem(mItemId);
+        if (mImageAvailable) {
+            mPresenter.imageAvailable();
+        }
+        if (mImageCaptureFailed) {
+            mPresenter.imageCaptureFailed();
+        }
     }
 
     @Override
@@ -503,9 +513,11 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_IMAGE_CAPTURE) {
             if (resultCode == RESULT_OK) {
-                mPresenter.imageAvailable();
+                mImageAvailable = true;
+                mImageCaptureFailed = false;
             } else {
-                mPresenter.imageCaptureFailed();
+                mImageCaptureFailed = true;
+                mImageAvailable = false;
             }
         } else if (requestCode == REQUEST_CODE_PHOTO_PICKER) {
             if (resultCode == RESULT_OK) {
