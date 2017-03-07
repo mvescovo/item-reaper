@@ -30,6 +30,7 @@ class EditItemPresenter implements EditItemContract.Presenter {
     private Repository mRepository;
     private SharedPreferencesHelper mSharedPreferencesHelper;
     private ImageFile mImageFile;
+    private boolean itemLoaded;
 
     @Inject
     EditItemPresenter(@NonNull EditItemContract.View view, @NonNull Repository repository,
@@ -132,11 +133,13 @@ class EditItemPresenter implements EditItemContract.Presenter {
     }
 
     private void loadExistingItem(String itemId) {
+        itemLoaded = false;
         EspressoIdlingResource.increment();
         mRepository.getItem(itemId, EDIT_ITEM_CALLER, new DataSource.GetItemCallback() {
             @Override
             public void onItemLoaded(@Nullable Item item) {
-                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                if (!itemLoaded) {
+                    itemLoaded = true;
                     EspressoIdlingResource.decrement();
                 }
                 mView.showExistingItem(item);

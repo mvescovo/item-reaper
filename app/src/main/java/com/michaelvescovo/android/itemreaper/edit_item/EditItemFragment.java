@@ -459,7 +459,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
             mNote.setText(item.getNote());
         }
         if (item.getImageUrl() != null) {
-            if (!item.getImageUrl().equals(mImageUrl)) {
+            if (!item.getImageUrl().equals(mImageUrl) || mItemImage.getVisibility() == View.GONE) {
                 mImageUrl = item.getImageUrl();
                 showImage(mImageUrl);
             }
@@ -530,8 +530,8 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                     public void onResourceReady(GlideDrawable resource,
                                                 GlideAnimation<? super GlideDrawable> animation) {
                         super.onResourceReady(resource, animation);
+                        EspressoIdlingResource.decrement();
                         if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-                            EspressoIdlingResource.decrement();
                         }
                     }
                 });
