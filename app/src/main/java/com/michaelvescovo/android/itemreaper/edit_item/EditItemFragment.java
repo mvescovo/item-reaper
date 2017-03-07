@@ -474,7 +474,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public void showItemsUi() {
         if (mIsLargeScreen) {
             dismiss();
-            mCallback.refresh();
         } else {
             getActivity().finish();
         }
@@ -565,7 +564,5 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public interface Callback {
 
         void configureSupportActionBar(Toolbar toolbar, Drawable icon);
-
-        void refresh();
     }
 }

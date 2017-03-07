@@ -81,11 +81,6 @@ public class EditItemActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public void refresh() {
-        // Not used in this activity.
-    }
-
     @VisibleForTesting
     public IdlingResource getCountingIdlingResource() {
         return EspressoIdlingResource.getIdlingResource();

@@ -177,11 +177,6 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
         invalidateOptionsMenu();
     }
 
-    @Override
-    public void refresh() {
-        mItemsPresenter.getItems(true);
-    }
-
     @VisibleForTesting
     public IdlingResource getCountingIdlingResource() {
         return EspressoIdlingResource.getIdlingResource();
