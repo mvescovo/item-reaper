@@ -48,11 +48,6 @@ public class Repository implements DataSource {
     }
 
     @Override
-    public void stopGetItemIds() {
-        mRemoteDataSource.stopGetItemIds();
-    }
-
-    @Override
     public void refreshItemIds() {
         if (mCachedItemIds != null) {
             mCachedItemIds =  null;
@@ -86,11 +81,6 @@ public class Repository implements DataSource {
                 }
             }
         });
-    }
-
-    @Override
-    public void stopGetItem(@NonNull String caller) {
-        mRemoteDataSource.stopGetItem(caller);
     }
 
     @Override

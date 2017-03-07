@@ -110,8 +110,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     private Typeface mAppbarTypeface;
     private String mItemId;
     private String mImageUrl;
-    private boolean mImageAvailable;
-    private boolean mImageCaptureFailed;
 
     public EditItemFragment() {
     }
@@ -129,8 +127,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        mImageAvailable = false;
-        mImageCaptureFailed = false;
     }
 
     @Override
@@ -210,18 +206,11 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public void onResume() {
         super.onResume();
         mPresenter.editItem(mItemId);
-        if (mImageAvailable) {
-            mPresenter.imageAvailable();
-        }
-        if (mImageCaptureFailed) {
-            mPresenter.imageCaptureFailed();
-        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mPresenter.clearEditListeners();
     }
 
     @Override
@@ -241,7 +230,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public void onDetach() {
         super.onDetach();
         mCallback = null;
-//        mPresenter.clearEditListeners();
     }
 
     @Override
@@ -513,11 +501,9 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_IMAGE_CAPTURE) {
             if (resultCode == RESULT_OK) {
-                mImageAvailable = true;
-                mImageCaptureFailed = false;
+                mPresenter.imageAvailable();
             } else {
-                mImageCaptureFailed = true;
-                mImageAvailable = false;
+                mPresenter.imageCaptureFailed();
             }
         } else if (requestCode == REQUEST_CODE_PHOTO_PICKER) {
             if (resultCode == RESULT_OK) {
@@ -534,7 +520,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         mImageUrl = imageUrl;
         mItemImage.setVisibility(View.VISIBLE);
         mRemoveImageButton.setVisibility(View.VISIBLE);
-        mPresenter.itemChanged();
+        EspressoIdlingResource.increment();
         Glide.with(this)
                 .load(mImageUrl)
                 .crossFade()
@@ -549,6 +535,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                         }
                     }
                 });
+        mPresenter.itemChanged();
     }
 
     @Override

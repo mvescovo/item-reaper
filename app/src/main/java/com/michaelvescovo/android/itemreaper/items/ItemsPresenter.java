@@ -7,6 +7,7 @@ import com.michaelvescovo.android.itemreaper.SharedPreferencesHelper;
 import com.michaelvescovo.android.itemreaper.data.DataSource;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.data.Repository;
+import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 
 import java.util.List;
 
@@ -44,9 +45,13 @@ class ItemsPresenter implements ItemsContract.Presenter {
             mRepository.refreshItemIds();
         }
         String userId = mSharedPreferencesHelper.getUserId();
+        EspressoIdlingResource.increment();
         mRepository.getItemIds(userId, new DataSource.GetItemIdsCallback() {
             @Override
             public void onItemIdsLoaded(@Nullable List<String> itemIds) {
+                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                    EspressoIdlingResource.decrement();
+                }
                 if (itemIds != null) {
                     if (itemIds.size() > 0) {
                         mView.showNoItemsText(false);
@@ -64,9 +69,13 @@ class ItemsPresenter implements ItemsContract.Presenter {
     }
 
     private void getItem(String itemId) {
+        EspressoIdlingResource.increment();
         mRepository.getItem(itemId, "items", new DataSource.GetItemCallback() {
             @Override
             public void onItemLoaded(@Nullable Item item) {
+                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                    EspressoIdlingResource.decrement();
+                }
                 mView.showItem(item);
             }
         });
@@ -92,11 +101,5 @@ class ItemsPresenter implements ItemsContract.Presenter {
     public void openSignOut() {
         mFirebaseAuth.signOut();
         mView.showAuthUi();
-    }
-
-    @Override
-    public void clearListeners() {
-        mRepository.stopGetItemIds();
-        mRepository.stopGetItem("items");
     }
 }

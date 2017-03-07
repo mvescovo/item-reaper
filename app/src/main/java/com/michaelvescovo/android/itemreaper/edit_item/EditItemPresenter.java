@@ -18,6 +18,8 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
+import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.EDIT_ITEM_CALLER;
+
 /**
  * @author Michael Vescovo
  */
@@ -112,11 +114,6 @@ class EditItemPresenter implements EditItemContract.Presenter {
     }
 
     @Override
-    public void clearEditListeners() {
-        mRepository.stopGetItem("edit_item");
-    }
-
-    @Override
     public void clearEditItemCache(@NonNull String itemId) {
         mRepository.refreshItem(itemId);
     }
@@ -126,9 +123,7 @@ class EditItemPresenter implements EditItemContract.Presenter {
         mRepository.getNewItemId(mSharedPreferencesHelper.getUserId(), new DataSource.GetNewItemIdCallback() {
             @Override
             public void onNewItemIdLoaded(@Nullable String newItemId) {
-                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-                    EspressoIdlingResource.decrement();
-                }
+                EspressoIdlingResource.decrement();
                 if (newItemId != null) {
                     mView.setNewItemId(newItemId);
                 }
@@ -137,11 +132,8 @@ class EditItemPresenter implements EditItemContract.Presenter {
     }
 
     private void loadExistingItem(String itemId) {
-        // When running tests the activity pauses and resumes. Make sure it only increments once.
-        if (EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-            EspressoIdlingResource.increment();
-        }
-        mRepository.getItem(itemId, "edit_item", new DataSource.GetItemCallback() {
+        EspressoIdlingResource.increment();
+        mRepository.getItem(itemId, EDIT_ITEM_CALLER, new DataSource.GetItemCallback() {
             @Override
             public void onItemLoaded(@Nullable Item item) {
                 if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {

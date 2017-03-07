@@ -38,8 +38,5 @@ interface ItemsContract {
         void openAbout();
 
         void openSignOut();
-
-        void clearListeners();
     }
-
 }

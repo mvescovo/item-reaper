@@ -65,14 +65,6 @@ public class RepositoryTest {
     }
 
     @Test
-    public void stopGetItemIds() {
-        // Call repository.
-        mRepository.stopGetItemIds();
-        // Confirm remote data source called.
-        verify(mRemoteDataSource).stopGetItemIds();
-    }
-
-    @Test
     public void refreshItemIds_CacheIsEmptied() {
         // Add itemIds to cache.
         mRepository.mCachedItemIds = ITEM_IDS;
@@ -96,14 +88,6 @@ public class RepositoryTest {
         mRepository.getItem(ITEM_ID_1, ITEMS_CALLER, mGetItemCallback);
         // Confirm the total calls to the remote data source is only 1; the cache was used.
         verify(mRemoteDataSource, times(1)).getItem(anyString(), anyString(), any(DataSource.GetItemCallback.class));
-    }
-
-    @Test
-    public void stopGetItem() {
-        // Cal repository.
-        mRepository.stopGetItem("items");
-        // Confirm remote data source called.
-        verify(mRemoteDataSource).stopGetItem(anyString());
     }
 
     @Test

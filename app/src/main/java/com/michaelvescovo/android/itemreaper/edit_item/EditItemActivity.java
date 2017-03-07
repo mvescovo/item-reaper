@@ -70,11 +70,6 @@ public class EditItemActivity extends AppCompatActivity
         return true;
     }
 
-    @VisibleForTesting
-    public IdlingResource getCountingIdlingResource() {
-        return EspressoIdlingResource.getIdlingResource();
-    }
-
     @Override
     public void configureSupportActionBar(Toolbar toolbar, Drawable icon) {
         setSupportActionBar(toolbar);
@@ -89,5 +84,10 @@ public class EditItemActivity extends AppCompatActivity
     @Override
     public void refresh() {
         // Not used in this activity.
+    }
+
+    @VisibleForTesting
+    public IdlingResource getCountingIdlingResource() {
+        return EspressoIdlingResource.getIdlingResource();
     }
 }

@@ -1,5 +1,9 @@
 package com.michaelvescovo.android.itemreaper.items;
 
+import android.app.Activity;
+import android.app.Instrumentation;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.RecyclerViewActions;
@@ -11,6 +15,7 @@ import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.about.AboutActivity;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
+import com.michaelvescovo.android.itemreaper.util.FakeImageFileImpl;
 
 import org.junit.After;
 import org.junit.Before;
@@ -33,7 +38,9 @@ import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
+import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.matcher.ComponentNameMatchers.hasClassName;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -43,6 +50,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_2;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.USER_ID;
+import static com.michaelvescovo.android.itemreaper.matcher.ImageViewHasDrawableMatcher.hasDrawable;
+import static org.hamcrest.core.AllOf.allOf;
 
 /**
  * @author Michael Vescovo
@@ -209,6 +218,12 @@ public class ItemsScreenTest {
                     .perform(typeText(mItem.getPrimaryColour()), closeSoftKeyboard());
         }
 
+        // Add image
+        if (mItem.getImageUrl() != null) {
+            stubResultFromSelectingImagePicker();
+            onView(withId(R.id.action_select_image)).perform(click());
+        }
+
         /*
         * Confirm item shows in list
         * */
@@ -243,5 +258,24 @@ public class ItemsScreenTest {
         if (mItem.getPrimaryColour() != null) {
             onView(withText(mItem.getPrimaryColour())).check(matches(isDisplayed()));
         }
+
+        // Check image is displayed
+        if (mItem.getImageUrl() != null && mIsLargeScreen) {
+            onView(withId(R.id.item_image))
+                    .check(matches(allOf(
+                            hasDrawable(),
+                            isDisplayed())));
+        }
+    }
+
+    private void stubResultFromSelectingImagePicker() {
+        Intent resultData = new Intent();
+        FakeImageFileImpl fakeImageFile = new FakeImageFileImpl();
+        fakeImageFile.create(mActivityRule.getActivity(), "fake_image", ".jpg");
+        Uri selectedImageUri = fakeImageFile.getUri();
+        resultData.setData(selectedImageUri);
+        Instrumentation.ActivityResult result =
+                new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
+        intending(hasAction(Intent.ACTION_GET_CONTENT)).respondWith(result);
     }
 }

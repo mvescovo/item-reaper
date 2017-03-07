@@ -53,6 +53,9 @@ public class FakeDataSource implements DataSource {
     public final static String EDIT_ITEM_CALLER = "edit_item";
     private ItemIdsListener mItemIdsListener;
     private Map<String, Map<String, ItemChangedListener>> mItemCallbacks = Maps.newHashMap();
+    static {
+
+    }
 
     FakeDataSource() {
         ITEM_IDS.add(ITEM_ID_1);
@@ -63,24 +66,15 @@ public class FakeDataSource implements DataSource {
 
     @Override
     public void getItemIds(@NonNull String userId, @NonNull final GetItemIdsCallback callback) {
-        if (mItemIdsListener == null) {
-            mItemIdsListener = new ItemIdsListener() {
-                @Override
-                public void itemIdsChanged(List<String> itemIds) {
-                    if (itemIds != null) {
-                        callback.onItemIdsLoaded(itemIds);
-                    }
+        mItemIdsListener = new ItemIdsListener() {
+            @Override
+            public void itemIdsChanged(List<String> itemIds) {
+                if (itemIds != null) {
+                    callback.onItemIdsLoaded(itemIds);
                 }
-            };
-            mItemIdsListener.itemIdsChanged(ITEM_IDS);
-        } else {
-            mItemIdsListener.itemIdsChanged(ITEM_IDS);
-        }
-    }
-
-    @Override
-    public void stopGetItemIds() {
-        mItemIdsListener = null;
+            }
+        };
+        mItemIdsListener.itemIdsChanged(ITEM_IDS);
     }
 
     @Override
@@ -92,18 +86,13 @@ public class FakeDataSource implements DataSource {
     public void getItem(@NonNull final String itemId, @NonNull String caller,
                         @NonNull final GetItemCallback callback) {
         if (mItemCallbacks.get(itemId) == null) {
-            ItemChangedListener itemChangedListener = createItemChangedListener(callback);
+            @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
             Map<String, ItemChangedListener> changedListeners = new HashMap<>();
-            changedListeners.put(caller, itemChangedListener);
             mItemCallbacks.put(itemId, changedListeners);
-            mItemCallbacks.get(itemId).get(caller).itemChanged(ITEMS.get(itemId));
-        } else if (mItemCallbacks.get(itemId).get(caller) == null) {
-            ItemChangedListener itemChangedListener = createItemChangedListener(callback);
-            mItemCallbacks.get(itemId).put(caller, itemChangedListener);
-            mItemCallbacks.get(itemId).get(caller).itemChanged(ITEMS.get(itemId));
-        } else {
-            mItemCallbacks.get(itemId).get(caller).itemChanged(ITEMS.get(itemId));
         }
+        ItemChangedListener itemChangedListener = createItemChangedListener(callback);
+        mItemCallbacks.get(itemId).put(caller, itemChangedListener);
+        mItemCallbacks.get(itemId).get(caller).itemChanged(ITEMS.get(itemId));
     }
 
     private ItemChangedListener createItemChangedListener(final GetItemCallback callback) {
@@ -124,14 +113,6 @@ public class FakeDataSource implements DataSource {
     }
 
     @Override
-    public void stopGetItem(@NonNull String caller) {
-        for (Map<String, ItemChangedListener> listeners :
-                mItemCallbacks.values()) {
-            listeners.remove(caller);
-        }
-    }
-
-    @Override
     public void refreshItems() {
         ITEMS.clear();
     }
@@ -143,15 +124,17 @@ public class FakeDataSource implements DataSource {
 
     @Override
     public void saveItem(@NonNull String userId, @NonNull Item item) {
-        if (!ITEM_IDS.contains(item.getId())) {
-            ITEM_IDS.add(item.getId());
-            ITEMS.put(item.getId(), item);
-            mItemIdsListener.itemIdsChanged(ITEM_IDS);
-        } else {
-            ITEMS.put(item.getId(), item);
+        ITEMS.put(item.getId(), item);
+        if (mItemCallbacks.get(item.getId()) != null) {
             for (ItemChangedListener listener :
                     mItemCallbacks.get(item.getId()).values()) {
                 listener.itemChanged(ITEMS.get(item.getId()));
+            }
+        }
+        if (!ITEM_IDS.contains(item.getId())) {
+            ITEM_IDS.add(item.getId());
+            if (mItemIdsListener != null) {
+                mItemIdsListener.itemIdsChanged(ITEM_IDS);
             }
         }
     }

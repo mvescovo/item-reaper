@@ -139,12 +139,4 @@ public class ItemsPresenterTest {
         verify(mFirebaseAuth).signOut();
         verify(mView).showAuthUi();
     }
-
-    @Test
-    public void clearListeners_ForwardsToRepo() {
-        mItemsPresenter.clearListeners();
-
-        verify(mRepository).stopGetItemIds();
-        verify(mRepository).stopGetItem(anyString());
-    }
 }

@@ -124,7 +124,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     @Override
     public void onPause() {
         super.onPause();
-        mPresenter.clearListeners();
     }
 
     @Override
@@ -142,7 +141,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     public void onDetach() {
         super.onDetach();
         mCallback = null;
-//        mPresenter.clearListeners();
     }
 
     @Override
@@ -202,7 +200,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         }
     }
 
-    public interface Callback {
+    interface Callback {
 
         void onAboutSelected();
 
@@ -216,7 +214,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         void onItemClick(Item item);
     }
 
-    public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
+    class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
 
         private Map<String, Item> mItems;
         private List<String> mItemIds;
@@ -242,7 +240,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 String imageUrl = mItems.get(mItemIds.get(position)).getImageUrl();
                 if (imageUrl != null) {
                     holder.mItemImage.setVisibility(View.VISIBLE);
-                    EspressoIdlingResource.increment();
+//                    EspressoIdlingResource.increment();
                     Glide.with(getContext())
                             .load(imageUrl)
                             .crossFade()
@@ -253,7 +251,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                                                             GlideAnimation<? super GlideDrawable> animation) {
                                     super.onResourceReady(resource, animation);
                                     if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-                                        EspressoIdlingResource.decrement();
+//                                        EspressoIdlingResource.decrement();
                                     }
                                 }
                             });

@@ -37,7 +37,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_2;
 import static com.michaelvescovo.android.itemreaper.matcher.ImageViewHasDrawableMatcher.hasDrawable;
-import static junit.framework.Assert.fail;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.IsNot.not;
 
@@ -68,16 +67,16 @@ public class EditItemScreenTest {
     }
 
     @Before
-    public void registerIdlingResource() {
-        Espresso.registerIdlingResources(
-                mActivityRule.getActivity().getCountingIdlingResource());
-    }
-
-    @Before
     public void setup() {
         Intent intent = new Intent();
         intent.putExtra(EditItemActivity.EXTRA_ITEM_ID, mItem.getId());
         mActivityRule.launchActivity(intent);
+    }
+
+    @Before
+    public void registerIdlingResource() {
+        Espresso.registerIdlingResources(
+                mActivityRule.getActivity().getCountingIdlingResource());
     }
 
     @After
@@ -92,125 +91,9 @@ public class EditItemScreenTest {
     }
 
     @Test
-    public void categoryEditTextVisible() {
-        closeSoftKeyboard();
-        onView(withId(R.id.edit_category)).perform(scrollTo()).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void itemHasCategory_ShowsCategory() {
-        if (mItem.getCategory() != null) {
-            closeSoftKeyboard();
-            try {
-                onView(withText(mItem.getCategory())).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-            } catch (PerformException e) {
-                fail("Category text not displayed.");
-            }
-        }
-    }
-
-    @Test
-    public void typeEditTextVisible() {
-        closeSoftKeyboard();
-        onView(withId(R.id.edit_type)).perform(scrollTo()).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void itemHasType_ShowsType() {
-        if (mItem.getType() != null) {
-            closeSoftKeyboard();
-            try {
-                onView(withText(mItem.getType())).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-            } catch (PerformException e) {
-                fail("Type text not displayed.");
-            }
-        }
-    }
-
-    @Test
-    public void expiryTitleTextVisible() {
-        closeSoftKeyboard();
-        onView(withId(R.id.edit_expiry_date_title)).perform(scrollTo())
-                .check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void expiryDayEditTextVisible() {
-        closeSoftKeyboard();
-        onView(withId(R.id.edit_expiry_date_day)).perform(scrollTo())
-                .check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void expiryMonthEditTextVisible() {
-        closeSoftKeyboard();
-        onView(withId(R.id.edit_expiry_date_month)).perform(scrollTo())
-                .check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void expiryYearEditTextVisible() {
-        closeSoftKeyboard();
-        onView(withId(R.id.edit_expiry_date_year)).perform(scrollTo())
-                .check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void itemHasExpiry_ShowsExpiry() {
-        if (mItem.getExpiry() != -1) {
-            closeSoftKeyboard();
-            try {
-                Calendar expiry = Calendar.getInstance();
-                expiry.setTimeInMillis(mItem.getExpiry());
-                int day = expiry.get(Calendar.DAY_OF_MONTH);
-                int month = expiry.get(Calendar.MONTH);
-                month++; // Months start at 0.
-                int year = expiry.get(Calendar.YEAR);
-
-                onView(withText(String.valueOf(day))).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-                onView(withText(String.valueOf(month))).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-                onView(withText(String.valueOf(year))).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-            } catch (PerformException e) {
-                fail("Expiry text not displayed.");
-            }
-        }
-    }
-
-    @Test
     public void purchaseDetailsTitleVisible() {
         closeSoftKeyboard();
         onView(withId(R.id.edit_purchase_details_title)).perform(scrollTo()).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void itemDetailsTitleVisible() {
-        closeSoftKeyboard();
-        onView(withId(R.id.edit_item_details_title)).perform(scrollTo()).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void primaryColourEditTextVisible() {
-        closeSoftKeyboard();
-        onView(withId(R.id.edit_primary_colour)).perform(scrollTo())
-                .check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void itemHasPrimaryColour_ShowsPrimaryColour() {
-        if (mItem.getPrimaryColour() != null) {
-            closeSoftKeyboard();
-            try {
-                onView(withText(mItem.getPrimaryColour())).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-            } catch (PerformException e) {
-                fail("Primary colour text not displayed.");
-            }
-        }
     }
 
     @Test
@@ -245,23 +128,34 @@ public class EditItemScreenTest {
     public void itemHasPurchaseDate_ShowsPurchaseDate() {
         if (mItem.getPurchaseDate() != -1) {
             closeSoftKeyboard();
-            try {
-                Calendar purchaseDate = Calendar.getInstance();
-                purchaseDate.setTimeInMillis(mItem.getPurchaseDate());
-                int day = purchaseDate.get(Calendar.DAY_OF_MONTH);
-                int month = purchaseDate.get(Calendar.MONTH);
-                month++; // Months start at 0.
-                int year = purchaseDate.get(Calendar.YEAR);
+            Calendar purchaseDate = Calendar.getInstance();
+            purchaseDate.setTimeInMillis(mItem.getPurchaseDate());
+            int day = purchaseDate.get(Calendar.DAY_OF_MONTH);
+            int month = purchaseDate.get(Calendar.MONTH);
+            month++; // Months start at 0.
+            int year = purchaseDate.get(Calendar.YEAR);
 
-                onView(withText(String.valueOf(day))).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-                onView(withText(String.valueOf(month))).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-                onView(withText(String.valueOf(year))).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-            } catch (PerformException e) {
-                fail("PurchaseDate text not displayed.");
-            }
+            onView(withText(String.valueOf(day))).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+            onView(withText(String.valueOf(month))).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+            onView(withText(String.valueOf(year))).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+        }
+    }
+
+    @Test
+    public void shopEditTextVisible() {
+        closeSoftKeyboard();
+        onView(withId(R.id.edit_shop)).perform(scrollTo()).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void itemHasShop_ShowsShop() {
+        if (mItem.getShop() != null) {
+            closeSoftKeyboard();
+            onView(withText(mItem.getShop())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
     }
 
@@ -275,12 +169,8 @@ public class EditItemScreenTest {
     public void itemHasPrice_ShowsPrice() {
         if (mItem.getPricePaid() != -1) {
             closeSoftKeyboard();
-            try {
-                onView(withText(String.valueOf(mItem.getPricePaid()))).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-            } catch (PerformException e) {
-                fail("Price text not displayed.");
-            }
+            onView(withText(String.valueOf(mItem.getPricePaid()))).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
     }
 
@@ -295,12 +185,77 @@ public class EditItemScreenTest {
     public void itemHasDiscount_ShowsDiscount() {
         if (mItem.getDiscount() != -1) {
             closeSoftKeyboard();
-            try {
-                onView(withText(String.valueOf(mItem.getDiscount()))).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-            } catch (PerformException e) {
-                fail("Discount text not displayed.");
-            }
+            onView(withText(String.valueOf(mItem.getDiscount()))).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+        }
+    }
+
+    @Test
+    public void itemDetailsTitleVisible() {
+        closeSoftKeyboard();
+        onView(withId(R.id.edit_item_details_title)).perform(scrollTo()).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void expiryTitleTextVisible() {
+        closeSoftKeyboard();
+        onView(withId(R.id.edit_expiry_date_title)).perform(scrollTo())
+                .check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void expiryDayEditTextVisible() {
+        closeSoftKeyboard();
+        onView(withId(R.id.edit_expiry_date_day)).perform(scrollTo())
+                .check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void expiryMonthEditTextVisible() {
+        closeSoftKeyboard();
+        onView(withId(R.id.edit_expiry_date_month)).perform(scrollTo())
+                .check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void expiryYearEditTextVisible() {
+        closeSoftKeyboard();
+        onView(withId(R.id.edit_expiry_date_year)).perform(scrollTo())
+                .check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void itemHasExpiry_ShowsExpiry() {
+        if (mItem.getExpiry() != -1) {
+            closeSoftKeyboard();
+            Calendar expiry = Calendar.getInstance();
+            expiry.setTimeInMillis(mItem.getExpiry());
+            int day = expiry.get(Calendar.DAY_OF_MONTH);
+            int month = expiry.get(Calendar.MONTH);
+            month++; // Months start at 0.
+            int year = expiry.get(Calendar.YEAR);
+
+            onView(withText(String.valueOf(day))).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+            onView(withText(String.valueOf(month))).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+            onView(withText(String.valueOf(year))).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+        }
+    }
+
+    @Test
+    public void categoryEditTextVisible() {
+        closeSoftKeyboard();
+        onView(withId(R.id.edit_category)).perform(scrollTo()).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void itemHasCategory_ShowsCategory() {
+        if (mItem.getCategory() != null) {
+            closeSoftKeyboard();
+            onView(withText(mItem.getCategory())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
     }
 
@@ -314,12 +269,23 @@ public class EditItemScreenTest {
     public void itemHasSubCategory_ShowsSubCategory() {
         if (mItem.getSubCategory() != null) {
             closeSoftKeyboard();
-            try {
-                onView(withText(mItem.getSubCategory())).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-            } catch (PerformException e) {
-                fail("SubCategory text not displayed.");
-            }
+            onView(withText(mItem.getSubCategory())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+        }
+    }
+
+    @Test
+    public void typeEditTextVisible() {
+        closeSoftKeyboard();
+        onView(withId(R.id.edit_type)).perform(scrollTo()).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void itemHasType_ShowsType() {
+        if (mItem.getType() != null) {
+            closeSoftKeyboard();
+            onView(withText(mItem.getType())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
     }
 
@@ -333,12 +299,8 @@ public class EditItemScreenTest {
     public void itemHasSubType_ShowsSubType() {
         if (mItem.getSubtype() != null) {
             closeSoftKeyboard();
-            try {
-                onView(withText(mItem.getSubtype())).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-            } catch (PerformException e) {
-                fail("SubType text not displayed.");
-            }
+            onView(withText(mItem.getSubtype())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
     }
 
@@ -352,12 +314,8 @@ public class EditItemScreenTest {
     public void itemHasSubType2_ShowsSubType2() {
         if (mItem.getSubtype2() != null) {
             closeSoftKeyboard();
-            try {
-                onView(withText(mItem.getSubtype2())).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-            } catch (PerformException e) {
-                fail("SubType2 text not displayed.");
-            }
+            onView(withText(mItem.getSubtype2())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
     }
 
@@ -371,12 +329,24 @@ public class EditItemScreenTest {
     public void itemHasSubType3_ShowsSubType() {
         if (mItem.getSubtype3() != null) {
             closeSoftKeyboard();
-            try {
-                onView(withText(mItem.getSubtype3())).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-            } catch (PerformException e) {
-                fail("SubType3 text not displayed.");
-            }
+            onView(withText(mItem.getSubtype3())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+        }
+    }
+
+    @Test
+    public void primaryColourEditTextVisible() {
+        closeSoftKeyboard();
+        onView(withId(R.id.edit_primary_colour)).perform(scrollTo())
+                .check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void itemHasPrimaryColour_ShowsPrimaryColour() {
+        if (mItem.getPrimaryColour() != null) {
+            closeSoftKeyboard();
+            onView(withText(mItem.getPrimaryColour())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
     }
 
@@ -391,12 +361,8 @@ public class EditItemScreenTest {
     public void itemHasPrimaryColourShade_ShowsPrimaryColourShade() {
         if (mItem.getPrimaryColourShade() != null) {
             closeSoftKeyboard();
-            try {
-                onView(withText(mItem.getPrimaryColourShade())).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-            } catch (PerformException e) {
-                fail("PrimaryColourShade text not displayed.");
-            }
+            onView(withText(mItem.getPrimaryColourShade())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
     }
 
@@ -411,12 +377,8 @@ public class EditItemScreenTest {
     public void itemHasSecondaryColour_ShowsSecondaryColour() {
         if (mItem.getSecondaryColour() != null) {
             closeSoftKeyboard();
-            try {
-                onView(withText(mItem.getSecondaryColour())).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-            } catch (PerformException e) {
-                fail("SecondaryColour text not displayed.");
-            }
+            onView(withText(mItem.getSecondaryColour())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
     }
 
@@ -430,12 +392,8 @@ public class EditItemScreenTest {
     public void itemHasSize_ShowsSize() {
         if (mItem.getSize() != null) {
             closeSoftKeyboard();
-            try {
-                onView(withText(mItem.getSize())).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-            } catch (PerformException e) {
-                fail("Size text not displayed.");
-            }
+            onView(withText(mItem.getSize())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
     }
 
@@ -449,31 +407,8 @@ public class EditItemScreenTest {
     public void itemHasBrand_ShowsBrand() {
         if (mItem.getBrand() != null) {
             closeSoftKeyboard();
-            try {
-                onView(withText(mItem.getBrand())).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-            } catch (PerformException e) {
-                fail("Brand text not displayed.");
-            }
-        }
-    }
-
-    @Test
-    public void shopEditTextVisible() {
-        closeSoftKeyboard();
-        onView(withId(R.id.edit_shop)).perform(scrollTo()).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void itemHasShop_ShowsShop() {
-        if (mItem.getShop() != null) {
-            closeSoftKeyboard();
-            try {
-                onView(withText(mItem.getShop())).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-            } catch (PerformException e) {
-                fail("Shop text not displayed.");
-            }
+            onView(withText(mItem.getBrand())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
     }
 
@@ -487,12 +422,8 @@ public class EditItemScreenTest {
     public void itemHasDescription_ShowsDescription() {
         if (mItem.getDescription() != null) {
             closeSoftKeyboard();
-            try {
-                onView(withText(mItem.getDescription())).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-            } catch (PerformException e) {
-                fail("Description text not displayed.");
-            }
+            onView(withText(mItem.getDescription())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
     }
 
@@ -506,12 +437,8 @@ public class EditItemScreenTest {
     public void itemHasNote_ShowsNote() {
         if (mItem.getNote() != null) {
             closeSoftKeyboard();
-            try {
-                onView(withText(mItem.getNote())).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-            } catch (PerformException e) {
-                fail("Note text not displayed.");
-            }
+            onView(withText(mItem.getNote())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
     }
 
@@ -531,6 +458,8 @@ public class EditItemScreenTest {
     public void itemDoesNotHaveImage_ImageNotVisible() {
         closeSoftKeyboard();
         if (mItem.getImageUrl() == null) {
+            // Need to scroll in case view exists and is off screen.
+            // If the view doesn't exist it will fail to scroll so we need a try catch
             try {
                 onView(withId(R.id.edit_item_image)).perform(scrollTo())
                         .check(matches(not(isDisplayed())));
@@ -544,7 +473,9 @@ public class EditItemScreenTest {
         closeSoftKeyboard();
         if (mItem.getImageUrl() != null) {
             onView(withId(R.id.edit_item_image)).perform(scrollTo())
-                    .check(matches(isDisplayed()));
+                    .check(matches(allOf(
+                            hasDrawable(),
+                            isDisplayed())));
         }
     }
 
@@ -566,6 +497,9 @@ public class EditItemScreenTest {
                 .check(matches(allOf(
                         hasDrawable(),
                         isDisplayed())));
+
+        // Click remove image
+        onView(withId(R.id.edit_item_remove_image_button)).perform(scrollTo()).perform(click());
     }
 
     @Test
@@ -580,6 +514,9 @@ public class EditItemScreenTest {
                 .check(matches(allOf(
                         hasDrawable(),
                         isDisplayed())));
+
+        // Click remove image
+        onView(withId(R.id.edit_item_remove_image_button)).perform(scrollTo()).perform(click());
     }
 
     @Test
