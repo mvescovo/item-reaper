@@ -1,6 +1,11 @@
 package com.michaelvescovo.android.itemreaper.auth;
 
+import android.app.Activity;
 import android.app.Instrumentation;
+import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
@@ -69,15 +74,21 @@ public class AuthScreenTest {
     @Test
     public void titleVisible() {
         onView(withText(R.string.app_name)).check(matches(isDisplayed()));
+        rotateScreen();
+        onView(withText(R.string.app_name)).check(matches(isDisplayed()));
     }
 
     @Test
     public void signInButtonVisible() {
         onView(withId(R.id.sign_in_button)).check(matches(isDisplayed()));
+        rotateScreen();
+        onView(withId(R.id.sign_in_button)).check(matches(isDisplayed()));
     }
 
     @Test
     public void progressBarNotVisible() {
+        onView(withId(R.id.progress_bar)).check(matches(not(isDisplayed())));
+        rotateScreen();
         onView(withId(R.id.progress_bar)).check(matches(not(isDisplayed())));
     }
 
@@ -118,6 +129,8 @@ public class AuthScreenTest {
 
         // Confirm progress bar hidden
         onView(withId(R.id.progress_bar)).check(matches(not(isDisplayed())));
+        rotateScreen();
+        onView(withId(R.id.progress_bar)).check(matches(not(isDisplayed())));
     }
 
     @Test
@@ -134,6 +147,8 @@ public class AuthScreenTest {
 
         // Confirm sign in button visible
         onView(withId(R.id.sign_in_button)).check(matches(isDisplayed()));
+        rotateScreen();
+        onView(withId(R.id.sign_in_button)).check(matches(isDisplayed()));
     }
 
     @Test
@@ -142,6 +157,9 @@ public class AuthScreenTest {
         onView(withId(R.id.sign_in_button)).perform(click());
 
         // Confirm error message is not displayed
+        onView(allOf(withId(android.support.design.R.id.snackbar_text),
+                withText(R.string.auth_failed))).check(doesNotExist());
+        rotateScreen();
         onView(allOf(withId(android.support.design.R.id.snackbar_text),
                 withText(R.string.auth_failed))).check(doesNotExist());
     }
@@ -153,5 +171,16 @@ public class AuthScreenTest {
 
         // Confirm Items Activity is launched
         intended(hasComponent(hasClassName(ItemsActivity.class.getName())), times(1));
+    }
+
+    private void rotateScreen() {
+        Context context = InstrumentationRegistry.getTargetContext();
+        int orientation = context.getResources().getConfiguration().orientation;
+        Activity activity = mActivityRule.getActivity();
+        activity.setRequestedOrientation(
+                orientation == Configuration.ORIENTATION_PORTRAIT
+                        ? ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                        : ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        );
     }
 }
