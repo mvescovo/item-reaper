@@ -531,8 +531,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                                                 GlideAnimation<? super GlideDrawable> animation) {
                         super.onResourceReady(resource, animation);
                         EspressoIdlingResource.decrement();
-                        if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-                        }
                     }
                 });
         mPresenter.itemChanged();
