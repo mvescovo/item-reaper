@@ -2,9 +2,13 @@ package com.michaelvescovo.android.itemreaper.edit_item;
 
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.PerformException;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
@@ -88,17 +92,24 @@ public class EditItemScreenTest {
     @Test
     public void titleVisible() {
         onView(withText(R.string.title_activity_edit_item)).check(matches(isDisplayed()));
+        rotateScreen();
+        onView(withText(R.string.title_activity_edit_item)).check(matches(isDisplayed()));
     }
 
     @Test
     public void purchaseDetailsTitleVisible() {
         closeSoftKeyboard();
         onView(withId(R.id.edit_purchase_details_title)).perform(scrollTo()).check(matches(isDisplayed()));
+        rotateScreen();
+        onView(withId(R.id.edit_purchase_details_title)).perform(scrollTo()).check(matches(isDisplayed()));
     }
 
     @Test
     public void purchaseDateTitleVisible() {
         closeSoftKeyboard();
+        onView(withId(R.id.edit_purchase_date_title)).perform(scrollTo())
+                .check(matches(isDisplayed()));
+        rotateScreen();
         onView(withId(R.id.edit_purchase_date_title)).perform(scrollTo())
                 .check(matches(isDisplayed()));
     }
@@ -108,6 +119,9 @@ public class EditItemScreenTest {
         closeSoftKeyboard();
         onView(withId(R.id.edit_purchase_date_day)).perform(scrollTo())
                 .check(matches(isDisplayed()));
+        rotateScreen();
+        onView(withId(R.id.edit_purchase_date_day)).perform(scrollTo())
+                .check(matches(isDisplayed()));
     }
 
     @Test
@@ -115,11 +129,17 @@ public class EditItemScreenTest {
         closeSoftKeyboard();
         onView(withId(R.id.edit_purchase_date_month)).perform(scrollTo())
                 .check(matches(isDisplayed()));
+        rotateScreen();
+        onView(withId(R.id.edit_purchase_date_month)).perform(scrollTo())
+                .check(matches(isDisplayed()));
     }
 
     @Test
     public void purchaseDateYearEditTextVisible() {
         closeSoftKeyboard();
+        onView(withId(R.id.edit_purchase_date_year)).perform(scrollTo())
+                .check(matches(isDisplayed()));
+        rotateScreen();
         onView(withId(R.id.edit_purchase_date_year)).perform(scrollTo())
                 .check(matches(isDisplayed()));
     }
@@ -141,12 +161,21 @@ public class EditItemScreenTest {
                     .check(matches(isDisplayed()));
             onView(withText(String.valueOf(year))).perform(scrollTo())
                     .check(matches(isDisplayed()));
+            rotateScreen();
+            onView(withText(String.valueOf(day))).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+            onView(withText(String.valueOf(month))).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+            onView(withText(String.valueOf(year))).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
     }
 
     @Test
     public void shopEditTextVisible() {
         closeSoftKeyboard();
+        onView(withId(R.id.edit_shop)).perform(scrollTo()).check(matches(isDisplayed()));
+        rotateScreen();
         onView(withId(R.id.edit_shop)).perform(scrollTo()).check(matches(isDisplayed()));
     }
 
@@ -156,6 +185,9 @@ public class EditItemScreenTest {
             closeSoftKeyboard();
             onView(withText(mItem.getShop())).perform(scrollTo())
                     .check(matches(isDisplayed()));
+            rotateScreen();
+            onView(withText(mItem.getShop())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
     }
 
@@ -163,12 +195,17 @@ public class EditItemScreenTest {
     public void pricePaidEditTextVisible() {
         closeSoftKeyboard();
         onView(withId(R.id.edit_price_paid)).perform(scrollTo()).check(matches(isDisplayed()));
+        rotateScreen();
+        onView(withId(R.id.edit_price_paid)).perform(scrollTo()).check(matches(isDisplayed()));
     }
 
     @Test
     public void itemHasPrice_ShowsPrice() {
         if (mItem.getPricePaid() != -1) {
             closeSoftKeyboard();
+            onView(withText(String.valueOf(mItem.getPricePaid()))).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+            rotateScreen();
             onView(withText(String.valueOf(mItem.getPricePaid()))).perform(scrollTo())
                     .check(matches(isDisplayed()));
         }
@@ -179,12 +216,18 @@ public class EditItemScreenTest {
         closeSoftKeyboard();
         onView(withId(R.id.edit_discount)).perform(scrollTo()).perform(scrollTo())
                 .check(matches(isDisplayed()));
+        rotateScreen();
+        onView(withId(R.id.edit_discount)).perform(scrollTo()).perform(scrollTo())
+                .check(matches(isDisplayed()));
     }
 
     @Test
     public void itemHasDiscount_ShowsDiscount() {
         if (mItem.getDiscount() != -1) {
             closeSoftKeyboard();
+            onView(withText(String.valueOf(mItem.getDiscount()))).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+            rotateScreen();
             onView(withText(String.valueOf(mItem.getDiscount()))).perform(scrollTo())
                     .check(matches(isDisplayed()));
         }
@@ -194,11 +237,16 @@ public class EditItemScreenTest {
     public void itemDetailsTitleVisible() {
         closeSoftKeyboard();
         onView(withId(R.id.edit_item_details_title)).perform(scrollTo()).check(matches(isDisplayed()));
+        rotateScreen();
+        onView(withId(R.id.edit_item_details_title)).perform(scrollTo()).check(matches(isDisplayed()));
     }
 
     @Test
     public void expiryTitleTextVisible() {
         closeSoftKeyboard();
+        onView(withId(R.id.edit_expiry_date_title)).perform(scrollTo())
+                .check(matches(isDisplayed()));
+        rotateScreen();
         onView(withId(R.id.edit_expiry_date_title)).perform(scrollTo())
                 .check(matches(isDisplayed()));
     }
@@ -208,6 +256,9 @@ public class EditItemScreenTest {
         closeSoftKeyboard();
         onView(withId(R.id.edit_expiry_date_day)).perform(scrollTo())
                 .check(matches(isDisplayed()));
+        rotateScreen();
+        onView(withId(R.id.edit_expiry_date_day)).perform(scrollTo())
+                .check(matches(isDisplayed()));
     }
 
     @Test
@@ -215,11 +266,17 @@ public class EditItemScreenTest {
         closeSoftKeyboard();
         onView(withId(R.id.edit_expiry_date_month)).perform(scrollTo())
                 .check(matches(isDisplayed()));
+        rotateScreen();
+        onView(withId(R.id.edit_expiry_date_month)).perform(scrollTo())
+                .check(matches(isDisplayed()));
     }
 
     @Test
     public void expiryYearEditTextVisible() {
         closeSoftKeyboard();
+        onView(withId(R.id.edit_expiry_date_year)).perform(scrollTo())
+                .check(matches(isDisplayed()));
+        rotateScreen();
         onView(withId(R.id.edit_expiry_date_year)).perform(scrollTo())
                 .check(matches(isDisplayed()));
     }
@@ -241,12 +298,21 @@ public class EditItemScreenTest {
                     .check(matches(isDisplayed()));
             onView(withText(String.valueOf(year))).perform(scrollTo())
                     .check(matches(isDisplayed()));
+            rotateScreen();
+            onView(withText(String.valueOf(day))).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+            onView(withText(String.valueOf(month))).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+            onView(withText(String.valueOf(year))).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
     }
 
     @Test
     public void categoryEditTextVisible() {
         closeSoftKeyboard();
+        onView(withId(R.id.edit_category)).perform(scrollTo()).check(matches(isDisplayed()));
+        rotateScreen();
         onView(withId(R.id.edit_category)).perform(scrollTo()).check(matches(isDisplayed()));
     }
 
@@ -256,12 +322,17 @@ public class EditItemScreenTest {
             closeSoftKeyboard();
             onView(withText(mItem.getCategory())).perform(scrollTo())
                     .check(matches(isDisplayed()));
+            rotateScreen();
+            onView(withText(mItem.getCategory())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
     }
 
     @Test
     public void subCategoryEditTextVisible() {
         closeSoftKeyboard();
+        onView(withId(R.id.edit_sub_category)).perform(scrollTo()).check(matches(isDisplayed()));
+        rotateScreen();
         onView(withId(R.id.edit_sub_category)).perform(scrollTo()).check(matches(isDisplayed()));
     }
 
@@ -271,12 +342,17 @@ public class EditItemScreenTest {
             closeSoftKeyboard();
             onView(withText(mItem.getSubCategory())).perform(scrollTo())
                     .check(matches(isDisplayed()));
+            rotateScreen();
+            onView(withText(mItem.getSubCategory())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
     }
 
     @Test
     public void typeEditTextVisible() {
         closeSoftKeyboard();
+        onView(withId(R.id.edit_type)).perform(scrollTo()).check(matches(isDisplayed()));
+        rotateScreen();
         onView(withId(R.id.edit_type)).perform(scrollTo()).check(matches(isDisplayed()));
     }
 
@@ -286,12 +362,17 @@ public class EditItemScreenTest {
             closeSoftKeyboard();
             onView(withText(mItem.getType())).perform(scrollTo())
                     .check(matches(isDisplayed()));
+            rotateScreen();
+            onView(withText(mItem.getType())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
     }
 
     @Test
     public void subTypeEditTextVisible() {
         closeSoftKeyboard();
+        onView(withId(R.id.edit_sub_type)).perform(scrollTo()).check(matches(isDisplayed()));
+        rotateScreen();
         onView(withId(R.id.edit_sub_type)).perform(scrollTo()).check(matches(isDisplayed()));
     }
 
@@ -301,12 +382,17 @@ public class EditItemScreenTest {
             closeSoftKeyboard();
             onView(withText(mItem.getSubtype())).perform(scrollTo())
                     .check(matches(isDisplayed()));
+            rotateScreen();
+            onView(withText(mItem.getSubtype())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
     }
 
     @Test
     public void subType2EditTextVisible() {
         closeSoftKeyboard();
+        onView(withId(R.id.edit_sub_type2)).perform(scrollTo()).check(matches(isDisplayed()));
+        rotateScreen();
         onView(withId(R.id.edit_sub_type2)).perform(scrollTo()).check(matches(isDisplayed()));
     }
 
@@ -316,6 +402,9 @@ public class EditItemScreenTest {
             closeSoftKeyboard();
             onView(withText(mItem.getSubtype2())).perform(scrollTo())
                     .check(matches(isDisplayed()));
+            rotateScreen();
+            onView(withText(mItem.getSubtype2())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
     }
 
@@ -323,12 +412,17 @@ public class EditItemScreenTest {
     public void subType3EditTextVisible() {
         closeSoftKeyboard();
         onView(withId(R.id.edit_sub_type3)).perform(scrollTo()).check(matches(isDisplayed()));
+        rotateScreen();
+        onView(withId(R.id.edit_sub_type3)).perform(scrollTo()).check(matches(isDisplayed()));
     }
 
     @Test
     public void itemHasSubType3_ShowsSubType() {
         if (mItem.getSubtype3() != null) {
             closeSoftKeyboard();
+            onView(withText(mItem.getSubtype3())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+            rotateScreen();
             onView(withText(mItem.getSubtype3())).perform(scrollTo())
                     .check(matches(isDisplayed()));
         }
@@ -339,12 +433,18 @@ public class EditItemScreenTest {
         closeSoftKeyboard();
         onView(withId(R.id.edit_primary_colour)).perform(scrollTo())
                 .check(matches(isDisplayed()));
+        rotateScreen();
+        onView(withId(R.id.edit_primary_colour)).perform(scrollTo())
+                .check(matches(isDisplayed()));
     }
 
     @Test
     public void itemHasPrimaryColour_ShowsPrimaryColour() {
         if (mItem.getPrimaryColour() != null) {
             closeSoftKeyboard();
+            onView(withText(mItem.getPrimaryColour())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+            rotateScreen();
             onView(withText(mItem.getPrimaryColour())).perform(scrollTo())
                     .check(matches(isDisplayed()));
         }
@@ -355,12 +455,18 @@ public class EditItemScreenTest {
         closeSoftKeyboard();
         onView(withId(R.id.edit_primary_colour_shade)).perform(scrollTo())
                 .check(matches(isDisplayed()));
+        rotateScreen();
+        onView(withId(R.id.edit_primary_colour_shade)).perform(scrollTo())
+                .check(matches(isDisplayed()));
     }
 
     @Test
     public void itemHasPrimaryColourShade_ShowsPrimaryColourShade() {
         if (mItem.getPrimaryColourShade() != null) {
             closeSoftKeyboard();
+            onView(withText(mItem.getPrimaryColourShade())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+            rotateScreen();
             onView(withText(mItem.getPrimaryColourShade())).perform(scrollTo())
                     .check(matches(isDisplayed()));
         }
@@ -371,12 +477,18 @@ public class EditItemScreenTest {
         closeSoftKeyboard();
         onView(withId(R.id.edit_secondary_colour)).perform(scrollTo())
                 .check(matches(isDisplayed()));
+        rotateScreen();
+        onView(withId(R.id.edit_secondary_colour)).perform(scrollTo())
+                .check(matches(isDisplayed()));
     }
 
     @Test
     public void itemHasSecondaryColour_ShowsSecondaryColour() {
         if (mItem.getSecondaryColour() != null) {
             closeSoftKeyboard();
+            onView(withText(mItem.getSecondaryColour())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+            rotateScreen();
             onView(withText(mItem.getSecondaryColour())).perform(scrollTo())
                     .check(matches(isDisplayed()));
         }
@@ -386,12 +498,17 @@ public class EditItemScreenTest {
     public void sizeEditTextVisible() {
         closeSoftKeyboard();
         onView(withId(R.id.edit_size)).perform(scrollTo()).check(matches(isDisplayed()));
+        rotateScreen();
+        onView(withId(R.id.edit_size)).perform(scrollTo()).check(matches(isDisplayed()));
     }
 
     @Test
     public void itemHasSize_ShowsSize() {
         if (mItem.getSize() != null) {
             closeSoftKeyboard();
+            onView(withText(mItem.getSize())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+            rotateScreen();
             onView(withText(mItem.getSize())).perform(scrollTo())
                     .check(matches(isDisplayed()));
         }
@@ -401,12 +518,17 @@ public class EditItemScreenTest {
     public void brandEditTextVisible() {
         closeSoftKeyboard();
         onView(withId(R.id.edit_brand)).perform(scrollTo()).check(matches(isDisplayed()));
+        rotateScreen();
+        onView(withId(R.id.edit_brand)).perform(scrollTo()).check(matches(isDisplayed()));
     }
 
     @Test
     public void itemHasBrand_ShowsBrand() {
         if (mItem.getBrand() != null) {
             closeSoftKeyboard();
+            onView(withText(mItem.getBrand())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+            rotateScreen();
             onView(withText(mItem.getBrand())).perform(scrollTo())
                     .check(matches(isDisplayed()));
         }
@@ -416,12 +538,17 @@ public class EditItemScreenTest {
     public void descriptionEditTextVisible() {
         closeSoftKeyboard();
         onView(withId(R.id.edit_description)).perform(scrollTo()).check(matches(isDisplayed()));
+        rotateScreen();
+        onView(withId(R.id.edit_description)).perform(scrollTo()).check(matches(isDisplayed()));
     }
 
     @Test
     public void itemHasDescription_ShowsDescription() {
         if (mItem.getDescription() != null) {
             closeSoftKeyboard();
+            onView(withText(mItem.getDescription())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+            rotateScreen();
             onView(withText(mItem.getDescription())).perform(scrollTo())
                     .check(matches(isDisplayed()));
         }
@@ -431,12 +558,17 @@ public class EditItemScreenTest {
     public void noteEditTextVisible() {
         closeSoftKeyboard();
         onView(withId(R.id.edit_note)).perform(scrollTo()).check(matches(isDisplayed()));
+        rotateScreen();
+        onView(withId(R.id.edit_note)).perform(scrollTo()).check(matches(isDisplayed()));
     }
 
     @Test
     public void itemHasNote_ShowsNote() {
         if (mItem.getNote() != null) {
             closeSoftKeyboard();
+            onView(withText(mItem.getNote())).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+            rotateScreen();
             onView(withText(mItem.getNote())).perform(scrollTo())
                     .check(matches(isDisplayed()));
         }
@@ -446,11 +578,15 @@ public class EditItemScreenTest {
     public void takePhotoMenuOptionVisible() {
         closeSoftKeyboard();
         onView(withId(R.id.action_take_photo)).check(matches(isDisplayed()));
+        rotateScreen();
+        onView(withId(R.id.action_take_photo)).check(matches(isDisplayed()));
     }
 
     @Test
     public void selectImageMenuOptionVisible() {
         closeSoftKeyboard();
+        onView(withId(R.id.action_select_image)).check(matches(isDisplayed()));
+        rotateScreen();
         onView(withId(R.id.action_select_image)).check(matches(isDisplayed()));
     }
 
@@ -465,6 +601,12 @@ public class EditItemScreenTest {
                         .check(matches(not(isDisplayed())));
             } catch (PerformException ignore) {
             }
+            rotateScreen();
+            try {
+                onView(withId(R.id.edit_item_image)).perform(scrollTo())
+                        .check(matches(not(isDisplayed())));
+            } catch (PerformException ignore) {
+            }
         }
     }
 
@@ -472,6 +614,12 @@ public class EditItemScreenTest {
     public void itemHasImage_ShowsImage() {
         closeSoftKeyboard();
         if (mItem.getImageUrl() != null) {
+            onView(withId(R.id.edit_item_image)).perform(scrollTo())
+                    .check(matches(allOf(
+                            hasDrawable(),
+                            isDisplayed())));
+            rotateScreen();
+            closeSoftKeyboard();
             onView(withId(R.id.edit_item_image)).perform(scrollTo())
                     .check(matches(allOf(
                             hasDrawable(),
@@ -500,6 +648,8 @@ public class EditItemScreenTest {
 
         // Click remove image
         onView(withId(R.id.edit_item_remove_image_button)).perform(scrollTo()).perform(click());
+        rotateScreen();
+        onView(withId(R.id.edit_item_remove_image_button)).perform(scrollTo()).perform(click());
     }
 
     @Test
@@ -517,6 +667,8 @@ public class EditItemScreenTest {
 
         // Click remove image
         onView(withId(R.id.edit_item_remove_image_button)).perform(scrollTo()).perform(click());
+        rotateScreen();
+        onView(withId(R.id.edit_item_remove_image_button)).perform(scrollTo()).perform(click());
     }
 
     @Test
@@ -528,6 +680,26 @@ public class EditItemScreenTest {
 
         // Click remove image
         onView(withId(R.id.edit_item_remove_image_button)).perform(scrollTo()).perform(click());
+
+        // Check the image is not displayed
+        try {
+            onView(withId(R.id.edit_item_image)).perform(scrollTo())
+                    .check(matches(allOf(
+                            hasDrawable(),
+                            not(isDisplayed()))));
+        } catch (PerformException ignore) {
+        }
+
+        // Check the remove image button is not displayed
+        try {
+            onView(withId(R.id.edit_item_remove_image_button)).perform(scrollTo())
+                    .check(matches(allOf(
+                            hasDrawable(),
+                            not(isDisplayed()))));
+        } catch (PerformException ignore) {
+        }
+
+        rotateScreen();
 
         // Check the image is not displayed
         try {
@@ -560,5 +732,16 @@ public class EditItemScreenTest {
 
         // Make sure to close the keyboard otherwise scrolling won't work
         closeSoftKeyboard();
+    }
+
+    private void rotateScreen() {
+        Context context = InstrumentationRegistry.getTargetContext();
+        int orientation = context.getResources().getConfiguration().orientation;
+        Activity activity = mActivityRule.getActivity();
+        activity.setRequestedOrientation(
+                orientation == Configuration.ORIENTATION_PORTRAIT
+                        ? ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                        : ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        );
     }
 }
