@@ -23,6 +23,8 @@ class ItemsPresenter implements ItemsContract.Presenter {
     private Repository mRepository;
     private SharedPreferencesHelper mSharedPreferencesHelper;
     private FirebaseAuth mFirebaseAuth;
+    private int mItemsToLoad;
+    private boolean mItemsLoaded;
 
     @Inject
     ItemsPresenter(ItemsContract.View view, Repository repository,
@@ -45,11 +47,13 @@ class ItemsPresenter implements ItemsContract.Presenter {
             mRepository.refreshItemIds();
         }
         String userId = mSharedPreferencesHelper.getUserId();
+        mItemsLoaded = false;
         EspressoIdlingResource.increment();
         mRepository.getItemIds(userId, new DataSource.GetItemIdsCallback() {
             @Override
             public void onItemIdsLoaded(@Nullable List<String> itemIds) {
-                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                if (!mItemsLoaded) {
+                    mItemsLoaded = true;
                     EspressoIdlingResource.decrement();
                 }
                 if (itemIds != null) {
@@ -69,11 +73,13 @@ class ItemsPresenter implements ItemsContract.Presenter {
     }
 
     private void getItem(String itemId) {
+        mItemsToLoad++;
         EspressoIdlingResource.increment();
         mRepository.getItem(itemId, "items", new DataSource.GetItemCallback() {
             @Override
             public void onItemLoaded(@Nullable Item item) {
-                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                if (mItemsToLoad > 0) {
+                    mItemsToLoad--;
                     EspressoIdlingResource.decrement();
                 }
                 mView.showItem(item);

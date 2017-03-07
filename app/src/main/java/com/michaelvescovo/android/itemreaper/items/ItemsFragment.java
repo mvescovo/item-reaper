@@ -61,6 +61,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     private ItemsAdapter mItemsAdapter;
     private DividerItemDecoration mDividerItemDecoration;
     private boolean mLargeScreen;
+    private String mImageUrl;
 
     public ItemsFragment() {
     }
@@ -238,9 +239,10 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             mItems.keySet().toArray();
             if (mLargeScreen) {
                 String imageUrl = mItems.get(mItemIds.get(position)).getImageUrl();
-                if (imageUrl != null) {
+                if (imageUrl != null && !imageUrl.equals(mImageUrl)) {
+                    mImageUrl = imageUrl;
                     holder.mItemImage.setVisibility(View.VISIBLE);
-//                    EspressoIdlingResource.increment();
+                    EspressoIdlingResource.increment();
                     Glide.with(getContext())
                             .load(imageUrl)
                             .crossFade()
@@ -250,9 +252,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                                 public void onResourceReady(GlideDrawable resource,
                                                             GlideAnimation<? super GlideDrawable> animation) {
                                     super.onResourceReady(resource, animation);
-                                    if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-//                                        EspressoIdlingResource.decrement();
-                                    }
+                                    EspressoIdlingResource.decrement();
                                 }
                             });
                 } else {
