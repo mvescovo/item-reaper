@@ -33,8 +33,8 @@ public class FakeDataSource implements DataSource {
             0,
             1496325600000L, // 2/6/2017
             "Clothing", "Casual", "T-shirt",
-            "Short sleeve", "V-neck", "Plain", "Black", "Dark", "None", "Small", "Industrie",
-            "Industrie Outlet", "Standard plain T-shirt", "Some note",
+            "Short sleeve", "V-neck", "Plain", "Black", "Dark", "Some secondary colour",
+            "Some Size", "Some Brand", "Some Shop", "Standard plain T-shirt", "Some note",
             "file:///android_asset/black-t-shirt.jpg", false);
     /*
     * Test item 2.
