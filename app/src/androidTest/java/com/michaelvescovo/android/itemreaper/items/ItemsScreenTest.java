@@ -2,10 +2,7 @@ package com.michaelvescovo.android.itemreaper.items;
 
 import android.app.Activity;
 import android.app.Instrumentation;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
@@ -19,6 +16,7 @@ import com.michaelvescovo.android.itemreaper.about.AboutActivity;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
 import com.michaelvescovo.android.itemreaper.util.FakeImageFileImpl;
+import com.michaelvescovo.android.itemreaper.util.RotationHelper;
 
 import org.junit.After;
 import org.junit.Before;
@@ -75,6 +73,7 @@ public class ItemsScreenTest {
                             .getRepository().deleteAllItems(USER_ID);
                 }
             };
+    private RotationHelper mRotationHelper;
     private Item mItem;
     private boolean mIsLargeScreen;
 
@@ -92,6 +91,8 @@ public class ItemsScreenTest {
 
     @Before
     public void setup() {
+        mRotationHelper = new RotationHelper(InstrumentationRegistry.getTargetContext(),
+                mActivityRule.getActivity());
         mIsLargeScreen = mActivityRule.getActivity().getResources().getBoolean(R.bool.large_layout);
     }
 
@@ -110,14 +111,14 @@ public class ItemsScreenTest {
     @Test
     public void titleVisible() {
         onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
-        rotateScreen();
+        mRotationHelper.rotateScreen();
         onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
     }
 
     @Test
     public void editItemButtonVisible() {
         onView(withId(R.id.edit_item)).check(matches(isDisplayed()));
-        rotateScreen();
+        mRotationHelper.rotateScreen();
         onView(withId(R.id.edit_item)).check(matches(isDisplayed()));
     }
 
@@ -128,7 +129,7 @@ public class ItemsScreenTest {
             intended(hasComponent(hasClassName(EditItemActivity.class.getName())));
         }
         onView(withText(R.string.title_activity_edit_item)).check(matches(isDisplayed()));
-        rotateScreen();
+        mRotationHelper.rotateScreen();
         onView(withText(R.string.title_activity_edit_item)).check(matches(isDisplayed()));
     }
 
@@ -137,7 +138,7 @@ public class ItemsScreenTest {
         onView(withId(R.id.edit_item)).perform(click());
         onView(withContentDescription("Navigate up")).perform(click());
         onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
-        rotateScreen();
+        mRotationHelper.rotateScreen();
         onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
     }
 
@@ -145,7 +146,7 @@ public class ItemsScreenTest {
     public void aboutMenuItemVisible() {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         onView(withText(R.string.menu_about)).check(matches(isDisplayed()));
-        rotateScreen();
+        mRotationHelper.rotateScreen();
         onView(withText(R.string.menu_about)).check(matches(isDisplayed()));
     }
 
@@ -155,7 +156,7 @@ public class ItemsScreenTest {
         onView(withText(R.string.menu_about)).perform(click());
         if (mIsLargeScreen) {
             onView(withText(R.string.title_activity_about)).check(matches(isDisplayed()));
-            rotateScreen();
+            mRotationHelper.rotateScreen();
             onView(withText(R.string.title_activity_about)).check(matches(isDisplayed()));
         } else {
             intended(hasComponent(hasClassName(AboutActivity.class.getName())));
@@ -168,7 +169,7 @@ public class ItemsScreenTest {
         onView(withText(R.string.menu_about)).perform(click());
         onView(withContentDescription("Navigate up")).perform(click());
         onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
-        rotateScreen();
+        mRotationHelper.rotateScreen();
         onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
     }
 
@@ -176,7 +177,7 @@ public class ItemsScreenTest {
     public void SignOutMenuItemVisible() {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         onView(withText(R.string.menu_sign_out)).check(matches(isDisplayed()));
-        rotateScreen();
+        mRotationHelper.rotateScreen();
         onView(withText(R.string.menu_sign_out)).check(matches(isDisplayed()));
     }
 
@@ -185,14 +186,14 @@ public class ItemsScreenTest {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         onView(withText(R.string.menu_sign_out)).perform(click());
         onView(withText(R.string.app_name)).check(matches(isDisplayed()));
-        rotateScreen();
+        mRotationHelper.rotateScreen();
         onView(withText(R.string.app_name)).check(matches(isDisplayed()));
     }
 
     @Test
     public void noItems_ShowsNoItemsText() {
         onView(withId(R.id.no_items)).check(matches(isDisplayed()));
-        rotateScreen();
+        mRotationHelper.rotateScreen();
         onView(withId(R.id.no_items)).check(matches(isDisplayed()));
     }
 
@@ -253,7 +254,7 @@ public class ItemsScreenTest {
         // Navigate back to the list
         onView(withContentDescription("Navigate up")).perform(click());
         confirmItemInList(expiry);
-        rotateScreen();
+        mRotationHelper.rotateScreen();
         confirmItemInList(expiry);
     }
 
@@ -306,16 +307,5 @@ public class ItemsScreenTest {
         Instrumentation.ActivityResult result =
                 new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
         intending(hasAction(Intent.ACTION_GET_CONTENT)).respondWith(result);
-    }
-
-    private void rotateScreen() {
-        Context context = InstrumentationRegistry.getTargetContext();
-        int orientation = context.getResources().getConfiguration().orientation;
-        Activity activity = mActivityRule.getActivity();
-        activity.setRequestedOrientation(
-                orientation == Configuration.ORIENTATION_PORTRAIT
-                        ? ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-                        : ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        );
     }
 }

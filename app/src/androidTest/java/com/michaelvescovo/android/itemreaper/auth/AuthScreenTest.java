@@ -1,10 +1,6 @@
 package com.michaelvescovo.android.itemreaper.auth;
 
-import android.app.Activity;
 import android.app.Instrumentation;
-import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.NoMatchingViewException;
@@ -14,6 +10,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.items.ItemsActivity;
+import com.michaelvescovo.android.itemreaper.util.RotationHelper;
 
 import org.junit.After;
 import org.junit.Before;
@@ -51,6 +48,8 @@ public class AuthScreenTest {
     public IntentsTestRule<AuthActivity> mActivityRule = new IntentsTestRule<>(
             AuthActivity.class);
 
+    private RotationHelper mRotationHelper;
+
     @Before
     public void registerIdlingResource() {
         Espresso.registerIdlingResources(
@@ -59,6 +58,8 @@ public class AuthScreenTest {
 
     @Before
     public void signOut() {
+        mRotationHelper = new RotationHelper(InstrumentationRegistry.getTargetContext(),
+                mActivityRule.getActivity());
         try {
             openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
             onView(withText(R.string.menu_sign_out)).perform(click());
@@ -74,21 +75,21 @@ public class AuthScreenTest {
     @Test
     public void titleVisible() {
         onView(withText(R.string.app_name)).check(matches(isDisplayed()));
-        rotateScreen();
+        mRotationHelper.rotateScreen();
         onView(withText(R.string.app_name)).check(matches(isDisplayed()));
     }
 
     @Test
     public void signInButtonVisible() {
         onView(withId(R.id.sign_in_button)).check(matches(isDisplayed()));
-        rotateScreen();
+        mRotationHelper.rotateScreen();
         onView(withId(R.id.sign_in_button)).check(matches(isDisplayed()));
     }
 
     @Test
     public void progressBarNotVisible() {
         onView(withId(R.id.progress_bar)).check(matches(not(isDisplayed())));
-        rotateScreen();
+        mRotationHelper.rotateScreen();
         onView(withId(R.id.progress_bar)).check(matches(not(isDisplayed())));
     }
 
@@ -129,7 +130,7 @@ public class AuthScreenTest {
 
         // Confirm progress bar hidden
         onView(withId(R.id.progress_bar)).check(matches(not(isDisplayed())));
-        rotateScreen();
+        mRotationHelper.rotateScreen();
         onView(withId(R.id.progress_bar)).check(matches(not(isDisplayed())));
     }
 
@@ -147,7 +148,7 @@ public class AuthScreenTest {
 
         // Confirm sign in button visible
         onView(withId(R.id.sign_in_button)).check(matches(isDisplayed()));
-        rotateScreen();
+        mRotationHelper.rotateScreen();
         onView(withId(R.id.sign_in_button)).check(matches(isDisplayed()));
     }
 
@@ -159,7 +160,7 @@ public class AuthScreenTest {
         // Confirm error message is not displayed
         onView(allOf(withId(android.support.design.R.id.snackbar_text),
                 withText(R.string.auth_failed))).check(doesNotExist());
-        rotateScreen();
+        mRotationHelper.rotateScreen();
         onView(allOf(withId(android.support.design.R.id.snackbar_text),
                 withText(R.string.auth_failed))).check(doesNotExist());
     }
@@ -171,16 +172,5 @@ public class AuthScreenTest {
 
         // Confirm Items Activity is launched
         intended(hasComponent(hasClassName(ItemsActivity.class.getName())), times(1));
-    }
-
-    private void rotateScreen() {
-        Context context = InstrumentationRegistry.getTargetContext();
-        int orientation = context.getResources().getConfiguration().orientation;
-        Activity activity = mActivityRule.getActivity();
-        activity.setRequestedOrientation(
-                orientation == Configuration.ORIENTATION_PORTRAIT
-                        ? ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-                        : ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        );
     }
 }
