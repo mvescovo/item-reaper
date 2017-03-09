@@ -143,7 +143,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    dismiss();
+                    mPresenter.doneEditing();
                 }
             });
         }
