@@ -41,6 +41,7 @@ import butterknife.ButterKnife;
 public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Callback,
         AboutFragment.Callback, EditItemFragment.Callback {
 
+    private static final String CURRENT_DIALOG_NAME = "current_dialog_name";
     private static final String ABOUT_DIALOG = "about_dialog";
     private static final String EDIT_ITEM_DIALOG = "edit_item_dialog";
 
@@ -100,7 +101,12 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
             }
         });
 
-        mCurrentDialogName = "";
+        if (savedInstanceState != null
+                && savedInstanceState.getString(CURRENT_DIALOG_NAME) != null) {
+            mCurrentDialogName = savedInstanceState.getString(CURRENT_DIALOG_NAME);
+        } else {
+            mCurrentDialogName = "";
+        }
     }
 
     private void initFragment(Fragment fragment) {
@@ -108,6 +114,12 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.contentFrame, fragment);
         transaction.commit();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(CURRENT_DIALOG_NAME, mCurrentDialogName);
     }
 
     @Override
@@ -174,7 +186,6 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
             actionBar.setHomeAsUpIndicator(icon);
         }
         mDialogOpen = true;
-        invalidateOptionsMenu();
     }
 
     @VisibleForTesting

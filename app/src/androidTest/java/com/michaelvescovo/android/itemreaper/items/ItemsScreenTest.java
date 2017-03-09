@@ -188,6 +188,32 @@ public class ItemsScreenTest {
             mRotationHelper.rotateScreen();
             onView(withId(R.id.no_items)).check(matches(isDisplayed()));
         }
+
+        // This test is only applicable to large screens where edit item is a dialog.
+        @Test
+        public void clickEditItemThenRotate_takePhotoMenuOptionVisible() {
+            if (mIsLargeScreen) {
+                onView(withId(R.id.edit_item)).perform(click());
+                Espresso.closeSoftKeyboard();
+                onView(withId(R.id.action_take_photo)).check(matches(isDisplayed()));
+                mRotationHelper.rotateScreen();
+                Espresso.closeSoftKeyboard();
+                onView(withId(R.id.action_take_photo)).check(matches(isDisplayed()));
+            }
+        }
+
+        // This test is only applicable to large screens where edit item is a dialog.
+        @Test
+        public void clickEditItemThenRotate_selectImageMenuOptionVisible() {
+            if (mIsLargeScreen) {
+                onView(withId(R.id.edit_item)).perform(click());
+                Espresso.closeSoftKeyboard();
+                onView(withId(R.id.action_select_image)).check(matches(isDisplayed()));
+                mRotationHelper.rotateScreen();
+                Espresso.closeSoftKeyboard();
+                onView(withId(R.id.action_select_image)).check(matches(isDisplayed()));
+            }
+        }
     }
 
     /*
