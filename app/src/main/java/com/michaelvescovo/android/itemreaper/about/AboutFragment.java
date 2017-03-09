@@ -88,8 +88,16 @@ public class AboutFragment extends AppCompatDialogFragment {
         return root;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mCallback.onDialogResumed();
+    }
+
     public interface Callback {
 
         void configureSupportActionBar(Toolbar toolbar, Drawable icon);
+
+        void onDialogResumed();
     }
 }

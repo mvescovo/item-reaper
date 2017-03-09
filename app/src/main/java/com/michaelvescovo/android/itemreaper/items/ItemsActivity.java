@@ -129,14 +129,12 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mDialogOpen) {
             getMenuInflater().inflate(R.menu.items_fragment_menu, menu);
+        } else if (mDialogResumed) {
+            menu.clear();
+            getMenuInflater().inflate(R.menu.items_fragment_menu, menu);
+            mDialogResumed = false;
         } else if (mCurrentDialogName.equals(EDIT_ITEM_DIALOG)) {
-            if (mDialogResumed) {
-                menu.clear();
-                getMenuInflater().inflate(R.menu.items_fragment_menu, menu);
-                mDialogResumed = false;
-            } else {
-                getMenuInflater().inflate(R.menu.edit_item_fragment_menu, menu);
-            }
+            getMenuInflater().inflate(R.menu.edit_item_fragment_menu, menu);
         }
         return true;
     }

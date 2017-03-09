@@ -47,4 +47,9 @@ public class AboutActivity extends AppCompatActivity implements AboutFragment.Ca
             actionBar.setDisplayShowTitleEnabled(false);
         }
     }
+
+    @Override
+    public void onDialogResumed() {
+        // Nothing to do here.
+    }
 }

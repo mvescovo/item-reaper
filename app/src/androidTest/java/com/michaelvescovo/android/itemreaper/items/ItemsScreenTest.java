@@ -228,6 +228,21 @@ public class ItemsScreenTest {
                 onView(withText(R.string.menu_about)).check(matches(isDisplayed()));
             }
         }
+
+        // This test is only applicable to large screens where edit item is a dialog.
+        @Test
+        public void clickAboutMenuItemThenRotateAndPressUp_AboutMenuItemVisible() {
+            if (mIsLargeScreen) {
+                openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+                onView(withText(R.string.menu_about)).perform(click());
+                Espresso.closeSoftKeyboard();
+                mRotationHelper.rotateScreen();
+                Espresso.closeSoftKeyboard();
+                onView(withContentDescription("Navigate up")).perform(click());
+                openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+                onView(withText(R.string.menu_about)).check(matches(isDisplayed()));
+            }
+        }
     }
 
     /*
