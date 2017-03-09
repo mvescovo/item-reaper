@@ -81,6 +81,11 @@ public class EditItemActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void onDialogResumed() {
+        // Nothing to do here.
+    }
+
     @VisibleForTesting
     public IdlingResource getCountingIdlingResource() {
         return EspressoIdlingResource.getIdlingResource();

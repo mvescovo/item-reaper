@@ -206,6 +206,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public void onResume() {
         super.onResume();
         mPresenter.editItem(mItemId);
+        mCallback.onDialogResumed();
     }
 
     @Override
@@ -564,5 +565,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public interface Callback {
 
         void configureSupportActionBar(Toolbar toolbar, Drawable icon);
+
+        void onDialogResumed();
     }
 }

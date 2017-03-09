@@ -56,6 +56,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     ItemsPresenter mItemsPresenter;
     private boolean mIsLargeLayout;
     private boolean mDialogOpen;
+    private boolean mDialogResumed;
     private String mCurrentDialogName;
 
     @Override
@@ -107,6 +108,8 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
         } else {
             mCurrentDialogName = "";
         }
+
+        mDialogResumed = false;
     }
 
     private void initFragment(Fragment fragment) {
@@ -127,7 +130,13 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
         if (!mDialogOpen) {
             getMenuInflater().inflate(R.menu.items_fragment_menu, menu);
         } else if (mCurrentDialogName.equals(EDIT_ITEM_DIALOG)) {
-            getMenuInflater().inflate(R.menu.edit_item_fragment_menu, menu);
+            if (mDialogResumed) {
+                menu.clear();
+                getMenuInflater().inflate(R.menu.items_fragment_menu, menu);
+                mDialogResumed = false;
+            } else {
+                getMenuInflater().inflate(R.menu.edit_item_fragment_menu, menu);
+            }
         }
         return true;
     }
@@ -186,6 +195,13 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
             actionBar.setHomeAsUpIndicator(icon);
         }
         mDialogOpen = true;
+    }
+
+    @Override
+    public void onDialogResumed() {
+        // Set the correct menu on the background Activity for when the dialog is dismissed.
+        mDialogResumed = true;
+        onCreateOptionsMenu(mToolbar.getMenu());
     }
 
     @VisibleForTesting
