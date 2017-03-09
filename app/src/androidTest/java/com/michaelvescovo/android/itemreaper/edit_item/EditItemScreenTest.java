@@ -27,7 +27,9 @@ import org.junit.runners.Parameterized;
 import java.util.Arrays;
 import java.util.Calendar;
 
+import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -364,6 +366,14 @@ public class EditItemScreenTest {
             mRotationHelper.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.action_select_image)).check(matches(isDisplayed()));
+        }
+
+        @Test
+        public void deleteItemMenuOptionVisible() {
+            openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+            onView(withText(R.string.menu_delete_item)).check(matches(isDisplayed()));
+            mRotationHelper.rotateScreen();
+            onView(withText(R.string.menu_delete_item)).check(matches(isDisplayed()));
         }
 
         @Test
