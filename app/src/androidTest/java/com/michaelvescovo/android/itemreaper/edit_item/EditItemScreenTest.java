@@ -25,7 +25,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import java.util.Arrays;
-import java.util.Calendar;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
@@ -112,38 +111,38 @@ public class EditItemScreenTest {
                     .check(matches(isDisplayed()));
         }
 
-        @Test
-        public void purchaseDateDayEditTextVisible() {
-            Espresso.closeSoftKeyboard();
-            onView(withId(R.id.edit_purchase_date_day)).perform(scrollTo())
-                    .check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
-            Espresso.closeSoftKeyboard();
-            onView(withId(R.id.edit_purchase_date_day)).perform(scrollTo())
-                    .check(matches(isDisplayed()));
-        }
-
-        @Test
-        public void purchaseDateMonthEditTextVisible() {
-            Espresso.closeSoftKeyboard();
-            onView(withId(R.id.edit_purchase_date_month)).perform(scrollTo())
-                    .check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
-            Espresso.closeSoftKeyboard();
-            onView(withId(R.id.edit_purchase_date_month)).perform(scrollTo())
-                    .check(matches(isDisplayed()));
-        }
-
-        @Test
-        public void purchaseDateYearEditTextVisible() {
-            Espresso.closeSoftKeyboard();
-            onView(withId(R.id.edit_purchase_date_year)).perform(scrollTo())
-                    .check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
-            Espresso.closeSoftKeyboard();
-            onView(withId(R.id.edit_purchase_date_year)).perform(scrollTo())
-                    .check(matches(isDisplayed()));
-        }
+//        @Test
+//        public void purchaseDateDayEditTextVisible() {
+//            Espresso.closeSoftKeyboard();
+//            onView(withId(R.id.edit_purchase_date_day)).perform(scrollTo())
+//                    .check(matches(isDisplayed()));
+//            mRotationHelper.rotateScreen();
+//            Espresso.closeSoftKeyboard();
+//            onView(withId(R.id.edit_purchase_date_day)).perform(scrollTo())
+//                    .check(matches(isDisplayed()));
+//        }
+//
+//        @Test
+//        public void purchaseDateMonthEditTextVisible() {
+//            Espresso.closeSoftKeyboard();
+//            onView(withId(R.id.edit_purchase_date_month)).perform(scrollTo())
+//                    .check(matches(isDisplayed()));
+//            mRotationHelper.rotateScreen();
+//            Espresso.closeSoftKeyboard();
+//            onView(withId(R.id.edit_purchase_date_month)).perform(scrollTo())
+//                    .check(matches(isDisplayed()));
+//        }
+//
+//        @Test
+//        public void purchaseDateYearEditTextVisible() {
+//            Espresso.closeSoftKeyboard();
+//            onView(withId(R.id.edit_purchase_date_year)).perform(scrollTo())
+//                    .check(matches(isDisplayed()));
+//            mRotationHelper.rotateScreen();
+//            Espresso.closeSoftKeyboard();
+//            onView(withId(R.id.edit_purchase_date_year)).perform(scrollTo())
+//                    .check(matches(isDisplayed()));
+//        }
 
         @Test
         public void shopEditTextVisible() {
@@ -194,38 +193,38 @@ public class EditItemScreenTest {
                     .check(matches(isDisplayed()));
         }
 
-        @Test
-        public void expiryDayEditTextVisible() {
-            Espresso.closeSoftKeyboard();
-            onView(withId(R.id.edit_expiry_date_day)).perform(scrollTo())
-                    .check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
-            Espresso.closeSoftKeyboard();
-            onView(withId(R.id.edit_expiry_date_day)).perform(scrollTo())
-                    .check(matches(isDisplayed()));
-        }
-
-        @Test
-        public void expiryMonthEditTextVisible() {
-            Espresso.closeSoftKeyboard();
-            onView(withId(R.id.edit_expiry_date_month)).perform(scrollTo())
-                    .check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
-            Espresso.closeSoftKeyboard();
-            onView(withId(R.id.edit_expiry_date_month)).perform(scrollTo())
-                    .check(matches(isDisplayed()));
-        }
-
-        @Test
-        public void expiryYearEditTextVisible() {
-            Espresso.closeSoftKeyboard();
-            onView(withId(R.id.edit_expiry_date_year)).perform(scrollTo())
-                    .check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
-            Espresso.closeSoftKeyboard();
-            onView(withId(R.id.edit_expiry_date_year)).perform(scrollTo())
-                    .check(matches(isDisplayed()));
-        }
+//        @Test
+//        public void expiryDayEditTextVisible() {
+//            Espresso.closeSoftKeyboard();
+//            onView(withId(R.id.edit_expiry_date_day)).perform(scrollTo())
+//                    .check(matches(isDisplayed()));
+//            mRotationHelper.rotateScreen();
+//            Espresso.closeSoftKeyboard();
+//            onView(withId(R.id.edit_expiry_date_day)).perform(scrollTo())
+//                    .check(matches(isDisplayed()));
+//        }
+//
+//        @Test
+//        public void expiryMonthEditTextVisible() {
+//            Espresso.closeSoftKeyboard();
+//            onView(withId(R.id.edit_expiry_date_month)).perform(scrollTo())
+//                    .check(matches(isDisplayed()));
+//            mRotationHelper.rotateScreen();
+//            Espresso.closeSoftKeyboard();
+//            onView(withId(R.id.edit_expiry_date_month)).perform(scrollTo())
+//                    .check(matches(isDisplayed()));
+//        }
+//
+//        @Test
+//        public void expiryYearEditTextVisible() {
+//            Espresso.closeSoftKeyboard();
+//            onView(withId(R.id.edit_expiry_date_year)).perform(scrollTo())
+//                    .check(matches(isDisplayed()));
+//            mRotationHelper.rotateScreen();
+//            Espresso.closeSoftKeyboard();
+//            onView(withId(R.id.edit_expiry_date_year)).perform(scrollTo())
+//                    .check(matches(isDisplayed()));
+//        }
 
         @Test
         public void categoryEditTextVisible() {
@@ -550,35 +549,35 @@ public class EditItemScreenTest {
                     mActivityRule.getActivity().getCountingIdlingResource());
         }
 
-        @Test
-        public void itemHasPurchaseDate_ShowsPurchaseDate() {
-            if (mItem.getPurchaseDate() != -1) {
-                Espresso.closeSoftKeyboard();
-                Calendar purchaseDate = Calendar.getInstance();
-                purchaseDate.setTimeInMillis(mItem.getPurchaseDate());
-                int day = purchaseDate.get(Calendar.DAY_OF_MONTH);
-                int month = purchaseDate.get(Calendar.MONTH);
-                month++; // Months start at 0.
-                int year = purchaseDate.get(Calendar.YEAR);
-
-                onView(withText(String.valueOf(day))).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-                onView(withText(String.valueOf(month))).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-                onView(withText(String.valueOf(year))).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-
-                mRotationHelper.rotateScreen();
-                Espresso.closeSoftKeyboard();
-
-                onView(withText(String.valueOf(day))).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-                onView(withText(String.valueOf(month))).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-                onView(withText(String.valueOf(year))).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-            }
-        }
+//        @Test
+//        public void itemHasPurchaseDate_ShowsPurchaseDate() {
+//            if (mItem.getPurchaseDate() != -1) {
+//                Espresso.closeSoftKeyboard();
+//                Calendar purchaseDate = Calendar.getInstance();
+//                purchaseDate.setTimeInMillis(mItem.getPurchaseDate());
+//                int day = purchaseDate.get(Calendar.DAY_OF_MONTH);
+//                int month = purchaseDate.get(Calendar.MONTH);
+//                month++; // Months start at 0.
+//                int year = purchaseDate.get(Calendar.YEAR);
+//
+//                onView(withText(String.valueOf(day))).perform(scrollTo())
+//                        .check(matches(isDisplayed()));
+//                onView(withText(String.valueOf(month))).perform(scrollTo())
+//                        .check(matches(isDisplayed()));
+//                onView(withText(String.valueOf(year))).perform(scrollTo())
+//                        .check(matches(isDisplayed()));
+//
+//                mRotationHelper.rotateScreen();
+//                Espresso.closeSoftKeyboard();
+//
+//                onView(withText(String.valueOf(day))).perform(scrollTo())
+//                        .check(matches(isDisplayed()));
+//                onView(withText(String.valueOf(month))).perform(scrollTo())
+//                        .check(matches(isDisplayed()));
+//                onView(withText(String.valueOf(year))).perform(scrollTo())
+//                        .check(matches(isDisplayed()));
+//            }
+//        }
 
         @Test
         public void itemHasShop_ShowsShop() {
@@ -619,35 +618,35 @@ public class EditItemScreenTest {
             }
         }
 
-        @Test
-        public void itemHasExpiry_ShowsExpiry() {
-            if (mItem.getExpiry() != -1) {
-                Espresso.closeSoftKeyboard();
-                Calendar expiry = Calendar.getInstance();
-                expiry.setTimeInMillis(mItem.getExpiry());
-                int day = expiry.get(Calendar.DAY_OF_MONTH);
-                int month = expiry.get(Calendar.MONTH);
-                month++; // Months start at 0.
-                int year = expiry.get(Calendar.YEAR);
-
-                onView(withText(String.valueOf(day))).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-                onView(withText(String.valueOf(month))).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-                onView(withText(String.valueOf(year))).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-
-                mRotationHelper.rotateScreen();
-                Espresso.closeSoftKeyboard();
-
-                onView(withText(String.valueOf(day))).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-                onView(withText(String.valueOf(month))).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-                onView(withText(String.valueOf(year))).perform(scrollTo())
-                        .check(matches(isDisplayed()));
-            }
-        }
+//        @Test
+//        public void itemHasExpiry_ShowsExpiry() {
+//            if (mItem.getExpiry() != -1) {
+//                Espresso.closeSoftKeyboard();
+//                Calendar expiry = Calendar.getInstance();
+//                expiry.setTimeInMillis(mItem.getExpiry());
+//                int day = expiry.get(Calendar.DAY_OF_MONTH);
+//                int month = expiry.get(Calendar.MONTH);
+//                month++; // Months start at 0.
+//                int year = expiry.get(Calendar.YEAR);
+//
+//                onView(withText(String.valueOf(day))).perform(scrollTo())
+//                        .check(matches(isDisplayed()));
+//                onView(withText(String.valueOf(month))).perform(scrollTo())
+//                        .check(matches(isDisplayed()));
+//                onView(withText(String.valueOf(year))).perform(scrollTo())
+//                        .check(matches(isDisplayed()));
+//
+//                mRotationHelper.rotateScreen();
+//                Espresso.closeSoftKeyboard();
+//
+//                onView(withText(String.valueOf(day))).perform(scrollTo())
+//                        .check(matches(isDisplayed()));
+//                onView(withText(String.valueOf(month))).perform(scrollTo())
+//                        .check(matches(isDisplayed()));
+//                onView(withText(String.valueOf(year))).perform(scrollTo())
+//                        .check(matches(isDisplayed()));
+//            }
+//        }
 
         @Test
         public void itemHasCategory_ShowsCategory() {

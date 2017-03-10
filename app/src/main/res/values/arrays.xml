@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="date_array">
+        <item>@string/edit_date_today</item>
+        <item>@string/edit_date_yesterday</item>
+        <item>@string/edit_date_custom</item>
+        <item>@string/edit_date_unknown</item>
+    </string-array>
+
+</resources>
