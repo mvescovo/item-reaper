@@ -168,7 +168,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         configureViews();
 
         /* TEMP */
-        mItemId = "1";
+//        mItemId = "1";
 
         return root;
     }
