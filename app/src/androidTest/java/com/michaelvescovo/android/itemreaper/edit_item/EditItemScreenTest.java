@@ -22,6 +22,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.junit.runners.Parameterized;
 
 import java.util.Arrays;
@@ -55,6 +56,7 @@ public class EditItemScreenTest {
     /*
     * Only run these tests once.
     * */
+    @RunWith(JUnit4.class)
     public static class StandardEditItemScreenTest {
 
         @Rule
@@ -111,38 +113,12 @@ public class EditItemScreenTest {
                     .check(matches(isDisplayed()));
         }
 
-//        @Test
-//        public void purchaseDateDayEditTextVisible() {
-//            Espresso.closeSoftKeyboard();
-//            onView(withId(R.id.edit_purchase_date_day)).perform(scrollTo())
-//                    .check(matches(isDisplayed()));
-//            mRotationHelper.rotateScreen();
-//            Espresso.closeSoftKeyboard();
-//            onView(withId(R.id.edit_purchase_date_day)).perform(scrollTo())
-//                    .check(matches(isDisplayed()));
-//        }
-//
-//        @Test
-//        public void purchaseDateMonthEditTextVisible() {
-//            Espresso.closeSoftKeyboard();
-//            onView(withId(R.id.edit_purchase_date_month)).perform(scrollTo())
-//                    .check(matches(isDisplayed()));
-//            mRotationHelper.rotateScreen();
-//            Espresso.closeSoftKeyboard();
-//            onView(withId(R.id.edit_purchase_date_month)).perform(scrollTo())
-//                    .check(matches(isDisplayed()));
-//        }
-//
-//        @Test
-//        public void purchaseDateYearEditTextVisible() {
-//            Espresso.closeSoftKeyboard();
-//            onView(withId(R.id.edit_purchase_date_year)).perform(scrollTo())
-//                    .check(matches(isDisplayed()));
-//            mRotationHelper.rotateScreen();
-//            Espresso.closeSoftKeyboard();
-//            onView(withId(R.id.edit_purchase_date_year)).perform(scrollTo())
-//                    .check(matches(isDisplayed()));
-//        }
+        @Test
+        public void purchaseDateSpinnerVisible() {
+            Espresso.closeSoftKeyboard();
+            onView(withId(R.id.purchase_date_spinner)).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+        }
 
         @Test
         public void shopEditTextVisible() {
