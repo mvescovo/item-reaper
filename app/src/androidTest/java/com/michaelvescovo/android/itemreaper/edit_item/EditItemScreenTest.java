@@ -118,6 +118,10 @@ public class EditItemScreenTest {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.purchase_date_spinner)).perform(scrollTo())
                     .check(matches(isDisplayed()));
+            mRotationHelper.rotateScreen();
+            Espresso.closeSoftKeyboard();
+            onView(withId(R.id.purchase_date_spinner)).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
 
         @Test
@@ -169,38 +173,15 @@ public class EditItemScreenTest {
                     .check(matches(isDisplayed()));
         }
 
-//        @Test
-//        public void expiryDayEditTextVisible() {
-//            Espresso.closeSoftKeyboard();
-//            onView(withId(R.id.edit_expiry_date_day)).perform(scrollTo())
-//                    .check(matches(isDisplayed()));
-//            mRotationHelper.rotateScreen();
-//            Espresso.closeSoftKeyboard();
-//            onView(withId(R.id.edit_expiry_date_day)).perform(scrollTo())
-//                    .check(matches(isDisplayed()));
-//        }
-//
-//        @Test
-//        public void expiryMonthEditTextVisible() {
-//            Espresso.closeSoftKeyboard();
-//            onView(withId(R.id.edit_expiry_date_month)).perform(scrollTo())
-//                    .check(matches(isDisplayed()));
-//            mRotationHelper.rotateScreen();
-//            Espresso.closeSoftKeyboard();
-//            onView(withId(R.id.edit_expiry_date_month)).perform(scrollTo())
-//                    .check(matches(isDisplayed()));
-//        }
-//
-//        @Test
-//        public void expiryYearEditTextVisible() {
-//            Espresso.closeSoftKeyboard();
-//            onView(withId(R.id.edit_expiry_date_year)).perform(scrollTo())
-//                    .check(matches(isDisplayed()));
-//            mRotationHelper.rotateScreen();
-//            Espresso.closeSoftKeyboard();
-//            onView(withId(R.id.edit_expiry_date_year)).perform(scrollTo())
-//                    .check(matches(isDisplayed()));
-//        }
+        @Test
+        public void expiryDateSpinnerVisible() {
+            Espresso.closeSoftKeyboard();
+            onView(withId(R.id.expiry_date_spinner)).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+            mRotationHelper.rotateScreen();
+            onView(withId(R.id.expiry_date_spinner)).perform(scrollTo())
+                    .check(matches(isDisplayed()));
+        }
 
         @Test
         public void categoryEditTextVisible() {
