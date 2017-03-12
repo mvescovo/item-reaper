@@ -10,11 +10,12 @@ import android.support.test.espresso.Espresso;
 import android.support.test.espresso.PerformException;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.filters.LargeTest;
+import android.widget.DatePicker;
 
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.Item;
+import com.michaelvescovo.android.itemreaper.util.EspressoHelperMethods;
 import com.michaelvescovo.android.itemreaper.util.FakeImageFileImpl;
-import com.michaelvescovo.android.itemreaper.util.RotationHelper;
 
 import org.junit.After;
 import org.junit.Before;
@@ -25,23 +26,32 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.junit.runners.Parameterized;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Locale;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.contrib.PickerActions.setDate;
 import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
+import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_2;
-import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_ID_1;
 import static com.michaelvescovo.android.itemreaper.matcher.ImageViewHasDrawableMatcher.hasDrawable;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.IsNot.not;
 
@@ -61,16 +71,13 @@ public class EditItemScreenTest {
 
         @Rule
         public IntentsTestRule<EditItemActivity> mActivityRule =
-                new IntentsTestRule<>(EditItemActivity.class, true, false);
+                new IntentsTestRule<>(EditItemActivity.class);
 
-        private RotationHelper mRotationHelper;
+        private EspressoHelperMethods mEspressoHelperMethods;
 
         @Before
         public void setup() {
-            Intent intent = new Intent();
-            intent.putExtra(EditItemActivity.EXTRA_ITEM_ID, ITEM_ID_1);
-            mActivityRule.launchActivity(intent);
-            mRotationHelper = new RotationHelper(InstrumentationRegistry.getTargetContext(),
+            mEspressoHelperMethods = new EspressoHelperMethods(InstrumentationRegistry.getTargetContext(),
                     mActivityRule.getActivity());
         }
 
@@ -89,7 +96,7 @@ public class EditItemScreenTest {
         @Test
         public void titleVisible() {
             onView(withText(R.string.title_activity_edit_item)).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             onView(withText(R.string.title_activity_edit_item)).check(matches(isDisplayed()));
         }
 
@@ -97,7 +104,7 @@ public class EditItemScreenTest {
         public void purchaseDetailsTitleVisible() {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_purchase_details_title)).perform(scrollTo()).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_purchase_details_title)).perform(scrollTo()).check(matches(isDisplayed()));
         }
@@ -107,7 +114,7 @@ public class EditItemScreenTest {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_purchase_date_title)).perform(scrollTo())
                     .check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_purchase_date_title)).perform(scrollTo())
                     .check(matches(isDisplayed()));
@@ -118,17 +125,138 @@ public class EditItemScreenTest {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.purchase_date_spinner)).perform(scrollTo())
                     .check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.purchase_date_spinner)).perform(scrollTo())
                     .check(matches(isDisplayed()));
         }
 
         @Test
+        public void clickPurchaseDateSpinner_ShowsCorrectOptions() {
+            Espresso.closeSoftKeyboard();
+            onView(withId(R.id.purchase_date_spinner)).perform(scrollTo()).perform(click());
+            onData(allOf(is(instanceOf(String.class)),
+                    is(mEspressoHelperMethods.getResourceString(R.string.edit_date_today))))
+                    .check(matches(isDisplayed()));
+            onData(allOf(is(instanceOf(String.class)),
+                    is(mEspressoHelperMethods.getResourceString(R.string.edit_date_yesterday))))
+                    .check(matches(isDisplayed()));
+            onData(allOf(is(instanceOf(String.class)),
+                    is(mEspressoHelperMethods.getResourceString(R.string.edit_date_custom))))
+                    .check(matches(isDisplayed()));
+            onData(allOf(is(instanceOf(String.class)),
+                    is(mEspressoHelperMethods.getResourceString(R.string.edit_date_unknown))))
+                    .check(matches(isDisplayed()));
+
+            mEspressoHelperMethods.rotateScreen();
+
+            onData(allOf(is(instanceOf(String.class)),
+                    is(mEspressoHelperMethods.getResourceString(R.string.edit_date_today))))
+                    .check(matches(isDisplayed()));
+            onData(allOf(is(instanceOf(String.class)),
+                    is(mEspressoHelperMethods.getResourceString(R.string.edit_date_yesterday))))
+                    .check(matches(isDisplayed()));
+            onData(allOf(is(instanceOf(String.class)),
+                    is(mEspressoHelperMethods.getResourceString(R.string.edit_date_custom))))
+                    .check(matches(isDisplayed()));
+            onData(allOf(is(instanceOf(String.class)),
+                    is(mEspressoHelperMethods.getResourceString(R.string.edit_date_unknown))))
+                    .check(matches(isDisplayed()));
+        }
+
+        @Test
+        public void selectPurchaseDateToday_TodaySelected() {
+            Espresso.closeSoftKeyboard();
+            onView(withId(R.id.purchase_date_spinner)).perform(scrollTo()).perform(click());
+            onData(allOf(is(instanceOf(String.class)),
+                    is(mEspressoHelperMethods.getResourceString(R.string.edit_date_today))))
+                    .perform(click());
+            onView(withId(R.id.purchase_date_spinner))
+                    .check(matches(withSpinnerText(containsString(
+                            mEspressoHelperMethods.getResourceString(R.string.edit_date_today)))));
+
+            mEspressoHelperMethods.rotateScreen();
+
+            onView(withId(R.id.purchase_date_spinner))
+                    .check(matches(withSpinnerText(containsString(
+                            mEspressoHelperMethods.getResourceString(R.string.edit_date_today)))));
+        }
+
+        @Test
+        public void selectPurchaseDateYesterday_YesterdaySelected() {
+            Espresso.closeSoftKeyboard();
+            onView(withId(R.id.purchase_date_spinner)).perform(scrollTo()).perform(click());
+            onData(allOf(is(instanceOf(String.class)),
+                    is(mEspressoHelperMethods.getResourceString(R.string.edit_date_yesterday))))
+                    .perform(click());
+            onView(withId(R.id.purchase_date_spinner))
+                    .check(matches(withSpinnerText(containsString(
+                            mEspressoHelperMethods.getResourceString(
+                                    R.string.edit_date_yesterday)))));
+
+            mEspressoHelperMethods.rotateScreen();
+
+            onView(withId(R.id.purchase_date_spinner))
+                    .check(matches(withSpinnerText(containsString(
+                            mEspressoHelperMethods.getResourceString(
+                                    R.string.edit_date_yesterday)))));
+        }
+
+        @Test
+        public void selectPurchaseDateCustom_CustomDateSelected() {
+            Calendar customDate = Calendar.getInstance();
+            customDate.setTimeInMillis(ITEM_1.getPurchaseDate());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                    "dd MMMM YYYY", Locale.getDefault());
+            String customDateString = simpleDateFormat.format(customDate.getTime());
+
+            Espresso.closeSoftKeyboard();
+
+            onView(withId(R.id.purchase_date_spinner)).perform(scrollTo()).perform(click());
+            onData(allOf(is(instanceOf(String.class)),
+                    is(mEspressoHelperMethods.getResourceString(R.string.edit_date_custom))))
+                    .perform(click());
+
+            onView(isAssignableFrom(DatePicker.class)).perform(setDate(
+                    customDate.get(Calendar.YEAR),
+                    customDate.get(Calendar.MONTH) + 1, // Months start at 0.
+                    customDate.get(Calendar.DAY_OF_MONTH)));
+            onView(withId(android.R.id.button1)).perform(click());
+
+            onView(withId(R.id.purchase_date_spinner))
+                    .check(matches(withSpinnerText(containsString(customDateString))));
+
+            mEspressoHelperMethods.rotateScreen();
+
+            onView(withId(R.id.purchase_date_spinner))
+                    .check(matches(withSpinnerText(containsString(customDateString))));
+        }
+
+        @Test
+        public void selectPurchaseDateUnknown_UnknownSelected() {
+            Espresso.closeSoftKeyboard();
+            onView(withId(R.id.purchase_date_spinner)).perform(scrollTo()).perform(click());
+            onData(allOf(is(instanceOf(String.class)),
+                    is(mEspressoHelperMethods.getResourceString(R.string.edit_date_unknown))))
+                    .perform(click());
+            onView(withId(R.id.purchase_date_spinner))
+                    .check(matches(withSpinnerText(containsString(
+                            mEspressoHelperMethods.getResourceString(
+                                    R.string.edit_date_unknown)))));
+
+            mEspressoHelperMethods.rotateScreen();
+
+            onView(withId(R.id.purchase_date_spinner))
+                    .check(matches(withSpinnerText(containsString(
+                            mEspressoHelperMethods.getResourceString(
+                                    R.string.edit_date_unknown)))));
+        }
+
+        @Test
         public void shopEditTextVisible() {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_shop)).perform(scrollTo()).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_shop)).perform(scrollTo()).check(matches(isDisplayed()));
         }
@@ -137,7 +265,7 @@ public class EditItemScreenTest {
         public void pricePaidEditTextVisible() {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_price_paid)).perform(scrollTo()).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_price_paid)).perform(scrollTo()).check(matches(isDisplayed()));
         }
@@ -147,7 +275,7 @@ public class EditItemScreenTest {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_discount)).perform(scrollTo()).perform(scrollTo())
                     .check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_discount)).perform(scrollTo()).perform(scrollTo())
                     .check(matches(isDisplayed()));
@@ -157,7 +285,7 @@ public class EditItemScreenTest {
         public void itemDetailsTitleVisible() {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_item_details_title)).perform(scrollTo()).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_item_details_title)).perform(scrollTo()).check(matches(isDisplayed()));
         }
@@ -167,7 +295,7 @@ public class EditItemScreenTest {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_expiry_date_title)).perform(scrollTo())
                     .check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_expiry_date_title)).perform(scrollTo())
                     .check(matches(isDisplayed()));
@@ -178,7 +306,7 @@ public class EditItemScreenTest {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.expiry_date_spinner)).perform(scrollTo())
                     .check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             onView(withId(R.id.expiry_date_spinner)).perform(scrollTo())
                     .check(matches(isDisplayed()));
         }
@@ -187,7 +315,7 @@ public class EditItemScreenTest {
         public void categoryEditTextVisible() {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_category)).perform(scrollTo()).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_category)).perform(scrollTo()).check(matches(isDisplayed()));
         }
@@ -196,7 +324,7 @@ public class EditItemScreenTest {
         public void subCategoryEditTextVisible() {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_sub_category)).perform(scrollTo()).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_sub_category)).perform(scrollTo()).check(matches(isDisplayed()));
         }
@@ -205,7 +333,7 @@ public class EditItemScreenTest {
         public void typeEditTextVisible() {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_type)).perform(scrollTo()).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_type)).perform(scrollTo()).check(matches(isDisplayed()));
         }
@@ -214,7 +342,7 @@ public class EditItemScreenTest {
         public void subTypeEditTextVisible() {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_sub_type)).perform(scrollTo()).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_sub_type)).perform(scrollTo()).check(matches(isDisplayed()));
         }
@@ -223,7 +351,7 @@ public class EditItemScreenTest {
         public void subType2EditTextVisible() {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_sub_type2)).perform(scrollTo()).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_sub_type2)).perform(scrollTo()).check(matches(isDisplayed()));
         }
@@ -232,7 +360,7 @@ public class EditItemScreenTest {
         public void subType3EditTextVisible() {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_sub_type3)).perform(scrollTo()).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_sub_type3)).perform(scrollTo()).check(matches(isDisplayed()));
         }
@@ -242,7 +370,7 @@ public class EditItemScreenTest {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_primary_colour)).perform(scrollTo())
                     .check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_primary_colour)).perform(scrollTo())
                     .check(matches(isDisplayed()));
@@ -253,7 +381,7 @@ public class EditItemScreenTest {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_primary_colour_shade)).perform(scrollTo())
                     .check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_primary_colour_shade)).perform(scrollTo())
                     .check(matches(isDisplayed()));
@@ -264,7 +392,7 @@ public class EditItemScreenTest {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_secondary_colour)).perform(scrollTo())
                     .check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_secondary_colour)).perform(scrollTo())
                     .check(matches(isDisplayed()));
@@ -274,7 +402,7 @@ public class EditItemScreenTest {
         public void sizeEditTextVisible() {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_size)).perform(scrollTo()).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_size)).perform(scrollTo()).check(matches(isDisplayed()));
         }
@@ -283,7 +411,7 @@ public class EditItemScreenTest {
         public void brandEditTextVisible() {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_brand)).perform(scrollTo()).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_brand)).perform(scrollTo()).check(matches(isDisplayed()));
         }
@@ -292,7 +420,7 @@ public class EditItemScreenTest {
         public void descriptionEditTextVisible() {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_description)).perform(scrollTo()).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_description)).perform(scrollTo()).check(matches(isDisplayed()));
         }
@@ -301,7 +429,7 @@ public class EditItemScreenTest {
         public void noteEditTextVisible() {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_note)).perform(scrollTo()).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_note)).perform(scrollTo()).check(matches(isDisplayed()));
         }
@@ -310,7 +438,7 @@ public class EditItemScreenTest {
         public void takePhotoMenuOptionVisible() {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.action_take_photo)).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.action_take_photo)).check(matches(isDisplayed()));
         }
@@ -319,7 +447,7 @@ public class EditItemScreenTest {
         public void selectImageMenuOptionVisible() {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.action_select_image)).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.action_select_image)).check(matches(isDisplayed()));
         }
@@ -328,7 +456,7 @@ public class EditItemScreenTest {
         public void deleteItemMenuOptionVisible() {
             openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
             onView(withText(R.string.menu_delete_item)).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             onView(withText(R.string.menu_delete_item)).check(matches(isDisplayed()));
         }
 
@@ -351,7 +479,7 @@ public class EditItemScreenTest {
                             hasDrawable(),
                             isDisplayed())));
 
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
 
             // Check that the image is displayed in the UI
@@ -378,7 +506,7 @@ public class EditItemScreenTest {
                             hasDrawable(),
                             isDisplayed())));
 
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
 
             // Check that the image is displayed in the UI
@@ -426,7 +554,7 @@ public class EditItemScreenTest {
             } catch (PerformException ignore) {
             }
 
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
 
             // Check the image is not displayed
@@ -470,7 +598,7 @@ public class EditItemScreenTest {
         public IntentsTestRule<EditItemActivity> mActivityRule =
                 new IntentsTestRule<>(EditItemActivity.class, true, false);
 
-        private RotationHelper mRotationHelper;
+        private EspressoHelperMethods mEspressoHelperMethods;
         private Item mItem;
 
         public ParameterisedEditItemScreenTest(Item item) {
@@ -490,7 +618,7 @@ public class EditItemScreenTest {
             Intent intent = new Intent();
             intent.putExtra(EditItemActivity.EXTRA_ITEM_ID, mItem.getId());
             mActivityRule.launchActivity(intent);
-            mRotationHelper = new RotationHelper(InstrumentationRegistry.getTargetContext(),
+            mEspressoHelperMethods = new EspressoHelperMethods(InstrumentationRegistry.getTargetContext(),
                     mActivityRule.getActivity());
         }
 
@@ -524,7 +652,7 @@ public class EditItemScreenTest {
 //                onView(withText(String.valueOf(year))).perform(scrollTo())
 //                        .check(matches(isDisplayed()));
 //
-//                mRotationHelper.rotateScreen();
+//                mEspressoHelperMethods.rotateScreen();
 //                Espresso.closeSoftKeyboard();
 //
 //                onView(withText(String.valueOf(day))).perform(scrollTo())
@@ -542,7 +670,7 @@ public class EditItemScreenTest {
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getShop())).perform(scrollTo())
                         .check(matches(isDisplayed()));
-                mRotationHelper.rotateScreen();
+                mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getShop())).perform(scrollTo())
                         .check(matches(isDisplayed()));
@@ -555,7 +683,7 @@ public class EditItemScreenTest {
                 Espresso.closeSoftKeyboard();
                 onView(withText(String.valueOf(mItem.getPricePaid()))).perform(scrollTo())
                         .check(matches(isDisplayed()));
-                mRotationHelper.rotateScreen();
+                mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
                 onView(withText(String.valueOf(mItem.getPricePaid()))).perform(scrollTo())
                         .check(matches(isDisplayed()));
@@ -568,7 +696,7 @@ public class EditItemScreenTest {
                 Espresso.closeSoftKeyboard();
                 onView(withText(String.valueOf(mItem.getDiscount()))).perform(scrollTo())
                         .check(matches(isDisplayed()));
-                mRotationHelper.rotateScreen();
+                mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
                 onView(withText(String.valueOf(mItem.getDiscount()))).perform(scrollTo())
                         .check(matches(isDisplayed()));
@@ -593,7 +721,7 @@ public class EditItemScreenTest {
 //                onView(withText(String.valueOf(year))).perform(scrollTo())
 //                        .check(matches(isDisplayed()));
 //
-//                mRotationHelper.rotateScreen();
+//                mEspressoHelperMethods.rotateScreen();
 //                Espresso.closeSoftKeyboard();
 //
 //                onView(withText(String.valueOf(day))).perform(scrollTo())
@@ -611,7 +739,7 @@ public class EditItemScreenTest {
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getCategory())).perform(scrollTo())
                         .check(matches(isDisplayed()));
-                mRotationHelper.rotateScreen();
+                mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getCategory())).perform(scrollTo())
                         .check(matches(isDisplayed()));
@@ -624,7 +752,7 @@ public class EditItemScreenTest {
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getSubCategory())).perform(scrollTo())
                         .check(matches(isDisplayed()));
-                mRotationHelper.rotateScreen();
+                mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getSubCategory())).perform(scrollTo())
                         .check(matches(isDisplayed()));
@@ -637,7 +765,7 @@ public class EditItemScreenTest {
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getType())).perform(scrollTo())
                         .check(matches(isDisplayed()));
-                mRotationHelper.rotateScreen();
+                mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getType())).perform(scrollTo())
                         .check(matches(isDisplayed()));
@@ -650,7 +778,7 @@ public class EditItemScreenTest {
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getSubtype())).perform(scrollTo())
                         .check(matches(isDisplayed()));
-                mRotationHelper.rotateScreen();
+                mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getSubtype())).perform(scrollTo())
                         .check(matches(isDisplayed()));
@@ -663,7 +791,7 @@ public class EditItemScreenTest {
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getSubtype2())).perform(scrollTo())
                         .check(matches(isDisplayed()));
-                mRotationHelper.rotateScreen();
+                mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getSubtype2())).perform(scrollTo())
                         .check(matches(isDisplayed()));
@@ -676,7 +804,7 @@ public class EditItemScreenTest {
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getSubtype3())).perform(scrollTo())
                         .check(matches(isDisplayed()));
-                mRotationHelper.rotateScreen();
+                mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getSubtype3())).perform(scrollTo())
                         .check(matches(isDisplayed()));
@@ -689,7 +817,7 @@ public class EditItemScreenTest {
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getPrimaryColour())).perform(scrollTo())
                         .check(matches(isDisplayed()));
-                mRotationHelper.rotateScreen();
+                mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getPrimaryColour())).perform(scrollTo())
                         .check(matches(isDisplayed()));
@@ -702,7 +830,7 @@ public class EditItemScreenTest {
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getPrimaryColourShade())).perform(scrollTo())
                         .check(matches(isDisplayed()));
-                mRotationHelper.rotateScreen();
+                mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getPrimaryColourShade())).perform(scrollTo())
                         .check(matches(isDisplayed()));
@@ -715,7 +843,7 @@ public class EditItemScreenTest {
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getSecondaryColour())).perform(scrollTo())
                         .check(matches(isDisplayed()));
-                mRotationHelper.rotateScreen();
+                mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getSecondaryColour())).perform(scrollTo())
                         .check(matches(isDisplayed()));
@@ -728,7 +856,7 @@ public class EditItemScreenTest {
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getSize())).perform(scrollTo())
                         .check(matches(isDisplayed()));
-                mRotationHelper.rotateScreen();
+                mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getSize())).perform(scrollTo())
                         .check(matches(isDisplayed()));
@@ -741,7 +869,7 @@ public class EditItemScreenTest {
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getBrand())).perform(scrollTo())
                         .check(matches(isDisplayed()));
-                mRotationHelper.rotateScreen();
+                mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getBrand())).perform(scrollTo())
                         .check(matches(isDisplayed()));
@@ -754,7 +882,7 @@ public class EditItemScreenTest {
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getDescription())).perform(scrollTo())
                         .check(matches(isDisplayed()));
-                mRotationHelper.rotateScreen();
+                mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getDescription())).perform(scrollTo())
                         .check(matches(isDisplayed()));
@@ -767,7 +895,7 @@ public class EditItemScreenTest {
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getNote())).perform(scrollTo())
                         .check(matches(isDisplayed()));
-                mRotationHelper.rotateScreen();
+                mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
                 onView(withText(mItem.getNote())).perform(scrollTo())
                         .check(matches(isDisplayed()));
@@ -785,7 +913,7 @@ public class EditItemScreenTest {
                             .check(matches(not(isDisplayed())));
                 } catch (PerformException ignore) {
                 }
-                mRotationHelper.rotateScreen();
+                mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
                 try {
                     onView(withId(R.id.edit_item_image)).perform(scrollTo())
@@ -803,7 +931,7 @@ public class EditItemScreenTest {
                         .check(matches(allOf(
                                 hasDrawable(),
                                 isDisplayed())));
-                mRotationHelper.rotateScreen();
+                mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
                 onView(withId(R.id.edit_item_image)).perform(scrollTo())
                         .check(matches(allOf(

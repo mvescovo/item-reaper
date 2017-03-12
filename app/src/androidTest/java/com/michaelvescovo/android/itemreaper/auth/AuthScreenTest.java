@@ -10,7 +10,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.items.ItemsActivity;
-import com.michaelvescovo.android.itemreaper.util.RotationHelper;
+import com.michaelvescovo.android.itemreaper.util.EspressoHelperMethods;
 
 import org.junit.After;
 import org.junit.Before;
@@ -48,7 +48,7 @@ public class AuthScreenTest {
     public IntentsTestRule<AuthActivity> mActivityRule = new IntentsTestRule<>(
             AuthActivity.class);
 
-    private RotationHelper mRotationHelper;
+    private EspressoHelperMethods mEspressoHelperMethods;
 
     @Before
     public void registerIdlingResource() {
@@ -58,7 +58,7 @@ public class AuthScreenTest {
 
     @Before
     public void signOut() {
-        mRotationHelper = new RotationHelper(InstrumentationRegistry.getTargetContext(),
+        mEspressoHelperMethods = new EspressoHelperMethods(InstrumentationRegistry.getTargetContext(),
                 mActivityRule.getActivity());
         try {
             openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
@@ -75,21 +75,21 @@ public class AuthScreenTest {
     @Test
     public void titleVisible() {
         onView(withText(R.string.app_name)).check(matches(isDisplayed()));
-        mRotationHelper.rotateScreen();
+        mEspressoHelperMethods.rotateScreen();
         onView(withText(R.string.app_name)).check(matches(isDisplayed()));
     }
 
     @Test
     public void signInButtonVisible() {
         onView(withId(R.id.sign_in_button)).check(matches(isDisplayed()));
-        mRotationHelper.rotateScreen();
+        mEspressoHelperMethods.rotateScreen();
         onView(withId(R.id.sign_in_button)).check(matches(isDisplayed()));
     }
 
     @Test
     public void progressBarNotVisible() {
         onView(withId(R.id.progress_bar)).check(matches(not(isDisplayed())));
-        mRotationHelper.rotateScreen();
+        mEspressoHelperMethods.rotateScreen();
         onView(withId(R.id.progress_bar)).check(matches(not(isDisplayed())));
     }
 
@@ -130,7 +130,7 @@ public class AuthScreenTest {
 
         // Confirm progress bar hidden
         onView(withId(R.id.progress_bar)).check(matches(not(isDisplayed())));
-        mRotationHelper.rotateScreen();
+        mEspressoHelperMethods.rotateScreen();
         onView(withId(R.id.progress_bar)).check(matches(not(isDisplayed())));
     }
 
@@ -148,7 +148,7 @@ public class AuthScreenTest {
 
         // Confirm sign in button visible
         onView(withId(R.id.sign_in_button)).check(matches(isDisplayed()));
-        mRotationHelper.rotateScreen();
+        mEspressoHelperMethods.rotateScreen();
         onView(withId(R.id.sign_in_button)).check(matches(isDisplayed()));
     }
 
@@ -160,7 +160,7 @@ public class AuthScreenTest {
         // Confirm error message is not displayed
         onView(allOf(withId(android.support.design.R.id.snackbar_text),
                 withText(R.string.auth_failed))).check(doesNotExist());
-        mRotationHelper.rotateScreen();
+        mEspressoHelperMethods.rotateScreen();
         onView(allOf(withId(android.support.design.R.id.snackbar_text),
                 withText(R.string.auth_failed))).check(doesNotExist());
     }

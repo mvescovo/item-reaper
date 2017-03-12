@@ -11,13 +11,13 @@ import static java.lang.Thread.sleep;
  * @author Michael Vescovo
  */
 
-public class RotationHelper {
+public class EspressoHelperMethods {
 
     private static final int ROTATION_TIME_OUT = 500;
     private Context mContext;
     private Activity mActivity;
 
-    public RotationHelper(Context context, Activity activity) {
+    public EspressoHelperMethods(Context context, Activity activity) {
         mContext = context;
         mActivity = activity;
     }
@@ -52,5 +52,9 @@ public class RotationHelper {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getResourceString(int id) {
+        return mContext.getResources().getString(id);
     }
 }

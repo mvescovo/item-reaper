@@ -200,6 +200,10 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
+        if (mSelectedPurchaseDate != null) {
+            mPurchaseDateAdapter.insert(mSelectedPurchaseDate, 0);
+            mPurchaseDateSpinner.setSelection(0);
+        }
 
         mShop.addTextChangedListener(this);
         mPricePaid.addTextChangedListener(this);
@@ -221,6 +225,10 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
+        if (mSelectedExpiryDate != null) {
+            mExpiryDateAdapter.insert(mSelectedExpiryDate, 0);
+            mExpiryDateSpinner.setSelection(0);
+        }
 
         mCategory.addTextChangedListener(this);
         mSubCategory.addTextChangedListener(this);
