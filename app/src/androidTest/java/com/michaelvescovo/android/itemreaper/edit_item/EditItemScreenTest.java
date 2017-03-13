@@ -270,6 +270,53 @@ public class EditItemScreenTest {
         }
 
         @Test
+        public void selectCustomDate_SelectDifferentOption_CustomDateRemovedFromSpinner() {
+            // Select custom date
+            Calendar customDate = Calendar.getInstance();
+            customDate.setTimeInMillis(ITEM_1.getPurchaseDate());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                    "dd MMMM YYYY", Locale.getDefault());
+            String customDateString = simpleDateFormat.format(customDate.getTime());
+
+            Espresso.closeSoftKeyboard();
+
+            onView(withId(R.id.purchase_date_spinner)).perform(scrollTo()).perform(click());
+            onData(allOf(is(instanceOf(String.class)),
+                    is(mEspressoHelperMethods.getResourceString(R.string.edit_date_custom))))
+                    .perform(click());
+
+            onView(isAssignableFrom(DatePicker.class)).perform(setDate(
+                    customDate.get(Calendar.YEAR),
+                    customDate.get(Calendar.MONTH) + 1, // Months start at 0.
+                    customDate.get(Calendar.DAY_OF_MONTH)));
+            onView(withId(android.R.id.button1)).perform(click());
+
+            // Confirm custom date is in the spinner
+            onView(withId(R.id.purchase_date_spinner)).perform(scrollTo()).perform(click());
+            onData(allOf(is(instanceOf(String.class)),
+                    is(customDateString)))
+                    .check(matches(isDisplayed()));
+            Espresso.pressBack();
+
+            // Select yesterday
+            Espresso.closeSoftKeyboard();
+            onView(withId(R.id.purchase_date_spinner)).perform(scrollTo()).perform(click());
+            onData(allOf(is(instanceOf(String.class)),
+                    is(mEspressoHelperMethods.getResourceString(R.string.edit_date_yesterday))))
+                    .perform(click());
+
+            // Confirm custom date is not in the spinner
+            onView(withId(R.id.purchase_date_spinner)).perform(scrollTo()).perform(click());
+            try {
+                onData(allOf(is(instanceOf(String.class)),
+                        is(customDateString)))
+                        .check(matches(not(isDisplayed())));
+            } catch (PerformException ignore) {
+
+            }
+        }
+
+        @Test
         public void selectPurchaseDateUnknown_UnknownSelected() {
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.purchase_date_spinner)).perform(scrollTo()).perform(click());
