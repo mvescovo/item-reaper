@@ -10,6 +10,7 @@ import android.support.test.espresso.Espresso;
 import android.support.test.espresso.PerformException;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.filters.LargeTest;
+import android.support.test.runner.AndroidJUnit4;
 import android.widget.DatePicker;
 
 import com.michaelvescovo.android.itemreaper.R;
@@ -23,7 +24,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import org.junit.runners.Parameterized;
 
 import java.text.SimpleDateFormat;
@@ -66,7 +66,7 @@ public class EditItemScreenTest {
     /*
     * Only run these tests once.
     * */
-    @RunWith(JUnit4.class)
+    @RunWith(AndroidJUnit4.class)
     public static class StandardEditItemScreenTest {
 
         @Rule
@@ -230,6 +230,43 @@ public class EditItemScreenTest {
 
             onView(withId(R.id.purchase_date_spinner))
                     .check(matches(withSpinnerText(containsString(customDateString))));
+        }
+
+        @Test
+        public void selectPurchaseDateCustom_ClickCancel_PreviousSelectionDisplayed() {
+            selectPurchaseDateYesterday_YesterdaySelected();
+
+            // Select yesterday and confirm it's displayed
+            Espresso.closeSoftKeyboard();
+            onView(withId(R.id.purchase_date_spinner)).perform(scrollTo()).perform(click());
+            onData(allOf(is(instanceOf(String.class)),
+                    is(mEspressoHelperMethods.getResourceString(R.string.edit_date_yesterday))))
+                    .perform(click());
+            onView(withId(R.id.purchase_date_spinner))
+                    .check(matches(withSpinnerText(containsString(
+                            mEspressoHelperMethods.getResourceString(
+                                    R.string.edit_date_yesterday)))));
+
+            // Open date picker and then press cancel
+            Espresso.closeSoftKeyboard();
+            onView(withId(R.id.purchase_date_spinner)).perform(scrollTo()).perform(click());
+            onData(allOf(is(instanceOf(String.class)),
+                    is(mEspressoHelperMethods.getResourceString(R.string.edit_date_custom))))
+                    .perform(click());
+            onView(withId(android.R.id.button2)).perform(click());
+
+            // Confirm yesterday still displayed
+            onView(withId(R.id.purchase_date_spinner))
+                    .check(matches(withSpinnerText(containsString(
+                            mEspressoHelperMethods.getResourceString(
+                                    R.string.edit_date_yesterday)))));
+
+            mEspressoHelperMethods.rotateScreen();
+
+            onView(withId(R.id.purchase_date_spinner))
+                    .check(matches(withSpinnerText(containsString(
+                            mEspressoHelperMethods.getResourceString(
+                                    R.string.edit_date_yesterday)))));
         }
 
         @Test
