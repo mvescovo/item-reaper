@@ -65,6 +65,11 @@ import static org.hamcrest.core.IsNot.not;
 @LargeTest
 public class EditItemScreenTest {
 
+    private static void confirmDateCustomSelected(int spinnerId, String customDateString) {
+        onView(withId(spinnerId))
+                .check(matches(withSpinnerText(containsString(customDateString))));
+    }
+
     /*
     * Only run these tests once.
     * */
@@ -79,8 +84,8 @@ public class EditItemScreenTest {
 
         @Before
         public void setup() {
-            mEspressoHelperMethods = new EspressoHelperMethods(InstrumentationRegistry.getTargetContext(),
-                    mActivityRule.getActivity());
+            mEspressoHelperMethods = new EspressoHelperMethods(
+                    InstrumentationRegistry.getTargetContext(), mActivityRule.getActivity());
         }
 
         @Before
@@ -105,10 +110,12 @@ public class EditItemScreenTest {
         @Test
         public void purchaseDetailsTitleVisible() {
             Espresso.closeSoftKeyboard();
-            onView(withId(R.id.edit_purchase_details_title)).perform(scrollTo()).check(matches(isDisplayed()));
+            onView(withId(R.id.edit_purchase_details_title)).perform(scrollTo())
+                    .check(matches(isDisplayed()));
             mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
-            onView(withId(R.id.edit_purchase_details_title)).perform(scrollTo()).check(matches(isDisplayed()));
+            onView(withId(R.id.edit_purchase_details_title)).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
 
         @Test
@@ -124,19 +131,37 @@ public class EditItemScreenTest {
 
         @Test
         public void purchaseDateSpinnerVisible() {
+            dateSpinnerVisible(R.id.purchase_date_spinner);
+        }
+
+        @Test
+        public void expiryDateSpinnerVisible() {
+            dateSpinnerVisible(R.id.expiry_date_spinner);
+        }
+
+        private void dateSpinnerVisible(int spinnerId) {
             Espresso.closeSoftKeyboard();
-            onView(withId(R.id.purchase_date_spinner)).perform(scrollTo())
+            onView(withId(spinnerId)).perform(scrollTo())
                     .check(matches(isDisplayed()));
             mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
-            onView(withId(R.id.purchase_date_spinner)).perform(scrollTo())
+            onView(withId(spinnerId)).perform(scrollTo())
                     .check(matches(isDisplayed()));
         }
 
         @Test
         public void clickPurchaseDateSpinner_ShowsCorrectOptions() {
+            clickDateSpinner_ShowsCorrectOptions(R.id.purchase_date_spinner);
+        }
+
+        @Test
+        public void clickExpiryDateSpinner_ShowsCorrectOptions() {
+            clickDateSpinner_ShowsCorrectOptions(R.id.expiry_date_spinner);
+        }
+
+        private void clickDateSpinner_ShowsCorrectOptions(int spinnerId) {
             Espresso.closeSoftKeyboard();
-            onView(withId(R.id.purchase_date_spinner)).perform(scrollTo()).perform(click());
+            onView(withId(spinnerId)).perform(scrollTo()).perform(click());
             onData(allOf(is(instanceOf(String.class)),
                     is(mEspressoHelperMethods.getResourceString(R.string.edit_date_today))))
                     .check(matches(isDisplayed()));
@@ -168,44 +193,61 @@ public class EditItemScreenTest {
 
         @Test
         public void selectPurchaseDateToday_TodaySelected() {
-            selectPurchaseDateToday();
-            confirmPurchaseDateTodaySelected();
-            mEspressoHelperMethods.rotateScreen();
-            confirmPurchaseDateTodaySelected();
+            selectDateToday_TodaySelected(R.id.purchase_date_spinner);
         }
 
-        private void selectPurchaseDateToday() {
+        @Test
+        public void selectExpiryDateToday_TodaySelected() {
+            selectDateToday_TodaySelected(R.id.expiry_date_spinner);
+        }
+
+        private void selectDateToday_TodaySelected(int spinnerId) {
+            selectDateToday(spinnerId);
+            confirmDateTodaySelected(spinnerId);
+            mEspressoHelperMethods.rotateScreen();
+            confirmDateTodaySelected(spinnerId);
+        }
+
+        private void selectDateToday(int spinnerId) {
             Espresso.closeSoftKeyboard();
-            onView(withId(R.id.purchase_date_spinner)).perform(scrollTo()).perform(click());
+            onView(withId(spinnerId)).perform(scrollTo()).perform(click());
             onData(allOf(is(instanceOf(String.class)),
                     is(mEspressoHelperMethods.getResourceString(R.string.edit_date_today))))
                     .perform(click());
         }
 
-        private void confirmPurchaseDateTodaySelected() {
-            onView(withId(R.id.purchase_date_spinner))
+        private void confirmDateTodaySelected(int spinnerId) {
+            onView(withId(spinnerId))
                     .check(matches(withSpinnerText(containsString(
                             mEspressoHelperMethods.getResourceString(R.string.edit_date_today)))));
         }
 
         @Test
         public void selectPurchaseDateYesterday_YesterdaySelected() {
-            selectPurchaseDateYesterday();
-            confirmPurchaseDateYesterdaySelected();
+            selectDateYesterday(R.id.purchase_date_spinner);
+            confirmDateYesterdaySelected(R.id.purchase_date_spinner);
             mEspressoHelperMethods.rotateScreen();
-            confirmPurchaseDateYesterdaySelected();
+            confirmDateYesterdaySelected(R.id.purchase_date_spinner);
         }
 
-        private void selectPurchaseDateYesterday() {
+        @Test
+        public void selectExpiryDateYesterday_YesterdaySelected() {
+            selectDateYesterday(R.id.expiry_date_spinner);
+            confirmDateYesterdaySelected(R.id.expiry_date_spinner);
+            mEspressoHelperMethods.rotateScreen();
+            confirmDateYesterdaySelected(R.id.expiry_date_spinner);
+        }
+
+        private void selectDateYesterday(int spinnerId) {
             Espresso.closeSoftKeyboard();
-            onView(withId(R.id.purchase_date_spinner)).perform(scrollTo()).perform(click());
+            onView(withId(spinnerId)).perform(scrollTo()).perform(click());
             onData(allOf(is(instanceOf(String.class)),
                     is(mEspressoHelperMethods.getResourceString(R.string.edit_date_yesterday))))
                     .perform(click());
         }
 
-        private void confirmPurchaseDateYesterdaySelected() {
-            onView(withId(R.id.purchase_date_spinner))
+        private void confirmDateYesterdaySelected(int spinnerId) {
+            onView(withId(spinnerId))
                     .check(matches(withSpinnerText(containsString(
                             mEspressoHelperMethods.getResourceString(
                                     R.string.edit_date_yesterday)))));
@@ -219,16 +261,30 @@ public class EditItemScreenTest {
                     "dd MMMM YYYY", Locale.getDefault());
             String customDateString = simpleDateFormat.format(customDate.getTime());
 
-            selectPurchaseDateCustom(customDate, true);
-            confirmPurchaseDateCustomSelected(customDateString);
+            selectDateCustom(R.id.purchase_date_spinner, customDate, true);
+            confirmDateCustomSelected(R.id.purchase_date_spinner, customDateString);
             mEspressoHelperMethods.rotateScreen();
-            confirmPurchaseDateCustomSelected(customDateString);
+            confirmDateCustomSelected(R.id.purchase_date_spinner, customDateString);
         }
 
-        private void selectPurchaseDateCustom(@Nullable Calendar customDate, boolean ok) {
+        @Test
+        public void selectExpiryDateCustom_CustomDateSelected() {
+            Calendar customDate = Calendar.getInstance();
+            customDate.setTimeInMillis(ITEM_1.getExpiry());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                    "dd MMMM YYYY", Locale.getDefault());
+            String customDateString = simpleDateFormat.format(customDate.getTime());
+
+            selectDateCustom(R.id.expiry_date_spinner, customDate, true);
+            confirmDateCustomSelected(R.id.expiry_date_spinner, customDateString);
+            mEspressoHelperMethods.rotateScreen();
+            confirmDateCustomSelected(R.id.expiry_date_spinner, customDateString);
+        }
+
+        private void selectDateCustom(int spinnerId, @Nullable Calendar customDate, boolean ok) {
             Espresso.closeSoftKeyboard();
 
-            onView(withId(R.id.purchase_date_spinner)).perform(scrollTo()).perform(click());
+            onView(withId(spinnerId)).perform(scrollTo()).perform(click());
             onData(allOf(is(instanceOf(String.class)),
                     is(mEspressoHelperMethods.getResourceString(R.string.edit_date_custom))))
                     .perform(click());
@@ -255,83 +311,152 @@ public class EditItemScreenTest {
                     "dd MMMM YYYY", Locale.getDefault());
             String customDateString = simpleDateFormat.format(customDate.getTime());
 
-            selectPurchaseDateToday();
-            confirmPurchaseDateTodaySelected();
-            selectPurchaseDateCustom(null, false); // Press cancel on custom date
-            confirmPurchaseDateTodaySelected();
+            selectDateToday(R.id.purchase_date_spinner);
+            confirmDateTodaySelected(R.id.purchase_date_spinner);
+            selectDateCustom(R.id.purchase_date_spinner, null, false); // Press cancel on custom
+            confirmDateTodaySelected(R.id.purchase_date_spinner);
 
-            selectPurchaseDateYesterday();
-            confirmPurchaseDateYesterdaySelected();
-            selectPurchaseDateCustom(null, false); // Press cancel on custom date
-            confirmPurchaseDateYesterdaySelected();
+            selectDateYesterday(R.id.purchase_date_spinner);
+            confirmDateYesterdaySelected(R.id.purchase_date_spinner);
+            selectDateCustom(R.id.purchase_date_spinner, null, false); // Press cancel on custom
+            confirmDateYesterdaySelected(R.id.purchase_date_spinner);
 
-            selectPurchaseDateCustom(customDate, true);
-            confirmPurchaseDateCustomSelected(customDateString);
-            selectPurchaseDateCustom(null, false); // Press cancel on custom date
-            confirmPurchaseDateCustomSelected(customDateString);
+            selectDateCustom(R.id.purchase_date_spinner, customDate, true);
+            confirmDateCustomSelected(R.id.purchase_date_spinner, customDateString);
+            selectDateCustom(R.id.purchase_date_spinner, null, false); // Press cancel on custom
+            confirmDateCustomSelected(R.id.purchase_date_spinner, customDateString);
 
-            selectPurchaseDateUnknown();
-            confirmPurchaseDateUnknownSelected();
-            selectPurchaseDateCustom(null, false); // Press cancel on custom date
-            confirmPurchaseDateUnknownSelected();
+            selectDateUnknown(R.id.purchase_date_spinner);
+            confirmDateUnknownSelected(R.id.purchase_date_spinner);
+            selectDateCustom(R.id.purchase_date_spinner, null, false); // Press cancel on custom
+            confirmDateUnknownSelected(R.id.purchase_date_spinner);
         }
 
         @Test
-        public void selectCustomDate_SelectDifferentOption_CustomDateRemovedFromSpinner() {
+        public void selectExpiryDateCustom_ClickCancel_PreviousSelectionDisplayed() {
             Calendar customDate = Calendar.getInstance();
-            customDate.setTimeInMillis(ITEM_1.getPurchaseDate());
+            customDate.setTimeInMillis(ITEM_1.getExpiry());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                    "dd MMMM YYYY", Locale.getDefault());
+            String customDateString = simpleDateFormat.format(customDate.getTime());
+
+            selectDateToday(R.id.expiry_date_spinner);
+            confirmDateTodaySelected(R.id.expiry_date_spinner);
+            selectDateCustom(R.id.expiry_date_spinner, null, false); // Press cancel on custom
+            confirmDateTodaySelected(R.id.expiry_date_spinner);
+
+            selectDateYesterday(R.id.expiry_date_spinner);
+            confirmDateYesterdaySelected(R.id.expiry_date_spinner);
+            selectDateCustom(R.id.expiry_date_spinner, null, false); // Press cancel on custom
+            confirmDateYesterdaySelected(R.id.expiry_date_spinner);
+
+            selectDateCustom(R.id.expiry_date_spinner, customDate, true);
+            confirmDateCustomSelected(R.id.expiry_date_spinner, customDateString);
+            selectDateCustom(R.id.expiry_date_spinner, null, false); // Press cancel on custom
+            confirmDateCustomSelected(R.id.expiry_date_spinner, customDateString);
+
+            selectDateUnknown(R.id.expiry_date_spinner);
+            confirmDateUnknownSelected(R.id.expiry_date_spinner);
+            selectDateCustom(R.id.expiry_date_spinner, null, false); // Press cancel on custom
+            confirmDateUnknownSelected(R.id.expiry_date_spinner);
+        }
+
+        @Test
+        public void selectPurchaseCustomDate_SelectDifferentOption_CustomDateRemovedFromSpinner() {
+            Calendar customDate = Calendar.getInstance();
+            customDate.setTimeInMillis(1452776400000L); // 15/1/2016
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
                     "dd MMMM YYYY", Locale.getDefault());
             String customDateString = simpleDateFormat.format(customDate.getTime());
 
             Calendar customDate2 = Calendar.getInstance();
-            customDate2.setTimeInMillis(ITEM_1.getExpiry());
+            customDate2.setTimeInMillis(1496325600000L); // 2/6/2017
 
-            selectPurchaseDateCustom(customDate, true);
-            confirmPurchaseDateCustomSelected(customDateString);
-            selectPurchaseDateToday();
-            confirmCustomDateNotInSpinner(customDateString);
+            selectDateCustom(R.id.purchase_date_spinner, customDate, true);
+            confirmDateCustomSelected(R.id.purchase_date_spinner, customDateString);
+            selectDateToday(R.id.purchase_date_spinner);
+            confirmCustomDateNotInSpinner(R.id.purchase_date_spinner, customDateString);
 
-            selectPurchaseDateCustom(customDate, true);
-            confirmPurchaseDateCustomSelected(customDateString);
-            selectPurchaseDateYesterday();
-            confirmCustomDateNotInSpinner(customDateString);
+            selectDateCustom(R.id.purchase_date_spinner, customDate, true);
+            confirmDateCustomSelected(R.id.purchase_date_spinner, customDateString);
+            selectDateYesterday(R.id.purchase_date_spinner);
+            confirmCustomDateNotInSpinner(R.id.purchase_date_spinner, customDateString);
 
-            selectPurchaseDateCustom(customDate, true);
-            confirmPurchaseDateCustomSelected(customDateString);
-            selectPurchaseDateCustom(customDate2, true);
-            confirmCustomDateNotInSpinner(customDateString);
+            selectDateCustom(R.id.purchase_date_spinner, customDate, true);
+            confirmDateCustomSelected(R.id.purchase_date_spinner, customDateString);
+            selectDateCustom(R.id.purchase_date_spinner, customDate2, true);
+            confirmCustomDateNotInSpinner(R.id.purchase_date_spinner, customDateString);
 
-            selectPurchaseDateCustom(customDate, true);
-            confirmPurchaseDateCustomSelected(customDateString);
-            selectPurchaseDateUnknown();
-            confirmCustomDateNotInSpinner(customDateString);
+            selectDateCustom(R.id.purchase_date_spinner, customDate, true);
+            confirmDateCustomSelected(R.id.purchase_date_spinner, customDateString);
+            selectDateUnknown(R.id.purchase_date_spinner);
+            confirmCustomDateNotInSpinner(R.id.purchase_date_spinner, customDateString);
         }
 
-        private void confirmCustomDateNotInSpinner(String customDateString) {
-            onView(withId(R.id.purchase_date_spinner))
+        @Test
+        public void selectExpiryCustomDate_SelectDifferentOption_CustomDateRemovedFromSpinner() {
+            Calendar customDate = Calendar.getInstance();
+            customDate.setTimeInMillis(1452776400000L); // 15/1/2016
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                    "dd MMMM YYYY", Locale.getDefault());
+            String customDateString = simpleDateFormat.format(customDate.getTime());
+
+            Calendar customDate2 = Calendar.getInstance();
+            customDate2.setTimeInMillis(1496325600000L); // 2/6/2017
+
+            selectDateCustom(R.id.expiry_date_spinner, customDate, true);
+            confirmDateCustomSelected(R.id.expiry_date_spinner, customDateString);
+            selectDateToday(R.id.expiry_date_spinner);
+            confirmCustomDateNotInSpinner(R.id.expiry_date_spinner, customDateString);
+
+            selectDateCustom(R.id.expiry_date_spinner, customDate, true);
+            confirmDateCustomSelected(R.id.expiry_date_spinner, customDateString);
+            selectDateYesterday(R.id.expiry_date_spinner);
+            confirmCustomDateNotInSpinner(R.id.expiry_date_spinner, customDateString);
+
+            selectDateCustom(R.id.expiry_date_spinner, customDate, true);
+            confirmDateCustomSelected(R.id.expiry_date_spinner, customDateString);
+            selectDateCustom(R.id.expiry_date_spinner, customDate2, true);
+            confirmCustomDateNotInSpinner(R.id.expiry_date_spinner, customDateString);
+
+            selectDateCustom(R.id.expiry_date_spinner, customDate, true);
+            confirmDateCustomSelected(R.id.expiry_date_spinner, customDateString);
+            selectDateUnknown(R.id.expiry_date_spinner);
+            confirmCustomDateNotInSpinner(R.id.expiry_date_spinner, customDateString);
+        }
+
+        private void confirmCustomDateNotInSpinner(int spinnerId, String customDateString) {
+            onView(withId(spinnerId))
                     .check(matches(not(withAdaptedData(allOf(is(instanceOf(String.class)),
                             is(customDateString))))));
         }
 
         @Test
         public void selectPurchaseDateUnknown_UnknownSelected() {
-            selectPurchaseDateUnknown();
-            confirmPurchaseDateUnknownSelected();
+            selectDateUnknown(R.id.purchase_date_spinner);
+            confirmDateUnknownSelected(R.id.purchase_date_spinner);
             mEspressoHelperMethods.rotateScreen();
-            confirmPurchaseDateUnknownSelected();
+            confirmDateUnknownSelected(R.id.purchase_date_spinner);
         }
 
-        private void selectPurchaseDateUnknown() {
+        @Test
+        public void selectExpiryDateUnknown_UnknownSelected() {
+            selectDateUnknown(R.id.expiry_date_spinner);
+            confirmDateUnknownSelected(R.id.expiry_date_spinner);
+            mEspressoHelperMethods.rotateScreen();
+            confirmDateUnknownSelected(R.id.expiry_date_spinner);
+        }
+
+        private void selectDateUnknown(int spinnerId) {
             Espresso.closeSoftKeyboard();
-            onView(withId(R.id.purchase_date_spinner)).perform(scrollTo()).perform(click());
+            onView(withId(spinnerId)).perform(scrollTo()).perform(click());
             onData(allOf(is(instanceOf(String.class)),
                     is(mEspressoHelperMethods.getResourceString(R.string.edit_date_unknown))))
                     .perform(click());
         }
 
-        private void confirmPurchaseDateUnknownSelected() {
-            onView(withId(R.id.purchase_date_spinner))
+        private void confirmDateUnknownSelected(int spinnerId) {
+            onView(withId(spinnerId))
                     .check(matches(withSpinnerText(containsString(
                             mEspressoHelperMethods.getResourceString(
                                     R.string.edit_date_unknown)))));
@@ -369,10 +494,12 @@ public class EditItemScreenTest {
         @Test
         public void itemDetailsTitleVisible() {
             Espresso.closeSoftKeyboard();
-            onView(withId(R.id.edit_item_details_title)).perform(scrollTo()).check(matches(isDisplayed()));
+            onView(withId(R.id.edit_item_details_title)).perform(scrollTo())
+                    .check(matches(isDisplayed()));
             mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
-            onView(withId(R.id.edit_item_details_title)).perform(scrollTo()).check(matches(isDisplayed()));
+            onView(withId(R.id.edit_item_details_title)).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
 
         @Test
@@ -383,16 +510,6 @@ public class EditItemScreenTest {
             mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.edit_expiry_date_title)).perform(scrollTo())
-                    .check(matches(isDisplayed()));
-        }
-
-        @Test
-        public void expiryDateSpinnerVisible() {
-            Espresso.closeSoftKeyboard();
-            onView(withId(R.id.expiry_date_spinner)).perform(scrollTo())
-                    .check(matches(isDisplayed()));
-            mEspressoHelperMethods.rotateScreen();
-            onView(withId(R.id.expiry_date_spinner)).perform(scrollTo())
                     .check(matches(isDisplayed()));
         }
 
@@ -408,10 +525,12 @@ public class EditItemScreenTest {
         @Test
         public void subCategoryEditTextVisible() {
             Espresso.closeSoftKeyboard();
-            onView(withId(R.id.edit_sub_category)).perform(scrollTo()).check(matches(isDisplayed()));
+            onView(withId(R.id.edit_sub_category)).perform(scrollTo())
+                    .check(matches(isDisplayed()));
             mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
-            onView(withId(R.id.edit_sub_category)).perform(scrollTo()).check(matches(isDisplayed()));
+            onView(withId(R.id.edit_sub_category)).perform(scrollTo())
+                    .check(matches(isDisplayed()));
         }
 
         @Test
@@ -703,8 +822,8 @@ public class EditItemScreenTest {
             Intent intent = new Intent();
             intent.putExtra(EditItemActivity.EXTRA_ITEM_ID, mItem.getId());
             mActivityRule.launchActivity(intent);
-            mEspressoHelperMethods = new EspressoHelperMethods(InstrumentationRegistry.getTargetContext(),
-                    mActivityRule.getActivity());
+            mEspressoHelperMethods = new EspressoHelperMethods(
+                    InstrumentationRegistry.getTargetContext(), mActivityRule.getActivity());
         }
 
         @Before
@@ -729,9 +848,25 @@ public class EditItemScreenTest {
                         "dd MMMM YYYY", Locale.getDefault());
                 String purchaseDateString = simpleDateFormat.format(purchaseDate.getTime());
 
-                confirmPurchaseDateCustomSelected(purchaseDateString);
+                confirmDateCustomSelected(R.id.purchase_date_spinner, purchaseDateString);
                 mEspressoHelperMethods.rotateScreen();
-                confirmPurchaseDateCustomSelected(purchaseDateString);
+                confirmDateCustomSelected(R.id.purchase_date_spinner, purchaseDateString);
+            }
+        }
+
+        @Test
+        public void itemHasExpiry_ShowsExpiry() {
+            if (mItem.getExpiry() != -1) {
+                Espresso.closeSoftKeyboard();
+                Calendar expiryDate = Calendar.getInstance();
+                expiryDate.setTimeInMillis(mItem.getExpiry());
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                        "dd MMMM YYYY", Locale.getDefault());
+                String expiryDateString = simpleDateFormat.format(expiryDate.getTime());
+
+                confirmDateCustomSelected(R.id.expiry_date_spinner, expiryDateString);
+                mEspressoHelperMethods.rotateScreen();
+                confirmDateCustomSelected(R.id.expiry_date_spinner, expiryDateString);
             }
         }
 
@@ -773,36 +908,6 @@ public class EditItemScreenTest {
                         .check(matches(isDisplayed()));
             }
         }
-
-//        @Test
-//        public void itemHasExpiry_ShowsExpiry() {
-//            if (mItem.getExpiry() != -1) {
-//                Espresso.closeSoftKeyboard();
-//                Calendar expiry = Calendar.getInstance();
-//                expiry.setTimeInMillis(mItem.getExpiry());
-//                int day = expiry.get(Calendar.DAY_OF_MONTH);
-//                int month = expiry.get(Calendar.MONTH);
-//                month++; // Months start at 0.
-//                int year = expiry.get(Calendar.YEAR);
-//
-//                onView(withText(String.valueOf(day))).perform(scrollTo())
-//                        .check(matches(isDisplayed()));
-//                onView(withText(String.valueOf(month))).perform(scrollTo())
-//                        .check(matches(isDisplayed()));
-//                onView(withText(String.valueOf(year))).perform(scrollTo())
-//                        .check(matches(isDisplayed()));
-//
-//                mEspressoHelperMethods.rotateScreen();
-//                Espresso.closeSoftKeyboard();
-//
-//                onView(withText(String.valueOf(day))).perform(scrollTo())
-//                        .check(matches(isDisplayed()));
-//                onView(withText(String.valueOf(month))).perform(scrollTo())
-//                        .check(matches(isDisplayed()));
-//                onView(withText(String.valueOf(year))).perform(scrollTo())
-//                        .check(matches(isDisplayed()));
-//            }
-//        }
 
         @Test
         public void itemHasCategory_ShowsCategory() {
@@ -1010,10 +1115,5 @@ public class EditItemScreenTest {
                                 isDisplayed())));
             }
         }
-    }
-
-    private static void confirmPurchaseDateCustomSelected(String customDateString) {
-        onView(withId(R.id.purchase_date_spinner))
-                .check(matches(withSpinnerText(containsString(customDateString))));
     }
 }
