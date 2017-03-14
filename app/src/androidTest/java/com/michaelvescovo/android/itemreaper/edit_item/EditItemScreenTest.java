@@ -247,11 +247,6 @@ public class EditItemScreenTest {
             }
         }
 
-        private void confirmPurchaseDateCustomSelected(String customDateString) {
-            onView(withId(R.id.purchase_date_spinner))
-                    .check(matches(withSpinnerText(containsString(customDateString))));
-        }
-
         @Test
         public void selectPurchaseDateCustom_ClickCancel_PreviousSelectionDisplayed() {
             Calendar customDate = Calendar.getInstance();
@@ -724,35 +719,21 @@ public class EditItemScreenTest {
                     mActivityRule.getActivity().getCountingIdlingResource());
         }
 
-//        @Test
-//        public void itemHasPurchaseDate_ShowsPurchaseDate() {
-//            if (mItem.getPurchaseDate() != -1) {
-//                Espresso.closeSoftKeyboard();
-//                Calendar purchaseDate = Calendar.getInstance();
-//                purchaseDate.setTimeInMillis(mItem.getPurchaseDate());
-//                int day = purchaseDate.get(Calendar.DAY_OF_MONTH);
-//                int month = purchaseDate.get(Calendar.MONTH);
-//                month++; // Months start at 0.
-//                int year = purchaseDate.get(Calendar.YEAR);
-//
-//                onView(withText(String.valueOf(day))).perform(scrollTo())
-//                        .check(matches(isDisplayed()));
-//                onView(withText(String.valueOf(month))).perform(scrollTo())
-//                        .check(matches(isDisplayed()));
-//                onView(withText(String.valueOf(year))).perform(scrollTo())
-//                        .check(matches(isDisplayed()));
-//
-//                mEspressoHelperMethods.rotateScreen();
-//                Espresso.closeSoftKeyboard();
-//
-//                onView(withText(String.valueOf(day))).perform(scrollTo())
-//                        .check(matches(isDisplayed()));
-//                onView(withText(String.valueOf(month))).perform(scrollTo())
-//                        .check(matches(isDisplayed()));
-//                onView(withText(String.valueOf(year))).perform(scrollTo())
-//                        .check(matches(isDisplayed()));
-//            }
-//        }
+        @Test
+        public void itemHasPurchaseDate_ShowsPurchaseDate() {
+            if (mItem.getPurchaseDate() != -1) {
+                Espresso.closeSoftKeyboard();
+                Calendar purchaseDate = Calendar.getInstance();
+                purchaseDate.setTimeInMillis(mItem.getPurchaseDate());
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                        "dd MMMM YYYY", Locale.getDefault());
+                String purchaseDateString = simpleDateFormat.format(purchaseDate.getTime());
+
+                confirmPurchaseDateCustomSelected(purchaseDateString);
+                mEspressoHelperMethods.rotateScreen();
+                confirmPurchaseDateCustomSelected(purchaseDateString);
+            }
+        }
 
         @Test
         public void itemHasShop_ShowsShop() {
@@ -1029,5 +1010,10 @@ public class EditItemScreenTest {
                                 isDisplayed())));
             }
         }
+    }
+
+    private static void confirmPurchaseDateCustomSelected(String customDateString) {
+        onView(withId(R.id.purchase_date_spinner))
+                .check(matches(withSpinnerText(containsString(customDateString))));
     }
 }
