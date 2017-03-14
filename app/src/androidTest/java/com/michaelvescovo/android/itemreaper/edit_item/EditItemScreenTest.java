@@ -65,11 +65,6 @@ import static org.hamcrest.core.IsNot.not;
 @LargeTest
 public class EditItemScreenTest {
 
-    private static void confirmDateCustomSelected(int spinnerId, String customDateString) {
-        onView(withId(spinnerId))
-                .check(matches(withSpinnerText(containsString(customDateString))));
-    }
-
     /*
     * Only run these tests once.
     * */
@@ -1115,5 +1110,10 @@ public class EditItemScreenTest {
                                 isDisplayed())));
             }
         }
+    }
+
+    private static void confirmDateCustomSelected(int spinnerId, String customDateString) {
+        onView(withId(spinnerId))
+                .check(matches(withSpinnerText(containsString(customDateString))));
     }
 }

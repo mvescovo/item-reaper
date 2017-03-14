@@ -9,14 +9,15 @@ import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.filters.LargeTest;
+import android.widget.DatePicker;
 
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.about.AboutActivity;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
+import com.michaelvescovo.android.itemreaper.util.EspressoHelperMethods;
 import com.michaelvescovo.android.itemreaper.util.FakeImageFileImpl;
-import com.michaelvescovo.android.itemreaper.util.RotationHelper;
 
 import org.junit.After;
 import org.junit.Before;
@@ -32,6 +33,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -39,12 +41,14 @@ import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.contrib.PickerActions.setDate;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.matcher.ComponentNameMatchers.hasClassName;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -53,6 +57,8 @@ import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_2;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.USER_ID;
 import static com.michaelvescovo.android.itemreaper.matcher.ImageViewHasDrawableMatcher.hasDrawable;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.AllOf.allOf;
 
 /**
@@ -78,12 +84,12 @@ public class ItemsScreenTest {
                                 .getRepository().deleteAllItems(USER_ID);
                     }
                 };
-        private RotationHelper mRotationHelper;
+        private EspressoHelperMethods mEspressoHelperMethods;
         private boolean mIsLargeScreen;
 
         @Before
         public void setup() {
-            mRotationHelper = new RotationHelper(InstrumentationRegistry.getTargetContext(),
+            mEspressoHelperMethods = new EspressoHelperMethods(InstrumentationRegistry.getTargetContext(),
                     mActivityRule.getActivity());
             mIsLargeScreen = mActivityRule.getActivity().getResources().getBoolean(R.bool.large_layout);
         }
@@ -103,14 +109,14 @@ public class ItemsScreenTest {
         @Test
         public void titleVisible() {
             onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
         }
 
         @Test
         public void editItemButtonVisible() {
             onView(withId(R.id.edit_item)).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             onView(withId(R.id.edit_item)).check(matches(isDisplayed()));
         }
 
@@ -121,7 +127,7 @@ public class ItemsScreenTest {
                 intended(hasComponent(hasClassName(EditItemActivity.class.getName())));
             }
             onView(withText(R.string.title_activity_edit_item)).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             onView(withText(R.string.title_activity_edit_item)).check(matches(isDisplayed()));
         }
 
@@ -130,7 +136,7 @@ public class ItemsScreenTest {
             onView(withId(R.id.edit_item)).perform(click());
             onView(withContentDescription("Navigate up")).perform(click());
             onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
         }
 
@@ -138,7 +144,7 @@ public class ItemsScreenTest {
         public void aboutMenuItemVisible() {
             openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
             onView(withText(R.string.menu_about)).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             onView(withText(R.string.menu_about)).check(matches(isDisplayed()));
         }
 
@@ -148,7 +154,7 @@ public class ItemsScreenTest {
             onView(withText(R.string.menu_about)).perform(click());
             if (mIsLargeScreen) {
                 onView(withText(R.string.title_activity_about)).check(matches(isDisplayed()));
-                mRotationHelper.rotateScreen();
+                mEspressoHelperMethods.rotateScreen();
                 onView(withText(R.string.title_activity_about)).check(matches(isDisplayed()));
             } else {
                 intended(hasComponent(hasClassName(AboutActivity.class.getName())));
@@ -161,7 +167,7 @@ public class ItemsScreenTest {
             onView(withText(R.string.menu_about)).perform(click());
             onView(withContentDescription("Navigate up")).perform(click());
             onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
         }
 
@@ -169,7 +175,7 @@ public class ItemsScreenTest {
         public void SignOutMenuItemVisible() {
             openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
             onView(withText(R.string.menu_sign_out)).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             onView(withText(R.string.menu_sign_out)).check(matches(isDisplayed()));
         }
 
@@ -178,14 +184,14 @@ public class ItemsScreenTest {
             openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
             onView(withText(R.string.menu_sign_out)).perform(click());
             onView(withText(R.string.app_name)).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             onView(withText(R.string.app_name)).check(matches(isDisplayed()));
         }
 
         @Test
         public void noItems_ShowsNoItemsText() {
             onView(withId(R.id.no_items)).check(matches(isDisplayed()));
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             onView(withId(R.id.no_items)).check(matches(isDisplayed()));
         }
 
@@ -196,7 +202,7 @@ public class ItemsScreenTest {
                 onView(withId(R.id.edit_item)).perform(click());
                 Espresso.closeSoftKeyboard();
                 onView(withId(R.id.action_take_photo)).check(matches(isDisplayed()));
-                mRotationHelper.rotateScreen();
+                mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
                 onView(withId(R.id.action_take_photo)).check(matches(isDisplayed()));
             }
@@ -209,7 +215,7 @@ public class ItemsScreenTest {
                 onView(withId(R.id.edit_item)).perform(click());
                 Espresso.closeSoftKeyboard();
                 onView(withId(R.id.action_select_image)).check(matches(isDisplayed()));
-                mRotationHelper.rotateScreen();
+                mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
                 onView(withId(R.id.action_select_image)).check(matches(isDisplayed()));
             }
@@ -221,7 +227,7 @@ public class ItemsScreenTest {
             if (mIsLargeScreen) {
                 onView(withId(R.id.edit_item)).perform(click());
                 Espresso.closeSoftKeyboard();
-                mRotationHelper.rotateScreen();
+                mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
                 onView(withContentDescription("Navigate up")).perform(click());
                 openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
@@ -236,7 +242,7 @@ public class ItemsScreenTest {
                 openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
                 onView(withText(R.string.menu_about)).perform(click());
                 Espresso.closeSoftKeyboard();
-                mRotationHelper.rotateScreen();
+                mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
                 onView(withContentDescription("Navigate up")).perform(click());
                 openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
@@ -262,7 +268,7 @@ public class ItemsScreenTest {
                                 .getRepository().deleteAllItems(USER_ID);
                     }
                 };
-        private RotationHelper mRotationHelper;
+        private EspressoHelperMethods mEspressoHelperMethods;
         private Item mItem;
         private boolean mIsLargeScreen;
 
@@ -280,7 +286,7 @@ public class ItemsScreenTest {
 
         @Before
         public void setup() {
-            mRotationHelper = new RotationHelper(InstrumentationRegistry.getTargetContext(),
+            mEspressoHelperMethods = new EspressoHelperMethods(InstrumentationRegistry.getTargetContext(),
                     mActivityRule.getActivity());
             mIsLargeScreen = mActivityRule.getActivity().getResources().getBoolean(R.bool.large_layout);
         }
@@ -305,6 +311,7 @@ public class ItemsScreenTest {
 
             // Click to add item
             onView(withId(R.id.edit_item)).perform(click());
+            Espresso.closeSoftKeyboard();
 
             // Type price paid
             if (mItem.getPricePaid() != -1) {
@@ -312,19 +319,18 @@ public class ItemsScreenTest {
                         .perform(typeText(String.valueOf(mItem.getPricePaid())), closeSoftKeyboard());
             }
 
-            // Type expiry
+            // Select expiry
             Calendar expiry = Calendar.getInstance();
             expiry.setTimeInMillis(mItem.getExpiry());
-            int expiryDay = expiry.get(Calendar.DAY_OF_MONTH);
-            int expiryMonth = expiry.get(Calendar.MONTH);
-            expiryMonth++; // Java months start at 0.
-            int expiryYear = expiry.get(Calendar.YEAR);
-            onView(withId(R.id.edit_expiry_date_day)).perform(scrollTo())
-                    .perform(typeText(String.valueOf(expiryDay)), closeSoftKeyboard());
-            onView(withId(R.id.edit_expiry_date_month)).perform(scrollTo())
-                    .perform(typeText(String.valueOf(expiryMonth)), closeSoftKeyboard());
-            onView(withId(R.id.edit_expiry_date_year)).perform(scrollTo())
-                    .perform(typeText(String.valueOf(expiryYear)), closeSoftKeyboard());
+            onView(withId(R.id.expiry_date_spinner)).perform(scrollTo()).perform(click());
+            onData(allOf(is(instanceOf(String.class)),
+                    is(mEspressoHelperMethods.getResourceString(R.string.edit_date_custom))))
+                    .perform(click());
+            onView(isAssignableFrom(DatePicker.class)).perform(setDate(
+                    expiry.get(Calendar.YEAR),
+                    expiry.get(Calendar.MONTH) + 1, // Months start at 0.
+                    expiry.get(Calendar.DAY_OF_MONTH)));
+            onView(withId(android.R.id.button1)).perform(click());
 
             // Type category
             //noinspection ConstantConditions
@@ -354,7 +360,7 @@ public class ItemsScreenTest {
             // Navigate back to the list
             onView(withContentDescription("Navigate up")).perform(click());
             confirmItemInList(expiry);
-            mRotationHelper.rotateScreen();
+            mEspressoHelperMethods.rotateScreen();
             confirmItemInList(expiry);
         }
 
