@@ -436,12 +436,14 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     @Override
     public void validateItem() {
         int pricePaid = -1;
-        if (!mPricePaid.getText().toString().equals("")) {
+        if (!mPricePaid.getText().toString().equals("")
+                && !mPricePaid.getText().toString().equals(".")) {
             String priceString = mPricePaid.getText().toString();
             pricePaid = getTotalCents(priceString);
         }
         int discount = -1;
-        if (!mDiscount.getText().toString().equals("")) {
+        if (!mDiscount.getText().toString().equals("")
+            && !mDiscount.getText().toString().equals(".")) {
             String discountString = mDiscount.getText().toString();
             discount = getTotalCents(discountString);
         }
@@ -477,13 +479,21 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         String centsString = "0";
         if (priceString.contains(".")) {
             int decimalIndex = priceString.indexOf(".");
-            dollarsString = priceString.substring(0, decimalIndex);
-            if (priceString.length() > decimalIndex + 1) {
+            if (decimalIndex == 0) {
+                dollarsString = "0";
                 centsString = priceString.substring(decimalIndex + 1);
+            } else {
+                dollarsString = priceString.substring(0, decimalIndex);
+                if (priceString.length() > decimalIndex + 1) {
+                    centsString = priceString.substring(decimalIndex + 1);
+                }
             }
         }
         int dollars = Integer.valueOf(dollarsString);
         int cents = Integer.valueOf(centsString);
+        if (centsString.length() < 2 && Integer.valueOf(centsString) != 0) {
+            cents *= 10;
+        }
         return (dollars * 100) + cents;
     }
 
@@ -534,14 +544,24 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
             mShop.setText(item.getShop());
         }
         if (item.getPricePaid() != -1) {
-            String priceString = getPriceFromTotalCents(item.getPricePaid());
-            if (!mPricePaid.getText().toString().equals(priceString)) {
+            int totalCentsInView = -1;
+            if (!mPricePaid.getText().toString().equals("")
+                    && !mPricePaid.getText().toString().equals(".")) {
+                totalCentsInView = getTotalCents(mPricePaid.getText().toString());
+            }
+            if (totalCentsInView != item.getPricePaid()) {
+                String priceString = getPriceFromTotalCents(item.getPricePaid());
                 mPricePaid.setText(priceString);
             }
         }
         if (item.getDiscount() != -1) {
-            String discountString = getPriceFromTotalCents(item.getDiscount());
-            if (!mDiscount.getText().toString().equals(discountString)) {
+            int totalCentsInView = -1;
+            if (!mDiscount.getText().toString().equals("")
+                    && !mDiscount.getText().toString().equals(".")) {
+                totalCentsInView = getTotalCents(mDiscount.getText().toString());
+            }
+            if (totalCentsInView != item.getDiscount()) {
+                String discountString = getPriceFromTotalCents(item.getDiscount());
                 mDiscount.setText(discountString);
             }
         }
@@ -635,9 +655,12 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public static String getPriceFromTotalCents(int totalCents) {
         int dollars = totalCents / 100;
         int cents = totalCents % 100;
+        String centsString = cents > 9
+                ? String.valueOf(cents)
+                : "0" + cents;
         return cents == 0
                 ? String.valueOf(dollars)
-                : dollars + "." + cents;
+                : dollars + "." + centsString;
     }
 
     @Override
