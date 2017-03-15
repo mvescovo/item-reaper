@@ -40,6 +40,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.michaelvescovo.android.itemreaper.R.id.expiry;
+import static com.michaelvescovo.android.itemreaper.edit_item.EditItemFragment.getPriceFromTotalCents;
 
 /**
  * @author Michael Vescovo
@@ -272,7 +273,8 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 expiry = "Expires: " + simpleDateFormat.format(calendar.getTime());
             }
             holder.mExpiry.setText(expiry);
-            String price = "Paid: $" + String.valueOf(mItems.get(mItemIds.get(position)).getPricePaid());
+            String priceString = getPriceFromTotalCents(mItems.get(mItemIds.get(position)).getPricePaid());
+            String price = "Paid: $" + priceString;
             holder.mPaid.setText(price);
         }
 

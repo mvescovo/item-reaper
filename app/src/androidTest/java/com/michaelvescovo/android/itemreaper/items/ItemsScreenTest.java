@@ -56,6 +56,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_2;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.USER_ID;
+import static com.michaelvescovo.android.itemreaper.edit_item.EditItemFragment.getPriceFromTotalCents;
 import static com.michaelvescovo.android.itemreaper.matcher.ImageViewHasDrawableMatcher.hasDrawable;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
@@ -315,8 +316,9 @@ public class ItemsScreenTest {
 
             // Type price paid
             if (mItem.getPricePaid() != -1) {
+                String priceString = getPriceFromTotalCents(mItem.getPricePaid());
                 onView(withId(R.id.edit_price_paid)).perform(scrollTo())
-                        .perform(typeText(String.valueOf(mItem.getPricePaid())), closeSoftKeyboard());
+                        .perform(typeText(priceString), closeSoftKeyboard());
             }
 
             // Select expiry
