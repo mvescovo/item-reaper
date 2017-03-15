@@ -19,8 +19,8 @@
     <string name="edit_date_yesterday">Yesterday</string>
     <string name="edit_date_custom">Custom</string>
     <string name="edit_date_unknown">Unknown</string>
-    <string name="edit_price_paid_hint">Price Paid</string>
-    <string name="edit_discount_hint">Discount</string>
+    <string name="edit_price_paid_hint">Price Paid ($)</string>
+    <string name="edit_discount_hint">Discount ($)</string>
     <string name="edit_expiry_date_title">Expiry Date</string>
     <string name="edit_category_hint">Category</string>
     <string name="edit_sub_category_hint">Sub Category</string>

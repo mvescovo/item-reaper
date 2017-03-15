@@ -15,6 +15,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -43,6 +45,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -206,7 +210,23 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         }
 
         mShop.addTextChangedListener(this);
+
+        final Pattern pattern = Pattern.compile("(0|[1-9]+[0-9]*)?(\\.[0-9]{0,2})?");
+        InputFilter[] currencyFilters = new InputFilter[]{
+                new InputFilter() {
+                    @Override
+                    public CharSequence filter(CharSequence source, int start, int end,
+                                               Spanned dest, int dstart, int dend) {
+                        String result = dest.subSequence(0, dstart) + source.toString()
+                                + dest.subSequence(dend, dest.length());
+                        Matcher matcher = pattern.matcher(result);
+                        return matcher.matches() ? null : dest.subSequence(dstart, dend);
+                    }
+                }
+        };
+        mPricePaid.setFilters(currencyFilters);
         mPricePaid.addTextChangedListener(this);
+        mDiscount.setFilters(currencyFilters);
         mDiscount.addTextChangedListener(this);
 
         // Expiry date
@@ -417,11 +437,13 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public void validateItem() {
         int pricePaid = -1;
         if (!mPricePaid.getText().toString().equals("")) {
-            pricePaid = Integer.parseInt(mPricePaid.getText().toString());
+            String priceString = mPricePaid.getText().toString();
+            pricePaid = getTotalCents(priceString);
         }
         int discount = -1;
         if (!mDiscount.getText().toString().equals("")) {
-            discount = Integer.parseInt(mDiscount.getText().toString());
+            String discountString = mDiscount.getText().toString();
+            discount = getTotalCents(discountString);
         }
 
         Item newItem = new Item(
@@ -450,6 +472,21 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         mPresenter.saveItem(newItem);
     }
 
+    private int getTotalCents(String priceString) {
+        String dollarsString = priceString;
+        String centsString = "0";
+        if (priceString.contains(".")) {
+            int decimalIndex = priceString.indexOf(".");
+            dollarsString = priceString.substring(0, decimalIndex);
+            if (priceString.length() > decimalIndex + 1) {
+                centsString = priceString.substring(decimalIndex + 1);
+            }
+        }
+        int dollars = Integer.valueOf(dollarsString);
+        int cents = Integer.valueOf(centsString);
+        return (dollars * 100) + cents;
+    }
+
     @Override
     public void setProgressBar(boolean active) {
         if (active) {
@@ -469,7 +506,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         final Calendar today = Calendar.getInstance();
         final Calendar yesterday = Calendar.getInstance();
         yesterday.add(Calendar.DAY_OF_YEAR, -1);
-        final Calendar calendar = Calendar.getInstance();
 
         if (item.getPurchaseDate() != -1) {
             Calendar purchaseDate = Calendar.getInstance();
@@ -497,13 +533,17 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                 && !item.getShop().equals(mShop.getText().toString())) {
             mShop.setText(item.getShop());
         }
-        if (item.getPricePaid() != -1
-                && !String.valueOf(item.getPricePaid()).equals(mPricePaid.getText().toString())) {
-            mPricePaid.setText(String.valueOf(item.getPricePaid()));
+        if (item.getPricePaid() != -1) {
+            String priceString = getPriceFromTotalCents(item.getPricePaid());
+            if (!mPricePaid.getText().toString().equals(priceString)) {
+                mPricePaid.setText(priceString);
+            }
         }
-        if (item.getDiscount() != -1
-                && !String.valueOf(item.getDiscount()).equals(mDiscount.getText().toString())) {
-            mDiscount.setText(String.valueOf(item.getDiscount()));
+        if (item.getDiscount() != -1) {
+            String discountString = getPriceFromTotalCents(item.getDiscount());
+            if (!mDiscount.getText().toString().equals(discountString)) {
+                mDiscount.setText(discountString);
+            }
         }
         if (item.getExpiry() != -1) {
             Calendar expiryDate = Calendar.getInstance();
@@ -590,6 +630,14 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
             mItemImage.setVisibility(View.GONE);
             mRemoveImageButton.setVisibility(View.GONE);
         }
+    }
+
+    private String getPriceFromTotalCents(int totalCents) {
+        int dollars = totalCents / 100;
+        int cents = totalCents % 100;
+        return cents == 0
+                ? String.valueOf(dollars)
+                : dollars + "." + cents;
     }
 
     @Override

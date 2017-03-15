@@ -29,7 +29,7 @@ public class FakeDataSource implements DataSource {
     public final static String ITEM_ID_1 = "1";
     public final static Item ITEM_1 = new Item("1",
             1452776400000L, // 15/1/2016
-            20,
+            2000,
             0,
             1496325600000L, // 2/6/2017
             "Clothing", "Casual", "T-shirt",
@@ -43,7 +43,7 @@ public class FakeDataSource implements DataSource {
     public final static String ITEM_ID_2 = "2";
     public final static Item ITEM_2 = new Item("2",
             -1,
-            30,
+            3000,
             -1,
             1496325600000L,
             "Bathroom", null,
