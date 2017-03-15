@@ -632,7 +632,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         }
     }
 
-    private String getPriceFromTotalCents(int totalCents) {
+    public static String getPriceFromTotalCents(int totalCents) {
         int dollars = totalCents / 100;
         int cents = totalCents % 100;
         return cents == 0

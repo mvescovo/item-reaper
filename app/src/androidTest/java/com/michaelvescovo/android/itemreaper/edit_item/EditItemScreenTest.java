@@ -49,6 +49,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withSpinnerText
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_2;
+import static com.michaelvescovo.android.itemreaper.edit_item.EditItemFragment.getPriceFromTotalCents;
 import static com.michaelvescovo.android.itemreaper.matcher.AdapterHasDataMatcher.withAdaptedData;
 import static com.michaelvescovo.android.itemreaper.matcher.ImageViewHasDrawableMatcher.hasDrawable;
 import static org.hamcrest.Matchers.containsString;
@@ -882,11 +883,12 @@ public class EditItemScreenTest {
         public void itemHasPrice_ShowsPrice() {
             if (mItem.getPricePaid() != -1) {
                 Espresso.closeSoftKeyboard();
-                onView(withText(String.valueOf(mItem.getPricePaid()))).perform(scrollTo())
+                String priceString = getPriceFromTotalCents(mItem.getPricePaid());
+                onView(withText(priceString)).perform(scrollTo())
                         .check(matches(isDisplayed()));
                 mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
-                onView(withText(String.valueOf(mItem.getPricePaid()))).perform(scrollTo())
+                onView(withText(priceString)).perform(scrollTo())
                         .check(matches(isDisplayed()));
             }
         }
@@ -895,11 +897,12 @@ public class EditItemScreenTest {
         public void itemHasDiscount_ShowsDiscount() {
             if (mItem.getDiscount() != -1) {
                 Espresso.closeSoftKeyboard();
-                onView(withText(String.valueOf(mItem.getDiscount()))).perform(scrollTo())
+                String discountString = getPriceFromTotalCents(mItem.getDiscount());
+                onView(withText(discountString)).perform(scrollTo())
                         .check(matches(isDisplayed()));
                 mEspressoHelperMethods.rotateScreen();
                 Espresso.closeSoftKeyboard();
-                onView(withText(String.valueOf(mItem.getDiscount()))).perform(scrollTo())
+                onView(withText(discountString)).perform(scrollTo())
                         .check(matches(isDisplayed()));
             }
         }
