@@ -142,6 +142,7 @@ public class FakeDataSource implements DataSource {
     @Override
     public void deleteItem(@NonNull String userId, @NonNull String itemId) {
         ITEMS.remove(itemId);
+        ITEM_IDS.remove(itemId);
     }
 
     @Override
