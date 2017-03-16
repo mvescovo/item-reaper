@@ -62,6 +62,6 @@ public interface EditItemContract {
 
         void clearEditItemCache(String itemId);
 
-        void deleteItem(@NonNull String userId, @NonNull String itemId);
+        void deleteItem(@NonNull String itemId);
     }
 }
