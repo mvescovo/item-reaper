@@ -120,6 +120,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     @Override
     public void onResume() {
         super.onResume();
+        mItemsAdapter.clearItems();
         mPresenter.getItems(true);
     }
 
@@ -290,6 +291,12 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             if (!mItemIds.contains(item.getId())) {
                 mItemIds.add(item.getId());
             }
+            notifyDataSetChanged();
+        }
+
+        void clearItems() {
+            mItems.clear();
+            mItemIds.clear();
             notifyDataSetChanged();
         }
 

@@ -36,6 +36,8 @@ public interface EditItemContract {
         void validateItem();
 
         void removeImage();
+
+        void refreshUi();
     }
 
     interface Presenter {

@@ -198,6 +198,7 @@ public class EditItemPresenterTest {
         mEditItemPresenter.deleteItem(mItem.getId());
         verify(mSharedPreferencesHelper).saveDeletedItemId(anyString());
         verify(mRepository).deleteItem(anyString(), anyString());
+        verify(mView).refreshUi();
         verify(mView).showItemsUi();
     }
 }

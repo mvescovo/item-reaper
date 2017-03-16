@@ -172,7 +172,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         configureViews();
 
         /* TEMP */
-//        mItemId = "1";
+        mItemId = "1";
 
         return root;
     }
@@ -429,6 +429,8 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
             case R.id.action_select_image:
                 mPresenter.selectImage(getContext());
                 break;
+            case R.id.action_delete_item:
+                mPresenter.deleteItem(mItemId);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -735,6 +737,11 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     }
 
     @Override
+    public void refreshUi() {
+        mCallback.onRefresh();
+    }
+
+    @Override
     public void showImageError() {
 
     }
@@ -759,5 +766,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         void configureSupportActionBar(Toolbar toolbar, Drawable icon);
 
         void onDialogResumed();
+
+        void onRefresh();
     }
 }

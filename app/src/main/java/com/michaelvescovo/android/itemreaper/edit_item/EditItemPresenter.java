@@ -123,6 +123,7 @@ class EditItemPresenter implements EditItemContract.Presenter {
     public void deleteItem(@NonNull String itemId) {
         mRepository.deleteItem(mSharedPreferencesHelper.getUserId(), itemId);
         mSharedPreferencesHelper.saveDeletedItemId(itemId);
+        mView.refreshUi();
         mView.showItemsUi();
     }
 

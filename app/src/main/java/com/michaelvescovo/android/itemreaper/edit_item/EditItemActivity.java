@@ -86,6 +86,11 @@ public class EditItemActivity extends AppCompatActivity
         // Nothing to do here.
     }
 
+    @Override
+    public void onRefresh() {
+        // Nothing to do here.
+    }
+
     @VisibleForTesting
     public IdlingResource getCountingIdlingResource() {
         return EspressoIdlingResource.getIdlingResource();

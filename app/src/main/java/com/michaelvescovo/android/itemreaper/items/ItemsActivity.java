@@ -44,6 +44,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     private static final String CURRENT_DIALOG_NAME = "current_dialog_name";
     private static final String ABOUT_DIALOG = "about_dialog";
     private static final String EDIT_ITEM_DIALOG = "edit_item_dialog";
+    private static final String FRAGMENT_ITEMS = "fragment_items";
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -115,7 +116,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     private void initFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.contentFrame, fragment);
+        transaction.add(R.id.contentFrame, fragment, FRAGMENT_ITEMS);
         transaction.commit();
     }
 
@@ -200,6 +201,12 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
         // Set the correct menu on the background Activity for when the dialog is dismissed.
         mDialogResumed = true;
         onCreateOptionsMenu(mToolbar.getMenu());
+    }
+
+    @Override
+    public void onRefresh() {
+        Fragment itemsFragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_ITEMS);
+        itemsFragment.onResume();
     }
 
     @VisibleForTesting
