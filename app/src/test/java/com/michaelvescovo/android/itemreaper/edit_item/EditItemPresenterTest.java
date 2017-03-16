@@ -24,6 +24,7 @@ import java.util.Arrays;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_2;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_ID_1;
+import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.USER_ID;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.contains;
@@ -191,5 +192,11 @@ public class EditItemPresenterTest {
     public void clearEditItemCache_RefersToRepository() {
         mEditItemPresenter.clearEditItemCache(ITEM_ID_1);
         verify(mRepository).refreshItem(anyString());
+    }
+
+    @Test
+    public void deleteItem_DeletesItem() {
+        mEditItemPresenter.deleteItem(USER_ID, mItem.getId());
+        verify(mRepository).deleteItem(anyString(), anyString());
     }
 }
