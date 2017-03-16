@@ -15,12 +15,14 @@
     <style name="content_title" parent="Base.TextAppearance.AppCompat.Title">
         <item name="android:maxEms">@integer/max_ems</item>
         <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:maxLength">@integer/max_length_small</item>
     </style>
 
     <style name="small_content_title" parent="Base.TextAppearance.AppCompat.Caption">
         <item name="android:maxEms">@integer/max_ems</item>
         <item name="android:layout_marginBottom">8dp</item>
         <item name="android:textColorLink">@color/subTitle</item>
+        <item name="android:maxLength">@integer/max_length_small</item>
     </style>
 
     <!--Standard content text-->
@@ -28,28 +30,36 @@
         <item name="android:maxEms">@integer/max_ems</item>
         <item name="android:layout_marginBottom">8dp</item>
         <item name="android:textColorLink">@color/linkColour</item>
+        <item name="android:maxLength">@integer/max_length_long</item>
     </style>
 
     <!--Card-->
     <style name="card_caption" parent="Base.TextAppearance.AppCompat.Caption">
         <item name="android:textColor">@color/subTitle</item>
         <item name="android:paddingBottom">@dimen/padding_text</item>
+        <item name="android:maxLength">@integer/max_length_small</item>
     </style>
 
     <style name="card_content_primary" parent="Base.TextAppearance.AppCompat.Title">
         <item name="android:paddingBottom">@dimen/padding_text</item>
+        <item name="android:maxLength">@integer/max_length_small</item>
+
     </style>
 
     <style name="card_content_secondary" parent="Base.TextAppearance.AppCompat.Body1">
         <item name="android:paddingBottom">@dimen/padding_text</item>
+        <item name="android:maxLength">@integer/max_length_long</item>
     </style>
 
     <!--Edit Item-->
-    <style name="content_text_edit_item" parent="Base.TextAppearance.AppCompat.Body1">
-        <item name="android:paddingStart">@dimen/padding_text</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/subTitle</item>
-        <item name="android:layout_marginBottom">0dp</item>
+    <style name="content_text_edit_item_standard">
+        <item name="android:maxLength">@integer/max_length_small</item>
+    </style>
+    <style name="content_text_edit_item_large">
+        <item name="android:maxLength">@integer/max_length_long</item>
+    </style>
+    <style name="content_text_edit_item_currency">
+        <item name="android:maxLength">@integer/max_length_currency</item>
     </style>
 
 </resources>

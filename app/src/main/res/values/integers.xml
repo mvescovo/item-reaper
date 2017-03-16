@@ -2,6 +2,9 @@
 <resources>
 
     <integer name="max_ems">24</integer>
+    <integer name="max_length_small">50</integer>
+    <integer name="max_length_long">1024</integer>
+    <integer name="max_length_currency">16</integer>
     <integer name="card_item_columns">2</integer>
 
 </resources>

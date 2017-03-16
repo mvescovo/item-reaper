@@ -75,6 +75,7 @@
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/edit_shop"
+                        style="@style/content_text_edit_item_standard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_shop_hint"
@@ -89,6 +90,7 @@
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/edit_price_paid"
+                        style="@style/content_text_edit_item_currency"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_price_paid_hint"
@@ -103,6 +105,7 @@
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/edit_discount"
+                        style="@style/content_text_edit_item_currency"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_discount_hint"
@@ -138,6 +141,7 @@
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/edit_category"
+                        style="@style/content_text_edit_item_standard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_category_hint"
@@ -152,6 +156,7 @@
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/edit_sub_category"
+                        style="@style/content_text_edit_item_standard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_sub_category_hint"
@@ -166,6 +171,7 @@
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/edit_type"
+                        style="@style/content_text_edit_item_standard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_type_hint"
@@ -180,6 +186,7 @@
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/edit_sub_type"
+                        style="@style/content_text_edit_item_standard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_sub_type_hint"
@@ -194,6 +201,7 @@
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/edit_sub_type2"
+                        style="@style/content_text_edit_item_standard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_sub_type2_hint"
@@ -208,6 +216,7 @@
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/edit_sub_type3"
+                        style="@style/content_text_edit_item_standard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_sub_type3_hint"
@@ -222,6 +231,7 @@
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/edit_primary_colour"
+                        style="@style/content_text_edit_item_standard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_primary_colour_hint"
@@ -236,6 +246,7 @@
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/edit_primary_colour_shade"
+                        style="@style/content_text_edit_item_standard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_primary_colour_shade_hint"
@@ -250,6 +261,7 @@
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/edit_secondary_colour"
+                        style="@style/content_text_edit_item_standard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_secondary_colour_hint"
@@ -264,6 +276,7 @@
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/edit_size"
+                        style="@style/content_text_edit_item_standard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_size_hint"
@@ -278,6 +291,7 @@
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/edit_brand"
+                        style="@style/content_text_edit_item_standard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_brand_hint"
@@ -292,6 +306,7 @@
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/edit_description"
+                        style="@style/content_text_edit_item_large"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_description_hint"
@@ -306,6 +321,7 @@
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/edit_note"
+                        style="@style/content_text_edit_item_large"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_note_hint"
