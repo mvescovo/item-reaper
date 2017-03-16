@@ -23,6 +23,7 @@ import android.content.SharedPreferences;
 public class SharedPreferencesHelper {
 
     static final String KEY_USER_ID = "user_id";
+    static final String KEY_DELETED_ITEM_ID = "deleted_item_id";
     private final SharedPreferences mSharedPreferences;
 
     SharedPreferencesHelper(SharedPreferences sharedPreferences) {
@@ -37,5 +38,21 @@ public class SharedPreferencesHelper {
 
     public String getUserId() {
         return mSharedPreferences.getString(KEY_USER_ID, "unknown_user");
+    }
+
+    public boolean saveDeletedItemId(String itemId){
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(KEY_DELETED_ITEM_ID, itemId);
+        return editor.commit();
+    }
+
+    public String getDeletedItemId() {
+        return mSharedPreferences.getString(KEY_DELETED_ITEM_ID, "unknown_item_id");
+    }
+
+    public void removeDeletedItemId() {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.remove(KEY_DELETED_ITEM_ID);
+        editor.apply();
     }
 }
