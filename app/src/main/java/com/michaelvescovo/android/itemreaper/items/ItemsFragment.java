@@ -344,6 +344,14 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                     expiryString = getString(R.string.edit_expiry_date_prefix) + expiryString;
                 }
                 holder.mExpiry.setText(expiryString);
+                Calendar almostExpiredDate = Calendar.getInstance();
+                almostExpiredDate.add(Calendar.MONTH, 1);
+                if (calendar.compareTo(almostExpiredDate) < 1) {
+                    holder.mExpiry.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                } else {
+                    holder.mExpiry.setTextColor(ContextCompat.getColor(getContext(),
+                            R.color.subTitle));
+                }
             }
             int price = mItems.get(position).getPricePaid();
             String priceString;
