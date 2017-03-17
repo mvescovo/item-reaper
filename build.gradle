@@ -26,7 +26,7 @@ task clean(type: Delete) {
 
 // Define versions in a single place
 ext {
-    supportLibraryVersion = '25.2.0'
+    supportLibraryVersion = '25.3.0'
     guavaVersion = '18.0'
     junitVersion = '4.12'
     mockitoVersion = '1.10.19'
