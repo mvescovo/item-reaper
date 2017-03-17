@@ -378,7 +378,7 @@ public class ItemsScreenTest {
             }
 
             // Check expiry
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yy", Locale.getDefault());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMMM/yy", Locale.getDefault());
             if (mIsLargeScreen) {
                 onView(withText(simpleDateFormat.format(expiry.getTime())))
                         .check(matches(isDisplayed()));
