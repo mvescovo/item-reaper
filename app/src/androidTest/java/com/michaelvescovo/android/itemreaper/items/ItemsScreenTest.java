@@ -373,7 +373,8 @@ public class ItemsScreenTest {
 
             // Check price paid
             if (mItem.getPricePaid() != -1) {
-                onView(withText("Paid: $" + mItem.getPricePaid())).check(matches(isDisplayed()));
+                String priceString = getPriceFromTotalCents(mItem.getPricePaid());
+                onView(withText("Paid: $" + priceString)).check(matches(isDisplayed()));
             }
 
             // Check expiry
