@@ -292,6 +292,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                             calendar.set(Calendar.MONTH, datePicker.getMonth());
                             calendar.set(Calendar.YEAR, datePicker.getYear());
                             mPurchaseDate = calendar;
+                            mPresenter.itemChanged();
                             if (calendar.compareTo(today) == 0) {
                                 mPurchaseDateSpinner.setSelection(
                                         mPurchaseDateAdapter.getPosition(
@@ -351,6 +352,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                             calendar.set(Calendar.MONTH, datePicker.getMonth());
                             calendar.set(Calendar.YEAR, datePicker.getYear());
                             mExpiryDate = calendar;
+                            mPresenter.itemChanged();
                             if (calendar.compareTo(today) == 0) {
                                 mExpiryDateSpinner.setSelection(
                                         mExpiryDateAdapter.getPosition(
