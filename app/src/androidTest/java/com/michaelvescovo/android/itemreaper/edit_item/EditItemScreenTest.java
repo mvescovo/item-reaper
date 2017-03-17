@@ -171,7 +171,10 @@ public class EditItemScreenTest {
                     is(mEspressoHelperMethods.getResourceString(R.string.edit_date_unknown))))
                     .check(matches(isDisplayed()));
 
+            Espresso.pressBack();
             mEspressoHelperMethods.rotateScreen();
+            Espresso.closeSoftKeyboard();
+            onView(withId(spinnerId)).perform(scrollTo()).perform(click());
 
             onData(allOf(is(instanceOf(String.class)),
                     is(mEspressoHelperMethods.getResourceString(R.string.edit_date_today))))
