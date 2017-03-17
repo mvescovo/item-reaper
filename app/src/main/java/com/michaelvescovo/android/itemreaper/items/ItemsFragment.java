@@ -318,7 +318,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             holder.mColour.setText(mItems.get(position).getPrimaryColour());
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(mItems.get(position).getExpiry());
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yy", Locale.getDefault());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMMM/yy", Locale.getDefault());
             String expiry;
             if (mLargeScreen) {
                 expiry = simpleDateFormat.format(calendar.getTime());
