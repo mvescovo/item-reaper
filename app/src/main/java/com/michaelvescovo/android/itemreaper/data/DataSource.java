@@ -12,17 +12,17 @@ import java.util.List;
 public interface DataSource {
 
     interface GetItemIdsCallback {
+
         void onItemIdsLoaded(@Nullable List<String> itemIds);
     }
-
     interface GetItemCallback {
+
         void onItemLoaded(@Nullable Item item);
     }
-
     interface GetNewItemIdCallback {
+
         void onNewItemIdLoaded(@Nullable String newItemId);
     }
-
     void getItemIds(@NonNull String userId, @NonNull GetItemIdsCallback callback);
     void refreshItemIds();
     void getItem(@NonNull String itemId, @NonNull String caller, @NonNull GetItemCallback callback);
@@ -30,6 +30,6 @@ public interface DataSource {
     void refreshItems();
     void refreshItem(@NonNull String itemId);
     void saveItem(@NonNull String userId, @NonNull Item item);
-    void deleteItem(@NonNull String userId, @NonNull String itemId);
+    void deleteItem(@NonNull String userId, @NonNull Item item);
     void deleteAllItems(@NonNull String userId);
 }

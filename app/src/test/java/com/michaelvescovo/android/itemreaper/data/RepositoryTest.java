@@ -133,9 +133,9 @@ public class RepositoryTest {
     @Test
     public void deleteItem() {
         // Call to delete item.
-        mRepository.deleteItem(USER_ID, ITEM_ID_1);
+        mRepository.deleteItem(USER_ID, ITEM_1);
         // Confirm remote data source called.
-        verify(mRemoteDataSource).deleteItem(anyString(), anyString());
+        verify(mRemoteDataSource).deleteItem(anyString(), any(Item.class));
     }
 
     @Test

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
@@ -41,6 +43,7 @@ import butterknife.ButterKnife;
 
 import static com.michaelvescovo.android.itemreaper.R.id.expiry;
 import static com.michaelvescovo.android.itemreaper.edit_item.EditItemFragment.getPriceFromTotalCents;
+import static com.michaelvescovo.android.itemreaper.items.ItemsActivity.EXTRA_DELETED_ITEM;
 
 /**
  * @author Michael Vescovo
@@ -63,6 +66,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     private DividerItemDecoration mDividerItemDecoration;
     private boolean mLargeScreen;
     private String mImageUrl;
+    private Item mDeletedItem;
 
     public ItemsFragment() {
     }
@@ -91,6 +95,11 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 DividerItemDecoration.VERTICAL);
         mDividerItemDecoration.setDrawable(ContextCompat.getDrawable(getContext(),
                 R.drawable.divider));
+
+        if (savedInstanceState != null
+                && savedInstanceState.getSerializable(EXTRA_DELETED_ITEM) != null) {
+            mDeletedItem = (Item) savedInstanceState.getSerializable(EXTRA_DELETED_ITEM);
+        }
     }
 
     @Nullable
@@ -118,10 +127,53 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(EXTRA_DELETED_ITEM, mDeletedItem);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         mItemsAdapter.clearItems();
         mPresenter.getItems(true);
+        final boolean[] snackbarShown = {false};
+        if (mDeletedItem != null) {
+            Snackbar snackbar = mCallback.onShowSnackbar(getString(R.string.delete_item_success),
+                    Snackbar.LENGTH_LONG);
+            snackbar.setAction(R.string.delete_item_undo, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPresenter.restoreItem(mDeletedItem);
+                    mDeletedItem = null;
+                    Snackbar snackbarRestored = mCallback.onShowSnackbar(
+                            getString(R.string.delete_item_undo_success), Snackbar.LENGTH_LONG);
+                    snackbarRestored.show();
+                }
+            });
+            snackbar.addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                @Override
+                public void onDismissed(Snackbar transientBottomBar, int event) {
+                    super.onDismissed(transientBottomBar, event);
+                    // There seems to be a bug where onDismissed is called before onShown.
+                    if (snackbarShown[0]) {
+                        mDeletedItem = null;
+                    }
+                }
+
+                @Override
+                public void onShown(Snackbar transientBottomBar) {
+                    super.onShown(transientBottomBar);
+                    snackbarShown[0] = true;
+                }
+            });
+            snackbar.show();
+        }
+    }
+
+    public void onItemDeleted(@NonNull Item item) {
+        mDeletedItem = item;
+        onResume();
     }
 
     @Override
@@ -210,6 +262,8 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         void onSignOutSelected();
 
         void onEditItemSelected();
+
+        Snackbar onShowSnackbar(String text, int duration);
     }
 
     private interface ItemListener {
@@ -297,6 +351,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         void clearItems() {
             mItems.clear();
             mItemIds.clear();
+            mImageUrl = null;
             notifyDataSetChanged();
         }
 

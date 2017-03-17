@@ -172,7 +172,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         configureViews();
 
         /* TEMP */
-//        mItemId = "1";
+        mItemId = "1";
 
         return root;
     }
@@ -430,13 +430,17 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                 mPresenter.selectImage(getContext());
                 break;
             case R.id.action_delete_item:
-                mPresenter.deleteItem(mItemId);
+                mPresenter.deleteItem(createCurrentItem());
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void validateItem() {
+        mPresenter.saveItem(createCurrentItem());
+    }
+
+    private Item createCurrentItem() {
         int pricePaid = -1;
         if (!mPricePaid.getText().toString().equals("")
                 && !mPricePaid.getText().toString().equals(".")) {
@@ -445,12 +449,12 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         }
         int discount = -1;
         if (!mDiscount.getText().toString().equals("")
-            && !mDiscount.getText().toString().equals(".")) {
+                && !mDiscount.getText().toString().equals(".")) {
             String discountString = mDiscount.getText().toString();
             discount = getTotalCents(discountString);
         }
 
-        Item newItem = new Item(
+        return new Item(
                 mItemId,
                 mPurchaseDate == null ? -1 : mPurchaseDate.getTimeInMillis(),
                 pricePaid,
@@ -473,7 +477,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                 mImageUrl,
                 false
         );
-        mPresenter.saveItem(newItem);
     }
 
     private int getTotalCents(String priceString) {
@@ -737,8 +740,8 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     }
 
     @Override
-    public void refreshUi() {
-        mCallback.onRefresh();
+    public void passDeletedItemToItemsUi() {
+        mCallback.onItemDeleted(createCurrentItem());
     }
 
     @Override
@@ -767,6 +770,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
 
         void onDialogResumed();
 
-        void onRefresh();
+        void onItemDeleted(@NonNull Item item);
     }
 }

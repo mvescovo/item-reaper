@@ -1,5 +1,7 @@
 package com.michaelvescovo.android.itemreaper.items;
 
+import android.support.annotation.NonNull;
+
 import com.michaelvescovo.android.itemreaper.data.Item;
 
 /**
@@ -38,5 +40,7 @@ interface ItemsContract {
         void openAbout();
 
         void openSignOut();
+
+        void restoreItem(@NonNull Item item);
     }
 }

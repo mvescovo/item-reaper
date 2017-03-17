@@ -101,8 +101,8 @@ public class Repository implements DataSource {
     }
 
     @Override
-    public void deleteItem(@NonNull String userId, @NonNull String itemId) {
-        mRemoteDataSource.deleteItem(userId, itemId);
+    public void deleteItem(@NonNull String userId, @NonNull Item item) {
+        mRemoteDataSource.deleteItem(userId, item);
     }
 
     @Override

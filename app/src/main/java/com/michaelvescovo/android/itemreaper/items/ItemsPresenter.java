@@ -1,5 +1,6 @@
 package com.michaelvescovo.android.itemreaper.items;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -107,5 +108,10 @@ class ItemsPresenter implements ItemsContract.Presenter {
     public void openSignOut() {
         mFirebaseAuth.signOut();
         mView.showAuthUi();
+    }
+
+    @Override
+    public void restoreItem(@NonNull Item item) {
+        mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
     }
 }

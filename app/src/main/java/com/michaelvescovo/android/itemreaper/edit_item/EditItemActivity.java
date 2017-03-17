@@ -1,7 +1,9 @@
 package com.michaelvescovo.android.itemreaper.edit_item;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.Fragment;
@@ -14,7 +16,11 @@ import android.view.Menu;
 
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
 import com.michaelvescovo.android.itemreaper.R;
+import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
+
+import static com.michaelvescovo.android.itemreaper.items.ItemsActivity.EXTRA_DELETED_ITEM;
+import static com.michaelvescovo.android.itemreaper.items.ItemsActivity.REQUEST_CODE_ITEM_DELETED;
 
 /**
  * @author Michael Vescovo
@@ -87,8 +93,10 @@ public class EditItemActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRefresh() {
-        // Nothing to do here.
+    public void onItemDeleted(@NonNull Item item) {
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_DELETED_ITEM, item);
+        setResult(REQUEST_CODE_ITEM_DELETED, intent);
     }
 
     @VisibleForTesting

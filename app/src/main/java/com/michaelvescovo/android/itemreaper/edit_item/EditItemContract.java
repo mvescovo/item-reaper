@@ -37,7 +37,7 @@ public interface EditItemContract {
 
         void removeImage();
 
-        void refreshUi();
+        void passDeletedItemToItemsUi();
     }
 
     interface Presenter {
@@ -64,6 +64,6 @@ public interface EditItemContract {
 
         void clearEditItemCache(String itemId);
 
-        void deleteItem(@NonNull String itemId);
+        void deleteItem(@NonNull Item item);
     }
 }

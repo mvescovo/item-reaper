@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,6 +25,7 @@ import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.about.AboutActivity;
 import com.michaelvescovo.android.itemreaper.about.AboutFragment;
 import com.michaelvescovo.android.itemreaper.auth.AuthActivity;
+import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.edit_item.DaggerEditItemComponent;
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemComponent;
@@ -34,6 +38,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+
 /**
  * @author Michael Vescovo
  */
@@ -45,6 +50,8 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     private static final String ABOUT_DIALOG = "about_dialog";
     private static final String EDIT_ITEM_DIALOG = "edit_item_dialog";
     private static final String FRAGMENT_ITEMS = "fragment_items";
+    public static final int REQUEST_CODE_ITEM_DELETED = 1;
+    public static final String EXTRA_DELETED_ITEM = "deleted_item";
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -52,6 +59,8 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     TextView mAppbarTitle;
     @BindView(R.id.edit_item)
     FloatingActionButton mEditItemButton;
+    @BindView(R.id.coordinator_layout)
+    CoordinatorLayout mCoordinatorLayout;
 
     @Inject
     ItemsPresenter mItemsPresenter;
@@ -180,8 +189,14 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
             editItemFragment.setCancelable(false);
         } else {
             Intent intent = new Intent(this, EditItemActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, REQUEST_CODE_ITEM_DELETED);
         }
+    }
+
+    @Override
+    public Snackbar onShowSnackbar(String text, int duration) {
+        return Snackbar.make(mCoordinatorLayout, text,
+                duration);
     }
 
     @Override
@@ -204,9 +219,19 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     }
 
     @Override
-    public void onRefresh() {
+    public void onItemDeleted(@NonNull Item item) {
         Fragment itemsFragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_ITEMS);
-        itemsFragment.onResume();
+        ((ItemsFragment)itemsFragment).onItemDeleted(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_ITEM_DELETED) {
+            Item item = (Item) data.getSerializableExtra(EXTRA_DELETED_ITEM);
+            Fragment itemsFragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_ITEMS);
+            ((ItemsFragment)itemsFragment).onItemDeleted(item);
+        }
     }
 
     @VisibleForTesting

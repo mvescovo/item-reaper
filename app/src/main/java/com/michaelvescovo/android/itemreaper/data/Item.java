@@ -3,6 +3,7 @@ package com.michaelvescovo.android.itemreaper.data;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +11,7 @@ import java.util.Map;
  * @author Michael Vescovo
  */
 
-public class Item {
+public class Item implements Serializable {
 
     @NonNull
     private String mId;
