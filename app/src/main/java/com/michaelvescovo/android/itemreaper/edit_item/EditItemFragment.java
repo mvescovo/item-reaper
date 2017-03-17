@@ -204,10 +204,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
-        if (mSelectedPurchaseDate != null) {
-            mPurchaseDateAdapter.insert(mSelectedPurchaseDate, 0);
-            mPurchaseDateSpinner.setSelection(0);
-        }
+        mPurchaseDate = Calendar.getInstance();
 
         mShop.addTextChangedListener(this);
 
@@ -245,11 +242,11 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
-        Calendar defaultExpiry = Calendar.getInstance();
-        defaultExpiry.add(Calendar.YEAR, 1);
+        mExpiryDate = Calendar.getInstance();
+        mExpiryDate.add(Calendar.YEAR, 1);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
                 getString(R.string.edit_date_format), Locale.getDefault());
-        mSelectedExpiryDate = simpleDateFormat.format(defaultExpiry.getTime());
+        mSelectedExpiryDate = simpleDateFormat.format(mExpiryDate.getTime());
         mExpiryDateAdapter.insert(mSelectedExpiryDate, 0);
         mExpiryDateSpinner.setSelection(0);
 
