@@ -387,6 +387,15 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                 }
                 mExpiryDateSpinner.setSelection(mExpiryDateAdapter.getPosition(selectedOption));
             }
+            if (selectedOption.equals(getString(R.string.edit_date_today))) {
+                mExpiryDate = Calendar.getInstance();
+            } else if (selectedOption.equals(getString(R.string.edit_date_yesterday))) {
+                mExpiryDate = Calendar.getInstance();
+                mExpiryDate.add(Calendar.DAY_OF_YEAR, -1);
+            } else if (selectedOption.equals(getString(R.string.edit_date_unknown))) {
+                mExpiryDate = null;
+            }
+            mPresenter.itemChanged();
             mPreviousExpiryDateOption = mExpiryDateAdapter.getPosition(selectedOption);
         }
     }
