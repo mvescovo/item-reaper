@@ -172,7 +172,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         configureViews();
 
         /* TEMP */
-        mItemId = "1";
+//        mItemId = "1";
 
         return root;
     }
@@ -394,6 +394,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         super.onResume();
         mPresenter.editItem(mItemId);
         mCallback.onDialogResumed();
+        mPresenter.itemChanged();
     }
 
     @Override
