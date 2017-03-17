@@ -292,7 +292,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            mItems.keySet().toArray();
             if (mLargeScreen) {
                 String imageUrl = mItems.get(mItemIds.get(position)).getImageUrl();
                 if (imageUrl != null) {
