@@ -313,22 +313,47 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                     holder.mItemImage.setVisibility(View.GONE);
                 }
             }
-            holder.mCategory.setText(mItems.get(position).getCategory());
-            holder.mType.setText(mItems.get(position).getType());
-            holder.mColour.setText(mItems.get(position).getPrimaryColour());
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(mItems.get(position).getExpiry());
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMMM/yy", Locale.getDefault());
-            String expiry;
-            if (mLargeScreen) {
-                expiry = simpleDateFormat.format(calendar.getTime());
+            String category = mItems.get(position).getCategory();
+            if (category == null || category.equals("")) {
+                holder.mCategory.setText(getString(R.string.edit_category_empty));
             } else {
-                expiry = "Expires: " + simpleDateFormat.format(calendar.getTime());
+                holder.mCategory.setText(category);
             }
-            holder.mExpiry.setText(expiry);
-            String priceString = getPriceFromTotalCents(mItems.get(position).getPricePaid());
-            String price = "Paid: $" + priceString;
-            holder.mPaid.setText(price);
+            String type = mItems.get(position).getType();
+            if (type == null || type.equals("")) {
+                holder.mType.setText(getString(R.string.edit_type_empty));
+            } else {
+                holder.mType.setText(mItems.get(position).getType());
+            }
+            String colour = mItems.get(position).getPrimaryColour();
+            if (colour == null || colour.equals("")) {
+                holder.mColour.setText(getString(R.string.edit_primary_colour_empty));
+            } else {
+                holder.mColour.setText(mItems.get(position).getPrimaryColour());
+            }
+            long expiry = mItems.get(position).getExpiry();
+            if (expiry == -1) {
+                holder.mExpiry.setText(getString(R.string.edit_expiry_date_empty));
+            } else {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(expiry);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(getString(
+                        R.string.edit_date_format), Locale.getDefault());
+                String expiryString = simpleDateFormat.format(calendar.getTime());
+                if (!mLargeScreen) {
+                    expiryString = getString(R.string.edit_expiry_date_prefix) + expiryString;
+                }
+                holder.mExpiry.setText(expiryString);
+            }
+            int price = mItems.get(position).getPricePaid();
+            String priceString;
+            if (price == -1) {
+                priceString = getString(R.string.edit_price_paid_empty);
+            } else {
+                priceString = getString(R.string.edit_price_paid_prefix)
+                        + getPriceFromTotalCents(price);
+            }
+            holder.mPaid.setText(priceString);
         }
 
         @Override
