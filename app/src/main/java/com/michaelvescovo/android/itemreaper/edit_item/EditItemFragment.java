@@ -245,10 +245,13 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
-        if (mSelectedExpiryDate != null) {
-            mExpiryDateAdapter.insert(mSelectedExpiryDate, 0);
-            mExpiryDateSpinner.setSelection(0);
-        }
+        Calendar defaultExpiry = Calendar.getInstance();
+        defaultExpiry.add(Calendar.YEAR, 1);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                getString(R.string.edit_date_format), Locale.getDefault());
+        mSelectedExpiryDate = simpleDateFormat.format(defaultExpiry.getTime());
+        mExpiryDateAdapter.insert(mSelectedExpiryDate, 0);
+        mExpiryDateSpinner.setSelection(0);
 
         mCategory.addTextChangedListener(this);
         mSubCategory.addTextChangedListener(this);
@@ -303,7 +306,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                                                 getString(R.string.edit_date_yesterday)));
                             } else {
                                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-                                        "dd MMMM YYYY", Locale.getDefault());
+                                        getString(R.string.edit_date_format), Locale.getDefault());
                                 mSelectedPurchaseDate = simpleDateFormat.format(calendar.getTime());
                                 mPurchaseDateAdapter.insert(mSelectedPurchaseDate, 0);
                                 mPurchaseDateSpinner.setSelection(0);
@@ -363,7 +366,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                                                 getString(R.string.edit_date_yesterday)));
                             } else {
                                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-                                        "dd MMMM YYYY", Locale.getDefault());
+                                        getString(R.string.edit_date_format), Locale.getDefault());
                                 mSelectedExpiryDate = simpleDateFormat.format(calendar.getTime());
                                 mExpiryDateAdapter.insert(mSelectedExpiryDate, 0);
                                 mExpiryDateSpinner.setSelection(0);
@@ -540,7 +543,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                                     getString(R.string.edit_date_yesterday)));
                 } else {
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-                            "dd MMMM YYYY", Locale.getDefault());
+                            getString(R.string.edit_date_format), Locale.getDefault());
                     mSelectedPurchaseDate = simpleDateFormat.format(purchaseDate.getTime());
                     mPurchaseDateAdapter.insert(mSelectedPurchaseDate, 0);
                     mPurchaseDateSpinner.setSelection(0);
@@ -588,7 +591,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                                     getString(R.string.edit_date_yesterday)));
                 } else {
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-                            "dd MMMM YYYY", Locale.getDefault());
+                            getString(R.string.edit_date_format), Locale.getDefault());
                     mSelectedExpiryDate = simpleDateFormat.format(expiryDate.getTime());
                     mExpiryDateAdapter.insert(mSelectedExpiryDate, 0);
                     mExpiryDateSpinner.setSelection(0);
