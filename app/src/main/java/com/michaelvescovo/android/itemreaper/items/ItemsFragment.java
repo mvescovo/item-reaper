@@ -293,21 +293,22 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 if (imageUrl != null) {
                     if (!imageUrl.equals(mImageUrl)) {
                         mImageUrl = imageUrl;
-                        holder.mItemImage.setVisibility(View.VISIBLE);
-                        EspressoIdlingResource.increment();
-                        Glide.with(getContext())
-                                .load(imageUrl)
-                                .crossFade()
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .into(new GlideDrawableImageViewTarget(holder.mItemImage) {
-                                    @Override
-                                    public void onResourceReady(GlideDrawable resource,
-                                                                GlideAnimation<? super GlideDrawable> animation) {
-                                        super.onResourceReady(resource, animation);
-                                        EspressoIdlingResource.decrement();
-                                    }
-                                });
                     }
+                    holder.mItemImage.setVisibility(View.VISIBLE);
+                    EspressoIdlingResource.increment();
+                    Glide.with(getContext())
+                            .load(imageUrl)
+                            .crossFade()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(new GlideDrawableImageViewTarget(holder.mItemImage) {
+                                @Override
+                                public void onResourceReady(GlideDrawable resource,
+                                                            GlideAnimation<? super GlideDrawable> animation) {
+                                    super.onResourceReady(resource, animation);
+                                    EspressoIdlingResource.decrement();
+                                }
+                            });
+
                 } else {
                     holder.mItemImage.setVisibility(View.GONE);
                 }
