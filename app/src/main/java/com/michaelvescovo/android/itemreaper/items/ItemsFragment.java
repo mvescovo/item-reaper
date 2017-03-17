@@ -337,9 +337,10 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         }
 
         void replaceItem(@NonNull Item item) {
-            if (!mItems.contains(item)) {
-                mItems.add(item);
+            if (mItems.contains(item)) {
+                mItems.remove(item);
             }
+            mItems.add(item);
             notifyDataSetChanged();
         }
 
