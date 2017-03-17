@@ -33,10 +33,8 @@ import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -90,7 +88,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 mPresenter.openItemDetails(item);
             }
         };
-        mItemsAdapter = new ItemsAdapter(new HashMap<String, Item>(), itemListener);
+        mItemsAdapter = new ItemsAdapter(new ArrayList<Item>(), itemListener);
         mDividerItemDecoration = new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL);
         mDividerItemDecoration.setDrawable(ContextCompat.getDrawable(getContext(),
@@ -273,13 +271,11 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
     class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
 
-        private Map<String, Item> mItems;
-        private List<String> mItemIds;
+        private List<Item> mItems;
         private ItemListener mItemListener;
 
-        ItemsAdapter(Map<String, Item> items, ItemListener itemListener) {
+        ItemsAdapter(List<Item> items, ItemListener itemListener) {
             mItems = items;
-            mItemIds = new ArrayList<>();
             mItemListener = itemListener;
         }
 
@@ -293,7 +289,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             if (mLargeScreen) {
-                String imageUrl = mItems.get(mItemIds.get(position)).getImageUrl();
+                String imageUrl = mItems.get(position).getImageUrl();
                 if (imageUrl != null) {
                     if (!imageUrl.equals(mImageUrl)) {
                         mImageUrl = imageUrl;
@@ -316,11 +312,11 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                     holder.mItemImage.setVisibility(View.GONE);
                 }
             }
-            holder.mCategory.setText(mItems.get(mItemIds.get(position)).getCategory());
-            holder.mType.setText(mItems.get(mItemIds.get(position)).getType());
-            holder.mColour.setText(mItems.get(mItemIds.get(position)).getPrimaryColour());
+            holder.mCategory.setText(mItems.get(position).getCategory());
+            holder.mType.setText(mItems.get(position).getType());
+            holder.mColour.setText(mItems.get(position).getPrimaryColour());
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(mItems.get(mItemIds.get(position)).getExpiry());
+            calendar.setTimeInMillis(mItems.get(position).getExpiry());
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yy", Locale.getDefault());
             String expiry;
             if (mLargeScreen) {
@@ -329,27 +325,25 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 expiry = "Expires: " + simpleDateFormat.format(calendar.getTime());
             }
             holder.mExpiry.setText(expiry);
-            String priceString = getPriceFromTotalCents(mItems.get(mItemIds.get(position)).getPricePaid());
+            String priceString = getPriceFromTotalCents(mItems.get(position).getPricePaid());
             String price = "Paid: $" + priceString;
             holder.mPaid.setText(price);
         }
 
         @Override
         public int getItemCount() {
-            return mItemIds.size();
+            return mItems.size();
         }
 
         void replaceItem(@NonNull Item item) {
-            mItems.put(item.getId(), item);
-            if (!mItemIds.contains(item.getId())) {
-                mItemIds.add(item.getId());
+            if (!mItems.contains(item)) {
+                mItems.add(item);
             }
             notifyDataSetChanged();
         }
 
         void clearItems() {
             mItems.clear();
-            mItemIds.clear();
             mImageUrl = null;
             notifyDataSetChanged();
         }
@@ -385,7 +379,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             @Override
             public void onClick(View view) {
                 int position = getAdapterPosition();
-                Item item = mItems.get(mItemIds.get(position));
+                Item item = mItems.get(position);
                 mItemListener.onItemClick(item);
             }
         }

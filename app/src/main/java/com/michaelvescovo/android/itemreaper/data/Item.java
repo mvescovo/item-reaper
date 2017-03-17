@@ -297,4 +297,9 @@ public class Item implements Serializable {
         result.put("deceased", mDeceased);
         return result;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Item && ((Item) obj).getId().equals(mId);
+    }
 }
