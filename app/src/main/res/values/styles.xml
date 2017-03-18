@@ -62,4 +62,11 @@
         <item name="android:maxLength">@integer/max_length_currency</item>
     </style>
 
+    <!--Items-->
+    <style name="no_items" parent="Base.TextAppearance.AppCompat.Title">
+        <item name="android:maxEms">@integer/max_ems</item>
+        <item name="android:maxLength">@integer/max_length_small</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
 </resources>

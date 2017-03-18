@@ -19,6 +19,7 @@
 
     <TextView
         android:id="@+id/no_items"
+        style="@style/no_items"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_vertical"
