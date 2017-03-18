@@ -57,11 +57,6 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
     }
 
     @Override
-    public void showEditItemUi() {
-        mCallback.onEditItemSelected();
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
@@ -115,6 +110,13 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
     }
 
     @Override
+    public void showEditItemUi() {
+        if (mItemId != null) {
+            mCallback.onEditItemSelected(mItemId);
+        }
+    }
+
+    @Override
     public void onDestroyView() {
         if (getDialog() != null && getRetainInstance()) {
             getDialog().setDismissMessage(null);
@@ -154,6 +156,6 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
 
         void configureSupportActionBar(Toolbar toolbar, Drawable icon);
 
-        void onEditItemSelected();
+        void onEditItemSelected(@Nullable String itemId);
     }
 }

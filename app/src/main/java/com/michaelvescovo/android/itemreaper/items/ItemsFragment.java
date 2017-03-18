@@ -241,12 +241,12 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
     @Override
     public void showItemDetailsUi(String itemId) {
-        mCallback.onItemDetailsSelected();
+        mCallback.onItemDetailsSelected(itemId);
     }
 
     @Override
     public void showEditItemUi() {
-        mCallback.onEditItemSelected();
+        mCallback.onEditItemSelected(null);
     }
 
     @Override
@@ -311,9 +311,9 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
         void onSignOutSelected();
 
-        void onEditItemSelected();
+        void onEditItemSelected(@Nullable String itemId);
 
-        void onItemDetailsSelected();
+        void onItemDetailsSelected(@NonNull String itemId);
 
         Snackbar onShowSnackbar(String text, int duration);
     }

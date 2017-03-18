@@ -3,6 +3,7 @@ package com.michaelvescovo.android.itemreaper.itemDetails;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 
+import static com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity.EXTRA_ITEM_ID;
 import static com.michaelvescovo.android.itemreaper.items.ItemsActivity.REQUEST_CODE_ITEM_DELETED;
 
 
@@ -28,12 +30,22 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDetail
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_details);
 
+        String itemId = null;
+        if (getIntent().getStringExtra(EXTRA_ITEM_ID) != null) {
+            itemId = getIntent().getStringExtra(EXTRA_ITEM_ID);
+        }
+
         // Create the View
         ItemDetailsFragment itemDetailsFragment = (ItemDetailsFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.contentFrame);
         if (itemDetailsFragment == null) {
             itemDetailsFragment = ItemDetailsFragment.newInstance();
             initFragment(itemDetailsFragment);
+            if (itemId != null) {
+                Bundle bundle = new Bundle();
+                bundle.putString(EXTRA_ITEM_ID, itemId);
+                itemDetailsFragment.setArguments(bundle);
+            }
         }
 
         // Create the Presenter which does the following:
@@ -73,8 +85,9 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDetail
     }
 
     @Override
-    public void onEditItemSelected() {
+    public void onEditItemSelected(@NonNull String itemId) {
         Intent intent = new Intent(this, EditItemActivity.class);
+        intent.putExtra(EXTRA_ITEM_ID, itemId);
         startActivityForResult(intent, REQUEST_CODE_ITEM_DELETED);
     }
 

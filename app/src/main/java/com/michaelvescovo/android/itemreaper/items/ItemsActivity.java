@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -42,6 +43,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity.EXTRA_ITEM_ID;
 
 
 /**
@@ -177,9 +180,14 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     }
 
     @Override
-    public void onEditItemSelected() {
-        EditItemFragment editItemFragment = EditItemFragment.newInstance();
+    public void onEditItemSelected(@Nullable String itemId) {
         if (mIsLargeLayout) {
+            EditItemFragment editItemFragment = EditItemFragment.newInstance();
+            if (itemId != null) {
+                Bundle bundle = new Bundle();
+                bundle.putString(EXTRA_ITEM_ID, itemId);
+                editItemFragment.setArguments(bundle);
+            }
             mCurrentDialogName = EDIT_ITEM_DIALOG;
 
             // Need to create an EditItemsPresenter for when the fragment is run as a dialog
@@ -197,14 +205,17 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
             editItemFragment.setCancelable(false);
         } else {
             Intent intent = new Intent(this, EditItemActivity.class);
+            if (itemId != null) {
+                intent.putExtra(EXTRA_ITEM_ID, itemId);
+            }
             startActivityForResult(intent, REQUEST_CODE_ITEM_DELETED);
         }
     }
 
     @Override
-    public void onItemDetailsSelected() {
-        ItemDetailsFragment itemDetailsFragment = ItemDetailsFragment.newInstance();
+    public void onItemDetailsSelected(@NonNull String itemId) {
         if (mIsLargeLayout) {
+            ItemDetailsFragment itemDetailsFragment = ItemDetailsFragment.newInstance();
             mCurrentDialogName = ITEM_DETAILS_DIALOG;
 
             // Need to create an ItemDetailsPresenter for when the fragment is run as a dialog
@@ -217,10 +228,14 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
                             .getRepositoryComponent())
                     .build();
             itemDetailsComponent.getItemDetailsPresenter();
+            Bundle bundle = new Bundle();
+            bundle.putString(EXTRA_ITEM_ID, itemId);
+            itemDetailsFragment.setArguments(bundle);
 
             itemDetailsFragment.show(getSupportFragmentManager(), "dialog");
         } else {
             Intent intent = new Intent(this, ItemDetailsActivity.class);
+            intent.putExtra(EXTRA_ITEM_ID, itemId);
             startActivity(intent);
         }
     }
