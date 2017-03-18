@@ -11,7 +11,7 @@ import java.util.Map;
  * @author Michael Vescovo
  */
 
-public class Item implements Serializable {
+public class Item implements Serializable, Comparable {
 
     @NonNull
     private String mId;
@@ -301,5 +301,17 @@ public class Item implements Serializable {
     @Override
     public boolean equals(Object obj) {
         return obj instanceof Item && ((Item) obj).getId().equals(mId);
+    }
+
+
+    @Override
+    public int compareTo(@NonNull Object item2) {
+        if (mExpiry > ((Item) item2).getExpiry()) {
+            return 1;
+        } else if (mExpiry == ((Item) item2).getExpiry()) {
+            return 0;
+        } else {
+            return -1;
+        }
     }
 }

@@ -45,7 +45,7 @@ public class FakeDataSource implements DataSource {
             -1,
             3000,
             -1,
-            1496325600000L, // 2/6/2017
+            1501855200000L, // 5/8/2017
             "Bathroom", null,
             "Towel", null, null, null, "White", null, null, null, null, null, null, null, null,
             false);

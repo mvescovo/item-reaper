@@ -33,6 +33,8 @@ import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -374,7 +376,18 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 mItems.remove(item);
             }
             mItems.add(item);
+            sortItemsByExpiry();
             notifyDataSetChanged();
+        }
+
+        private void sortItemsByExpiry() {
+            // Sort ascending (earlier dates first)
+            Collections.sort(mItems, new Comparator<Item>() {
+                @Override
+                public int compare(Item item1, Item item2) {
+                    return item1.compareTo(item2);
+                }
+            });
         }
 
         void clearItems() {
