@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/height_list_item"
+    card_view:cardCornerRadius="0dp"
     card_view:cardElevation="0dp">
 
     <LinearLayout
