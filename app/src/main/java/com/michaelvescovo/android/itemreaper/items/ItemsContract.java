@@ -46,7 +46,7 @@ interface ItemsContract {
 
         void restoreItem(@NonNull Item item);
 
-        void expireItem(@NonNull Item item);
+        void expireItem(@NonNull Item item, int itemsSize);
 
         void unexpireItem(@NonNull Item item);
     }

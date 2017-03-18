@@ -476,7 +476,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                     public void onClick(View view) {
                         playExpireItemSoundEffect();
                         Item item = mItems.get(getAdapterPosition());
-                        mPresenter.expireItem(item);
+                        mPresenter.expireItem(item, mItems.size());
                     }
                 });
                 itemView.setOnClickListener(this);

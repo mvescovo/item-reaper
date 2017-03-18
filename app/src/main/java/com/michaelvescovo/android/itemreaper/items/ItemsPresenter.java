@@ -118,10 +118,13 @@ class ItemsPresenter implements ItemsContract.Presenter {
     }
 
     @Override
-    public void expireItem(@NonNull Item item) {
+    public void expireItem(@NonNull Item item, int itemsSize) {
         item.setDeceased(true);
         mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
         mView.showItemExpiredMessage(R.string.item_expired, Snackbar.LENGTH_LONG, item);
+        if (itemsSize == 1) {
+            mView.showNoItemsText(true);
+        }
     }
 
     @Override
@@ -129,5 +132,6 @@ class ItemsPresenter implements ItemsContract.Presenter {
         item.setDeceased(false);
         mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
         mView.showItemExpiredMessage(R.string.item_unexpired, Snackbar.LENGTH_LONG, null);
+        mView.showNoItemsText(false);
     }
 }
