@@ -9,9 +9,12 @@ interface ItemDetailsContract {
     interface View {
 
         void setPresenter(Presenter presenter);
+
+        void showEditItemUi();
     }
 
     interface Presenter {
 
+        void openEditItem();
     }
 }

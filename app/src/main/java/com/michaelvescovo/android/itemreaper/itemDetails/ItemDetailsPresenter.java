@@ -10,7 +10,7 @@ import javax.inject.Inject;
  * @author Michael Vescovo
  */
 
-public class ItemDetailsPresenter implements ItemDetailsContract.Presenter {
+class ItemDetailsPresenter implements ItemDetailsContract.Presenter {
 
     private ItemDetailsContract.View mView;
     private Repository mRepository;
@@ -29,5 +29,10 @@ public class ItemDetailsPresenter implements ItemDetailsContract.Presenter {
     @Inject
     void setupListeners() {
         mView.setPresenter(this);
+    }
+
+    @Override
+    public void openEditItem() {
+        mView.showEditItemUi();
     }
 }

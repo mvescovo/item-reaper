@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -56,6 +57,11 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
     }
 
     @Override
+    public void showEditItemUi() {
+        mCallback.onEditItemSelected();
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
@@ -97,6 +103,18 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_expire_item:
+                break;
+            case R.id.action_edit_item:
+                mPresenter.openEditItem();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onDestroyView() {
         if (getDialog() != null && getRetainInstance()) {
             getDialog().setDismissMessage(null);
@@ -135,5 +153,7 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
     public interface Callback {
 
         void configureSupportActionBar(Toolbar toolbar, Drawable icon);
+
+        void onEditItemSelected();
     }
 }

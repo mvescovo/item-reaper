@@ -1,5 +1,6 @@
 package com.michaelvescovo.android.itemreaper.itemDetails;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
@@ -14,7 +15,10 @@ import android.view.Menu;
 
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
 import com.michaelvescovo.android.itemreaper.R;
+import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
+
+import static com.michaelvescovo.android.itemreaper.items.ItemsActivity.REQUEST_CODE_ITEM_DELETED;
 
 
 public class ItemDetailsActivity extends AppCompatActivity implements ItemDetailsFragment.Callback {
@@ -66,6 +70,12 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDetail
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
+    }
+
+    @Override
+    public void onEditItemSelected() {
+        Intent intent = new Intent(this, EditItemActivity.class);
+        startActivityForResult(intent, REQUEST_CODE_ITEM_DELETED);
     }
 
     @VisibleForTesting

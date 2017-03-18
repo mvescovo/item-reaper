@@ -153,14 +153,12 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         mAppbarTitle.setTypeface(mAppbarTypeface);
 
         mIsLargeScreen = getResources().getBoolean(R.bool.large_layout);
-        if (mIsLargeScreen) {
-            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mPresenter.doneEditing();
-                }
-            });
-        }
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.doneEditing();
+            }
+        });
 
         setHasOptionsMenu(true);
 
