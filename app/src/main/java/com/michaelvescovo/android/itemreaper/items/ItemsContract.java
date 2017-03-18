@@ -1,6 +1,7 @@
 package com.michaelvescovo.android.itemreaper.items;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.michaelvescovo.android.itemreaper.data.Item;
 
@@ -27,6 +28,8 @@ interface ItemsContract {
         void showAuthUi();
 
         void showNoItemsText(boolean active);
+
+        void showItemExpiredMessage(int resourceId, int duration, @Nullable Item item);
     }
 
     interface Presenter {
@@ -44,5 +47,7 @@ interface ItemsContract {
         void restoreItem(@NonNull Item item);
 
         void expireItem(@NonNull Item item);
+
+        void unexpireItem(@NonNull Item item);
     }
 }

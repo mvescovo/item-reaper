@@ -23,6 +23,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -148,5 +149,14 @@ public class ItemsPresenterTest {
         mItemsPresenter.expireItem(ITEM_1);
         assertThat(ITEM_1.getDeceased(), is(equalTo(true)));
         verify(mRepository).saveItem(anyString(), any(Item.class));
+        verify(mView).showItemExpiredMessage(anyInt(), anyInt(), any(Item.class));
+    }
+
+    @Test
+    public void unexpireItem_UnexpiresAndSavesItem() {
+        mItemsPresenter.unexpireItem(ITEM_1);
+        assertThat(ITEM_1.getDeceased(), is(equalTo(false)));
+        verify(mRepository).saveItem(anyString(), any(Item.class));
+        verify(mView).showItemExpiredMessage(anyInt(), anyInt(), any(Item.class));
     }
 }

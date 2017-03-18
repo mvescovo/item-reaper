@@ -2,8 +2,10 @@ package com.michaelvescovo.android.itemreaper.items;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.SharedPreferencesHelper;
 import com.michaelvescovo.android.itemreaper.data.DataSource;
 import com.michaelvescovo.android.itemreaper.data.Item;
@@ -119,5 +121,13 @@ class ItemsPresenter implements ItemsContract.Presenter {
     public void expireItem(@NonNull Item item) {
         item.setDeceased(true);
         mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
+        mView.showItemExpiredMessage(R.string.item_expired, Snackbar.LENGTH_LONG, item);
+    }
+
+    @Override
+    public void unexpireItem(@NonNull Item item) {
+        item.setDeceased(false);
+        mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
+        mView.showItemExpiredMessage(R.string.item_unexpired, Snackbar.LENGTH_LONG, null);
     }
 }

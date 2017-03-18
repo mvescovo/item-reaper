@@ -255,6 +255,20 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         }
     }
 
+    @Override
+    public void showItemExpiredMessage(int resourceId, int duration, @Nullable final Item item) {
+        Snackbar snackbar = mCallback.onShowSnackbar(getString(resourceId), duration);
+        if (item != null) {
+            snackbar.setAction(getString(R.string.undo), new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPresenter.unexpireItem(item);
+                }
+            });
+        }
+        snackbar.show();
+    }
+
     interface Callback {
 
         void onAboutSelected();
