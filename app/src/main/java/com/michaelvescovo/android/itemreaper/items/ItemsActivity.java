@@ -31,6 +31,11 @@ import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemComponent;
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemFragment;
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemModule;
+import com.michaelvescovo.android.itemreaper.itemDetails.DaggerItemDetailsComponent;
+import com.michaelvescovo.android.itemreaper.itemDetails.ItemDetailsActivity;
+import com.michaelvescovo.android.itemreaper.itemDetails.ItemDetailsComponent;
+import com.michaelvescovo.android.itemreaper.itemDetails.ItemDetailsFragment;
+import com.michaelvescovo.android.itemreaper.itemDetails.ItemDetailsModule;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 
 import javax.inject.Inject;
@@ -44,11 +49,12 @@ import butterknife.ButterKnife;
  */
 
 public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Callback,
-        AboutFragment.Callback, EditItemFragment.Callback {
+        AboutFragment.Callback, EditItemFragment.Callback, ItemDetailsFragment.Callback {
 
     private static final String CURRENT_DIALOG_NAME = "current_dialog_name";
     private static final String ABOUT_DIALOG = "about_dialog";
     private static final String EDIT_ITEM_DIALOG = "edit_item_dialog";
+    private static final String ITEM_DETAILS_DIALOG = "item_details_dialog";
     private static final String FRAGMENT_ITEMS = "fragment_items";
     public static final int REQUEST_CODE_ITEM_DELETED = 1;
     public static final String EXTRA_DELETED_ITEM = "deleted_item";
@@ -174,7 +180,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
         if (mIsLargeLayout) {
             mCurrentDialogName = EDIT_ITEM_DIALOG;
 
-            // Need to create an EditItemsPresenter for when the fragment is run as dialog
+            // Need to create an EditItemsPresenter for when the fragment is run as a dialog
             // from this Activity.
             EditItemComponent editItemComponent = DaggerEditItemComponent.builder()
                     .editItemModule(new EditItemModule(editItemFragment))
@@ -190,6 +196,30 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
         } else {
             Intent intent = new Intent(this, EditItemActivity.class);
             startActivityForResult(intent, REQUEST_CODE_ITEM_DELETED);
+        }
+    }
+
+    @Override
+    public void onItemDetailsSelected() {
+        ItemDetailsFragment itemDetailsFragment = ItemDetailsFragment.newInstance();
+        if (mIsLargeLayout) {
+            mCurrentDialogName = ITEM_DETAILS_DIALOG;
+
+            // Need to create an ItemDetailsPresenter for when the fragment is run as a dialog
+            // from this Activity.
+            ItemDetailsComponent itemDetailsComponent = DaggerItemDetailsComponent.builder()
+                    .itemDetailsModule(new ItemDetailsModule(itemDetailsFragment))
+                    .applicationComponent(((ItemReaperApplication) getApplication())
+                            .getApplicationComponent())
+                    .repositoryComponent(((ItemReaperApplication) getApplication())
+                            .getRepositoryComponent())
+                    .build();
+            itemDetailsComponent.getItemDetailsPresenter();
+
+            itemDetailsFragment.show(getSupportFragmentManager(), "dialog");
+        } else {
+            Intent intent = new Intent(this, ItemDetailsActivity.class);
+            startActivity(intent);
         }
     }
 

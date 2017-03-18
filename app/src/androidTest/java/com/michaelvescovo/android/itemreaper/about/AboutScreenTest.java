@@ -46,27 +46,6 @@ public class AboutScreenTest {
     }
 
     @Test
-    public void itemReaperTitleVisible() {
-        onView(withText(R.string.title_item_reaper)).check(matches(isDisplayed()));
-        mEspressoHelperMethods.rotateScreen();
-        onView(withText(R.string.title_item_reaper)).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void openSourceStatementVisible() {
-        onView(withText(R.string.open_source_statement)).check(matches(isDisplayed()));
-        mEspressoHelperMethods.rotateScreen();
-        onView(withText(R.string.open_source_statement)).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void forkStatementVisible() {
-        onView(withText(R.string.fork_statement)).check(matches(isDisplayed()));
-        mEspressoHelperMethods.rotateScreen();
-        onView(withText(R.string.fork_statement)).check(matches(isDisplayed()));
-    }
-
-    @Test
     public void attributionsTitleVisible() {
         onView(withText(R.string.title_attributions)).check(matches(isDisplayed()));
         mEspressoHelperMethods.rotateScreen();

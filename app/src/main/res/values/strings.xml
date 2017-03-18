@@ -59,6 +59,9 @@
     <string name="item_unexpired">Item restored</string>
     <string name="item_image">Item image</string>
 
+    <!--ItemDetails-->
+    <string name="title_activity_item_details">Item Details</string>
+
     <!--About-->
     <string name="title_activity_about">About</string>
     <string name="title_attributions">Attributions</string>

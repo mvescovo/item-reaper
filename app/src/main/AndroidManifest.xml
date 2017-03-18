@@ -38,6 +38,12 @@
             android:parentActivityName=".items.ItemsActivity">
         </activity>
 
+        <activity
+            android:name=".itemDetails.ItemDetailsActivity"
+            android:label="@string/title_activity_item_details"
+            android:parentActivityName=".items.ItemsActivity">
+        </activity>
+
     </application>
 
 </manifest>
