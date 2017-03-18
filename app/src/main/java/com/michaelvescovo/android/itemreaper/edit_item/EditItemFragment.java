@@ -325,6 +325,15 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                 }
                 mPurchaseDateSpinner.setSelection(mPurchaseDateAdapter.getPosition(selectedOption));
             }
+            if (selectedOption.equals(getString(R.string.edit_date_today))) {
+                mPurchaseDate = Calendar.getInstance();
+            } else if (selectedOption.equals(getString(R.string.edit_date_yesterday))) {
+                mPurchaseDate = Calendar.getInstance();
+                mPurchaseDate.add(Calendar.DAY_OF_YEAR, -1);
+            } else if (selectedOption.equals(getString(R.string.edit_date_unknown))) {
+                mPurchaseDate = null;
+            }
+            mPresenter.itemChanged();
             mPreviousPurchaseDateOption = mPurchaseDateAdapter.getPosition(selectedOption);
         }
     }
@@ -528,31 +537,43 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
 
     @Override
     public void showExistingItem(Item item) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                getString(R.string.edit_date_format), Locale.getDefault());
         final Calendar today = Calendar.getInstance();
+        String todayString = simpleDateFormat.format(today.getTime());
         final Calendar yesterday = Calendar.getInstance();
         yesterday.add(Calendar.DAY_OF_YEAR, -1);
+        String yesterdayString = simpleDateFormat.format(yesterday.getTime());
 
         if (item.getPurchaseDate() != -1) {
             Calendar purchaseDate = Calendar.getInstance();
             purchaseDate.setTimeInMillis(item.getPurchaseDate());
-            if (mPurchaseDate == null || mPurchaseDate.compareTo(purchaseDate) != 0) {
+            String purchaseDateString = simpleDateFormat.format(purchaseDate.getTime());
+            String currentPurchaseDateString = simpleDateFormat.format(mPurchaseDate.getTime());
+            if (!currentPurchaseDateString.equals(purchaseDateString)) {
                 mPurchaseDate = purchaseDate;
-                if (purchaseDate.compareTo(today) == 0) {
+                if (purchaseDateString.equals(todayString)) {
                     mPurchaseDateSpinner.setSelection(
                             mPurchaseDateAdapter.getPosition(
                                     getString(R.string.edit_date_today)));
-                } else if (purchaseDate.compareTo(yesterday) == 0) {
+                } else if (purchaseDateString.equals(yesterdayString)) {
                     mPurchaseDateSpinner.setSelection(
                             mPurchaseDateAdapter.getPosition(
                                     getString(R.string.edit_date_yesterday)));
                 } else {
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-                            getString(R.string.edit_date_format), Locale.getDefault());
+                    if (mSelectedPurchaseDate != null) {
+                        mPurchaseDateAdapter.remove(mSelectedPurchaseDate);
+                        mSelectedPurchaseDate = null;
+                    }
                     mSelectedPurchaseDate = simpleDateFormat.format(purchaseDate.getTime());
                     mPurchaseDateAdapter.insert(mSelectedPurchaseDate, 0);
                     mPurchaseDateSpinner.setSelection(0);
                 }
             }
+        } else {
+            mPurchaseDateSpinner.setSelection(
+                    mPurchaseDateAdapter.getPosition(
+                            getString(R.string.edit_date_unknown)));
         }
         if (item.getShop() != null
                 && !item.getShop().equals(mShop.getText().toString())) {
@@ -583,24 +604,32 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         if (item.getExpiry() != -1) {
             Calendar expiryDate = Calendar.getInstance();
             expiryDate.setTimeInMillis(item.getExpiry());
-            if (mExpiryDate == null || mExpiryDate.compareTo(expiryDate) != 0) {
+            String expiryDateString = simpleDateFormat.format(expiryDate.getTime());
+            String currentExpiryDateString = simpleDateFormat.format(mExpiryDate.getTime());
+            if (!currentExpiryDateString.equals(expiryDateString)) {
                 mExpiryDate = expiryDate;
-                if (expiryDate.compareTo(today) == 0) {
+                if (expiryDateString.equals(todayString)) {
                     mExpiryDateSpinner.setSelection(
                             mExpiryDateAdapter.getPosition(
                                     getString(R.string.edit_date_today)));
-                } else if (expiryDate.compareTo(yesterday) == 0) {
+                } else if (expiryDateString.equals(yesterdayString)) {
                     mExpiryDateSpinner.setSelection(
                             mExpiryDateAdapter.getPosition(
                                     getString(R.string.edit_date_yesterday)));
                 } else {
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-                            getString(R.string.edit_date_format), Locale.getDefault());
+                    if (mSelectedExpiryDate != null) {
+                        mExpiryDateAdapter.remove(mSelectedExpiryDate);
+                        mSelectedExpiryDate = null;
+                    }
                     mSelectedExpiryDate = simpleDateFormat.format(expiryDate.getTime());
                     mExpiryDateAdapter.insert(mSelectedExpiryDate, 0);
                     mExpiryDateSpinner.setSelection(0);
                 }
             }
+        } else {
+            mExpiryDateSpinner.setSelection(
+                    mExpiryDateAdapter.getPosition(
+                            getString(R.string.edit_date_unknown)));
         }
         if (item.getCategory() != null
                 && !item.getCategory().equals(mCategory.getText().toString())) {
