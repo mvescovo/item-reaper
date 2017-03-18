@@ -375,8 +375,10 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             if (mItems.contains(item)) {
                 mItems.remove(item);
             }
-            mItems.add(item);
-            sortItemsByExpiry();
+            if (!item.getDeceased()) {
+                mItems.add(item);
+                sortItemsByExpiry();
+            }
             notifyDataSetChanged();
         }
 
