@@ -33,10 +33,6 @@ public class AboutFragment extends AppCompatDialogFragment {
     Toolbar mToolbar;
     @BindView(R.id.appbar_title)
     TextView mAppbarTitle;
-    @BindView(R.id.open_source_statement)
-    TextView mOpenSourceStatement;
-    @BindView(R.id.fork_statement)
-    TextView mForkStatement;
     @BindView(R.id.reaper_icon_attribution)
     TextView mReaperIconAttribution;
 
@@ -82,8 +78,6 @@ public class AboutFragment extends AppCompatDialogFragment {
         mAppbarTitle.setTypeface(mAppbarTypeface);
         Pattern pattern = compile("");
         String scheme = "";
-        Linkify.addLinks(mOpenSourceStatement, pattern, scheme);
-        Linkify.addLinks(mForkStatement, pattern, scheme);
         Linkify.addLinks(mReaperIconAttribution, pattern, scheme);
         return root;
     }

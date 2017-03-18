@@ -2,6 +2,7 @@ package com.michaelvescovo.android.itemreaper.items;
 
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -67,6 +68,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     private boolean mLargeScreen;
     private String mImageUrl;
     private Item mDeletedItem;
+    private MediaPlayer mMediaPlayer;
 
     public ItemsFragment() {
     }
@@ -193,6 +195,15 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mMediaPlayer != null) {
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+        }
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mCallback = null;
@@ -267,6 +278,29 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             });
         }
         snackbar.show();
+    }
+
+    private void playExpireItemSoundEffect() {
+        mMediaPlayer = MediaPlayer.create(getContext(), R.raw.decapitation);
+        mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.start();
+            }
+        });
+        mMediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+                mMediaPlayer.reset();
+                return false;
+            }
+        });
+        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                mediaPlayer.release();
+            }
+        });
     }
 
     interface Callback {
@@ -434,6 +468,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 mExpire.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        playExpireItemSoundEffect();
                         Item item = mItems.get(getAdapterPosition());
                         mPresenter.expireItem(item);
                     }

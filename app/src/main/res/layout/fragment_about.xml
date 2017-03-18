@@ -50,26 +50,6 @@
                 style="@style/content_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title_item_reaper"/>
-
-            <TextView
-                android:id="@+id/open_source_statement"
-                style="@style/content_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/open_source_statement"/>
-
-            <TextView
-                android:id="@+id/fork_statement"
-                style="@style/content_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/fork_statement"/>
-
-            <TextView
-                style="@style/content_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="@string/title_attributions"/>
 
             <TextView
@@ -78,6 +58,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/reaper_icon_attribution"/>
+
+            <TextView
+                android:id="@+id/decapitation_sound_attribution"
+                style="@style/content_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/decapitation_sound_attribution"/>
 
         </LinearLayout>
 
