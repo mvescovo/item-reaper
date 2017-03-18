@@ -42,5 +42,7 @@ interface ItemsContract {
         void openSignOut();
 
         void restoreItem(@NonNull Item item);
+
+        void expireItem(@NonNull Item item);
     }
 }

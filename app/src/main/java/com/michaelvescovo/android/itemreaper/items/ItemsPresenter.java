@@ -114,4 +114,10 @@ class ItemsPresenter implements ItemsContract.Presenter {
     public void restoreItem(@NonNull Item item) {
         mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
     }
+
+    @Override
+    public void expireItem(@NonNull Item item) {
+        item.setDeceased(true);
+        mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
+    }
 }

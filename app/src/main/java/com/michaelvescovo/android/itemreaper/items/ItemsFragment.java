@@ -371,7 +371,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             return mItems.size();
         }
 
-        void replaceItem(@NonNull Item item) {
+        private void replaceItem(@NonNull Item item) {
             if (mItems.contains(item)) {
                 mItems.remove(item);
             }
@@ -390,7 +390,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             });
         }
 
-        void clearItems() {
+        private void clearItems() {
             mItems.clear();
             mImageUrl = null;
             notifyDataSetChanged();
@@ -418,7 +418,8 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 mExpire.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
+                        Item item = mItems.get(getAdapterPosition());
+                        mPresenter.expireItem(item);
                     }
                 });
                 itemView.setOnClickListener(this);
@@ -426,8 +427,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
             @Override
             public void onClick(View view) {
-                int position = getAdapterPosition();
-                Item item = mItems.get(position);
+                Item item = mItems.get(getAdapterPosition());
                 mItemListener.onItemClick(item);
             }
         }

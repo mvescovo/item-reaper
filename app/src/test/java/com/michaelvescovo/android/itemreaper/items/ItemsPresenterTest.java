@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
@@ -138,5 +141,12 @@ public class ItemsPresenterTest {
         mItemsPresenter.openSignOut();
         verify(mFirebaseAuth).signOut();
         verify(mView).showAuthUi();
+    }
+
+    @Test
+    public void expireItem_ExpiresAndSavesItem() {
+        mItemsPresenter.expireItem(ITEM_1);
+        assertThat(ITEM_1.getDeceased(), is(equalTo(true)));
+        verify(mRepository).saveItem(anyString(), any(Item.class));
     }
 }
