@@ -390,9 +390,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat(getString(
                         R.string.edit_date_format), Locale.getDefault());
                 String expiryString = simpleDateFormat.format(calendar.getTime());
-                if (!mLargeScreen) {
-                    expiryString = getString(R.string.edit_expiry_date_prefix) + expiryString;
-                }
                 holder.mExpiry.setText(expiryString);
                 Calendar almostExpiredDate = Calendar.getInstance();
                 almostExpiredDate.add(Calendar.MONTH, 1);
