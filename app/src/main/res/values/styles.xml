@@ -21,7 +21,7 @@
     <style name="small_content_title" parent="Base.TextAppearance.AppCompat.Caption">
         <item name="android:maxEms">@integer/max_ems</item>
         <item name="android:layout_marginBottom">8dp</item>
-        <item name="android:textColorLink">@color/subTitle</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
         <item name="android:maxLength">@integer/max_length_small</item>
     </style>
 
@@ -35,7 +35,7 @@
 
     <!--Card-->
     <style name="card_caption" parent="Base.TextAppearance.AppCompat.Caption">
-        <item name="android:textColor">@color/subTitle</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
         <item name="android:paddingBottom">@dimen/padding_text</item>
         <item name="android:maxLength">@integer/max_length_small</item>
     </style>

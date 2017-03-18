@@ -2,6 +2,7 @@ package com.michaelvescovo.android.itemreaper;
 
 import android.app.Application;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatDelegate;
 
 import com.michaelvescovo.android.itemreaper.data.DaggerRepositoryComponent;
 import com.michaelvescovo.android.itemreaper.data.RepositoryComponent;
@@ -16,7 +17,7 @@ public class ItemReaperApplication extends Application {
     private RepositoryComponent mRepositoryComponent;
 
     static {
-//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
     }
 
     @Override

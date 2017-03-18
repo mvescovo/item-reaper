@@ -2,6 +2,7 @@ package com.michaelvescovo.android.itemreaper.items;
 
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -398,8 +400,13 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 if (calendar.compareTo(almostExpiredDate) < 1) {
                     holder.mExpiry.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
                 } else {
-                    holder.mExpiry.setTextColor(ContextCompat.getColor(getContext(),
-                            R.color.subTitle));
+                    TypedValue typedValue = new TypedValue();
+                    TypedArray typedArray = getContext().obtainStyledAttributes(
+                            typedValue.data, new int[]{android.R.attr.textColorPrimary}
+                    );
+                    int textColourPrimary = typedArray.getColor(0, 0);
+                    typedArray.recycle();
+                    holder.mExpiry.setTextColor(textColourPrimary);
                 }
             }
             int price = mItems.get(position).getPricePaid();

@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_expire_item"
-        android:icon="@drawable/ic_scythe_white"
+        android:icon="@drawable/ic_scythe"
         android:title="@string/menu_expire_item"
         app:showAsAction="always"/>
 
