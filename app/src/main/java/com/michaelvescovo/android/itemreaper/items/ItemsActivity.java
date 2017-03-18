@@ -151,6 +151,8 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
             mDialogResumed = false;
         } else if (mCurrentDialogName.equals(EDIT_ITEM_DIALOG)) {
             getMenuInflater().inflate(R.menu.edit_item_fragment_menu, menu);
+        } else if (mCurrentDialogName.equals(ITEM_DETAILS_DIALOG)) {
+            getMenuInflater().inflate(R.menu.item_details_fragment_menu, menu);
         }
         return true;
     }

@@ -61,6 +61,7 @@
 
     <!--ItemDetails-->
     <string name="title_activity_item_details">Item Details</string>
+    <string name="menu_edit_item">Edit Item</string>
 
     <!--About-->
     <string name="title_activity_about">About</string>
