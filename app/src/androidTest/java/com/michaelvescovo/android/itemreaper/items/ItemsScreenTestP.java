@@ -39,6 +39,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.PickerActions.setDate;
 import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
+import static android.support.test.espresso.matcher.RootMatchers.isPlatformPopup;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -131,6 +132,7 @@ public class ItemsScreenTestP {
         onView(withId(R.id.expiry_date_spinner)).perform(scrollTo()).perform(click());
         onData(allOf(is(instanceOf(String.class)),
                 is(mEspressoHelperMethods.getResourceString(R.string.edit_date_custom))))
+                .inRoot(isPlatformPopup())
                 .perform(click());
         onView(isAssignableFrom(DatePicker.class)).perform(setDate(
                 expiry.get(Calendar.YEAR),
