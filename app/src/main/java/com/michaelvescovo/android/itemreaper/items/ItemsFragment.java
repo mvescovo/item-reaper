@@ -45,8 +45,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.michaelvescovo.android.itemreaper.R.id.expiry;
-import static com.michaelvescovo.android.itemreaper.edit_item.EditItemFragment.getPriceFromTotalCents;
 import static com.michaelvescovo.android.itemreaper.items.ItemsActivity.EXTRA_DELETED_ITEM;
+import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getPriceFromTotalCents;
 
 /**
  * @author Michael Vescovo

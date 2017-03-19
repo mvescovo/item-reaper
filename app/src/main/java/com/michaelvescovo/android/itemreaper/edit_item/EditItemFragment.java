@@ -52,6 +52,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
+import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getPriceFromTotalCents;
 
 /**
  * @author Michael Vescovo
@@ -184,9 +185,52 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     }
 
     private void configureViews() {
-        String[] dateOptions = getResources().getStringArray(R.array.date_array);
+        configurePurchaseDate();
+        mShop.addTextChangedListener(this);
+        mPricePaid.setFilters(createCurrencyFilter());
+        mPricePaid.addTextChangedListener(this);
+        mDiscount.setFilters(createCurrencyFilter());
+        mDiscount.addTextChangedListener(this);
+        configureExpiryDate();
+        mCategory.addTextChangedListener(this);
+        mSubCategory.addTextChangedListener(this);
+        mType.addTextChangedListener(this);
+        mSubType.addTextChangedListener(this);
+        mSubType2.addTextChangedListener(this);
+        mSubType3.addTextChangedListener(this);
+        mPrimaryColour.addTextChangedListener(this);
+        mPrimaryColourShade.addTextChangedListener(this);
+        mSecondaryColour.addTextChangedListener(this);
+        mSize.addTextChangedListener(this);
+        mBrand.addTextChangedListener(this);
+        mDescription.addTextChangedListener(this);
+        mNote.addTextChangedListener(this);
+        mRemoveImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.deleteImage();
+            }
+        });
+    }
 
-        // Purchase date
+    private InputFilter[] createCurrencyFilter() {
+        final Pattern pattern = Pattern.compile("(0|[1-9]+[0-9]*)?(\\.[0-9]{0,2})?");
+        return new InputFilter[]{
+                new InputFilter() {
+                    @Override
+                    public CharSequence filter(CharSequence source, int start, int end,
+                                               Spanned dest, int dstart, int dend) {
+                        String result = dest.subSequence(0, dstart) + source.toString()
+                                + dest.subSequence(dend, dest.length());
+                        Matcher matcher = pattern.matcher(result);
+                        return matcher.matches() ? null : dest.subSequence(dstart, dend);
+                    }
+                }
+        };
+    }
+
+    private void configurePurchaseDate() {
+        String[] dateOptions = getResources().getStringArray(R.array.date_array);
         mPurchaseDateAdapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_item, new ArrayList<>(Arrays.asList(dateOptions)));
         mPurchaseDateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -203,28 +247,10 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
             }
         });
         mPurchaseDate = Calendar.getInstance();
+    }
 
-        mShop.addTextChangedListener(this);
-
-        final Pattern pattern = Pattern.compile("(0|[1-9]+[0-9]*)?(\\.[0-9]{0,2})?");
-        InputFilter[] currencyFilters = new InputFilter[]{
-                new InputFilter() {
-                    @Override
-                    public CharSequence filter(CharSequence source, int start, int end,
-                                               Spanned dest, int dstart, int dend) {
-                        String result = dest.subSequence(0, dstart) + source.toString()
-                                + dest.subSequence(dend, dest.length());
-                        Matcher matcher = pattern.matcher(result);
-                        return matcher.matches() ? null : dest.subSequence(dstart, dend);
-                    }
-                }
-        };
-        mPricePaid.setFilters(currencyFilters);
-        mPricePaid.addTextChangedListener(this);
-        mDiscount.setFilters(currencyFilters);
-        mDiscount.addTextChangedListener(this);
-
-        // Expiry date
+    private void configureExpiryDate() {
+        String[] dateOptions = getResources().getStringArray(R.array.date_array);
         mExpiryDateAdapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_item, new ArrayList<>(Arrays.asList(dateOptions)));
         mExpiryDateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -247,26 +273,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         mSelectedExpiryDate = simpleDateFormat.format(mExpiryDate.getTime());
         mExpiryDateAdapter.insert(mSelectedExpiryDate, 0);
         mExpiryDateSpinner.setSelection(0);
-
-        mCategory.addTextChangedListener(this);
-        mSubCategory.addTextChangedListener(this);
-        mType.addTextChangedListener(this);
-        mSubType.addTextChangedListener(this);
-        mSubType2.addTextChangedListener(this);
-        mSubType3.addTextChangedListener(this);
-        mPrimaryColour.addTextChangedListener(this);
-        mPrimaryColourShade.addTextChangedListener(this);
-        mSecondaryColour.addTextChangedListener(this);
-        mSize.addTextChangedListener(this);
-        mBrand.addTextChangedListener(this);
-        mDescription.addTextChangedListener(this);
-        mNote.addTextChangedListener(this);
-        mRemoveImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPresenter.deleteImage();
-            }
-        });
     }
 
     private void onPurchaseDateOptionSelected(String selectedOption) {
@@ -694,17 +700,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
             mItemImage.setVisibility(View.GONE);
             mRemoveImageButton.setVisibility(View.GONE);
         }
-    }
-
-    public static String getPriceFromTotalCents(int totalCents) {
-        int dollars = totalCents / 100;
-        int cents = totalCents % 100;
-        String centsString = cents > 9
-                ? String.valueOf(cents)
-                : "0" + cents;
-        return cents == 0
-                ? String.valueOf(dollars)
-                : dollars + "." + centsString;
     }
 
     @Override
