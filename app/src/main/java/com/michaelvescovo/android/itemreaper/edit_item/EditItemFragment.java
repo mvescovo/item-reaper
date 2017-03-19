@@ -550,96 +550,99 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
 
     @Override
     public void showExistingItem(Item item) {
-        showPurchaseDate(item);
-        if (item.getShop() != null
-                && !item.getShop().equals(mShop.getText().toString())) {
-            mShop.setText(item.getShop());
-        }
-        if (item.getPricePaid() != -1) {
-            int totalCentsInView = -1;
-            if (!mPricePaid.getText().toString().equals("")
-                    && !mPricePaid.getText().toString().equals(".")) {
-                totalCentsInView = getTotalCents(mPricePaid.getText().toString());
+        // If the fragment is not active, don't allow callbacks to crash the app.
+        if (getActivity() != null) {
+            showPurchaseDate(item);
+            if (item.getShop() != null
+                    && !item.getShop().equals(mShop.getText().toString())) {
+                mShop.setText(item.getShop());
             }
-            if (totalCentsInView != item.getPricePaid()) {
-                String priceString = getPriceFromTotalCents(item.getPricePaid());
-                mPricePaid.setText(priceString);
+            if (item.getPricePaid() != -1) {
+                int totalCentsInView = -1;
+                if (!mPricePaid.getText().toString().equals("")
+                        && !mPricePaid.getText().toString().equals(".")) {
+                    totalCentsInView = getTotalCents(mPricePaid.getText().toString());
+                }
+                if (totalCentsInView != item.getPricePaid()) {
+                    String priceString = getPriceFromTotalCents(item.getPricePaid());
+                    mPricePaid.setText(priceString);
+                }
             }
-        }
-        if (item.getDiscount() != -1) {
-            int totalCentsInView = -1;
-            if (!mDiscount.getText().toString().equals("")
-                    && !mDiscount.getText().toString().equals(".")) {
-                totalCentsInView = getTotalCents(mDiscount.getText().toString());
+            if (item.getDiscount() != -1) {
+                int totalCentsInView = -1;
+                if (!mDiscount.getText().toString().equals("")
+                        && !mDiscount.getText().toString().equals(".")) {
+                    totalCentsInView = getTotalCents(mDiscount.getText().toString());
+                }
+                if (totalCentsInView != item.getDiscount()) {
+                    String discountString = getPriceFromTotalCents(item.getDiscount());
+                    mDiscount.setText(discountString);
+                }
             }
-            if (totalCentsInView != item.getDiscount()) {
-                String discountString = getPriceFromTotalCents(item.getDiscount());
-                mDiscount.setText(discountString);
+            showExpiryDate(item);
+            if (item.getCategory() != null
+                    && !item.getCategory().equals(mCategory.getText().toString())) {
+                mCategory.setText(item.getCategory());
             }
-        }
-        showExpiryDate(item);
-        if (item.getCategory() != null
-                && !item.getCategory().equals(mCategory.getText().toString())) {
-            mCategory.setText(item.getCategory());
-        }
-        if (item.getSubCategory() != null
-                && !item.getSubCategory().equals(mSubCategory.getText().toString())) {
-            mSubCategory.setText(item.getSubCategory());
-        }
-        if (item.getType() != null
-                && !item.getType().equals(mType.getText().toString())) {
-            mType.setText(item.getType());
-        }
-        if (item.getSubtype() != null
-                && !item.getSubtype().equals(mSubType.getText().toString())) {
-            mSubType.setText(item.getSubtype());
-        }
-        if (item.getSubtype2() != null
-                && !item.getSubtype2().equals(mSubType2.getText().toString())) {
-            mSubType2.setText(item.getSubtype2());
-        }
-        if (item.getSubtype3() != null
-                && !item.getSubtype3().equals(mSubType3.getText().toString())) {
-            mSubType3.setText(item.getSubtype3());
-        }
-        if (item.getPrimaryColour() != null
-                && !item.getPrimaryColour().equals(mPrimaryColour.getText().toString())) {
-            mPrimaryColour.setText(item.getPrimaryColour());
-        }
-        if (item.getPrimaryColourShade() != null
-                && !item.getPrimaryColourShade().equals(mPrimaryColourShade.getText().toString())) {
-            mPrimaryColourShade.setText(item.getPrimaryColourShade());
-        }
-        if (item.getSecondaryColour() != null
-                && !item.getSecondaryColour().equals(mSecondaryColour.getText().toString())) {
-            mSecondaryColour.setText(item.getSecondaryColour());
-        }
-        if (item.getSize() != null
-                && !item.getSize().equals(mSize.getText().toString())) {
-            mSize.setText(item.getSize());
-        }
-        if (item.getBrand() != null
-                && !item.getBrand().equals(mBrand.getText().toString())) {
-            mBrand.setText(item.getBrand());
-        }
+            if (item.getSubCategory() != null
+                    && !item.getSubCategory().equals(mSubCategory.getText().toString())) {
+                mSubCategory.setText(item.getSubCategory());
+            }
+            if (item.getType() != null
+                    && !item.getType().equals(mType.getText().toString())) {
+                mType.setText(item.getType());
+            }
+            if (item.getSubtype() != null
+                    && !item.getSubtype().equals(mSubType.getText().toString())) {
+                mSubType.setText(item.getSubtype());
+            }
+            if (item.getSubtype2() != null
+                    && !item.getSubtype2().equals(mSubType2.getText().toString())) {
+                mSubType2.setText(item.getSubtype2());
+            }
+            if (item.getSubtype3() != null
+                    && !item.getSubtype3().equals(mSubType3.getText().toString())) {
+                mSubType3.setText(item.getSubtype3());
+            }
+            if (item.getPrimaryColour() != null
+                    && !item.getPrimaryColour().equals(mPrimaryColour.getText().toString())) {
+                mPrimaryColour.setText(item.getPrimaryColour());
+            }
+            if (item.getPrimaryColourShade() != null
+                    && !item.getPrimaryColourShade().equals(mPrimaryColourShade.getText().toString())) {
+                mPrimaryColourShade.setText(item.getPrimaryColourShade());
+            }
+            if (item.getSecondaryColour() != null
+                    && !item.getSecondaryColour().equals(mSecondaryColour.getText().toString())) {
+                mSecondaryColour.setText(item.getSecondaryColour());
+            }
+            if (item.getSize() != null
+                    && !item.getSize().equals(mSize.getText().toString())) {
+                mSize.setText(item.getSize());
+            }
+            if (item.getBrand() != null
+                    && !item.getBrand().equals(mBrand.getText().toString())) {
+                mBrand.setText(item.getBrand());
+            }
 
-        if (item.getDescription() != null
-                && !item.getDescription().equals(mDescription.getText().toString())) {
-            mDescription.setText(item.getDescription());
-        }
-        if (item.getNote() != null
-                && !item.getNote().equals(mNote.getText().toString())) {
-            mNote.setText(item.getNote());
-        }
-        if (item.getImageUrl() != null) {
-            if (!item.getImageUrl().equals(mImageUrl) || mItemImage.getVisibility() == View.GONE) {
-                mImageUrl = item.getImageUrl();
-                showImage(mImageUrl);
+            if (item.getDescription() != null
+                    && !item.getDescription().equals(mDescription.getText().toString())) {
+                mDescription.setText(item.getDescription());
             }
-        } else {
-            mImageUrl = null;
-            mItemImage.setVisibility(View.GONE);
-            mRemoveImageButton.setVisibility(View.GONE);
+            if (item.getNote() != null
+                    && !item.getNote().equals(mNote.getText().toString())) {
+                mNote.setText(item.getNote());
+            }
+            if (item.getImageUrl() != null) {
+                if (!item.getImageUrl().equals(mImageUrl) || mItemImage.getVisibility() == View.GONE) {
+                    mImageUrl = item.getImageUrl();
+                    showImage(mImageUrl);
+                }
+            } else {
+                mImageUrl = null;
+                mItemImage.setVisibility(View.GONE);
+                mRemoveImageButton.setVisibility(View.GONE);
+            }
         }
     }
 

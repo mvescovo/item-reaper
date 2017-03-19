@@ -46,7 +46,6 @@ import butterknife.ButterKnife;
 
 import static com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity.EXTRA_ITEM_ID;
 import static com.michaelvescovo.android.itemreaper.itemDetails.ItemDetailsActivity.EXTRA_ITEM;
-import static com.michaelvescovo.android.itemreaper.itemDetails.ItemDetailsActivity.EXTRA_ITEMS_SIZE;
 
 
 /**
@@ -61,6 +60,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     private static final String EDIT_ITEM_DIALOG = "edit_item_dialog";
     private static final String ITEM_DETAILS_DIALOG = "item_details_dialog";
     private static final String FRAGMENT_ITEMS = "fragment_items";
+    private static final String FRAGMENT_ITEM_DETAILS = "fragment_item_details";
     public static final int REQUEST_CODE_ITEM_DELETED = 1;
     public static final String EXTRA_DELETED_ITEM = "deleted_item";
 
@@ -79,6 +79,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     private boolean mDialogOpen;
     private boolean mDialogResumed;
     private String mCurrentDialogName;
+    private ItemDetailsFragment mItemDetailsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -217,13 +218,13 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     @Override
     public void onItemDetailsSelected(@NonNull Item item) {
         if (mIsLargeLayout) {
-            ItemDetailsFragment itemDetailsFragment = ItemDetailsFragment.newInstance();
+            mItemDetailsFragment = ItemDetailsFragment.newInstance();
             mCurrentDialogName = ITEM_DETAILS_DIALOG;
 
             // Need to create an ItemDetailsPresenter for when the fragment is run as a dialog
             // from this Activity.
             ItemDetailsComponent itemDetailsComponent = DaggerItemDetailsComponent.builder()
-                    .itemDetailsModule(new ItemDetailsModule(itemDetailsFragment))
+                    .itemDetailsModule(new ItemDetailsModule(mItemDetailsFragment))
                     .applicationComponent(((ItemReaperApplication) getApplication())
                             .getApplicationComponent())
                     .repositoryComponent(((ItemReaperApplication) getApplication())
@@ -232,13 +233,13 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
             itemDetailsComponent.getItemDetailsPresenter();
             Bundle bundle = new Bundle();
             bundle.putSerializable(EXTRA_ITEM, item);
-            itemDetailsFragment.setArguments(bundle);
+            mItemDetailsFragment.setArguments(bundle);
 
-            itemDetailsFragment.show(getSupportFragmentManager(), "dialog");
+            mItemDetailsFragment.show(getSupportFragmentManager(), "dialog");
         } else {
             Intent intent = new Intent(this, ItemDetailsActivity.class);
             intent.putExtra(EXTRA_ITEM, item);
-            startActivity(intent);
+            startActivityForResult(intent, REQUEST_CODE_ITEM_DELETED);
         }
     }
 
@@ -271,6 +272,9 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     public void onItemDeleted(@NonNull Item item) {
         Fragment itemsFragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_ITEMS);
         ((ItemsFragment)itemsFragment).onItemDeleted(item);
+        if (mItemDetailsFragment != null) {
+            mItemDetailsFragment.dismiss();
+        }
     }
 
     @Override

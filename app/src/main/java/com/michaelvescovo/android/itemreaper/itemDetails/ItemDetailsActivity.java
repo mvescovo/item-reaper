@@ -27,7 +27,7 @@ import static com.michaelvescovo.android.itemreaper.items.ItemsActivity.REQUEST_
 public class ItemDetailsActivity extends AppCompatActivity implements ItemDetailsFragment.Callback {
 
     public static final String EXTRA_ITEM = "com.michaelvescovo.android.itemreaper.item";
-    public static final String EXTRA_ITEMS_SIZE = "com.michaelvescovo.android.itemreaper.items_size";
+    private static final String FRAGMENT_ITEM_DETAILS = "fragment_item_details";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDetail
     private void initFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.contentFrame, fragment);
+        transaction.add(R.id.contentFrame, fragment, FRAGMENT_ITEM_DETAILS);
         transaction.commit();
     }
 
@@ -93,6 +93,17 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDetail
         Intent intent = new Intent(this, EditItemActivity.class);
         intent.putExtra(EXTRA_ITEM_ID, itemId);
         startActivityForResult(intent, REQUEST_CODE_ITEM_DELETED);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_ITEM_DELETED) {
+            if (data != null) {
+                setResult(resultCode, data);
+                finish();
+            }
+        }
     }
 
     @VisibleForTesting
