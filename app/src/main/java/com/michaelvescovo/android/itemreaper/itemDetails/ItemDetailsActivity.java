@@ -38,7 +38,6 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDetail
         if (getIntent().getSerializableExtra(EXTRA_ITEM) != null) {
             item = (Item) getIntent().getSerializableExtra(EXTRA_ITEM);
         }
-        int itemsSize = getIntent().getIntExtra(EXTRA_ITEMS_SIZE, -1);
 
         // Create the View
         ItemDetailsFragment itemDetailsFragment = (ItemDetailsFragment) getSupportFragmentManager()
@@ -49,7 +48,6 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDetail
             if (item != null) {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(EXTRA_ITEM, item);
-                bundle.putInt(EXTRA_ITEMS_SIZE, itemsSize);
                 itemDetailsFragment.setArguments(bundle);
             }
         }
@@ -95,11 +93,6 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDetail
         Intent intent = new Intent(this, EditItemActivity.class);
         intent.putExtra(EXTRA_ITEM_ID, itemId);
         startActivityForResult(intent, REQUEST_CODE_ITEM_DELETED);
-    }
-
-    @Override
-    public void showNoItemsText(boolean active) {
-        // Nothing to do here.
     }
 
     @VisibleForTesting

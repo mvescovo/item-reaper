@@ -26,7 +26,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.michaelvescovo.android.itemreaper.itemDetails.ItemDetailsActivity.EXTRA_ITEM;
-import static com.michaelvescovo.android.itemreaper.itemDetails.ItemDetailsActivity.EXTRA_ITEMS_SIZE;
 
 /**
  * @author Michael Vescovo
@@ -48,7 +47,6 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
     private boolean mLargeScreen;
     private Typeface mAppbarTypeface;
     private Item mItem;
-    private int mItemsSize;
     private String mImageUrl;
     private MediaPlayer mMediaPlayer;
 
@@ -95,7 +93,6 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
             if (getArguments().getSerializable(EXTRA_ITEM) != null) {
                 mItem = (Item) getArguments().getSerializable(EXTRA_ITEM);
             }
-            mItemsSize = getArguments().getInt(EXTRA_ITEMS_SIZE);
         }
 
         configureViews();
@@ -112,7 +109,7 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
         switch (item.getItemId()) {
             case R.id.action_expire_item:
                 playExpireItemSoundEffect();
-                mPresenter.expireItem(mItem, mItemsSize);
+                mPresenter.expireItem(mItem);
                 break;
             case R.id.action_edit_item:
                 mPresenter.openEditItem();
@@ -124,11 +121,6 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
     @Override
     public void showEditItemUi() {
         mCallback.onEditItemSelected(mItem.getId());
-    }
-
-    @Override
-    public void showNoItemsText(boolean active) {
-        mCallback.showNoItemsText(active);
     }
 
     @Override
@@ -209,7 +201,5 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
         void configureSupportActionBar(Toolbar toolbar, Drawable icon);
 
         void onEditItemSelected(@Nullable String itemId);
-
-        void showNoItemsText(boolean active);
     }
 }

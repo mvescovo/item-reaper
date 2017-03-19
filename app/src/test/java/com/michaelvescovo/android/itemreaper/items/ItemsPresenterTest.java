@@ -147,11 +147,10 @@ public class ItemsPresenterTest {
 
     @Test
     public void expireItem_ExpiresAndSavesItem() {
-        mItemsPresenter.expireItem(ITEM_1, 1);
+        mItemsPresenter.expireItem(ITEM_1);
         assertThat(ITEM_1.getDeceased(), is(equalTo(true)));
         verify(mRepository).saveItem(anyString(), any(Item.class));
         verify(mView).showItemExpiredMessage(anyInt(), anyInt(), any(Item.class));
-        verify(mView).showNoItemsText(true);
     }
 
     @Test
@@ -160,6 +159,17 @@ public class ItemsPresenterTest {
         assertThat(ITEM_1.getDeceased(), is(equalTo(false)));
         verify(mRepository).saveItem(anyString(), any(Item.class));
         verify(mView).showItemExpiredMessage(anyInt(), anyInt(), any(Item.class));
+    }
+
+    @Test
+    public void itemsSizeChangedToEmpty_ShowsNoItemsText() {
+        mItemsPresenter.itemsSizeChanged(0);
+        verify(mView).showNoItemsText(true);
+    }
+
+    @Test
+    public void itemsSizeChangedToNonEmpty_DoesNotShowNoItemsText() {
+        mItemsPresenter.itemsSizeChanged(1);
         verify(mView).showNoItemsText(false);
     }
 }

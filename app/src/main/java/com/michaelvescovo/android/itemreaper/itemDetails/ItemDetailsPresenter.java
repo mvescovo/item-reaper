@@ -42,13 +42,10 @@ class ItemDetailsPresenter implements ItemDetailsContract.Presenter {
     }
 
     @Override
-    public void expireItem(@NonNull Item item, int itemsSize) {
+    public void expireItem(@NonNull Item item) {
         item.setDeceased(true);
         mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
         mView.showItemExpiredMessage(R.string.item_expired, Snackbar.LENGTH_LONG, item);
-        if (itemsSize == 1) {
-            mView.showNoItemsText(true);
-        }
     }
 
     @Override
@@ -56,6 +53,5 @@ class ItemDetailsPresenter implements ItemDetailsContract.Presenter {
         item.setDeceased(false);
         mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
         mView.showItemExpiredMessage(R.string.item_unexpired, Snackbar.LENGTH_LONG, null);
-        mView.showNoItemsText(false);
     }
 }

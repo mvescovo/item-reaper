@@ -17,8 +17,6 @@ interface ItemDetailsContract {
 
         void showEditItemUi();
 
-        void showNoItemsText(boolean active);
-
         void showItemExpiredMessage(int resourceId, int duration, @Nullable Item item);
     }
 
@@ -26,7 +24,7 @@ interface ItemDetailsContract {
 
         void openEditItem();
 
-        void expireItem(@NonNull Item item, int itemsSize);
+        void expireItem(@NonNull Item item);
 
         void unexpireItem(@NonNull Item item);
     }

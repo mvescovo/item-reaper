@@ -240,7 +240,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
     @Override
     public void showItemDetailsUi(Item item) {
-        mCallback.onItemDetailsSelected(item, mItemsAdapter.getItemCount());
+        mCallback.onItemDetailsSelected(item);
     }
 
     @Override
@@ -312,7 +312,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
         void onEditItemSelected(@Nullable String itemId);
 
-        void onItemDetailsSelected(@NonNull Item item, int itemsSize);
+        void onItemDetailsSelected(@NonNull Item item);
 
         Snackbar onShowSnackbar(String text, int duration);
     }
@@ -433,6 +433,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 sortItemsByExpiry();
             }
             notifyDataSetChanged();
+            mPresenter.itemsSizeChanged(mItems.size());
         }
 
         private void sortItemsByExpiry() {
@@ -475,7 +476,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                     public void onClick(View view) {
                         playExpireItemSoundEffect();
                         Item item = mItems.get(getAdapterPosition());
-                        mPresenter.expireItem(item, mItems.size());
+                        mPresenter.expireItem(item);
                     }
                 });
                 itemView.setOnClickListener(this);

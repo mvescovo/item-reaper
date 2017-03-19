@@ -215,13 +215,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     }
 
     @Override
-    public void showNoItemsText(boolean active) {
-        Fragment itemsFragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_ITEMS);
-        ((ItemsFragment)itemsFragment).showNoItemsText(active);
-    }
-
-    @Override
-    public void onItemDetailsSelected(@NonNull Item item, int itemsSize) {
+    public void onItemDetailsSelected(@NonNull Item item) {
         if (mIsLargeLayout) {
             ItemDetailsFragment itemDetailsFragment = ItemDetailsFragment.newInstance();
             mCurrentDialogName = ITEM_DETAILS_DIALOG;
@@ -237,7 +231,6 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
                     .build();
             itemDetailsComponent.getItemDetailsPresenter();
             Bundle bundle = new Bundle();
-            bundle.putInt(EXTRA_ITEMS_SIZE, itemsSize);
             bundle.putSerializable(EXTRA_ITEM, item);
             itemDetailsFragment.setArguments(bundle);
 
@@ -245,7 +238,6 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
         } else {
             Intent intent = new Intent(this, ItemDetailsActivity.class);
             intent.putExtra(EXTRA_ITEM, item);
-            intent.putExtra(EXTRA_ITEMS_SIZE, itemsSize);
             startActivity(intent);
         }
     }
