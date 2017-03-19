@@ -45,6 +45,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity.EXTRA_ITEM_ID;
+import static com.michaelvescovo.android.itemreaper.itemDetails.ItemDetailsActivity.EXTRA_ITEM;
+import static com.michaelvescovo.android.itemreaper.itemDetails.ItemDetailsActivity.EXTRA_ITEMS_SIZE;
 
 
 /**
@@ -213,7 +215,13 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     }
 
     @Override
-    public void onItemDetailsSelected(@NonNull String itemId) {
+    public void showNoItemsText(boolean active) {
+        Fragment itemsFragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_ITEMS);
+        ((ItemsFragment)itemsFragment).showNoItemsText(active);
+    }
+
+    @Override
+    public void onItemDetailsSelected(@NonNull Item item, int itemsSize) {
         if (mIsLargeLayout) {
             ItemDetailsFragment itemDetailsFragment = ItemDetailsFragment.newInstance();
             mCurrentDialogName = ITEM_DETAILS_DIALOG;
@@ -229,13 +237,15 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
                     .build();
             itemDetailsComponent.getItemDetailsPresenter();
             Bundle bundle = new Bundle();
-            bundle.putString(EXTRA_ITEM_ID, itemId);
+            bundle.putInt(EXTRA_ITEMS_SIZE, itemsSize);
+            bundle.putSerializable(EXTRA_ITEM, item);
             itemDetailsFragment.setArguments(bundle);
 
             itemDetailsFragment.show(getSupportFragmentManager(), "dialog");
         } else {
             Intent intent = new Intent(this, ItemDetailsActivity.class);
-            intent.putExtra(EXTRA_ITEM_ID, itemId);
+            intent.putExtra(EXTRA_ITEM, item);
+            intent.putExtra(EXTRA_ITEMS_SIZE, itemsSize);
             startActivity(intent);
         }
     }

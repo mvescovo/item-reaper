@@ -7,6 +7,8 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.Toolbar;
@@ -18,10 +20,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.michaelvescovo.android.itemreaper.R;
-import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
+import com.michaelvescovo.android.itemreaper.data.Item;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.michaelvescovo.android.itemreaper.itemDetails.ItemDetailsActivity.EXTRA_ITEM;
+import static com.michaelvescovo.android.itemreaper.itemDetails.ItemDetailsActivity.EXTRA_ITEMS_SIZE;
 
 /**
  * @author Michael Vescovo
@@ -35,12 +40,15 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
     TextView mAppbarTitle;
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
+    @BindView(R.id.coordinator_layout)
+    CoordinatorLayout mCoordinatorLayout;
 
     private ItemDetailsContract.Presenter mPresenter;
     private Callback mCallback;
     private boolean mLargeScreen;
     private Typeface mAppbarTypeface;
-    private String mItemId;
+    private Item mItem;
+    private int mItemsSize;
     private String mImageUrl;
     private MediaPlayer mMediaPlayer;
 
@@ -83,9 +91,11 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
 
         setHasOptionsMenu(true);
 
-        if (getArguments() != null
-                && getArguments().getString(EditItemActivity.EXTRA_ITEM_ID) != null) {
-            mItemId = getArguments().getString(EditItemActivity.EXTRA_ITEM_ID);
+        if (getArguments() != null) {
+            if (getArguments().getSerializable(EXTRA_ITEM) != null) {
+                mItem = (Item) getArguments().getSerializable(EXTRA_ITEM);
+            }
+            mItemsSize = getArguments().getInt(EXTRA_ITEMS_SIZE);
         }
 
         configureViews();
@@ -101,6 +111,8 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_expire_item:
+                playExpireItemSoundEffect();
+                mPresenter.expireItem(mItem, mItemsSize);
                 break;
             case R.id.action_edit_item:
                 mPresenter.openEditItem();
@@ -111,9 +123,49 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
 
     @Override
     public void showEditItemUi() {
-        if (mItemId != null) {
-            mCallback.onEditItemSelected(mItemId);
+        mCallback.onEditItemSelected(mItem.getId());
+    }
+
+    @Override
+    public void showNoItemsText(boolean active) {
+        mCallback.showNoItemsText(active);
+    }
+
+    @Override
+    public void showItemExpiredMessage(int resourceId, int duration, @Nullable final Item item) {
+        Snackbar snackbar = Snackbar.make(mCoordinatorLayout, resourceId, duration);
+        if (item != null) {
+            snackbar.setAction(getString(R.string.undo), new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPresenter.unexpireItem(item);
+                }
+            });
         }
+        snackbar.show();
+    }
+
+    private void playExpireItemSoundEffect() {
+        mMediaPlayer = MediaPlayer.create(getContext(), R.raw.decapitation);
+        mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.start();
+            }
+        });
+        mMediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+                mMediaPlayer.reset();
+                return false;
+            }
+        });
+        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                mediaPlayer.release();
+            }
+        });
     }
 
     @Override
@@ -157,5 +209,7 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
         void configureSupportActionBar(Toolbar toolbar, Drawable icon);
 
         void onEditItemSelected(@Nullable String itemId);
+
+        void showNoItemsText(boolean active);
     }
 }

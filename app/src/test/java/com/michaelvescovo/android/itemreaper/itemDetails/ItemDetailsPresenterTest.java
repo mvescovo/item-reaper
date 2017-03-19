@@ -16,6 +16,13 @@ import java.util.Arrays;
 
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_2;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.verify;
 
 /**
  * @author Michael Vescovo
@@ -24,7 +31,7 @@ import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_2;
 @RunWith(Parameterized.class)
 public class ItemDetailsPresenterTest {
 
-    private ItemDetailsPresenter mItemDetailsPresenter;
+    private ItemDetailsPresenter mPresenter;
 
     @Mock
     private ItemDetailsContract.View mView;
@@ -55,12 +62,31 @@ public class ItemDetailsPresenterTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        mItemDetailsPresenter = new ItemDetailsPresenter(mView, mRepository,
+        mPresenter = new ItemDetailsPresenter(mView, mRepository,
                 mSharedPreferencesHelper, mFirebaseAuth);
     }
 
     @Test
-    public void test() {
+    public void openEditItem() {
+        mPresenter.openEditItem();
+        verify(mView).showEditItemUi();
+    }
 
+    @Test
+    public void expireItem_ExpiresAndSavesItem() {
+        mPresenter.expireItem(ITEM_1, 1);
+        assertThat(ITEM_1.getDeceased(), is(equalTo(true)));
+        verify(mRepository).saveItem(anyString(), any(Item.class));
+        verify(mView).showItemExpiredMessage(anyInt(), anyInt(), any(Item.class));
+        verify(mView).showNoItemsText(true);
+    }
+
+    @Test
+    public void unexpireItem_UnexpiresAndSavesItem() {
+        mPresenter.unexpireItem(ITEM_1);
+        assertThat(ITEM_1.getDeceased(), is(equalTo(false)));
+        verify(mRepository).saveItem(anyString(), any(Item.class));
+        verify(mView).showItemExpiredMessage(anyInt(), anyInt(), any(Item.class));
+        verify(mView).showNoItemsText(false);
     }
 }

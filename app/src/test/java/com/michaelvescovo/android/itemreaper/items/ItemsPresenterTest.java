@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
+import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_ID_1;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -59,7 +60,7 @@ public class ItemsPresenterTest {
     public static Object[] data() {
         return new Object[] {
                 new ArrayList<String>() {{
-                    add("1");
+                    add(ITEM_ID_1);
                 }},
                 new ArrayList<String>() {{
 
@@ -122,7 +123,7 @@ public class ItemsPresenterTest {
     @Test
     public void clickItem_ShowsItemDetailsUi() {
         mItemsPresenter.openItemDetails(ITEM_1);
-        verify(mView).showItemDetailsUi(anyString());
+        verify(mView).showItemDetailsUi(any(Item.class));
     }
 
     @Test

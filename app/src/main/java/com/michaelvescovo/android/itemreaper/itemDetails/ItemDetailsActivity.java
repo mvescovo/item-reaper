@@ -16,6 +16,7 @@ import android.view.Menu;
 
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
 import com.michaelvescovo.android.itemreaper.R;
+import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 
@@ -25,15 +26,19 @@ import static com.michaelvescovo.android.itemreaper.items.ItemsActivity.REQUEST_
 
 public class ItemDetailsActivity extends AppCompatActivity implements ItemDetailsFragment.Callback {
 
+    public static final String EXTRA_ITEM = "com.michaelvescovo.android.itemreaper.item";
+    public static final String EXTRA_ITEMS_SIZE = "com.michaelvescovo.android.itemreaper.items_size";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_details);
 
-        String itemId = null;
-        if (getIntent().getStringExtra(EXTRA_ITEM_ID) != null) {
-            itemId = getIntent().getStringExtra(EXTRA_ITEM_ID);
+        Item item = null;
+        if (getIntent().getSerializableExtra(EXTRA_ITEM) != null) {
+            item = (Item) getIntent().getSerializableExtra(EXTRA_ITEM);
         }
+        int itemsSize = getIntent().getIntExtra(EXTRA_ITEMS_SIZE, -1);
 
         // Create the View
         ItemDetailsFragment itemDetailsFragment = (ItemDetailsFragment) getSupportFragmentManager()
@@ -41,9 +46,10 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDetail
         if (itemDetailsFragment == null) {
             itemDetailsFragment = ItemDetailsFragment.newInstance();
             initFragment(itemDetailsFragment);
-            if (itemId != null) {
+            if (item != null) {
                 Bundle bundle = new Bundle();
-                bundle.putString(EXTRA_ITEM_ID, itemId);
+                bundle.putSerializable(EXTRA_ITEM, item);
+                bundle.putInt(EXTRA_ITEMS_SIZE, itemsSize);
                 itemDetailsFragment.setArguments(bundle);
             }
         }
@@ -89,6 +95,11 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDetail
         Intent intent = new Intent(this, EditItemActivity.class);
         intent.putExtra(EXTRA_ITEM_ID, itemId);
         startActivityForResult(intent, REQUEST_CODE_ITEM_DELETED);
+    }
+
+    @Override
+    public void showNoItemsText(boolean active) {
+        // Nothing to do here.
     }
 
     @VisibleForTesting
