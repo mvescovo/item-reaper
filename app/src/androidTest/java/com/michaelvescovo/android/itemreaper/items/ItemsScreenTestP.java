@@ -186,9 +186,6 @@ public class ItemsScreenTestP {
         if (mIsLargeScreen) {
             onView(withText(simpleDateFormat.format(expiry.getTime())))
                     .check(matches(isDisplayed()));
-        } else {
-            onView(withText("Expires: " + simpleDateFormat.format(expiry.getTime())))
-                    .check(matches(isDisplayed()));
         }
 
         // Check category
