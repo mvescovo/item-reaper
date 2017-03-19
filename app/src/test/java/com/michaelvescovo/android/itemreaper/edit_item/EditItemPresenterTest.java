@@ -97,6 +97,9 @@ public class EditItemPresenterTest {
 
         // Set new itemId in view
         verify(mView).setNewItemId(anyString());
+
+        // Set default dates
+        verify(mView).setDefaultDates();
     }
 
     @Test

@@ -21,6 +21,8 @@ public interface EditItemContract {
 
         void setNewItemId(String itemId);
 
+        void setDefaultDates();
+
         void showExistingItem(Item item);
 
         void showItemsUi();

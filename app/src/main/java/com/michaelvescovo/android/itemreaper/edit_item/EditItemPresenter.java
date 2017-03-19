@@ -134,6 +134,7 @@ class EditItemPresenter implements EditItemContract.Presenter {
                 EspressoIdlingResource.decrement();
                 if (newItemId != null) {
                     mView.setNewItemId(newItemId);
+                    mView.setDefaultDates();
                 }
             }
         });
