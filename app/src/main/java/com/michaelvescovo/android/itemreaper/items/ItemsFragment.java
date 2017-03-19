@@ -31,7 +31,6 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.Item;
-import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -349,7 +348,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                         mImageUrl = imageUrl;
                     }
                     holder.mItemImage.setVisibility(View.VISIBLE);
-                    EspressoIdlingResource.increment();
+//                    EspressoIdlingResource.increment();
                     Glide.with(getContext())
                             .load(imageUrl)
                             .crossFade()
@@ -359,7 +358,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                                 public void onResourceReady(GlideDrawable resource,
                                                             GlideAnimation<? super GlideDrawable> animation) {
                                     super.onResourceReady(resource, animation);
-                                    EspressoIdlingResource.decrement();
+//                                    EspressoIdlingResource.decrement();
                                 }
                             });
 
