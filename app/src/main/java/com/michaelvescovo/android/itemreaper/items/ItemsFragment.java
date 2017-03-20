@@ -90,7 +90,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         ItemListener itemListener = new ItemListener() {
             @Override
             public void onItemClick(Item item) {
-                mPresenter.openItemDetails(item);
+                mPresenter.openItemDetails(item.getId());
             }
         };
         mItemsAdapter = new ItemsAdapter(new ArrayList<Item>(), itemListener);
@@ -239,8 +239,8 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     }
 
     @Override
-    public void showItemDetailsUi(Item item) {
-        mCallback.onItemDetailsSelected(item);
+    public void showItemDetailsUi(String itemId) {
+        mCallback.onItemDetailsSelected(itemId);
     }
 
     @Override
@@ -312,7 +312,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
         void onEditItemSelected(@Nullable String itemId);
 
-        void onItemDetailsSelected(@NonNull Item item);
+        void onItemDetailsSelected(@NonNull String itemId);
 
         Snackbar onShowSnackbar(String text, int duration);
     }

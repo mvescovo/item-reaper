@@ -19,7 +19,7 @@ interface ItemsContract {
 
         void showItem(Item item);
 
-        void showItemDetailsUi(Item item);
+        void showItemDetailsUi(String itemId);
 
         void showEditItemUi();
 
@@ -36,7 +36,7 @@ interface ItemsContract {
 
         void getItems(boolean forceUpdate);
 
-        void openItemDetails(Item item);
+        void openItemDetails(String itemId);
 
         void openAddItem();
 

@@ -2,6 +2,7 @@ package com.michaelvescovo.android.itemreaper.itemDetails;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.michaelvescovo.android.itemreaper.SharedPreferencesHelper;
+import com.michaelvescovo.android.itemreaper.data.DataSource;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.data.Repository;
 
@@ -9,6 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -45,6 +48,9 @@ public class ItemDetailsPresenterTest {
     @Mock
     private FirebaseAuth mFirebaseAuth;
 
+    @Captor
+    private ArgumentCaptor<DataSource.GetItemCallback> mItemCallbackCaptor;
+
     @Parameterized.Parameters
     public static Iterable<?> data() {
         return Arrays.asList(
@@ -64,6 +70,20 @@ public class ItemDetailsPresenterTest {
         MockitoAnnotations.initMocks(this);
         mPresenter = new ItemDetailsPresenter(mView, mRepository,
                 mSharedPreferencesHelper, mFirebaseAuth);
+    }
+
+    @Test
+    public void displayItem() {
+        mPresenter.displayItem(mItem.getId());
+
+        // Get the item
+        verify(mRepository).getItem(anyString(), anyString(), mItemCallbackCaptor.capture());
+
+        // New item comes back
+        mItemCallbackCaptor.getValue().onItemLoaded(mItem);
+
+        // Display the item in the view
+        verify(mView).showItem(any(Item.class));
     }
 
     @Test

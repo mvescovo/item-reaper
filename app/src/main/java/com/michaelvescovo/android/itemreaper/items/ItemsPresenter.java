@@ -92,8 +92,8 @@ class ItemsPresenter implements ItemsContract.Presenter {
 
 
     @Override
-    public void openItemDetails(Item item) {
-        mView.showItemDetailsUi(item);
+    public void openItemDetails(String itemId) {
+        mView.showItemDetailsUi(itemId);
     }
 
     @Override

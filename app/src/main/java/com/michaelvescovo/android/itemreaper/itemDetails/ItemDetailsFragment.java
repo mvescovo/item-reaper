@@ -32,7 +32,7 @@ import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.michaelvescovo.android.itemreaper.itemDetails.ItemDetailsActivity.EXTRA_ITEM;
+import static com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity.EXTRA_ITEM_ID;
 import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getDateFormat;
 import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getPriceFromTotalCents;
 
@@ -93,6 +93,7 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
     private Callback mCallback;
     private boolean mLargeScreen;
     private Typeface mAppbarTypeface;
+    private String mItemId;
     private Item mItem;
     private String mImageUrl;
     private MediaPlayer mMediaPlayer;
@@ -137,79 +138,83 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
         setHasOptionsMenu(true);
 
         if (getArguments() != null) {
-            if (getArguments().getSerializable(EXTRA_ITEM) != null) {
-                mItem = (Item) getArguments().getSerializable(EXTRA_ITEM);
+            if (getArguments().getString(EXTRA_ITEM_ID) != null) {
+                mItemId = getArguments().getString(EXTRA_ITEM_ID);
             }
         }
-
-        configureViews();
-
         return root;
     }
 
-    private void configureViews() {
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.displayItem(mItemId);
+    }
+
+    @Override
+    public void showItem(@NonNull Item item) {
         String format = getString(R.string.date_format);
-        if (mItem.getPurchaseDate() != -1) {
-            mPurchaseDate.setText(getDateFormat(format).format(mItem.getPurchaseDate()));
+        if (item.getPurchaseDate() != -1) {
+            mPurchaseDate.setText(getDateFormat(format).format(item.getPurchaseDate()));
         }
-        if (mItem.getShop() != null) {
-            mShop.setText(mItem.getShop());
+        if (item.getShop() != null) {
+            mShop.setText(item.getShop());
         }
-        if (mItem.getPricePaid() != -1) {
-            String pricePaid = "$" + getPriceFromTotalCents(mItem.getPricePaid());
+        if (item.getPricePaid() != -1) {
+            String pricePaid = "$" + getPriceFromTotalCents(item.getPricePaid());
             mPricePaid.setText(pricePaid);
         }
-        if (mItem.getDiscount() != -1) {
-            String discount = "$" + getPriceFromTotalCents(mItem.getDiscount());
+        if (item.getDiscount() != -1) {
+            String discount = "$" + getPriceFromTotalCents(item.getDiscount());
             mDiscount.setText(discount);
         }
-        if (mItem.getExpiry() != -1) {
-            mExpiryDate.setText(getDateFormat(format).format(mItem.getExpiry()));
+        if (item.getExpiry() != -1) {
+            mExpiryDate.setText(getDateFormat(format).format(item.getExpiry()));
         }
-        if (mItem.getCategory() != null) {
-            mCategory.setText(mItem.getCategory());
+        if (item.getCategory() != null) {
+            mCategory.setText(item.getCategory());
         }
-        if (mItem.getSubCategory() != null) {
-            mSubCategory.setText(mItem.getSubCategory());
+        if (item.getSubCategory() != null) {
+            mSubCategory.setText(item.getSubCategory());
         }
-        if (mItem.getType() != null) {
-            mType.setText(mItem.getType());
+        if (item.getType() != null) {
+            mType.setText(item.getType());
         }
-        if (mItem.getSubtype() != null) {
-            mSubType.setText(mItem.getSubtype());
+        if (item.getSubtype() != null) {
+            mSubType.setText(item.getSubtype());
         }
-        if (mItem.getSubtype2() != null) {
-            mSubType2.setText(mItem.getSubtype2());
+        if (item.getSubtype2() != null) {
+            mSubType2.setText(item.getSubtype2());
         }
-        if (mItem.getSubtype3() != null) {
-            mSubType3.setText(mItem.getSubtype3());
+        if (item.getSubtype3() != null) {
+            mSubType3.setText(item.getSubtype3());
         }
-        if (mItem.getPrimaryColour() != null) {
-            mPrimaryColour.setText(mItem.getPrimaryColour());
+        if (item.getPrimaryColour() != null) {
+            mPrimaryColour.setText(item.getPrimaryColour());
         }
-        if (mItem.getPrimaryColourShade() != null) {
-            mPrimaryColourShade.setText(mItem.getPrimaryColourShade());
+        if (item.getPrimaryColourShade() != null) {
+            mPrimaryColourShade.setText(item.getPrimaryColourShade());
         }
-        if (mItem.getSecondaryColour() != null) {
-            mSecondaryColour.setText(mItem.getSecondaryColour());
+        if (item.getSecondaryColour() != null) {
+            mSecondaryColour.setText(item.getSecondaryColour());
         }
-        if (mItem.getSize() != null) {
-            mSize.setText(mItem.getSize());
+        if (item.getSize() != null) {
+            mSize.setText(item.getSize());
         }
-        if (mItem.getBrand() != null) {
-            mBrand.setText(mItem.getBrand());
+        if (item.getBrand() != null) {
+            mBrand.setText(item.getBrand());
         }
-        if (mItem.getDescription() != null) {
-            mDescription.setText(mItem.getDescription());
+        if (item.getDescription() != null) {
+            mDescription.setText(item.getDescription());
         }
-        if (mItem.getNote() != null) {
-            mNote.setText(mItem.getNote());
+        if (item.getNote() != null) {
+            mNote.setText(item.getNote());
         }
-        if (mItem.getImageUrl() != null) {
+        if (item.getImageUrl() != null) {
             mItemImage.setVisibility(View.VISIBLE);
             EspressoIdlingResource.increment();
             Glide.with(getContext())
-                    .load(mItem.getImageUrl())
+                    .load(item.getImageUrl())
                     .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(new GlideDrawableImageViewTarget(mItemImage) {
@@ -239,7 +244,7 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
 
     @Override
     public void showEditItemUi() {
-        mCallback.onEditItemSelected(mItem.getId());
+        mCallback.onEditItemSelected(mItemId);
     }
 
     @Override

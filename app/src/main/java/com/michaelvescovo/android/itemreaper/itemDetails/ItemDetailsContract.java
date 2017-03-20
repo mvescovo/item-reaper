@@ -18,9 +18,13 @@ interface ItemDetailsContract {
         void showEditItemUi();
 
         void showItemExpiredMessage(int resourceId, int duration, @Nullable Item item);
+
+        void showItem(@NonNull Item item);
     }
 
     interface Presenter {
+
+        void displayItem(@NonNull String itemId);
 
         void openEditItem();
 

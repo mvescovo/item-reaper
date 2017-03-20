@@ -3,7 +3,7 @@ package com.michaelvescovo.android.itemreaper.itemDetails;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.Fragment;
@@ -16,7 +16,6 @@ import android.view.Menu;
 
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
 import com.michaelvescovo.android.itemreaper.R;
-import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 
@@ -34,9 +33,9 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDetail
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_details);
 
-        Item item = null;
-        if (getIntent().getSerializableExtra(EXTRA_ITEM) != null) {
-            item = (Item) getIntent().getSerializableExtra(EXTRA_ITEM);
+        String itemId = null;
+        if (getIntent().getStringExtra(EXTRA_ITEM_ID) != null) {
+            itemId = getIntent().getStringExtra(EXTRA_ITEM_ID);
         }
 
         // Create the View
@@ -45,9 +44,9 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDetail
         if (itemDetailsFragment == null) {
             itemDetailsFragment = ItemDetailsFragment.newInstance();
             initFragment(itemDetailsFragment);
-            if (item != null) {
+            if (itemId != null) {
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(EXTRA_ITEM, item);
+                bundle.putString(EXTRA_ITEM_ID, itemId);
                 itemDetailsFragment.setArguments(bundle);
             }
         }
@@ -89,7 +88,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDetail
     }
 
     @Override
-    public void onEditItemSelected(@NonNull String itemId) {
+    public void onEditItemSelected(@Nullable String itemId) {
         Intent intent = new Intent(this, EditItemActivity.class);
         intent.putExtra(EXTRA_ITEM_ID, itemId);
         startActivityForResult(intent, REQUEST_CODE_ITEM_DELETED);

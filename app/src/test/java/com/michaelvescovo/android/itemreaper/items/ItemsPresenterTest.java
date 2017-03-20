@@ -122,8 +122,8 @@ public class ItemsPresenterTest {
 
     @Test
     public void clickItem_ShowsItemDetailsUi() {
-        mItemsPresenter.openItemDetails(ITEM_1);
-        verify(mView).showItemDetailsUi(any(Item.class));
+        mItemsPresenter.openItemDetails(ITEM_ID_1);
+        verify(mView).showItemDetailsUi(anyString());
     }
 
     @Test

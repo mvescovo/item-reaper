@@ -51,6 +51,7 @@ public class FakeDataSource implements DataSource {
             false);
     public final static String ITEMS_CALLER = "items";
     public final static String EDIT_ITEM_CALLER = "edit_item";
+    public final static String ITEM_DETAILS_CALLER = "item_details";
     private ItemIdsListener mItemIdsListener;
     private Map<String, Map<String, ItemChangedListener>> mItemCallbacks = Maps.newHashMap();
     static {
