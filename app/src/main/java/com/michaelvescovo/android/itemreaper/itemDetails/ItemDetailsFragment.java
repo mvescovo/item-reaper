@@ -95,7 +95,6 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
     private Typeface mAppbarTypeface;
     private String mItemId;
     private Item mItem;
-    private String mImageUrl;
     private MediaPlayer mMediaPlayer;
 
     public ItemDetailsFragment() {
@@ -153,62 +152,99 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
 
     @Override
     public void showItem(@NonNull Item item) {
+        mItem = item;
         String format = getString(R.string.date_format);
         if (item.getPurchaseDate() != -1) {
             mPurchaseDate.setText(getDateFormat(format).format(item.getPurchaseDate()));
+        } else {
+            mPurchaseDate.setText(getString(R.string.empty_value));
         }
         if (item.getShop() != null) {
             mShop.setText(item.getShop());
+        } else {
+            mShop.setText(getString(R.string.empty_value));
         }
         if (item.getPricePaid() != -1) {
             String pricePaid = "$" + getPriceFromTotalCents(item.getPricePaid());
             mPricePaid.setText(pricePaid);
+        } else {
+            mPricePaid.setText(getString(R.string.empty_value));
         }
         if (item.getDiscount() != -1) {
             String discount = "$" + getPriceFromTotalCents(item.getDiscount());
             mDiscount.setText(discount);
+        } else {
+            mDiscount.setText(getString(R.string.empty_value));
         }
         if (item.getExpiry() != -1) {
             mExpiryDate.setText(getDateFormat(format).format(item.getExpiry()));
+        } else {
+            mExpiryDate.setText(getString(R.string.empty_value));
         }
         if (item.getCategory() != null) {
             mCategory.setText(item.getCategory());
+        } else {
+            mCategory.setText(getString(R.string.empty_value));
         }
         if (item.getSubCategory() != null) {
             mSubCategory.setText(item.getSubCategory());
+        } else {
+            mSubCategory.setText(getString(R.string.empty_value));
         }
         if (item.getType() != null) {
             mType.setText(item.getType());
+        } else {
+            mType.setText(getString(R.string.empty_value));
         }
         if (item.getSubtype() != null) {
             mSubType.setText(item.getSubtype());
+        } else {
+            mSubType.setText(getString(R.string.empty_value));
         }
         if (item.getSubtype2() != null) {
             mSubType2.setText(item.getSubtype2());
+        } else {
+            mSubType2.setText(getString(R.string.empty_value));
         }
         if (item.getSubtype3() != null) {
             mSubType3.setText(item.getSubtype3());
+        } else {
+            mSubType3.setText(getString(R.string.empty_value));
         }
         if (item.getPrimaryColour() != null) {
             mPrimaryColour.setText(item.getPrimaryColour());
+        } else {
+            mPrimaryColour.setText(getString(R.string.empty_value));
         }
         if (item.getPrimaryColourShade() != null) {
             mPrimaryColourShade.setText(item.getPrimaryColourShade());
+        } else {
+            mPrimaryColourShade.setText(getString(R.string.empty_value));
         }
         if (item.getSecondaryColour() != null) {
             mSecondaryColour.setText(item.getSecondaryColour());
+        } else {
+            mSecondaryColour.setText(getString(R.string.empty_value));
         }
         if (item.getSize() != null) {
             mSize.setText(item.getSize());
+        } else {
+            mSize.setText(getString(R.string.empty_value));
         }
         if (item.getBrand() != null) {
             mBrand.setText(item.getBrand());
+        } else {
+            mBrand.setText(getString(R.string.empty_value));
         }
         if (item.getDescription() != null) {
             mDescription.setText(item.getDescription());
+        } else {
+            mDescription.setText(getString(R.string.empty_value));
         }
         if (item.getNote() != null) {
             mNote.setText(item.getNote());
+        } else {
+            mNote.setText(getString(R.string.empty_value));
         }
         if (item.getImageUrl() != null) {
             mItemImage.setVisibility(View.VISIBLE);
@@ -225,6 +261,8 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
                             EspressoIdlingResource.decrement();
                         }
                     });
+        } else {
+            mItemImage.setVisibility(View.GONE);
         }
     }
 

@@ -117,6 +117,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     private Typeface mAppbarTypeface;
     private String mItemId;
     private String mImageUrl;
+    private boolean mDeceased;
     private Calendar mPurchaseDate;
     private String mPurchaseDateString;
     private int mPreviousPurchaseDateOption;
@@ -460,42 +461,67 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     }
 
     private Item createCurrentItem() {
-        int pricePaid = -1;
-        if (!mPricePaid.getText().toString().equals("")
-                && !mPricePaid.getText().toString().equals(".")) {
-            String priceString = mPricePaid.getText().toString();
-            pricePaid = getTotalCents(priceString);
-        }
-        int discount = -1;
-        if (!mDiscount.getText().toString().equals("")
-                && !mDiscount.getText().toString().equals(".")) {
-            String discountString = mDiscount.getText().toString();
-            discount = getTotalCents(discountString);
-        }
-
         return new Item(
                 mItemId,
                 mPurchaseDate == null ? -1 : mPurchaseDate.getTimeInMillis(),
-                pricePaid,
-                discount,
+                getPrice(mPricePaid),
+                getPrice(mDiscount),
                 mExpiryDate == null ? -1 : mExpiryDate.getTimeInMillis(),
-                mCategory.getText().toString(),
-                mSubCategory.getText().toString(),
-                mType.getText().toString(),
-                mSubType.getText().toString(),
-                mSubType2.getText().toString(),
-                mSubType3.getText().toString(),
-                mPrimaryColour.getText().toString(),
-                mPrimaryColourShade.getText().toString(),
-                mSecondaryColour.getText().toString(),
-                mSize.getText().toString(),
-                mBrand.getText().toString(),
-                mShop.getText().toString(),
-                mDescription.getText().toString(),
-                mNote.getText().toString(),
+                !mCategory.getText().toString().equals("")
+                        ? mCategory.getText().toString()
+                        : null,
+                !mSubCategory.getText().toString().equals("")
+                        ? mSubCategory.getText().toString()
+                        : null,
+                !mType.getText().toString().equals("")
+                        ? mType.getText().toString()
+                        : null,
+                !mSubType.getText().toString().equals("")
+                        ? mSubType.getText().toString()
+                        : null,
+                !mSubType2.getText().toString().equals("")
+                        ? mSubType2.getText().toString()
+                        : null,
+                !mSubType3.getText().toString().equals("")
+                        ? mSubType3.getText().toString()
+                        : null,
+                !mPrimaryColour.getText().toString().equals("")
+                        ? mPrimaryColour.getText().toString()
+                        : null,
+                !mPrimaryColourShade.getText().toString().equals("")
+                        ? mPrimaryColourShade.getText().toString()
+                        : null,
+                !mSecondaryColour.getText().toString().equals("")
+                        ? mSecondaryColour.getText().toString()
+                        : null,
+                !mSize.getText().toString().equals("")
+                        ? mSize.getText().toString()
+                        : null,
+                !mBrand.getText().toString().equals("")
+                        ? mBrand.getText().toString()
+                        : null,
+                !mShop.getText().toString().equals("")
+                        ? mShop.getText().toString()
+                        : null,
+                !mDescription.getText().toString().equals("")
+                        ? mDescription.getText().toString()
+                        : null,
+                !mNote.getText().toString().equals("")
+                        ? mNote.getText().toString()
+                        : null,
                 mImageUrl,
-                false
+                mDeceased
         );
+    }
+
+    private int getPrice(TextView textView) {
+        if (!textView.getText().toString().equals("")
+                && !textView.getText().toString().equals(".")) {
+            String priceString = textView.getText().toString();
+            return getTotalCents(priceString);
+        } else {
+            return -1;
+        }
     }
 
     private int getTotalCents(String priceString) {
@@ -643,6 +669,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                 mItemImage.setVisibility(View.GONE);
                 mRemoveImageButton.setVisibility(View.GONE);
             }
+            mDeceased = item.getDeceased();
         }
     }
 
