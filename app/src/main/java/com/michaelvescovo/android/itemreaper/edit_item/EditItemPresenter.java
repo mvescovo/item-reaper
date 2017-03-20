@@ -18,14 +18,13 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.EDIT_ITEM_CALLER;
-
 /**
  * @author Michael Vescovo
  */
 
 class EditItemPresenter implements EditItemContract.Presenter {
 
+    private final static String EDIT_ITEM_CALLER = "edit_item";
     private EditItemContract.View mView;
     private Repository mRepository;
     private SharedPreferencesHelper mSharedPreferencesHelper;

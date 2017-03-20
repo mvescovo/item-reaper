@@ -39,7 +39,7 @@
         </activity>
 
         <activity
-            android:name=".itemDetails.ItemDetailsActivity"
+            android:name=".item_details.ItemDetailsActivity"
             android:label="@string/title_activity_item_details"
             android:parentActivityName=".items.ItemsActivity">
         </activity>

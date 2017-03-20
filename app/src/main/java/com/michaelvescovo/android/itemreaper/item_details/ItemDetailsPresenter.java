@@ -1,4 +1,4 @@
-package com.michaelvescovo.android.itemreaper.itemDetails;
+package com.michaelvescovo.android.itemreaper.item_details;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,18 +13,18 @@ import com.michaelvescovo.android.itemreaper.data.Repository;
 
 import javax.inject.Inject;
 
-import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_DETAILS_CALLER;
-
 /**
  * @author Michael Vescovo
  */
 
 class ItemDetailsPresenter implements ItemDetailsContract.Presenter {
 
+    private final static String ITEM_DETAILS_CALLER = "item_details";
     private ItemDetailsContract.View mView;
     private Repository mRepository;
     private SharedPreferencesHelper mSharedPreferencesHelper;
     private FirebaseAuth mFirebaseAuth;
+
 
     @Inject
     ItemDetailsPresenter(ItemDetailsContract.View view, Repository repository,

@@ -1,4 +1,4 @@
-package com.michaelvescovo.android.itemreaper.itemDetails;
+package com.michaelvescovo.android.itemreaper.item_details;
 
 import android.content.Context;
 import android.graphics.Typeface;

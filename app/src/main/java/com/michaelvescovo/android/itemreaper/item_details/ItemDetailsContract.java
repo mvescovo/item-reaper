@@ -1,4 +1,4 @@
-package com.michaelvescovo.android.itemreaper.itemDetails;
+package com.michaelvescovo.android.itemreaper.item_details;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

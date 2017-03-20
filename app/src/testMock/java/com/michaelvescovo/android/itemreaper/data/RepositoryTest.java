@@ -9,12 +9,12 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEMS;
-import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEMS_CALLER;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_IDS;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_ID_1;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_ID_2;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.USER_ID;
+import static com.michaelvescovo.android.itemreaper.items.ItemsPresenter.ITEMS_CALLER;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

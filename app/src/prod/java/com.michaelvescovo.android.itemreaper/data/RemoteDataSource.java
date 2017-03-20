@@ -8,13 +8,12 @@ import android.support.annotation.NonNull;
 
 class RemoteDataSource implements DataSource {
 
+    public final static String ITEMS_CALLER = "items";
+    public final static String EDIT_ITEM_CALLER = "edit_item";
+    public final static String ITEM_DETAILS_CALLER = "item_details";
+
     @Override
     public void getItemIds(@NonNull String userId, @NonNull GetItemIdsCallback callback) {
-
-    }
-
-    @Override
-    public void stopGetItemIds() {
 
     }
 
@@ -35,11 +34,6 @@ class RemoteDataSource implements DataSource {
     }
 
     @Override
-    public void stopGetItem(@NonNull String caller) {
-
-    }
-
-    @Override
     public void refreshItems() {
 
     }
@@ -55,7 +49,7 @@ class RemoteDataSource implements DataSource {
     }
 
     @Override
-    public void deleteItem(@NonNull String userId, @NonNull String itemId) {
+    public void deleteItem(@NonNull String userId, @NonNull Item item) {
 
     }
 

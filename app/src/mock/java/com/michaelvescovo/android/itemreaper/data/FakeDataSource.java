@@ -49,14 +49,8 @@ public class FakeDataSource implements DataSource {
             "Bathroom", null,
             "Towel", null, null, null, "White", null, null, null, null, null, null, null, null,
             false);
-    public final static String ITEMS_CALLER = "items";
-    public final static String EDIT_ITEM_CALLER = "edit_item";
-    public final static String ITEM_DETAILS_CALLER = "item_details";
     private ItemIdsListener mItemIdsListener;
     private Map<String, Map<String, ItemChangedListener>> mItemCallbacks = Maps.newHashMap();
-    static {
-
-    }
 
     FakeDataSource() {
         ITEM_IDS.add(ITEM_ID_1);

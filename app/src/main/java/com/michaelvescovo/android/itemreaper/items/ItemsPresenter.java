@@ -20,8 +20,9 @@ import javax.inject.Inject;
  * @author Michael Vescovo
  */
 
-class ItemsPresenter implements ItemsContract.Presenter {
+public class ItemsPresenter implements ItemsContract.Presenter {
 
+    public final static String ITEMS_CALLER = "items";
     private ItemsContract.View mView;
     private Repository mRepository;
     private SharedPreferencesHelper mSharedPreferencesHelper;
@@ -78,7 +79,7 @@ class ItemsPresenter implements ItemsContract.Presenter {
     private void getItem(String itemId) {
         mItemsToLoad++;
         EspressoIdlingResource.increment();
-        mRepository.getItem(itemId, "items", new DataSource.GetItemCallback() {
+        mRepository.getItem(itemId, ITEMS_CALLER, new DataSource.GetItemCallback() {
             @Override
             public void onItemLoaded(@Nullable Item item) {
                 if (mItemsToLoad > 0) {

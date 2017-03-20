@@ -1,4 +1,4 @@
-package com.michaelvescovo.android.itemreaper.itemDetails;
+package com.michaelvescovo.android.itemreaper.item_details;
 
 import com.michaelvescovo.android.itemreaper.ApplicationComponent;
 import com.michaelvescovo.android.itemreaper.data.RepositoryComponent;

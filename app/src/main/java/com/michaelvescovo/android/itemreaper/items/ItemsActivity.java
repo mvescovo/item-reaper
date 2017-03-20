@@ -32,11 +32,11 @@ import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemComponent;
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemFragment;
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemModule;
-import com.michaelvescovo.android.itemreaper.itemDetails.DaggerItemDetailsComponent;
-import com.michaelvescovo.android.itemreaper.itemDetails.ItemDetailsActivity;
-import com.michaelvescovo.android.itemreaper.itemDetails.ItemDetailsComponent;
-import com.michaelvescovo.android.itemreaper.itemDetails.ItemDetailsFragment;
-import com.michaelvescovo.android.itemreaper.itemDetails.ItemDetailsModule;
+import com.michaelvescovo.android.itemreaper.item_details.DaggerItemDetailsComponent;
+import com.michaelvescovo.android.itemreaper.item_details.ItemDetailsActivity;
+import com.michaelvescovo.android.itemreaper.item_details.ItemDetailsComponent;
+import com.michaelvescovo.android.itemreaper.item_details.ItemDetailsFragment;
+import com.michaelvescovo.android.itemreaper.item_details.ItemDetailsModule;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 
 import javax.inject.Inject;

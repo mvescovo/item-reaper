@@ -9,7 +9,6 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.Item;
-import com.michaelvescovo.android.itemreaper.itemDetails.ItemDetailsActivity;
 import com.michaelvescovo.android.itemreaper.util.EspressoHelperMethods;
 
 import org.junit.After;
