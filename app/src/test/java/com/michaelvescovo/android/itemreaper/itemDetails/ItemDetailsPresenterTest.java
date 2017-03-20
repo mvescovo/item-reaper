@@ -98,6 +98,7 @@ public class ItemDetailsPresenterTest {
         assertThat(ITEM_1.getDeceased(), is(equalTo(true)));
         verify(mRepository).saveItem(anyString(), any(Item.class));
         verify(mView).showItemExpiredMessage(anyInt(), anyInt(), any(Item.class));
+        verify(mView).showExpireMenuButton(false);
     }
 
     @Test
@@ -106,5 +107,6 @@ public class ItemDetailsPresenterTest {
         assertThat(ITEM_1.getDeceased(), is(equalTo(false)));
         verify(mRepository).saveItem(anyString(), any(Item.class));
         verify(mView).showItemExpiredMessage(anyInt(), anyInt(), any(Item.class));
+        verify(mView).showExpireMenuButton(true);
     }
 }

@@ -20,6 +20,8 @@ interface ItemDetailsContract {
         void showItemExpiredMessage(int resourceId, int duration, @Nullable Item item);
 
         void showItem(@NonNull Item item);
+
+        void showExpireMenuButton(boolean visible);
     }
 
     interface Presenter {

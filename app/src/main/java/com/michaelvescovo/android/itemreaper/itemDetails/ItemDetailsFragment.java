@@ -96,6 +96,7 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
     private String mItemId;
     private Item mItem;
     private MediaPlayer mMediaPlayer;
+    private MenuItem mExpireMenuItem;
 
     public ItemDetailsFragment() {
     }
@@ -267,9 +268,17 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
     }
 
     @Override
+    public void showExpireMenuButton(boolean visible) {
+        if (mExpireMenuItem != null) {
+            mExpireMenuItem.setVisible(visible);
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_expire_item:
+                mExpireMenuItem = item;
                 playExpireItemSoundEffect();
                 mPresenter.expireItem(mItem);
                 break;

@@ -63,6 +63,7 @@ class ItemDetailsPresenter implements ItemDetailsContract.Presenter {
         item.setDeceased(true);
         mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
         mView.showItemExpiredMessage(R.string.item_expired, Snackbar.LENGTH_LONG, item);
+        mView.showExpireMenuButton(false);
     }
 
     @Override
@@ -70,5 +71,6 @@ class ItemDetailsPresenter implements ItemDetailsContract.Presenter {
         item.setDeceased(false);
         mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
         mView.showItemExpiredMessage(R.string.item_unexpired, Snackbar.LENGTH_LONG, null);
+        mView.showExpireMenuButton(true);
     }
 }
