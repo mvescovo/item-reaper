@@ -26,4 +26,8 @@
     <dimen name="edit_item_image_width">400dp</dimen>
     <dimen name="edit_item_image_height">300dp</dimen>
 
+    <!--ItemDetails-->
+    <dimen name="item_image_width">400dp</dimen>
+    <dimen name="item_image_height">300dp</dimen>
+
 </resources>

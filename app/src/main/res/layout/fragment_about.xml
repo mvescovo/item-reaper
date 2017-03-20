@@ -54,14 +54,14 @@
 
             <TextView
                 android:id="@+id/reaper_icon_attribution"
-                style="@style/content_text"
+                style="@style/content_text1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/reaper_icon_attribution"/>
 
             <TextView
                 android:id="@+id/decapitation_sound_attribution"
-                style="@style/content_text"
+                style="@style/content_text1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/decapitation_sound_attribution"/>

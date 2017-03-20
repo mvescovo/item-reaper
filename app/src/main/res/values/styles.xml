@@ -18,15 +18,21 @@
         <item name="android:maxLength">@integer/max_length_small</item>
     </style>
 
-    <style name="small_content_title" parent="Base.TextAppearance.AppCompat.Caption">
+    <style name="caption" parent="Base.TextAppearance.AppCompat.Caption">
         <item name="android:maxEms">@integer/max_ems</item>
         <item name="android:layout_marginBottom">8dp</item>
-        <item name="android:textColor">?android:attr/textColorSecondary</item>
         <item name="android:maxLength">@integer/max_length_small</item>
     </style>
 
     <!--Standard content text-->
-    <style name="content_text" parent="Base.TextAppearance.AppCompat.Body1">
+    <style name="content_text1" parent="Base.TextAppearance.AppCompat.Body1">
+        <item name="android:maxEms">@integer/max_ems</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:textColorLink">@color/linkColour</item>
+        <item name="android:maxLength">@integer/max_length_long</item>
+    </style>
+
+    <style name="content_text2" parent="Base.TextAppearance.AppCompat.Body2">
         <item name="android:maxEms">@integer/max_ems</item>
         <item name="android:layout_marginBottom">8dp</item>
         <item name="android:textColorLink">@color/linkColour</item>
@@ -35,7 +41,6 @@
 
     <!--Card-->
     <style name="card_caption" parent="Base.TextAppearance.AppCompat.Caption">
-        <item name="android:textColor">?android:attr/textColorSecondary</item>
         <item name="android:paddingBottom">@dimen/padding_text</item>
         <item name="android:maxLength">@integer/max_length_small</item>
     </style>
@@ -67,6 +72,15 @@
         <item name="android:maxEms">@integer/max_ems</item>
         <item name="android:maxLength">@integer/max_length_small</item>
         <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <!--Item Details-->
+    <style name="content_text1.details">
+        <item name="android:layout_marginBottom">0dp</item>
+    </style>
+
+    <style name="content_text2.details">
+        <item name="android:layout_marginBottom">0dp</item>
     </style>
 
 </resources>

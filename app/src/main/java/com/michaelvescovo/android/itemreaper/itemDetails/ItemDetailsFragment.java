@@ -16,16 +16,25 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.Item;
+import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.michaelvescovo.android.itemreaper.itemDetails.ItemDetailsActivity.EXTRA_ITEM;
+import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getDateFormat;
+import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getPriceFromTotalCents;
 
 /**
  * @author Michael Vescovo
@@ -41,6 +50,44 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
     ProgressBar mProgressBar;
     @BindView(R.id.coordinator_layout)
     CoordinatorLayout mCoordinatorLayout;
+    @BindView(R.id.purchase_date_value)
+    TextView mPurchaseDate;
+    @BindView(R.id.shop_value)
+    TextView mShop;
+    @BindView(R.id.price_paid_value)
+    TextView mPricePaid;
+    @BindView(R.id.discount_value)
+    TextView mDiscount;
+    @BindView(R.id.expiry_date_value)
+    TextView mExpiryDate;
+    @BindView(R.id.category_value)
+    TextView mCategory;
+    @BindView(R.id.sub_category_value)
+    TextView mSubCategory;
+    @BindView(R.id.type_value)
+    TextView mType;
+    @BindView(R.id.sub_type_value)
+    TextView mSubType;
+    @BindView(R.id.sub_type2_value)
+    TextView mSubType2;
+    @BindView(R.id.sub_type3_value)
+    TextView mSubType3;
+    @BindView(R.id.primary_colour_value)
+    TextView mPrimaryColour;
+    @BindView(R.id.primary_colour_shade_value)
+    TextView mPrimaryColourShade;
+    @BindView(R.id.secondary_colour_value)
+    TextView mSecondaryColour;
+    @BindView(R.id.size_value)
+    TextView mSize;
+    @BindView(R.id.brand_value)
+    TextView mBrand;
+    @BindView(R.id.description_value)
+    TextView mDescription;
+    @BindView(R.id.note_value)
+    TextView mNote;
+    @BindView(R.id.item_image)
+    ImageView mItemImage;
 
     private ItemDetailsContract.Presenter mPresenter;
     private Callback mCallback;
@@ -101,7 +148,79 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
     }
 
     private void configureViews() {
-
+        String format = getString(R.string.date_format);
+        if (mItem.getPurchaseDate() != -1) {
+            mPurchaseDate.setText(getDateFormat(format).format(mItem.getPurchaseDate()));
+        }
+        if (mItem.getShop() != null) {
+            mShop.setText(mItem.getShop());
+        }
+        if (mItem.getPricePaid() != -1) {
+            String pricePaid = "$" + getPriceFromTotalCents(mItem.getPricePaid());
+            mPricePaid.setText(pricePaid);
+        }
+        if (mItem.getDiscount() != -1) {
+            String discount = "$" + getPriceFromTotalCents(mItem.getDiscount());
+            mDiscount.setText(discount);
+        }
+        if (mItem.getExpiry() != -1) {
+            mExpiryDate.setText(getDateFormat(format).format(mItem.getExpiry()));
+        }
+        if (mItem.getCategory() != null) {
+            mCategory.setText(mItem.getCategory());
+        }
+        if (mItem.getSubCategory() != null) {
+            mSubCategory.setText(mItem.getSubCategory());
+        }
+        if (mItem.getType() != null) {
+            mType.setText(mItem.getType());
+        }
+        if (mItem.getSubtype() != null) {
+            mSubType.setText(mItem.getSubtype());
+        }
+        if (mItem.getSubtype2() != null) {
+            mSubType2.setText(mItem.getSubtype2());
+        }
+        if (mItem.getSubtype3() != null) {
+            mSubType3.setText(mItem.getSubtype3());
+        }
+        if (mItem.getPrimaryColour() != null) {
+            mPrimaryColour.setText(mItem.getPrimaryColour());
+        }
+        if (mItem.getPrimaryColourShade() != null) {
+            mPrimaryColourShade.setText(mItem.getPrimaryColourShade());
+        }
+        if (mItem.getSecondaryColour() != null) {
+            mSecondaryColour.setText(mItem.getSecondaryColour());
+        }
+        if (mItem.getSize() != null) {
+            mSize.setText(mItem.getSize());
+        }
+        if (mItem.getBrand() != null) {
+            mBrand.setText(mItem.getBrand());
+        }
+        if (mItem.getDescription() != null) {
+            mDescription.setText(mItem.getDescription());
+        }
+        if (mItem.getNote() != null) {
+            mNote.setText(mItem.getNote());
+        }
+        if (mItem.getImageUrl() != null) {
+            mItemImage.setVisibility(View.VISIBLE);
+            EspressoIdlingResource.increment();
+            Glide.with(getContext())
+                    .load(mItem.getImageUrl())
+                    .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(new GlideDrawableImageViewTarget(mItemImage) {
+                        @Override
+                        public void onResourceReady(GlideDrawable resource,
+                                                    GlideAnimation<? super GlideDrawable> animation) {
+                            super.onResourceReady(resource, animation);
+                            EspressoIdlingResource.decrement();
+                        }
+                    });
+        }
     }
 
     @Override

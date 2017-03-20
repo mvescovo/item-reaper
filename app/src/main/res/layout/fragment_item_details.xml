@@ -51,19 +51,406 @@
                 android:paddingTop="@dimen/margin_vertical">
 
                 <TextView
-                    android:id="@+id/edit_purchase_details_title"
+                    android:id="@+id/purchase_details_title"
                     style="@style/content_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/edit_purchase_details_title"/>
+                    android:text="@string/purchase_details_title"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/purchase_date"
+                        style="@style/content_text2.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/purchase_date"/>
+
+                    <TextView
+                        android:id="@+id/purchase_date_value"
+                        style="@style/content_text1.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/empty_value"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/shop"
+                        style="@style/content_text2.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/shop"/>
+
+                    <TextView
+                        android:id="@+id/shop_value"
+                        style="@style/content_text1.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/empty_value"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/price_paid"
+                        style="@style/content_text2.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/price_paid"/>
+
+                    <TextView
+                        android:id="@+id/price_paid_value"
+                        style="@style/content_text1.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/empty_value"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/discount"
+                        style="@style/content_text2.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/discount"/>
+
+                    <TextView
+                        android:id="@+id/discount_value"
+                        style="@style/content_text1.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/empty_value"/>
+
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/edit_item_details_title"
+                    android:id="@+id/item_details_title"
                     style="@style/content_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_vertical"
-                    android:text="@string/edit_item_details_title"/>
+                    android:text="@string/item_details_title"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/expiry_date"
+                        style="@style/content_text2.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/expiry_date"/>
+
+                    <TextView
+                        android:id="@+id/expiry_date_value"
+                        style="@style/content_text1.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/empty_value"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/category"
+                        style="@style/content_text2.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/category"/>
+
+                    <TextView
+                        android:id="@+id/category_value"
+                        style="@style/content_text1.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/empty_value"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/sub_category"
+                        style="@style/content_text2.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sub_category"/>
+
+                    <TextView
+                        android:id="@+id/sub_category_value"
+                        style="@style/content_text1.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/empty_value"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/type"
+                        style="@style/content_text2.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/type"/>
+
+                    <TextView
+                        android:id="@+id/type_value"
+                        style="@style/content_text1.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/empty_value"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/sub_type"
+                        style="@style/content_text2.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sub_type"/>
+
+                    <TextView
+                        android:id="@+id/sub_type_value"
+                        style="@style/content_text1.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/empty_value"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/sub_type2"
+                        style="@style/content_text2.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sub_type_2"/>
+
+                    <TextView
+                        android:id="@+id/sub_type2_value"
+                        style="@style/content_text1.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/empty_value"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/sub_type3"
+                        style="@style/content_text2.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sub_type_3"/>
+
+                    <TextView
+                        android:id="@+id/sub_type3_value"
+                        style="@style/content_text1.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/empty_value"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/primary_colour"
+                        style="@style/content_text2.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/primary_colour"/>
+
+                    <TextView
+                        android:id="@+id/primary_colour_value"
+                        style="@style/content_text1.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/empty_value"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/primary_colour_shade"
+                        style="@style/content_text2.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/primary_colour_shade"/>
+
+                    <TextView
+                        android:id="@+id/primary_colour_shade_value"
+                        style="@style/content_text1.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/empty_value"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/secondary_colour"
+                        style="@style/content_text2.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/secondary_colour"/>
+
+                    <TextView
+                        android:id="@+id/secondary_colour_value"
+                        style="@style/content_text1.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/empty_value"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/size"
+                        style="@style/content_text2.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/size"/>
+
+                    <TextView
+                        android:id="@+id/size_value"
+                        style="@style/content_text1.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/empty_value"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/brand"
+                        style="@style/content_text2.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/brand"/>
+
+                    <TextView
+                        android:id="@+id/brand_value"
+                        style="@style/content_text1.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/empty_value"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/description"
+                        style="@style/content_text2.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/description"/>
+
+                    <TextView
+                        android:id="@+id/description_value"
+                        style="@style/content_text1.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/empty_value"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/note"
+                        style="@style/content_text2.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/note"/>
+
+                    <TextView
+                        android:id="@+id/note_value"
+                        style="@style/content_text1.details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/empty_value"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/item_image"
+                    android:layout_width="@dimen/item_image_width"
+                    android:layout_height="@dimen/item_image_height"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/margin_vertical"
+                    android:contentDescription="@string/item_image_description"
+                    android:visibility="gone"/>
 
             </LinearLayout>
 

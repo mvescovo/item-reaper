@@ -16,8 +16,8 @@
     <string name="delete_item_success">Item Deleted</string>
     <string name="delete_item_undo_success">Item Restored</string>
     <string name="delete_item_undo">Undo</string>
-    <string name="edit_purchase_details_title">Purchase details</string>
-    <string name="edit_item_details_title">Item details</string>
+    <string name="edit_purchase_details_title">Purchase Details</string>
+    <string name="edit_item_details_title">Item Details</string>
     <string name="edit_purchase_date_title">Purchase Date</string>
     <string name="edit_date_today">Today</string>
     <string name="edit_date_yesterday">Yesterday</string>
@@ -63,6 +63,29 @@
     <string name="title_activity_item_details">Item Details</string>
     <string name="menu_expire_item">Expire Item</string>
     <string name="menu_edit_item">Edit Item</string>
+    <string name="purchase_details_title">Purchase Details</string>
+    <string name="purchase_date">Purchase Date:&#160;</string>
+    <string name="shop">Shop:&#160;</string>
+    <string name="price_paid">Price Paid:&#160;</string>
+    <string name="discount">Discount:&#160;</string>
+    <string name="item_details_title">Item Details</string>
+    <string name="expiry_date">Expiry Date:&#160;</string>
+    <string name="category">Category:&#160;</string>
+    <string name="sub_category">Sub Category:&#160;</string>
+    <string name="type">Type:&#160;</string>
+    <string name="sub_type">Sub Type:&#160;</string>
+    <string name="sub_type_2">Sub Type 2:&#160;</string>
+    <string name="sub_type_3">Sub Type 3:&#160;</string>
+    <string name="primary_colour">Primary Colour:&#160;</string>
+    <string name="primary_colour_shade">Primary Colour Shade:&#160;</string>
+    <string name="secondary_colour">Secondary Colour:&#160;</string>
+    <string name="size">Size:&#160;</string>
+    <string name="brand">Brand:&#160;</string>
+    <string name="description">Description:&#160;</string>
+    <string name="note">Note:&#160;</string>
+    <string name="item_image_description">Item Image:&#160;</string>
+    <string name="empty_value">-</string>
+    <string name="date_format">dd/MMMM/yy</string>
 
     <!--About-->
     <string name="title_activity_about">About</string>

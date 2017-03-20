@@ -58,7 +58,7 @@
 
                 <TextView
                     android:id="@+id/edit_purchase_date_title"
-                    style="@style/small_content_title"
+                    style="@style/caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/edit_purchase_date_title"/>
@@ -124,7 +124,7 @@
 
                 <TextView
                     android:id="@+id/edit_expiry_date_title"
-                    style="@style/small_content_title"
+                    style="@style/caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/edit_expiry_date_title"/>
