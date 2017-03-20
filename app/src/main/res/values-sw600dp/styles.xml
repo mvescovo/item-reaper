@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Standard content titles-->
+    <style name="content_title" parent="Base.TextAppearance.AppCompat.Title">
+        <item name="android:maxEms">@integer/max_ems</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:maxLength">@integer/max_length_small</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <!--Item Details-->
+    <style name="content_text1.details">
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="content_text2.details">
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+</resources>
