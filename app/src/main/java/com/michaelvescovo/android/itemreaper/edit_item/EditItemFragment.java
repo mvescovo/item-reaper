@@ -726,6 +726,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     @Override
     public void showItemsUi() {
         if (mIsLargeScreen) {
+            mCallback.onDoneEditing();
             dismiss();
         } else {
             getActivity().finish();
@@ -826,5 +827,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         void onDialogResumed();
 
         void onItemDeleted(@NonNull Item item);
+
+        void onDoneEditing();
     }
 }

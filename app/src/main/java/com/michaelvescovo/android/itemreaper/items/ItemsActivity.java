@@ -278,6 +278,13 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     }
 
     @Override
+    public void onDoneEditing() {
+        if (mItemDetailsFragment != null) {
+            mCurrentDialogName = ITEM_DETAILS_DIALOG;
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_ITEM_DELETED) {

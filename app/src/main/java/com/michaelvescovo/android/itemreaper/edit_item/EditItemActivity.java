@@ -99,6 +99,11 @@ public class EditItemActivity extends AppCompatActivity
         setResult(REQUEST_CODE_ITEM_DELETED, intent);
     }
 
+    @Override
+    public void onDoneEditing() {
+        // Nothing to do here.
+    }
+
     @VisibleForTesting
     public IdlingResource getCountingIdlingResource() {
         return EspressoIdlingResource.getIdlingResource();
