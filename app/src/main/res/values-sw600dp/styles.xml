@@ -9,14 +9,26 @@
         <item name="android:textSize">22sp</item>
     </style>
 
-    <!--Item Details-->
-    <style name="content_text1.details">
-        <item name="android:layout_marginBottom">0dp</item>
+    <style name="caption" parent="Base.TextAppearance.AppCompat.Caption">
+        <item name="android:maxEms">@integer/max_ems</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:maxLength">@integer/max_length_small</item>
+    </style>
+
+    <!--Standard content text-->
+    <style name="content_text1" parent="Base.TextAppearance.AppCompat.Body1">
+        <item name="android:maxEms">@integer/max_ems</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:textColorLink">@color/linkColour</item>
+        <item name="android:maxLength">@integer/max_length_long</item>
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="content_text2.details">
-        <item name="android:layout_marginBottom">0dp</item>
+    <style name="content_text2" parent="Base.TextAppearance.AppCompat.Body2">
+        <item name="android:maxEms">@integer/max_ems</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:textColorLink">@color/linkColour</item>
+        <item name="android:maxLength">@integer/max_length_long</item>
         <item name="android:textSize">16sp</item>
     </style>
 
