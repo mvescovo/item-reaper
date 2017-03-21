@@ -263,7 +263,7 @@ public class Item implements Serializable, Comparable {
         return mImageUrl;
     }
 
-    public void setPhotoUrls(@Nullable String imageUrl) {
+    public void setImageUrl(@Nullable String imageUrl) {
         mImageUrl = imageUrl;
     }
 

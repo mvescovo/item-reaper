@@ -20,8 +20,8 @@ import java.util.Map;
 
 class RemoteDataSource implements DataSource {
 
-    private DatabaseReference mDatabase;
     private static final String TAG = "RemoteDataSource";
+    private DatabaseReference mDatabase;
 
     RemoteDataSource() {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
@@ -39,10 +39,8 @@ class RemoteDataSource implements DataSource {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() == null) {
-                    Log.d(TAG, "onDataChange: DATA NULL");
                     callback.onItemIdsLoaded(null, false);
                 } else {
-                    Log.d(TAG, "onDataChange: DATA NOT NULL");
                     GenericTypeIndicator<Map<String, Boolean>> t =
                             new GenericTypeIndicator<Map<String, Boolean>>() {
                             };
