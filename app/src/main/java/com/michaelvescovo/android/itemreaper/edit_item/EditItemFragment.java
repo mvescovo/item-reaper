@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.Toolbar;
@@ -110,6 +112,8 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     ImageView mItemImage;
     @BindView(R.id.edit_item_remove_image_button)
     Button mRemoveImageButton;
+    @BindView(R.id.coordinator_layout)
+    CoordinatorLayout mCoordinatorLayout;
 
     private EditItemContract.Presenter mPresenter;
     private Callback mCallback;
@@ -829,7 +833,8 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
 
     @Override
     public void showImageError() {
-
+        Snackbar.make(mCoordinatorLayout,
+                getString(R.string.image_capture_failed), Snackbar.LENGTH_LONG).show();
     }
 
     @Override

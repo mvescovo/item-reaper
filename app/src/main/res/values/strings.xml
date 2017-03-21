@@ -11,6 +11,7 @@
     <!--EditItem-->
     <string name="title_activity_edit_item">Edit Item</string>
     <string name="menu_take_photo">Take Photo</string>
+    <string name="image_capture_failed">Image capture failed</string>
     <string name="menu_select_image">Select Image</string>
     <string name="menu_delete_item">Delete Item</string>
     <string name="delete_item_success">Item Deleted</string>
