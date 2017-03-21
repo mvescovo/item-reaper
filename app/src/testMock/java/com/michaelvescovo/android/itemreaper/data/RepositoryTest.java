@@ -57,11 +57,48 @@ public class RepositoryTest {
         // Trigger callback.
         verify(mRemoteDataSource).getItemIds(anyString(), mItemIdsCallbackCaptor.capture());
         // Set the callback data.
-        mItemIdsCallbackCaptor.getValue().onItemIdsLoaded(ITEM_IDS);
+        mItemIdsCallbackCaptor.getValue().onItemIdsLoaded(ITEM_IDS, false);
         // Second call.
         mRepository.getItemIds(USER_ID, mGetItemIdsCallback);
         // Confirm the total calls to the remote data source is only 1; the cache was used.
         verify(mRemoteDataSource, times(1)).getItemIds(anyString(), any(DataSource.GetItemIdsCallback.class));
+    }
+
+    @Test
+    public void noItemIds_getItemIdsReturnsNull() {
+        mRepository.getItemIds(USER_ID, mGetItemIdsCallback);
+        // Trigger callback.
+        verify(mRemoteDataSource).getItemIds(anyString(), mItemIdsCallbackCaptor.capture());
+        // Set the callback data.
+        mItemIdsCallbackCaptor.getValue().onItemIdsLoaded(null, false);
+        // Returns null
+        verify(mGetItemIdsCallback).onItemIdsLoaded(null, false);
+    }
+
+    @Test
+    public void getItemIds_ItemsCountLessThanCache_SetsItemRemovedToTrue() {
+        // Set remote data size to 2
+        ITEM_IDS.add("1");
+        ITEM_IDS.add("2");
+
+        // First call to fill up the cache so it's also of size 2.
+        mRepository.getItemIds(USER_ID, mGetItemIdsCallback);
+        // Trigger callback.
+        verify(mRemoteDataSource).getItemIds(anyString(), mItemIdsCallbackCaptor.capture());
+        // Set the callback data.
+        mItemIdsCallbackCaptor.getValue().onItemIdsLoaded(ITEM_IDS, false);
+
+        // Remove an item from the remote data source so it's less than the cache size.
+        ITEM_IDS.remove(ITEM_ID_2);
+
+        // Get items again
+        mRepository.getItemIds(USER_ID, mGetItemIdsCallback);
+        // Trigger callback.
+        verify(mRemoteDataSource).getItemIds(anyString(), mItemIdsCallbackCaptor.capture());
+        // Set the callback data.
+        mItemIdsCallbackCaptor.getValue().onItemIdsLoaded(ITEM_IDS, false);
+        // Confirm itemRemoved is set to true since the cache is bigger than the remote data source.
+        verify(mGetItemIdsCallback).onItemIdsLoaded(ITEM_IDS, true);
     }
 
     @Test

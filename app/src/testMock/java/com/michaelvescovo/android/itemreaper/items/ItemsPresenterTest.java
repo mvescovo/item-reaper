@@ -95,7 +95,7 @@ public class ItemsPresenterTest {
 
         // Get all itemIds for that userId and stub the result.
         verify(mRepository).getItemIds(anyString(), mGetItemIdsCallbackCaptor.capture());
-        mGetItemIdsCallbackCaptor.getValue().onItemIdsLoaded(mItemIds);
+        mGetItemIdsCallbackCaptor.getValue().onItemIdsLoaded(mItemIds, false);
 
         if (mItemIds.size() > 0) {
             verify(mView).showNoItemsText(false);

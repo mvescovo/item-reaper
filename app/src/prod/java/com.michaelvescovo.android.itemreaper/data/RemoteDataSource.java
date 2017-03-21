@@ -14,8 +14,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.google.android.gms.internal.zzt.TAG;
-
 /**
  * @author Michael Vescovo
  */
@@ -23,6 +21,7 @@ import static com.google.android.gms.internal.zzt.TAG;
 class RemoteDataSource implements DataSource {
 
     private DatabaseReference mDatabase;
+    private static final String TAG = "RemoteDataSource";
 
     RemoteDataSource() {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
@@ -39,14 +38,18 @@ class RemoteDataSource implements DataSource {
         ValueEventListener itemIdsListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<Map<String, Boolean>> t =
-                        new GenericTypeIndicator<Map<String, Boolean>>() {
-                        };
-                Map<String, Boolean> itemIds = dataSnapshot.getValue(t);
-                if (itemIds != null) {
-                    callback.onItemIdsLoaded(Lists.newArrayList(itemIds.keySet()));
+                if (dataSnapshot.getValue() == null) {
+                    Log.d(TAG, "onDataChange: DATA NULL");
+                    callback.onItemIdsLoaded(null, false);
                 } else {
-                    callback.onItemIdsLoaded(null);
+                    Log.d(TAG, "onDataChange: DATA NOT NULL");
+                    GenericTypeIndicator<Map<String, Boolean>> t =
+                            new GenericTypeIndicator<Map<String, Boolean>>() {
+                            };
+                    Map<String, Boolean> itemIds = dataSnapshot.getValue(t);
+                    if (itemIds != null) {
+                        callback.onItemIdsLoaded(Lists.newArrayList(itemIds.keySet()), false);
+                    }
                 }
             }
 

@@ -136,6 +136,11 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     }
 
     @Override
+    public void clearItems() {
+        mItemsAdapter.clearItems();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         mItemsAdapter.clearItems();

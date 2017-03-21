@@ -13,7 +13,7 @@ public interface DataSource {
 
     interface GetItemIdsCallback {
 
-        void onItemIdsLoaded(@Nullable List<String> itemIds);
+        void onItemIdsLoaded(@Nullable List<String> itemIds, boolean itemRemoved);
     }
     interface GetItemCallback {
 

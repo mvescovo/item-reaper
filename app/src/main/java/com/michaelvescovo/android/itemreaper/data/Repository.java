@@ -33,14 +33,19 @@ public class Repository implements DataSource {
     @Override
     public void getItemIds(@NonNull String userId, @NonNull final GetItemIdsCallback callback) {
         if (mCachedItemIds != null) {
-            callback.onItemIdsLoaded(mCachedItemIds);
+            callback.onItemIdsLoaded(mCachedItemIds, false);
         } else {
             mRemoteDataSource.getItemIds(userId, new GetItemIdsCallback() {
                 @Override
-                public void onItemIdsLoaded(@Nullable List<String> itemIds) {
+                public void onItemIdsLoaded(@Nullable List<String> itemIds, boolean itemRemoved) {
                     if (itemIds != null) {
+                        if (mCachedItemIds != null && (mCachedItemIds.size() > itemIds.size())) {
+                            itemRemoved = true;
+                        }
                         mCachedItemIds = ImmutableList.copyOf(itemIds);
-                        callback.onItemIdsLoaded(mCachedItemIds);
+                        callback.onItemIdsLoaded(mCachedItemIds, itemRemoved);
+                    } else {
+                        callback.onItemIdsLoaded(null, false);
                     }
                 }
             });

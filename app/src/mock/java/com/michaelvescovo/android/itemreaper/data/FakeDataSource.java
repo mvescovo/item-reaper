@@ -65,7 +65,7 @@ public class FakeDataSource implements DataSource {
             @Override
             public void itemIdsChanged(List<String> itemIds) {
                 if (itemIds != null) {
-                    callback.onItemIdsLoaded(itemIds);
+                    callback.onItemIdsLoaded(itemIds, false);
                 }
             }
         };

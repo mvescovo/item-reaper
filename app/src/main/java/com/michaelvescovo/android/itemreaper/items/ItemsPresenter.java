@@ -55,12 +55,15 @@ public class ItemsPresenter implements ItemsContract.Presenter {
         EspressoIdlingResource.increment();
         mRepository.getItemIds(userId, new DataSource.GetItemIdsCallback() {
             @Override
-            public void onItemIdsLoaded(@Nullable List<String> itemIds) {
+            public void onItemIdsLoaded(@Nullable List<String> itemIds, boolean itemRemoved) {
                 if (!mItemsLoaded) {
                     mItemsLoaded = true;
                     EspressoIdlingResource.decrement();
                 }
                 if (itemIds != null) {
+                    if (itemRemoved) {
+                        mView.clearItems();
+                    }
                     if (itemIds.size() > 0) {
                         mView.showNoItemsText(false);
                         for (final String itemId : itemIds) {
@@ -71,6 +74,10 @@ public class ItemsPresenter implements ItemsContract.Presenter {
                         mView.setProgressBar(false);
                         mView.showNoItemsText(true);
                     }
+                } else {
+                    mView.clearItems();
+                    mView.setProgressBar(false);
+                    mView.showNoItemsText(true);
                 }
             }
         });
