@@ -21,10 +21,7 @@ import android.net.Uri;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.content.FileProvider;
 
-import com.michaelvescovo.android.itemreaper.util.ImageFile;
-
 import java.io.File;
-import java.io.IOException;
 
 /**
  * A thin wrapper around Android file APIs to make them more testable and allows the injection of a
@@ -41,18 +38,7 @@ public class ImageFileImpl implements ImageFile {
     @Override
     public void create(Context context, String name, String extension) {
         mContext = context;
-
-        File storageDir = context.getFilesDir();
-
-        try {
-            mImageFile = File.createTempFile(
-                    name,  /* prefix */
-                    extension,        /* suffix */
-                    storageDir      /* directory */
-            );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        mImageFile = new File(context.getFilesDir(), name);
     }
 
     @Override
