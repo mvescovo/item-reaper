@@ -51,6 +51,10 @@ public class Item implements Serializable, Comparable {
     private String mImageUrl;
     private boolean mDeceased;
 
+    public Item() {
+        // Firebase required no arg constructor.
+    }
+
     public Item(@NonNull String id) {
         mId = id;
         mDeceased = false;
