@@ -55,6 +55,7 @@ class RemoteDataSource implements DataSource {
                 Log.w(TAG, "loadUserData:onCancelled", databaseError.toException());
             }
         };
+        mDatabase.removeEventListener(itemIdsListener);
         mDatabase.child(path).addValueEventListener(itemIdsListener);
     }
 
@@ -78,6 +79,7 @@ class RemoteDataSource implements DataSource {
                 Log.w(TAG, "loadItemData:onCancelled", databaseError.toException());
             }
         };
+        mDatabase.removeEventListener(itemListener);
         mDatabase.child("items")
                 .child(itemId)
                 .addValueEventListener(itemListener);
