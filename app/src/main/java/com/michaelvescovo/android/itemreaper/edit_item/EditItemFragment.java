@@ -130,6 +130,9 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     private String mExpiryDateString;
     private int mPreviousExpiryDateOption;
     private ArrayAdapter<String> mExpiryDateAdapter;
+    private boolean mPurchaseDateListener;
+    private boolean mExpiryDateListener;
+    private boolean mImageViewListener;
 
     public EditItemFragment() {
     }
@@ -172,7 +175,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                 && getArguments().getString(EditItemActivity.EXTRA_ITEM_ID) != null) {
             mItemId = getArguments().getString(EditItemActivity.EXTRA_ITEM_ID);
         }
-
         configureViews();
 
         /* TEMP */
@@ -181,41 +183,26 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         return root;
     }
 
-    @Override
-    public void onDestroyView() {
-        if (getDialog() != null && getRetainInstance()) {
-            getDialog().setDismissMessage(null);
-        }
-        super.onDestroyView();
-    }
-
     private void configureViews() {
         configurePurchaseDate();
-        mShop.addTextChangedListener(this);
-        mPricePaid.setFilters(createCurrencyFilter());
-        mPricePaid.addTextChangedListener(this);
-        mDiscount.setFilters(createCurrencyFilter());
-        mDiscount.addTextChangedListener(this);
         configureExpiryDate();
-        mCategory.addTextChangedListener(this);
-        mSubCategory.addTextChangedListener(this);
-        mType.addTextChangedListener(this);
-        mSubType.addTextChangedListener(this);
-        mSubType2.addTextChangedListener(this);
-        mSubType3.addTextChangedListener(this);
-        mPrimaryColour.addTextChangedListener(this);
-        mPrimaryColourShade.addTextChangedListener(this);
-        mSecondaryColour.addTextChangedListener(this);
-        mSize.addTextChangedListener(this);
-        mBrand.addTextChangedListener(this);
-        mDescription.addTextChangedListener(this);
-        mNote.addTextChangedListener(this);
+        mPricePaid.setFilters(createCurrencyFilter());
+        mDiscount.setFilters(createCurrencyFilter());
+        mImageViewListener = false;
         mRemoveImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mPresenter.deleteImage();
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (getDialog() != null && getRetainInstance()) {
+            getDialog().setDismissMessage(null);
+        }
+        super.onDestroyView();
     }
 
     private InputFilter[] createCurrencyFilter() {
@@ -235,6 +222,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     }
 
     private void configurePurchaseDate() {
+        mPurchaseDateListener = false;
         String[] dateOptions = getResources().getStringArray(R.array.date_array);
         mPurchaseDateAdapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_item, new ArrayList<>(Arrays.asList(dateOptions)));
@@ -254,6 +242,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     }
 
     private void configureExpiryDate() {
+        mExpiryDateListener = false;
         String[] dateOptions = getResources().getStringArray(R.array.date_array);
         mExpiryDateAdapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_item, new ArrayList<>(Arrays.asList(dateOptions)));
@@ -288,7 +277,9 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                 clearPurchaseDateString();
             }
             mPurchaseDateSpinner.setSelection(mPurchaseDateAdapter.getPosition(selectedOption));
-            mPresenter.itemChanged();
+            if (mPurchaseDateListener) {
+                mPresenter.itemChanged();
+            }
             mPreviousPurchaseDateOption = mPurchaseDateAdapter.getPosition(selectedOption);
         }
     }
@@ -309,7 +300,9 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                 clearExpiryDateString();
             }
             mExpiryDateSpinner.setSelection(mExpiryDateAdapter.getPosition(selectedOption));
-            mPresenter.itemChanged();
+            if (mExpiryDateListener) {
+                mPresenter.itemChanged();
+            }
             mPreviousExpiryDateOption = mExpiryDateAdapter.getPosition(selectedOption);
         }
     }
@@ -358,7 +351,9 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                             mPurchaseDateAdapter.insert(mPurchaseDateString, 0);
                             mPurchaseDateSpinner.setSelection(0);
                         }
-                        mPresenter.itemChanged();
+                        if (mPurchaseDateListener) {
+                            mPresenter.itemChanged();
+                        }
                     }
                 }, currentYear, currentMonth, currentDay);
         datePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -400,7 +395,9 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                             mExpiryDateAdapter.insert(mExpiryDateString, 0);
                             mExpiryDateSpinner.setSelection(0);
                         }
-                        mPresenter.itemChanged();
+                        if (mExpiryDateListener) {
+                            mPresenter.itemChanged();
+                        }
                     }
                 }, currentYear, currentMonth, currentDay);
         datePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -417,7 +414,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         super.onResume();
         mPresenter.editItem(mItemId);
         mCallback.onDialogResumed();
-        mPresenter.itemChanged();
     }
 
     @Override
@@ -576,12 +572,15 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         mExpiryDateString = getSimpleDateFormat().format(mExpiryDate.getTime());
         mExpiryDateAdapter.insert(mExpiryDateString, 0);
         mExpiryDateSpinner.setSelection(0);
+        mPresenter.itemChanged();
+        enableListeners();
     }
 
     @Override
     public void showExistingItem(Item item) {
         // If the fragment is not active, don't allow callbacks to crash the app.
         if (getActivity() != null) {
+            disableListeners();
             showPurchaseDate(item);
             if (item.getShop() != null
                     && !item.getShop().equals(mShop.getText().toString())) {
@@ -665,8 +664,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
             }
             if (item.getImageUrl() != null) {
                 if (!item.getImageUrl().equals(mImageUrl) || mItemImage.getVisibility() == View.GONE) {
-                    mImageUrl = item.getImageUrl();
-                    showImage(mImageUrl);
+                    showImage(item.getImageUrl());
                 }
             } else {
                 mImageUrl = null;
@@ -674,7 +672,52 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                 mRemoveImageButton.setVisibility(View.GONE);
             }
             mDeceased = item.getDeceased();
+            enableListeners();
         }
+    }
+
+    private void disableListeners() {
+        mPurchaseDateListener = false;
+        mShop.removeTextChangedListener(this);
+        mPricePaid.removeTextChangedListener(this);
+        mDiscount.removeTextChangedListener(this);
+        mExpiryDateListener = false;
+        mCategory.removeTextChangedListener(this);
+        mSubCategory.removeTextChangedListener(this);
+        mType.removeTextChangedListener(this);
+        mSubType.removeTextChangedListener(this);
+        mSubType2.removeTextChangedListener(this);
+        mSubType3.removeTextChangedListener(this);
+        mPrimaryColour.removeTextChangedListener(this);
+        mPrimaryColourShade.removeTextChangedListener(this);
+        mSecondaryColour.removeTextChangedListener(this);
+        mSize.removeTextChangedListener(this);
+        mBrand.removeTextChangedListener(this);
+        mDescription.removeTextChangedListener(this);
+        mNote.removeTextChangedListener(this);
+        mImageViewListener = false;
+    }
+
+    private void enableListeners() {
+        mPurchaseDateListener = true;
+        mShop.addTextChangedListener(this);
+        mPricePaid.addTextChangedListener(this);
+        mDiscount.addTextChangedListener(this);
+        mExpiryDateListener = true;
+        mCategory.addTextChangedListener(this);
+        mSubCategory.addTextChangedListener(this);
+        mType.addTextChangedListener(this);
+        mSubType.addTextChangedListener(this);
+        mSubType2.addTextChangedListener(this);
+        mSubType3.addTextChangedListener(this);
+        mPrimaryColour.addTextChangedListener(this);
+        mPrimaryColourShade.addTextChangedListener(this);
+        mSecondaryColour.addTextChangedListener(this);
+        mSize.addTextChangedListener(this);
+        mBrand.addTextChangedListener(this);
+        mDescription.addTextChangedListener(this);
+        mNote.addTextChangedListener(this);
+        mImageViewListener = true;
     }
 
     private void showPurchaseDate(Item item) {
@@ -817,7 +860,9 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                         EspressoIdlingResource.decrement();
                     }
                 });
-        mPresenter.itemChanged();
+        if (mImageViewListener) {
+            mPresenter.itemChanged();
+        }
     }
 
     @Override
