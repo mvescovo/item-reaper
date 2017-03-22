@@ -32,7 +32,6 @@ public class ImageFileImpl implements ImageFile {
     @SuppressWarnings("WeakerAccess")
     @VisibleForTesting
     File mImageFile;
-
     private Context mContext;
 
     @Override

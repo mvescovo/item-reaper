@@ -192,7 +192,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         mRemoveImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPresenter.deleteImage();
+                mPresenter.deleteImage(getContext(), mImageUrl);
             }
         });
     }

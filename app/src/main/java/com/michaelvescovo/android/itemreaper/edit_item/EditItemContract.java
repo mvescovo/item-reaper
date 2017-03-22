@@ -62,7 +62,7 @@ public interface EditItemContract {
 
         void itemChanged();
 
-        void deleteImage();
+        void deleteImage(Context context, String imageUrl);
 
         void clearEditItemCache(String itemId);
 

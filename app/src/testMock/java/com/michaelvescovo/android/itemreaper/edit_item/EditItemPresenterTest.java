@@ -186,7 +186,7 @@ public class EditItemPresenterTest {
 
     @Test
     public void deleteImage_DeletesImage() {
-        mEditItemPresenter.deleteImage();
+        mEditItemPresenter.deleteImage(mContext, mItem.getImageUrl());
         verify(mView).removeImage();
     }
 
