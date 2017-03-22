@@ -50,7 +50,7 @@ public interface EditItemContract {
 
         void doneEditing();
 
-        void takePicture(Context context);
+        void takePicture(Context context, String imageUrl);
 
         void imageAvailable();
 

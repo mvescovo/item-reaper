@@ -134,7 +134,7 @@ public class EditItemPresenterTest {
 
     @Test
     public void takePicture_CreatesFileAndOpensCamera() throws IOException {
-        mEditItemPresenter.takePicture(mContext);
+        mEditItemPresenter.takePicture(mContext, mItem.getImageUrl());
 
         verify(mImageFile).create(any(Context.class), anyString(), anyString());
         verify(mImageFile).getUri();

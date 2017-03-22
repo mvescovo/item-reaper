@@ -444,7 +444,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_take_photo:
-                mPresenter.takePicture(getContext());
+                mPresenter.takePicture(getContext(), mImageUrl);
                 break;
             case R.id.action_select_image:
                 mPresenter.selectImage(getContext());

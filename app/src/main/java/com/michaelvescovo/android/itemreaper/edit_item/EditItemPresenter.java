@@ -24,7 +24,6 @@ import javax.inject.Inject;
 
 class EditItemPresenter implements EditItemContract.Presenter {
 
-    private static final String TAG = "EditItemPresenter";
     private final static String EDIT_ITEM_CALLER = "edit_item";
     private EditItemContract.View mView;
     private Repository mRepository;
@@ -67,7 +66,8 @@ class EditItemPresenter implements EditItemContract.Presenter {
     }
 
     @Override
-    public void takePicture(Context context) {
+    public void takePicture(Context context, String imageUrl) {
+        deleteFile(context, imageUrl);
         createFile(context);
         mView.openCamera(mImageFile.getUri());
     }
@@ -111,11 +111,17 @@ class EditItemPresenter implements EditItemContract.Presenter {
 
     @Override
     public void deleteImage(Context context, String imageUrl) {
-        String filename = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
-        if (filename.startsWith("JPEG_")) {
-            context.deleteFile(filename);
-        }
+        deleteFile(context, imageUrl);
         mView.removeImage();
+    }
+
+    private void deleteFile(Context context, String imageUrl) {
+        if (imageUrl != null) {
+            String filename = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+            if (filename.startsWith("JPEG_")) {
+                context.deleteFile(filename);
+            }
+        }
     }
 
     @Override
