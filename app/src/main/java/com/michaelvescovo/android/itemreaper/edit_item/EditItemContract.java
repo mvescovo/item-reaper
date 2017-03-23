@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.michaelvescovo.android.itemreaper.data.Item;
+import com.michaelvescovo.android.itemreaper.util.ImageFile;
 
 /**
  * @author Michael Vescovo
@@ -27,7 +28,7 @@ public interface EditItemContract {
 
         void showItemsUi();
 
-        void openCamera(Uri saveTo);
+        void openCamera(ImageFile imageFile);
 
         void openImagePicker();
 
@@ -52,7 +53,7 @@ public interface EditItemContract {
 
         void takePicture(Context context, String imageUrl);
 
-        void imageAvailable();
+        void imageAvailable(ImageFile imageFile);
 
         void selectImage(Context context);
 

@@ -75,7 +75,7 @@ class EditItemPresenter implements EditItemContract.Presenter {
     public void takePicture(Context context, String imageUrl) {
         deleteFile(context, imageUrl);
         createFile(context);
-        mView.openCamera(mImageFile.getUri());
+        mView.openCamera(mImageFile);
     }
 
     private void createFile(Context context) {
@@ -86,7 +86,8 @@ class EditItemPresenter implements EditItemContract.Presenter {
     }
 
     @Override
-    public void imageAvailable() {
+    public void imageAvailable(ImageFile imageFile) {
+        mImageFile = imageFile;
         if (mImageFile.exists()) {
             compressImage();
             mView.showImage(mImageFile.getPath());

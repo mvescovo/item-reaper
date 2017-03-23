@@ -29,7 +29,7 @@ public interface ImageFile {
 
     void delete();
 
-    Uri getUri();
+    Uri getUri(Context context);
 
     String getPath();
 }

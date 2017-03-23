@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -41,7 +40,9 @@ import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
+import com.michaelvescovo.android.itemreaper.util.ImageFile;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,6 +66,8 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
 
     public static final int REQUEST_CODE_IMAGE_CAPTURE = 1;
     private static final int REQUEST_CODE_PHOTO_PICKER = 2;
+    private static final String STATE_IMAGE_FILE = "imageFile";
+
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -133,6 +136,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     private boolean mPurchaseDateListener;
     private boolean mExpiryDateListener;
     private boolean mImageViewListener;
+    private ImageFile mImageFile;
 
     public EditItemFragment() {
     }
@@ -144,12 +148,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     @Override
     public void setPresenter(@NonNull EditItemContract.Presenter presenter) {
         mPresenter = presenter;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
     }
 
     @Override
@@ -176,6 +174,11 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
             mItemId = getArguments().getString(EditItemActivity.EXTRA_ITEM_ID);
         }
         configureViews();
+        setRetainInstance(true);
+
+        if (savedInstanceState != null) {
+            mImageFile = (ImageFile) savedInstanceState.getSerializable(STATE_IMAGE_FILE);
+        }
 
         /* TEMP */
 //        mItemId = "1";
@@ -188,13 +191,18 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         configureExpiryDate();
         mPricePaid.setFilters(createCurrencyFilter());
         mDiscount.setFilters(createCurrencyFilter());
-        mImageViewListener = false;
         mRemoveImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mPresenter.deleteImage(getContext(), mImageUrl);
             }
         });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(STATE_IMAGE_FILE, (Serializable) mImageFile);
     }
 
     @Override
@@ -808,10 +816,11 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     }
 
     @Override
-    public void openCamera(Uri saveTo) {
+    public void openCamera(ImageFile imageFile) {
+        mImageFile = imageFile;
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (intent.resolveActivity(getContext().getPackageManager()) != null) {
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, saveTo);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageFile.getUri(getContext()));
             startActivityForResult(intent, REQUEST_CODE_IMAGE_CAPTURE);
         }
     }
@@ -828,7 +837,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_IMAGE_CAPTURE) {
             if (resultCode == RESULT_OK) {
-                mPresenter.imageAvailable();
+                mPresenter.imageAvailable(mImageFile);
             } else {
                 mPresenter.imageCaptureFailed();
             }

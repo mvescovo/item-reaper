@@ -22,21 +22,20 @@ import android.support.annotation.VisibleForTesting;
 import android.support.v4.content.FileProvider;
 
 import java.io.File;
+import java.io.Serializable;
 
 /**
  * A thin wrapper around Android file APIs to make them more testable and allows the injection of a
  * fake implementation for hermetic UI tests.
  */
-public class ImageFileImpl implements ImageFile {
+public class ImageFileImpl implements ImageFile, Serializable {
 
     @SuppressWarnings("WeakerAccess")
     @VisibleForTesting
     File mImageFile;
-    private Context mContext;
 
     @Override
     public void create(Context context, String name, String extension) {
-        mContext = context;
         mImageFile = new File(context.getFilesDir(), name);
     }
 
@@ -51,9 +50,9 @@ public class ImageFileImpl implements ImageFile {
     }
 
     @Override
-    public Uri getUri() {
-        return FileProvider.getUriForFile(mContext,
-                mContext.getPackageName() + ".fileprovider", mImageFile);
+    public Uri getUri(Context context) {
+        return FileProvider.getUriForFile(context,
+                context.getPackageName() + ".fileprovider", mImageFile);
     }
 
     @Override
