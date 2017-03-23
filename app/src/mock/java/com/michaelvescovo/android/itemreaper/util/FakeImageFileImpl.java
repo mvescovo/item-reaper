@@ -28,20 +28,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 
 /**
  * Fake implementation of {@link ImageFile} to inject a fake image in a hermetic test.
  */
-public class FakeImageFileImpl implements ImageFile {
+public class FakeImageFileImpl implements ImageFile, Serializable {
 
     @SuppressWarnings("WeakerAccess")
     @VisibleForTesting
     File mImageFile;
-    private Context mContext;
 
     @Override
     public void create(Context context, String name, String extension) {
-        mContext = context;
         File storageDir = context.getFilesDir();
         try {
             mImageFile = File.createTempFile(
@@ -102,8 +101,8 @@ public class FakeImageFileImpl implements ImageFile {
     }
 
     @Override
-    public Uri getUri() {
-        return FileProvider.getUriForFile(mContext,
-                mContext.getPackageName() + ".fileprovider", mImageFile);
+    public Uri getUri(Context context) {
+        return FileProvider.getUriForFile(context,
+                context.getPackageName() + ".fileprovider", mImageFile);
     }
 }

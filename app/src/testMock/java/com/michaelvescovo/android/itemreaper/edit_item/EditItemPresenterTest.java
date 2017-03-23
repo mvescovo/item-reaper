@@ -135,10 +135,8 @@ public class EditItemPresenterTest {
     @Test
     public void takePicture_CreatesFileAndOpensCamera() throws IOException {
         mEditItemPresenter.takePicture(mContext, mItem.getImageUrl());
-
         verify(mImageFile).create(any(Context.class), anyString(), anyString());
-        verify(mImageFile).getUri();
-        verify(mView).openCamera(any(Uri.class));
+        verify(mView).openCamera(any(ImageFile.class));
     }
 
     @Test
@@ -147,7 +145,7 @@ public class EditItemPresenterTest {
         when(mImageFile.exists()).thenReturn(true);
         when(mImageFile.getPath()).thenReturn(imageUrl);
 
-        mEditItemPresenter.imageAvailable();
+        mEditItemPresenter.imageAvailable(mImageFile);
 
         verify(mView).showImage(contains(imageUrl));
     }
@@ -156,7 +154,7 @@ public class EditItemPresenterTest {
     public void imageAvailable_FileDoesNotExistShowsErrorUi() {
         when(mImageFile.exists()).thenReturn(false);
 
-        mEditItemPresenter.imageAvailable();
+        mEditItemPresenter.imageAvailable(mImageFile);
 
         verify(mView).showImageError();
         verify(mImageFile).delete();

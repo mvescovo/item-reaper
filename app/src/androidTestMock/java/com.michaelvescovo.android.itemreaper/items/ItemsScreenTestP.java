@@ -214,7 +214,7 @@ public class ItemsScreenTestP {
         Intent resultData = new Intent();
         FakeImageFileImpl fakeImageFile = new FakeImageFileImpl();
         fakeImageFile.create(mActivityRule.getActivity(), "fake_image", ".jpg");
-        Uri selectedImageUri = fakeImageFile.getUri();
+        Uri selectedImageUri = fakeImageFile.getUri(mActivityRule.getActivity());
         resultData.setData(selectedImageUri);
         Instrumentation.ActivityResult result =
                 new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
