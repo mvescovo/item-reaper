@@ -96,17 +96,21 @@ class EditItemPresenter implements EditItemContract.Presenter {
     }
 
     private void compressImage() {
-        try {
-            Bitmap bitmap = BitmapFactory.decodeFile(mImageFile.getPath());
-            File file = new File(mImageFile.getPath());
-            OutputStream outputStream;
-            outputStream = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.WEBP, 50, outputStream);
-            outputStream.flush();
-            outputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    Bitmap bitmap = BitmapFactory.decodeFile(mImageFile.getPath());
+                    File file = new File(mImageFile.getPath());
+                    OutputStream outputStream;
+                    outputStream = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.WEBP, 50, outputStream);
+                    outputStream.flush();
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     @Override
