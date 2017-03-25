@@ -51,19 +51,22 @@ public interface EditItemContract {
 
         void doneEditing();
 
-        void takePicture(Context context, String imageUrl);
+        void takePicture(Context context);
 
-        void imageAvailable(ImageFile imageFile);
+        void imageAvailable(@NonNull Context context, @NonNull ImageFile imageFile,
+                            @Nullable String imageUrl);
 
         void selectImage(Context context);
 
-        void imageSelected(Uri uri);
+        void imageSelected(Context context, String imageUrl, Uri uri);
 
         void imageCaptureFailed();
 
         void itemChanged();
 
         void deleteImage(Context context, String imageUrl);
+
+        void deleteFile(Context context, String imageUrl);
 
         void clearEditItemCache(String itemId);
 

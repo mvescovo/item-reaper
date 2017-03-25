@@ -36,7 +36,7 @@ public class ImageFileImpl implements ImageFile, Serializable {
 
     @Override
     public void create(Context context, String name, String extension) {
-        mImageFile = new File(context.getFilesDir(), name);
+        mImageFile = new File(context.getFilesDir(), name + extension);
     }
 
     @Override

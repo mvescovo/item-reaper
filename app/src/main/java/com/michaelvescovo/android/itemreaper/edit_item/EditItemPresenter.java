@@ -1,8 +1,6 @@
 package com.michaelvescovo.android.itemreaper.edit_item;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,9 +12,9 @@ import com.michaelvescovo.android.itemreaper.data.Repository;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 import com.michaelvescovo.android.itemreaper.util.ImageFile;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -72,8 +70,7 @@ class EditItemPresenter implements EditItemContract.Presenter {
     }
 
     @Override
-    public void takePicture(Context context, String imageUrl) {
-        deleteFile(context, imageUrl);
+    public void takePicture(Context context) {
         createFile(context);
         mView.openCamera(mImageFile);
     }
@@ -81,37 +78,20 @@ class EditItemPresenter implements EditItemContract.Presenter {
     private void createFile(Context context) {
         String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmmss",
                 Locale.getDefault()).format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        mImageFile.create(context, imageFileName, ".jpg");
+        String imageFileName = "IMAGE_" + timeStamp;
+        mImageFile.create(context, imageFileName, ".webp");
     }
 
     @Override
-    public void imageAvailable(ImageFile imageFile) {
+    public void imageAvailable(@NonNull Context context, @NonNull ImageFile imageFile,
+                               @Nullable String imageUrl) {
+        deleteImage(context, imageUrl); // delete previous image
         mImageFile = imageFile;
         if (mImageFile.exists()) {
-            compressImage();
             mView.showImage(mImageFile.getPath());
         } else {
             imageCaptureFailed();
         }
-    }
-
-    private void compressImage() {
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    Bitmap bitmap = BitmapFactory.decodeFile(mImageFile.getPath());
-                    File file = new File(mImageFile.getPath());
-                    OutputStream outputStream;
-                    outputStream = new FileOutputStream(file);
-                    bitmap.compress(Bitmap.CompressFormat.WEBP, 50, outputStream);
-                    outputStream.flush();
-                    outputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
     }
 
     @Override
@@ -120,8 +100,46 @@ class EditItemPresenter implements EditItemContract.Presenter {
     }
 
     @Override
-    public void imageSelected(Uri uri) {
-        mView.showImage(uri.toString());
+    public void imageSelected(Context context, String imageUrl, Uri uri) {
+        deleteImage(context, imageUrl); // delete previous image
+        createFile(context);
+        copyUriImageToFile(context, uri);
+        mView.showImage(mImageFile.getPath());
+    }
+
+    private void copyUriImageToFile(Context context, Uri uri) {
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        try {
+            if (context.getContentResolver() != null) {
+                inputStream = context.getContentResolver().openInputStream(uri);
+                outputStream = new FileOutputStream(mImageFile.getPath());
+                copyFile(inputStream, outputStream);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException ignore) {
+                }
+            }
+            if (outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (IOException ignore) {
+                }
+            }
+        }
+    }
+
+    private void copyFile(InputStream inputStream, OutputStream outputStream) throws IOException {
+        byte[] buffer = new byte[1024];
+        int read;
+        while ((read = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, read);
+        }
     }
 
     @Override
@@ -137,14 +155,17 @@ class EditItemPresenter implements EditItemContract.Presenter {
 
     @Override
     public void deleteImage(Context context, String imageUrl) {
-        deleteFile(context, imageUrl);
+        if (imageUrl != null && !imageUrl.startsWith("https://firebasestorage")) {
+            deleteFile(context, imageUrl);
+        }
         mView.removeImage();
     }
 
-    private void deleteFile(Context context, String imageUrl) {
+    @Override
+    public void deleteFile(Context context, String imageUrl) {
         if (imageUrl != null) {
             String filename = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
-            if (filename.startsWith("JPEG_")) {
+            if (filename.startsWith("IMAGE_")) {
                 context.deleteFile(filename);
             }
         }

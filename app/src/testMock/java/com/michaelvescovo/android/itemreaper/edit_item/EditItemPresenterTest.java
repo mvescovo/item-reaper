@@ -134,7 +134,7 @@ public class EditItemPresenterTest {
 
     @Test
     public void takePicture_CreatesFileAndOpensCamera() throws IOException {
-        mEditItemPresenter.takePicture(mContext, mItem.getImageUrl());
+        mEditItemPresenter.takePicture(mContext);
         verify(mImageFile).create(any(Context.class), anyString(), anyString());
         verify(mView).openCamera(any(ImageFile.class));
     }
@@ -145,7 +145,7 @@ public class EditItemPresenterTest {
         when(mImageFile.exists()).thenReturn(true);
         when(mImageFile.getPath()).thenReturn(imageUrl);
 
-        mEditItemPresenter.imageAvailable(mImageFile);
+        mEditItemPresenter.imageAvailable(mContext, mImageFile, "");
 
         verify(mView).showImage(contains(imageUrl));
     }
@@ -154,7 +154,7 @@ public class EditItemPresenterTest {
     public void imageAvailable_FileDoesNotExistShowsErrorUi() {
         when(mImageFile.exists()).thenReturn(false);
 
-        mEditItemPresenter.imageAvailable(mImageFile);
+        mEditItemPresenter.imageAvailable(mContext, mImageFile, "");
 
         verify(mView).showImageError();
         verify(mImageFile).delete();
@@ -178,13 +178,13 @@ public class EditItemPresenterTest {
     public void selectImage_CreatesFileAndSelectsImage() {
         mEditItemPresenter.selectImage(mContext);
         verify(mView).openImagePicker();
-        mEditItemPresenter.imageSelected(mUri);
+        mEditItemPresenter.imageSelected(mContext, ITEM_1.getImageUrl(), mUri);
         verify(mView).showImage(anyString());
     }
 
     @Test
     public void deleteImage_DeletesImage() {
-        mEditItemPresenter.deleteImage(mContext, mItem.getImageUrl());
+        mEditItemPresenter.deleteImage(mContext, "https://firebasestorage");
         verify(mView).removeImage();
     }
 

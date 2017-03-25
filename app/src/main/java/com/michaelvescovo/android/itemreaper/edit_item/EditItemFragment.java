@@ -4,12 +4,15 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +22,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,11 +41,20 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 import com.michaelvescovo.android.itemreaper.util.ImageFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -67,8 +80,9 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public static final int REQUEST_CODE_IMAGE_CAPTURE = 1;
     private static final int REQUEST_CODE_PHOTO_PICKER = 2;
     private static final String STATE_IMAGE_FILE = "imageFile";
-
-
+    private static final int MAX_IMAGE_SIZE = 500; // K
+    private static final int COMPRESSION_AMOUNT = 50;
+    private static final String TAG = "EditItemPresenter";
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.appbar_title)
@@ -117,7 +131,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     Button mRemoveImageButton;
     @BindView(R.id.coordinator_layout)
     CoordinatorLayout mCoordinatorLayout;
-
     private EditItemContract.Presenter mPresenter;
     private Callback mCallback;
     private boolean mIsLargeScreen;
@@ -137,6 +150,9 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     private boolean mExpiryDateListener;
     private boolean mImageViewListener;
     private ImageFile mImageFile;
+    private FirebaseStorage mFirebaseStorage;
+    private StorageReference mItemPhotosStorageReference;
+    private UploadTask mUploadTask;
 
     public EditItemFragment() {
     }
@@ -148,6 +164,14 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     @Override
     public void setPresenter(@NonNull EditItemContract.Presenter presenter) {
         mPresenter = presenter;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        mFirebaseStorage = FirebaseStorage.getInstance();
+        mItemPhotosStorageReference = mFirebaseStorage.getReference().child("item_photos");
     }
 
     @Override
@@ -174,7 +198,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
             mItemId = getArguments().getString(EditItemActivity.EXTRA_ITEM_ID);
         }
         configureViews();
-        setRetainInstance(true);
 
         if (savedInstanceState != null) {
             mImageFile = (ImageFile) savedInstanceState.getSerializable(STATE_IMAGE_FILE);
@@ -446,21 +469,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public void onDetach() {
         super.onDetach();
         mCallback = null;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_take_photo:
-                mPresenter.takePicture(getContext(), mImageUrl);
-                break;
-            case R.id.action_select_image:
-                mPresenter.selectImage(getContext());
-                break;
-            case R.id.action_delete_item:
-                mPresenter.deleteItem(createCurrentItem());
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -816,6 +824,21 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_take_photo:
+                mPresenter.takePicture(getContext());
+                break;
+            case R.id.action_select_image:
+                mPresenter.selectImage(getContext());
+                break;
+            case R.id.action_delete_item:
+                mPresenter.deleteItem(createCurrentItem());
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void openCamera(ImageFile imageFile) {
         mImageFile = imageFile;
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -837,14 +860,14 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_IMAGE_CAPTURE) {
             if (resultCode == RESULT_OK) {
-                mPresenter.imageAvailable(mImageFile);
+                mPresenter.imageAvailable(getContext(), mImageFile, mImageUrl);
             } else {
                 mPresenter.imageCaptureFailed();
             }
         } else if (requestCode == REQUEST_CODE_PHOTO_PICKER) {
             if (resultCode == RESULT_OK) {
                 Uri selectedImageUri = data.getData();
-                mPresenter.imageSelected(selectedImageUri);
+                mPresenter.imageSelected(getContext(), mImageUrl, selectedImageUri);
             } else {
                 mPresenter.imageCaptureFailed();
             }
@@ -872,12 +895,96 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         if (mImageViewListener) {
             mPresenter.itemChanged();
         }
+        if (!mImageUrl.startsWith("https://firebasestorage") && (mUploadTask == null
+                || !mUploadTask.isInProgress())) {
+            compressImage();
+        }
+    }
+
+    private void compressImage() {
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    File file = new File(mImageUrl);
+                    int file_size = Integer.parseInt(String.valueOf(file.length() / 1024));
+                    int compression = COMPRESSION_AMOUNT;
+                    while (file_size > MAX_IMAGE_SIZE) {
+                        Log.d(TAG, "imageAvailable: size: " + file_size);
+                        Bitmap bitmap = BitmapFactory.decodeFile(mImageUrl);
+                        OutputStream outputStream = new FileOutputStream(file);
+                        bitmap.compress(Bitmap.CompressFormat.WEBP, compression, outputStream);
+                        outputStream.flush();
+                        outputStream.close();
+                        file_size = Integer.parseInt(String.valueOf(file.length() / 1024));
+                        Log.d(TAG, "imageAvailable: size: " + file_size);
+                        if (compression > 20) {
+                            compression -= 10;
+                        }
+                    }
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                uploadImage();
+                            }
+                        });
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    private void uploadImage() {
+        Uri uri = Uri.fromFile(new File(mImageUrl));
+        StorageReference photoRef = mItemPhotosStorageReference.child(uri.getLastPathSegment());
+        mUploadTask = photoRef.putFile(uri);
+
+        // Register observers to listen for when the download is done or if it fails
+        mUploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                if (downloadUrl != null) {
+                    mPresenter.deleteFile(getContext(), mImageUrl);
+                    mImageUrl = downloadUrl.toString();
+                    mPresenter.itemChanged();
+                }
+            }
+        });
     }
 
     @Override
     public void removeImage() {
-        mImageUrl = null;
-        mPresenter.itemChanged();
+        if (mImageUrl != null) {
+            if (mImageUrl.startsWith("https://firebasestorage")) {
+                removeImageFromFirebase();
+            }
+            mImageUrl = null;
+            mPresenter.itemChanged();
+        }
+    }
+
+    private void removeImageFromFirebase() {
+        StorageReference photoRef = mFirebaseStorage.getReferenceFromUrl(mImageUrl);
+        photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // File deleted successfully
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Uh-oh, an error occurred!
+            }
+        });
     }
 
     @Override
