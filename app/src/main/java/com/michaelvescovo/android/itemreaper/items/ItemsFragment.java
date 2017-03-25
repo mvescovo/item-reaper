@@ -29,6 +29,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.Item;
 
@@ -70,6 +72,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     private String mImageUrl;
     private Item mDeletedItem;
     private MediaPlayer mMediaPlayer;
+    private FirebaseStorage mFirebaseStorage;
 
     public ItemsFragment() {
     }
@@ -103,6 +106,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 && savedInstanceState.getSerializable(EXTRA_DELETED_ITEM) != null) {
             mDeletedItem = (Item) savedInstanceState.getSerializable(EXTRA_DELETED_ITEM);
         }
+        mFirebaseStorage = FirebaseStorage.getInstance();
     }
 
     @Nullable
@@ -165,7 +169,10 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                     super.onDismissed(transientBottomBar, event);
                     // There seems to be a bug where onDismissed is called before onShown.
                     if (snackbarShown[0]) {
-                        mDeletedItem = null;
+                        if (mDeletedItem != null) {
+                            removeImageFromFirebase();
+                            mDeletedItem = null;
+                        }
                     }
                 }
 
@@ -176,6 +183,14 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 }
             });
             snackbar.show();
+        }
+    }
+
+    private void removeImageFromFirebase() {
+        if (mDeletedItem.getImageUrl() != null) {
+            StorageReference photoRef = mFirebaseStorage.getReferenceFromUrl(
+                    mDeletedItem.getImageUrl());
+            photoRef.delete();
         }
     }
 
