@@ -4,8 +4,6 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -44,16 +42,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 import com.michaelvescovo.android.itemreaper.util.ImageFile;
+import com.michaelvescovo.android.itemreaper.util.ImageUploadService;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -67,6 +61,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
+import static com.michaelvescovo.android.itemreaper.util.ImageUploadService.ACTION_UPLOAD_IMAGE;
+import static com.michaelvescovo.android.itemreaper.util.ImageUploadService.EXTRA_ITEM;
 import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getPriceFromTotalCents;
 
 /**
@@ -79,9 +75,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public static final int REQUEST_CODE_IMAGE_CAPTURE = 1;
     private static final int REQUEST_CODE_PHOTO_PICKER = 2;
     private static final String STATE_IMAGE_FILE = "imageFile";
-    private static final int COMPRESSION_AMOUNT = 50;
-    private static final int SCALE_WIDTH = 1920;
-    private static final int SCALE_HEIGHT = 1080;
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -151,8 +144,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     private boolean mImageViewListener;
     private ImageFile mImageFile;
     private FirebaseStorage mFirebaseStorage;
-    private StorageReference mItemPhotosStorageReference;
-    private UploadTask mUploadTask;
 
     public EditItemFragment() {
     }
@@ -171,7 +162,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         mFirebaseStorage = FirebaseStorage.getInstance();
-        mItemPhotosStorageReference = mFirebaseStorage.getReference().child("item_photos");
     }
 
     @Override
@@ -892,74 +882,15 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                         EspressoIdlingResource.decrement();
                     }
                 });
+        if (!mImageUrl.startsWith("https://firebasestorage")) {
+            Intent intent = new Intent(getContext(), ImageUploadService.class);
+            intent.setAction(ACTION_UPLOAD_IMAGE);
+            intent.putExtra(EXTRA_ITEM, createCurrentItem());
+            getActivity().startService(intent);
+        }
         if (mImageViewListener) {
             mPresenter.itemChanged();
         }
-        if (!mImageUrl.startsWith("https://firebasestorage") && (mUploadTask == null
-                || !mUploadTask.isInProgress())) {
-            compressImage(imageUrl);
-        }
-    }
-
-    private void compressImage(final String imageUrl) {
-        new Thread(new Runnable() {
-            public void run() {
-                // Get the dimensions of the bitmap
-                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-                bmOptions.inJustDecodeBounds = true;
-                BitmapFactory.decodeFile(imageUrl, bmOptions);
-                int photoW = bmOptions.outWidth;
-                int photoH = bmOptions.outHeight;
-                // Determine how much to scale down the image
-                int scaleFactor = Math.min(photoW / SCALE_WIDTH, photoH / SCALE_HEIGHT);
-                // Decode the image file into a Bitmap sized to fill the View
-                bmOptions.inJustDecodeBounds = false;
-                bmOptions.inSampleSize = scaleFactor;
-                Bitmap bitmap = BitmapFactory.decodeFile(imageUrl, bmOptions);
-                // Compress into WEBP format
-                try {
-                    File file = new File(imageUrl);
-                    OutputStream outputStream = new FileOutputStream(file);
-                    bitmap.compress(Bitmap.CompressFormat.WEBP, COMPRESSION_AMOUNT, outputStream);
-                    outputStream.flush();
-                    outputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if (getActivity() != null) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            uploadImage(imageUrl);
-                        }
-                    });
-                }
-            }
-        }).start();
-    }
-
-    private void uploadImage(final String imageUrl) {
-        Uri uri = Uri.fromFile(new File(imageUrl));
-        StorageReference photoRef = mItemPhotosStorageReference.child(uri.getLastPathSegment());
-        mUploadTask = photoRef.putFile(uri);
-
-        // Register observers to listen for when the download is done or if it fails
-        mUploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                if (downloadUrl != null) {
-                    mPresenter.deleteFile(getContext(), imageUrl);
-                    mImageUrl = downloadUrl.toString();
-                    mPresenter.itemChanged();
-                }
-            }
-        });
     }
 
     @Override

@@ -17,6 +17,7 @@
         <activity android:name=".auth.AuthActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -43,6 +44,11 @@
             android:label="@string/title_activity_item_details"
             android:parentActivityName=".items.ItemsActivity">
         </activity>
+
+        <service
+            android:name=".util.ImageUploadService"
+            android:exported="false">
+        </service>
 
     </application>
 
