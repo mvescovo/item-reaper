@@ -22,7 +22,6 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -80,9 +79,10 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public static final int REQUEST_CODE_IMAGE_CAPTURE = 1;
     private static final int REQUEST_CODE_PHOTO_PICKER = 2;
     private static final String STATE_IMAGE_FILE = "imageFile";
-    private static final int MAX_IMAGE_SIZE = 500; // K
     private static final int COMPRESSION_AMOUNT = 50;
-    private static final String TAG = "EditItemPresenter";
+    private static final int SCALE_WIDTH = 1920;
+    private static final int SCALE_HEIGHT = 1080;
+
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.appbar_title)
@@ -875,7 +875,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     }
 
     @Override
-    public void showImage(@NonNull String imageUrl) {
+    public void showImage(@NonNull final String imageUrl) {
         mImageUrl = imageUrl;
         mItemImage.setVisibility(View.VISIBLE);
         mRemoveImageButton.setVisibility(View.VISIBLE);
@@ -897,47 +897,49 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         }
         if (!mImageUrl.startsWith("https://firebasestorage") && (mUploadTask == null
                 || !mUploadTask.isInProgress())) {
-            compressImage();
+            compressImage(imageUrl);
         }
     }
 
-    private void compressImage() {
+    private void compressImage(final String imageUrl) {
         new Thread(new Runnable() {
             public void run() {
+                // Get the dimensions of the bitmap
+                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                bmOptions.inJustDecodeBounds = true;
+                BitmapFactory.decodeFile(imageUrl, bmOptions);
+                int photoW = bmOptions.outWidth;
+                int photoH = bmOptions.outHeight;
+                // Determine how much to scale down the image
+                int scaleFactor = Math.min(photoW / SCALE_WIDTH, photoH / SCALE_HEIGHT);
+                // Decode the image file into a Bitmap sized to fill the View
+                bmOptions.inJustDecodeBounds = false;
+                bmOptions.inSampleSize = scaleFactor;
+                Bitmap bitmap = BitmapFactory.decodeFile(imageUrl, bmOptions);
+                // Compress into WEBP format
                 try {
-                    File file = new File(mImageUrl);
-                    int file_size = Integer.parseInt(String.valueOf(file.length() / 1024));
-                    int compression = COMPRESSION_AMOUNT;
-                    while (file_size > MAX_IMAGE_SIZE) {
-                        Log.d(TAG, "imageAvailable: size: " + file_size);
-                        Bitmap bitmap = BitmapFactory.decodeFile(mImageUrl);
-                        OutputStream outputStream = new FileOutputStream(file);
-                        bitmap.compress(Bitmap.CompressFormat.WEBP, compression, outputStream);
-                        outputStream.flush();
-                        outputStream.close();
-                        file_size = Integer.parseInt(String.valueOf(file.length() / 1024));
-                        Log.d(TAG, "imageAvailable: size: " + file_size);
-                        if (compression > 20) {
-                            compression -= 10;
-                        }
-                    }
-                    if (getActivity() != null) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                uploadImage();
-                            }
-                        });
-                    }
+                    File file = new File(imageUrl);
+                    OutputStream outputStream = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.WEBP, COMPRESSION_AMOUNT, outputStream);
+                    outputStream.flush();
+                    outputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
+                }
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            uploadImage(imageUrl);
+                        }
+                    });
                 }
             }
         }).start();
     }
 
-    private void uploadImage() {
-        Uri uri = Uri.fromFile(new File(mImageUrl));
+    private void uploadImage(final String imageUrl) {
+        Uri uri = Uri.fromFile(new File(imageUrl));
         StorageReference photoRef = mItemPhotosStorageReference.child(uri.getLastPathSegment());
         mUploadTask = photoRef.putFile(uri);
 
@@ -950,10 +952,9 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 if (downloadUrl != null) {
-                    mPresenter.deleteFile(getContext(), mImageUrl);
+                    mPresenter.deleteFile(getContext(), imageUrl);
                     mImageUrl = downloadUrl.toString();
                     mPresenter.itemChanged();
                 }
