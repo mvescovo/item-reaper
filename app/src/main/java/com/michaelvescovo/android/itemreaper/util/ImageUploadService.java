@@ -15,8 +15,6 @@ import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.data.Repository;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -36,7 +34,6 @@ public class ImageUploadService extends IntentService {
     @Inject
     public SharedPreferencesHelper mSharedPreferencesHelper;
     private FirebaseStorage mFirebaseStorage;
-    private Map<String, UploadTask> mTasks;
 
     public ImageUploadService() {
         super("ImageUploadService");
@@ -53,7 +50,6 @@ public class ImageUploadService extends IntentService {
                 .build()
                 .inject(this);
         mFirebaseStorage = FirebaseStorage.getInstance();
-        mTasks = new HashMap<>();
     }
 
     @Override
@@ -62,7 +58,11 @@ public class ImageUploadService extends IntentService {
             final String action = intent.getAction();
             if (ACTION_UPLOAD_IMAGE.equals(action)) {
                 Item item = (Item) intent.getSerializableExtra(EXTRA_ITEM);
-                uploadImage(item);
+                boolean uploading = mSharedPreferencesHelper.imageUploading(item.getId());
+                if (!uploading) {
+                    mSharedPreferencesHelper.setImageUploading(item.getId());
+                    uploadImage(item);
+                }
             } else if (ACTION_REMOVE_IMAGE.equals(action)) {
                 Item item = (Item) intent.getSerializableExtra(EXTRA_ITEM);
                 removeImage(item);
@@ -87,11 +87,10 @@ public class ImageUploadService extends IntentService {
                         deleteItemFile(item);
                         item.setImageUrl(downloadUrl.toString());
                         mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
-                        mTasks.remove(item.getId());
+                        mSharedPreferencesHelper.removeImageUploading(item.getId());
                     }
                 }
             });
-            mTasks.put(item.getId(), uploadTask);
         }
     }
 
@@ -104,13 +103,6 @@ public class ImageUploadService extends IntentService {
                 item.setImageUrl(null);
                 mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
             } else {
-                UploadTask task = mTasks.get(item.getId());
-                if (task != null) {
-                    if (task.isInProgress()) {
-                        task.cancel();
-                    }
-                    mTasks.remove(item.getId());
-                }
                 deleteItemFile(item);
                 item.setImageUrl(null);
                 mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);

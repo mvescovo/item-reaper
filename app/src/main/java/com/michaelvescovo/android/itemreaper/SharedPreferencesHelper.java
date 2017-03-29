@@ -23,7 +23,7 @@ import android.content.SharedPreferences;
 public class SharedPreferencesHelper {
 
     static final String KEY_USER_ID = "user_id";
-    static final String KEY_DELETED_ITEM_ID = "deleted_item_id";
+    private static final String KEY_IMAGE_UPLOADING = "image_uploading_";
     private final SharedPreferences mSharedPreferences;
 
     SharedPreferencesHelper(SharedPreferences sharedPreferences) {
@@ -38,5 +38,21 @@ public class SharedPreferencesHelper {
 
     public String getUserId() {
         return mSharedPreferences.getString(KEY_USER_ID, "unknown_user");
+    }
+
+    public boolean imageUploading(String itemId) {
+        return mSharedPreferences.getBoolean(KEY_IMAGE_UPLOADING + itemId, false);
+    }
+
+    public void setImageUploading(String itemId) {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putBoolean(KEY_IMAGE_UPLOADING + itemId, true);
+        editor.commit();
+    }
+
+    public void removeImageUploading(String itemId) {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.remove(KEY_IMAGE_UPLOADING + itemId);
+        editor.commit();
     }
 }
