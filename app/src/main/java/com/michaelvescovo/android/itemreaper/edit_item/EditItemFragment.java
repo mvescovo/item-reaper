@@ -78,6 +78,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public static final int REQUEST_CODE_IMAGE_CAPTURE = 1;
     private static final int REQUEST_CODE_PHOTO_PICKER = 2;
     private static final String STATE_IMAGE_FILE = "imageFile";
+    private static final String STATE_IMAGE_COMPRESSING = "imageCompressing";
     private static final int COMPRESSION_AMOUNT = 50;
     private static final int SCALE_WIDTH = 1920;
     private static final int SCALE_HEIGHT = 1080;
@@ -150,6 +151,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     private boolean mExpiryDateListener;
     private boolean mImageViewListener;
     private ImageFile mImageFile;
+    private boolean mCompressing;
 
     public EditItemFragment() {
     }
@@ -196,6 +198,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
 
         if (savedInstanceState != null) {
             mImageFile = (ImageFile) savedInstanceState.getSerializable(STATE_IMAGE_FILE);
+            mCompressing = savedInstanceState.getBoolean(STATE_IMAGE_COMPRESSING);
         }
 
         /* TEMP */
@@ -221,6 +224,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(STATE_IMAGE_FILE, (Serializable) mImageFile);
+        outState.putBoolean(STATE_IMAGE_COMPRESSING, mCompressing);
     }
 
     @Override
@@ -438,6 +442,10 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     @Override
     public void onResume() {
         super.onResume();
+        if (mCompressing) {
+            setInteractionEnabled(false);
+            setProgressBar(true);
+        }
         mPresenter.editItem(mItemId);
         mCallback.onDialogResumed();
     }
@@ -916,6 +924,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
 
     @Override
     public void compressImage(@NonNull final String imagePath) {
+        mCompressing = true;
         new Thread(new Runnable() {
             public void run() {
                 // Get the dimensions of the bitmap
@@ -944,6 +953,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                         @Override
                         public void run() {
                             mPresenter.imageCompressed(imagePath);
+                            mCompressing = false;
                         }
                     });
                 }
