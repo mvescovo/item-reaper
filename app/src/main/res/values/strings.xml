@@ -57,7 +57,7 @@
     <string name="expire_button_description">Expire item</string>
     <string name="item_expired">Item Expired</string>
     <string name="undo">Undo</string>
-    <string name="item_unexpired">Item restored</string>
+    <string name="item_unexpired">Item Revived</string>
     <string name="item_image">Item image</string>
 
     <!--ItemDetails-->
