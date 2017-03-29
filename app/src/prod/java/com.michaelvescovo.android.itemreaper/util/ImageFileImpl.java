@@ -45,7 +45,10 @@ public class ImageFileImpl implements ImageFile, Serializable {
     }
 
     @Override
-    public void delete() {
+    public void delete(Context context) {
+        if (mImageFile != null) {
+            context.deleteFile(mImageFile.getName());
+        }
         mImageFile = null;
     }
 

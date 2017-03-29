@@ -27,7 +27,7 @@ public interface ImageFile {
 
     boolean exists();
 
-    void delete();
+    void delete(Context context);
 
     Uri getUri(Context context);
 

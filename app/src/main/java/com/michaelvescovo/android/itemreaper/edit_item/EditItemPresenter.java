@@ -59,9 +59,50 @@ class EditItemPresenter implements EditItemContract.Presenter {
         }
     }
 
+    private void createNewItem() {
+        EspressoIdlingResource.increment();
+        mRepository.getNewItemId(mSharedPreferencesHelper.getUserId(), new DataSource.GetNewItemIdCallback() {
+            @Override
+            public void onNewItemIdLoaded(@Nullable String newItemId) {
+                EspressoIdlingResource.decrement();
+                if (newItemId != null) {
+                    mView.setNewItemId(newItemId);
+                    mView.setDefaultDates();
+                }
+            }
+        });
+    }
+
+    private void loadExistingItem(String itemId) {
+        itemLoaded = false;
+        EspressoIdlingResource.increment();
+        mRepository.getItem(itemId, EDIT_ITEM_CALLER, new DataSource.GetItemCallback() {
+            @Override
+            public void onItemLoaded(@Nullable Item item) {
+                if (!itemLoaded) {
+                    itemLoaded = true;
+                    EspressoIdlingResource.decrement();
+                }
+                mView.showExistingItem(item);
+            }
+        });
+    }
+
     @Override
     public void saveItem(@NonNull Item item) {
         mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
+    }
+
+    @Override
+    public void deleteItem(@NonNull Item item) {
+        mRepository.deleteItem(mSharedPreferencesHelper.getUserId(), item);
+        mView.passDeletedItemToItemsUi();
+        mView.showItemsUi();
+    }
+
+    @Override
+    public void itemChanged() {
+        mView.validateItem();
     }
 
     @Override
@@ -83,28 +124,48 @@ class EditItemPresenter implements EditItemContract.Presenter {
     }
 
     @Override
-    public void imageAvailable(@NonNull Context context, @NonNull ImageFile imageFile,
-                               @Nullable String imageUrl) {
-        deleteImage(context, imageUrl); // delete previous image
-        mImageFile = imageFile;
-        if (mImageFile.exists()) {
-            mView.showImage(mImageFile.getPath());
-        } else {
-            imageCaptureFailed();
-        }
-    }
-
-    @Override
-    public void selectImage(Context context) {
+    public void selectImage() {
         mView.openImagePicker();
     }
 
     @Override
-    public void imageSelected(Context context, String imageUrl, Uri uri) {
-        deleteImage(context, imageUrl); // delete previous image
+    public void imageAvailable(@NonNull ImageFile imageFile) {
+        mView.setProgressBar(true);
+        mView.setInteractionEnabled(false);
+        mView.removeImage();
+        if (imageFile.exists()) {
+            mView.compressImage(imageFile.getPath());
+
+        } else {
+            mView.setProgressBar(false);
+            mView.setInteractionEnabled(true);
+            mView.showImageError();
+        }
+    }
+
+    @Override
+    public void imageSelected(Context context, Uri uri) {
+        mView.setProgressBar(true);
+        mView.setInteractionEnabled(false);
+        mView.removeImage();
         createFile(context);
         copyUriImageToFile(context, uri);
-        mView.showImage(mImageFile.getPath());
+        mView.compressImage(mImageFile.getPath());
+    }
+
+    @Override
+    public void imageCompressed(@NonNull String imageUrl) {
+        mView.setProgressBar(false);
+        mView.setInteractionEnabled(true);
+        mView.showImage(imageUrl);
+    }
+
+    @Override
+    public void imageCaptureFailed(@NonNull Context context, @Nullable ImageFile imageFile) {
+        mView.showImageError();
+        if (imageFile != null && imageFile.exists()) {
+            imageFile.delete(context);
+        }
     }
 
     private void copyUriImageToFile(Context context, Uri uri) {
@@ -143,72 +204,12 @@ class EditItemPresenter implements EditItemContract.Presenter {
     }
 
     @Override
-    public void imageCaptureFailed() {
-        mView.showImageError();
-        mImageFile.delete();
-    }
-
-    @Override
-    public void itemChanged() {
-        mView.validateItem();
-    }
-
-    @Override
-    public void deleteImage(Context context, String imageUrl) {
-        if (imageUrl != null && !imageUrl.startsWith("https://firebasestorage")) {
-            deleteFile(context, imageUrl);
-        }
+    public void deleteImage() {
         mView.removeImage();
-    }
-
-    @Override
-    public void deleteFile(Context context, String imageUrl) {
-        if (imageUrl != null) {
-            String filename = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
-            if (filename.startsWith("IMAGE_")) {
-                context.deleteFile(filename);
-            }
-        }
     }
 
     @Override
     public void clearEditItemCache(@NonNull String itemId) {
         mRepository.refreshItem(itemId);
-    }
-
-    @Override
-    public void deleteItem(@NonNull Item item) {
-        mRepository.deleteItem(mSharedPreferencesHelper.getUserId(), item);
-        mView.passDeletedItemToItemsUi();
-        mView.showItemsUi();
-    }
-
-    private void createNewItem() {
-        EspressoIdlingResource.increment();
-        mRepository.getNewItemId(mSharedPreferencesHelper.getUserId(), new DataSource.GetNewItemIdCallback() {
-            @Override
-            public void onNewItemIdLoaded(@Nullable String newItemId) {
-                EspressoIdlingResource.decrement();
-                if (newItemId != null) {
-                    mView.setNewItemId(newItemId);
-                    mView.setDefaultDates();
-                }
-            }
-        });
-    }
-
-    private void loadExistingItem(String itemId) {
-        itemLoaded = false;
-        EspressoIdlingResource.increment();
-        mRepository.getItem(itemId, EDIT_ITEM_CALLER, new DataSource.GetItemCallback() {
-            @Override
-            public void onItemLoaded(@Nullable Item item) {
-                if (!itemLoaded) {
-                    itemLoaded = true;
-                    EspressoIdlingResource.decrement();
-                }
-                mView.showExistingItem(item);
-            }
-        });
     }
 }

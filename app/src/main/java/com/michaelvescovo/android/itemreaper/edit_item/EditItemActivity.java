@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
 import com.michaelvescovo.android.itemreaper.R;
@@ -30,6 +31,10 @@ public class EditItemActivity extends AppCompatActivity
         implements EditItemFragment.Callback {
 
     public static final String EXTRA_ITEM_ID = "com.michaelvescovo.android.itemreaper.item_id";
+
+    MenuItem mTakePhotoMenuItem;
+    MenuItem mSelectImageMenuItem;
+    MenuItem mDeleteItemMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +82,14 @@ public class EditItemActivity extends AppCompatActivity
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        mTakePhotoMenuItem = menu.findItem(R.id.action_take_photo);
+        mSelectImageMenuItem = menu.findItem(R.id.action_select_image);
+        mDeleteItemMenuItem = menu.findItem(R.id.action_delete_item);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public void configureSupportActionBar(Toolbar toolbar, Drawable icon) {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -102,6 +115,19 @@ public class EditItemActivity extends AppCompatActivity
     @Override
     public void onDoneEditing() {
         // Nothing to do here.
+    }
+
+    @Override
+    public void editMenuEnabled(boolean enabled) {
+        if (mTakePhotoMenuItem != null) {
+            mTakePhotoMenuItem.setEnabled(enabled);
+        }
+        if (mSelectImageMenuItem != null) {
+            mSelectImageMenuItem.setEnabled(enabled);
+        }
+        if (mDeleteItemMenuItem != null) {
+            mDeleteItemMenuItem.setEnabled(enabled);
+        }
     }
 
     @VisibleForTesting

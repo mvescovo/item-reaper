@@ -18,6 +18,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -59,7 +60,6 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     private static final String EDIT_ITEM_DIALOG = "edit_item_dialog";
     private static final String ITEM_DETAILS_DIALOG = "item_details_dialog";
     private static final String FRAGMENT_ITEMS = "fragment_items";
-    private static final String FRAGMENT_ITEM_DETAILS = "fragment_item_details";
     public static final int REQUEST_CODE_ITEM_DELETED = 1;
     public static final String EXTRA_DELETED_ITEM = "deleted_item";
 
@@ -71,6 +71,9 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     FloatingActionButton mEditItemButton;
     @BindView(R.id.coordinator_layout)
     CoordinatorLayout mCoordinatorLayout;
+    MenuItem mTakePhotoMenuItem;
+    MenuItem mSelectImageMenuItem;
+    MenuItem mDeleteItemMenuItem;
 
     @Inject
     ItemsPresenter mItemsPresenter;
@@ -160,6 +163,14 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
             getMenuInflater().inflate(R.menu.item_details_fragment_menu, menu);
         }
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        mTakePhotoMenuItem = menu.findItem(R.id.action_take_photo);
+        mSelectImageMenuItem = menu.findItem(R.id.action_select_image);
+        mDeleteItemMenuItem = menu.findItem(R.id.action_delete_item);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -280,6 +291,19 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     public void onDoneEditing() {
         if (mItemDetailsFragment != null) {
             mCurrentDialogName = ITEM_DETAILS_DIALOG;
+        }
+    }
+
+    @Override
+    public void editMenuEnabled(boolean enabled) {
+        if (mTakePhotoMenuItem != null) {
+            mTakePhotoMenuItem.setEnabled(enabled);
+        }
+        if (mSelectImageMenuItem != null) {
+            mSelectImageMenuItem.setEnabled(enabled);
+        }
+        if (mDeleteItemMenuItem != null) {
+            mDeleteItemMenuItem.setEnabled(enabled);
         }
     }
 

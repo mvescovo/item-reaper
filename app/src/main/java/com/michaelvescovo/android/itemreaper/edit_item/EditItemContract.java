@@ -20,6 +20,8 @@ public interface EditItemContract {
 
         void setProgressBar(boolean active);
 
+        void setInteractionEnabled(boolean enabled);
+
         void setNewItemId(String itemId);
 
         void setDefaultDates();
@@ -41,6 +43,8 @@ public interface EditItemContract {
         void removeImage();
 
         void passDeletedItemToItemsUi();
+
+        void compressImage(@NonNull String imageUrl);
     }
 
     interface Presenter {
@@ -53,23 +57,22 @@ public interface EditItemContract {
 
         void takePicture(Context context);
 
-        void imageAvailable(@NonNull Context context, @NonNull ImageFile imageFile,
-                            @Nullable String imageUrl);
+        void imageAvailable(@NonNull ImageFile imageFile);
 
-        void selectImage(Context context);
+        void selectImage();
 
-        void imageSelected(Context context, String imageUrl, Uri uri);
+        void imageSelected(Context context, Uri uri);
 
-        void imageCaptureFailed();
+        void imageCaptureFailed(@NonNull Context context, @Nullable ImageFile imageFile);
 
         void itemChanged();
 
-        void deleteImage(Context context, String imageUrl);
-
-        void deleteFile(Context context, String imageUrl);
+        void deleteImage();
 
         void clearEditItemCache(String itemId);
 
         void deleteItem(@NonNull Item item);
+
+        void imageCompressed(@NonNull String imageUrl);
     }
 }

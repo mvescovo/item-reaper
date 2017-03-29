@@ -1,16 +1,12 @@
 package com.michaelvescovo.android.itemreaper.util;
 
 import android.app.IntentService;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
@@ -19,9 +15,8 @@ import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.data.Repository;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -33,18 +28,15 @@ import javax.inject.Inject;
 public class ImageUploadService extends IntentService {
 
     public static final String ACTION_UPLOAD_IMAGE = "com.michaelvescovo.android.itemreaper.util.action.UPLOAD_IMAGE";
+    public static final String ACTION_REMOVE_IMAGE = "com.michaelvescovo.android.itemreaper.util.action.REMOVE_IMAGE";
     public static final String EXTRA_ITEM = "com.michaelvescovo.android.itemreaper.util.extra.ITEM";
-    private static final int COMPRESSION_AMOUNT = 50;
-    private static final int SCALE_WIDTH = 1920;
-    private static final int SCALE_HEIGHT = 1080;
 
     @Inject
     public Repository mRepository;
     @Inject
     public SharedPreferencesHelper mSharedPreferencesHelper;
     private FirebaseStorage mFirebaseStorage;
-    private UploadTask mUploadTask;
-    private Item mItem;
+    private Map<String, UploadTask> mTasks;
 
     public ImageUploadService() {
         super("ImageUploadService");
@@ -61,6 +53,7 @@ public class ImageUploadService extends IntentService {
                 .build()
                 .inject(this);
         mFirebaseStorage = FirebaseStorage.getInstance();
+        mTasks = new HashMap<>();
     }
 
     @Override
@@ -68,69 +61,68 @@ public class ImageUploadService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_UPLOAD_IMAGE.equals(action)) {
-                mItem = (Item) intent.getSerializableExtra(EXTRA_ITEM);
-                compressImage(mItem.getImageUrl());
+                Item item = (Item) intent.getSerializableExtra(EXTRA_ITEM);
+                uploadImage(item);
+            } else if (ACTION_REMOVE_IMAGE.equals(action)) {
+                Item item = (Item) intent.getSerializableExtra(EXTRA_ITEM);
+                removeImage(item);
             }
         }
     }
 
-    private void compressImage(final String imageUrl) {
-        // Get the dimensions of the bitmap
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(imageUrl, bmOptions);
-        int photoW = bmOptions.outWidth;
-        int photoH = bmOptions.outHeight;
-        // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW / SCALE_WIDTH, photoH / SCALE_HEIGHT);
-        // Decode the image file into a Bitmap sized to fill the View
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
-        Bitmap bitmap = BitmapFactory.decodeFile(imageUrl, bmOptions);
-        // Compress into WEBP format
-        try {
-            File file = new File(imageUrl);
-            OutputStream outputStream = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.WEBP, COMPRESSION_AMOUNT, outputStream);
-            outputStream.flush();
-            outputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        uploadImage(imageUrl);
-    }
-
-    private void uploadImage(final String imageUrl) {
-        Uri uri = Uri.fromFile(new File(imageUrl));
-        StorageReference photoRef = mFirebaseStorage.getReference("item_photos")
-                .child(uri.getLastPathSegment());
-        mUploadTask = photoRef.putFile(uri);
-
-        // Register observers to listen for when the download is done or if it fails
-        mUploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                if (downloadUrl != null) {
-                    deleteFile(getApplicationContext(), imageUrl);
-                    mItem.setImageUrl(downloadUrl.toString());
-                    mRepository.saveItem(mSharedPreferencesHelper.getUserId(), mItem);
+    private void uploadImage(final Item item) {
+        if (item.getImageUrl() != null) {
+            Uri uri = Uri.fromFile(new File(item.getImageUrl()));
+            StorageReference photoRef = mFirebaseStorage.getReference("item_photos")
+                    .child(uri.getLastPathSegment());
+            StorageMetadata metadata = new StorageMetadata.Builder()
+                    .setContentType("image/webp")
+                    .build();
+            UploadTask uploadTask = photoRef.putFile(uri, metadata);
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    if (downloadUrl != null) {
+                        deleteItemFile(item);
+                        item.setImageUrl(downloadUrl.toString());
+                        mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
+                        mTasks.remove(item.getId());
+                    }
                 }
-            }
-        });
+            });
+            mTasks.put(item.getId(), uploadTask);
+        }
     }
 
-    private void deleteFile(Context context, String imageUrl) {
-        if (imageUrl != null) {
-            String filename = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
-            if (filename.startsWith("IMAGE_")) {
-                context.deleteFile(filename);
+    private void removeImage(Item item) {
+        if (item.getImageUrl() != null) {
+            if (item.getImageUrl().startsWith("https://firebasestorage")) {
+                StorageReference photoRef = mFirebaseStorage.getReferenceFromUrl(
+                        item.getImageUrl());
+                photoRef.delete();
+                item.setImageUrl(null);
+                mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
+            } else {
+                UploadTask task = mTasks.get(item.getId());
+                if (task != null) {
+                    if (task.isInProgress()) {
+                        task.cancel();
+                    }
+                    mTasks.remove(item.getId());
+                }
+                deleteItemFile(item);
+                item.setImageUrl(null);
+                mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
             }
+        }
+    }
+
+    private void deleteItemFile(Item item) {
+        if (item.getImageUrl() != null) {
+            String filename = item.getImageUrl().substring(item.getImageUrl()
+                    .lastIndexOf("/") + 1);
+            getApplicationContext().deleteFile(filename);
         }
     }
 }

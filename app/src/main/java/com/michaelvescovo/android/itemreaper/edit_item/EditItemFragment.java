@@ -4,6 +4,8 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -38,16 +40,16 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 import com.michaelvescovo.android.itemreaper.util.ImageFile;
 import com.michaelvescovo.android.itemreaper.util.ImageUploadService;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,6 +63,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
+import static com.michaelvescovo.android.itemreaper.util.ImageUploadService.ACTION_REMOVE_IMAGE;
 import static com.michaelvescovo.android.itemreaper.util.ImageUploadService.ACTION_UPLOAD_IMAGE;
 import static com.michaelvescovo.android.itemreaper.util.ImageUploadService.EXTRA_ITEM;
 import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getPriceFromTotalCents;
@@ -75,6 +78,9 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public static final int REQUEST_CODE_IMAGE_CAPTURE = 1;
     private static final int REQUEST_CODE_PHOTO_PICKER = 2;
     private static final String STATE_IMAGE_FILE = "imageFile";
+    private static final int COMPRESSION_AMOUNT = 50;
+    private static final int SCALE_WIDTH = 1920;
+    private static final int SCALE_HEIGHT = 1080;
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -124,6 +130,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     Button mRemoveImageButton;
     @BindView(R.id.coordinator_layout)
     CoordinatorLayout mCoordinatorLayout;
+
     private EditItemContract.Presenter mPresenter;
     private Callback mCallback;
     private boolean mIsLargeScreen;
@@ -143,7 +150,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     private boolean mExpiryDateListener;
     private boolean mImageViewListener;
     private ImageFile mImageFile;
-    private FirebaseStorage mFirebaseStorage;
 
     public EditItemFragment() {
     }
@@ -161,7 +167,6 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        mFirebaseStorage = FirebaseStorage.getInstance();
     }
 
     @Override
@@ -207,7 +212,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         mRemoveImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPresenter.deleteImage(getContext(), mImageUrl);
+                mPresenter.deleteImage();
             }
         });
     }
@@ -726,6 +731,22 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         mImageViewListener = true;
     }
 
+    @Override
+    public void setInteractionEnabled(boolean enabled) {
+        if (enabled) {
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPresenter.doneEditing();
+                }
+            });
+        } else {
+            mToolbar.setNavigationOnClickListener(null);
+        }
+        mCallback.editMenuEnabled(enabled);
+        mRemoveImageButton.setEnabled(enabled);
+    }
+
     private void showPurchaseDate(Item item) {
         if (item.getPurchaseDate() != -1) {
             Calendar purchaseDate = Calendar.getInstance();
@@ -820,7 +841,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                 mPresenter.takePicture(getContext());
                 break;
             case R.id.action_select_image:
-                mPresenter.selectImage(getContext());
+                mPresenter.selectImage();
                 break;
             case R.id.action_delete_item:
                 mPresenter.deleteItem(createCurrentItem());
@@ -850,16 +871,16 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_IMAGE_CAPTURE) {
             if (resultCode == RESULT_OK) {
-                mPresenter.imageAvailable(getContext(), mImageFile, mImageUrl);
+                mPresenter.imageAvailable(mImageFile);
             } else {
-                mPresenter.imageCaptureFailed();
+                mPresenter.imageCaptureFailed(getContext(), mImageFile);
             }
         } else if (requestCode == REQUEST_CODE_PHOTO_PICKER) {
             if (resultCode == RESULT_OK) {
                 Uri selectedImageUri = data.getData();
-                mPresenter.imageSelected(getContext(), mImageUrl, selectedImageUri);
+                mPresenter.imageSelected(getContext(), selectedImageUri);
             } else {
-                mPresenter.imageCaptureFailed();
+                mPresenter.imageCaptureFailed(getContext(), mImageFile);
             }
         }
     }
@@ -882,41 +903,62 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                         EspressoIdlingResource.decrement();
                     }
                 });
-        if (!mImageUrl.startsWith("https://firebasestorage")) {
-            Intent intent = new Intent(getContext(), ImageUploadService.class);
-            intent.setAction(ACTION_UPLOAD_IMAGE);
-            intent.putExtra(EXTRA_ITEM, createCurrentItem());
-            getActivity().startService(intent);
-        }
         if (mImageViewListener) {
             mPresenter.itemChanged();
         }
+        if (!mImageUrl.startsWith("https://firebasestorage")) {
+            Intent imageUploadIntent = new Intent(getContext(), ImageUploadService.class);
+            imageUploadIntent.setAction(ACTION_UPLOAD_IMAGE);
+            imageUploadIntent.putExtra(EXTRA_ITEM, createCurrentItem());
+            getActivity().startService(imageUploadIntent);
+        }
+    }
+
+    @Override
+    public void compressImage(@NonNull final String imagePath) {
+        new Thread(new Runnable() {
+            public void run() {
+                // Get the dimensions of the bitmap
+                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                bmOptions.inJustDecodeBounds = true;
+                int photoW = bmOptions.outWidth;
+                int photoH = bmOptions.outHeight;
+                // Determine how much to scale down the image
+                int scaleFactor = Math.min(photoW / SCALE_WIDTH, photoH / SCALE_HEIGHT);
+                // Decode the image file into a Bitmap sized to fill the View
+                bmOptions.inJustDecodeBounds = false;
+                bmOptions.inSampleSize = scaleFactor;
+                Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
+                // Compress into WEBP format
+                try {
+                    File file = new File(imagePath);
+                    OutputStream outputStream = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.WEBP, COMPRESSION_AMOUNT, outputStream);
+                    outputStream.flush();
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mPresenter.imageCompressed(imagePath);
+                        }
+                    });
+                }
+            }
+        }).start();
     }
 
     @Override
     public void removeImage() {
         if (mImageUrl != null) {
-            if (mImageUrl.startsWith("https://firebasestorage")) {
-                removeImageFromFirebase();
-            }
-            mImageUrl = null;
-            mPresenter.itemChanged();
+            Intent imageUploadIntent = new Intent(getContext(), ImageUploadService.class);
+            imageUploadIntent.setAction(ACTION_REMOVE_IMAGE);
+            imageUploadIntent.putExtra(EXTRA_ITEM, createCurrentItem());
+            getActivity().startService(imageUploadIntent);
         }
-    }
-
-    private void removeImageFromFirebase() {
-        StorageReference photoRef = mFirebaseStorage.getReferenceFromUrl(mImageUrl);
-        photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                // File deleted successfully
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Uh-oh, an error occurred!
-            }
-        });
     }
 
     @Override
@@ -954,5 +996,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         void onItemDeleted(@NonNull Item item);
 
         void onDoneEditing();
+
+        void editMenuEnabled(boolean enabled);
     }
 }

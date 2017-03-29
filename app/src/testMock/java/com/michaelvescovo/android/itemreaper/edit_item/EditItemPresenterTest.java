@@ -26,7 +26,6 @@ import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_2;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_ID_1;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -38,31 +37,28 @@ import static org.mockito.Mockito.when;
 @RunWith(Parameterized.class)
 public class EditItemPresenterTest {
 
-    private EditItemPresenter mEditItemPresenter;
-
-    @Mock
-    private EditItemContract.View mView;
-
-    @Mock
-    private Repository mRepository;
-
-    @Mock
-    private SharedPreferencesHelper mSharedPreferencesHelper;
-
-    @Captor
-    private ArgumentCaptor<DataSource.GetNewItemIdCallback> mNewItemIdCallbackCaptor;
-
-    @Captor
-    private ArgumentCaptor<DataSource.GetItemCallback> mItemCallbackCaptor;
-
     @Mock
     ImageFile mImageFile;
-
     @Mock
     Context mContext;
-
     @Mock
     Uri mUri;
+    private EditItemPresenter mEditItemPresenter;
+    @Mock
+    private EditItemContract.View mView;
+    @Mock
+    private Repository mRepository;
+    @Mock
+    private SharedPreferencesHelper mSharedPreferencesHelper;
+    @Captor
+    private ArgumentCaptor<DataSource.GetNewItemIdCallback> mNewItemIdCallbackCaptor;
+    @Captor
+    private ArgumentCaptor<DataSource.GetItemCallback> mItemCallbackCaptor;
+    private Item mItem;
+
+    public EditItemPresenterTest(Item item) {
+        mItem = item;
+    }
 
     @Parameterized.Parameters
     public static Iterable<?> data() {
@@ -70,12 +66,6 @@ public class EditItemPresenterTest {
                 ITEM_1,
                 ITEM_2
         );
-    }
-
-    private Item mItem;
-
-    public EditItemPresenterTest(Item item) {
-        mItem = item;
     }
 
     @Before
@@ -133,6 +123,12 @@ public class EditItemPresenterTest {
     }
 
     @Test
+    public void itemChanged_ItemValidated() {
+        mEditItemPresenter.itemChanged();
+        verify(mView).validateItem();
+    }
+
+    @Test
     public void takePicture_CreatesFileAndOpensCamera() throws IOException {
         mEditItemPresenter.takePicture(mContext);
         verify(mImageFile).create(any(Context.class), anyString(), anyString());
@@ -140,51 +136,64 @@ public class EditItemPresenterTest {
     }
 
     @Test
-    public void imageAvailable_ShowsImage() {
+    public void selectImage_SelectsImage() {
+        mEditItemPresenter.selectImage();
+        verify(mView).openImagePicker();
+    }
+
+    @Test
+    public void imageAvailable_CompressesImage() {
         String imageUrl = "path/to/file";
         when(mImageFile.exists()).thenReturn(true);
         when(mImageFile.getPath()).thenReturn(imageUrl);
 
-        mEditItemPresenter.imageAvailable(mContext, mImageFile, "");
-
-        verify(mView).showImage(contains(imageUrl));
+        mEditItemPresenter.imageAvailable(mImageFile);
+        verify(mView).setProgressBar(true);
+        verify(mView).setInteractionEnabled(false);
+        verify(mView).removeImage();
+        verify(mView).compressImage(anyString());
     }
 
     @Test
     public void imageAvailable_FileDoesNotExistShowsErrorUi() {
         when(mImageFile.exists()).thenReturn(false);
 
-        mEditItemPresenter.imageAvailable(mContext, mImageFile, "");
-
+        mEditItemPresenter.imageAvailable(mImageFile);
+        verify(mView).setProgressBar(false);
+        verify(mView).setInteractionEnabled(true);
         verify(mView).showImageError();
-        verify(mImageFile).delete();
     }
 
     @Test
     public void noImageAvailable_ShowsErrorUi() {
-        mEditItemPresenter.imageCaptureFailed();
+        mEditItemPresenter.imageCaptureFailed(mContext, mImageFile);
 
         verify(mView).showImageError();
-        verify(mImageFile).delete();
+        if (mImageFile.exists()) {
+            verify(mImageFile).delete(any(Context.class));
+        }
     }
 
     @Test
-    public void itemChanged_ItemValidated() {
-        mEditItemPresenter.itemChanged();
-        verify(mView).validateItem();
+    public void imageSelected_CompressesImage() {
+        mEditItemPresenter.imageSelected(mContext, mUri);
+        verify(mView).setProgressBar(true);
+        verify(mView).setInteractionEnabled(false);
+        verify(mView).removeImage();
+        verify(mView).compressImage(anyString());
     }
 
     @Test
-    public void selectImage_CreatesFileAndSelectsImage() {
-        mEditItemPresenter.selectImage(mContext);
-        verify(mView).openImagePicker();
-        mEditItemPresenter.imageSelected(mContext, ITEM_1.getImageUrl(), mUri);
+    public void imageCompressed() {
+        mEditItemPresenter.imageCompressed(anyString());
+        verify(mView).setProgressBar(false);
+        verify(mView).setInteractionEnabled(true);
         verify(mView).showImage(anyString());
     }
 
     @Test
     public void deleteImage_DeletesImage() {
-        mEditItemPresenter.deleteImage(mContext, "https://firebasestorage");
+        mEditItemPresenter.deleteImage();
         verify(mView).removeImage();
     }
 
