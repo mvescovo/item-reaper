@@ -231,13 +231,13 @@
                     android:layout_height="wrap_content">
 
                     <android.support.design.widget.TextInputEditText
-                        android:id="@+id/edit_primary_colour"
+                        android:id="@+id/edit_main_colour"
                         style="@style/content_text_edit_item_standard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/edit_primary_colour_hint"
+                        android:hint="@string/edit_main_colour_hint"
                         android:inputType="textAutoComplete"
-                        tools:hint="@string/edit_primary_colour_hint"/>
+                        tools:hint="@string/edit_main_colour_hint"/>
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -246,13 +246,13 @@
                     android:layout_height="wrap_content">
 
                     <android.support.design.widget.TextInputEditText
-                        android:id="@+id/edit_primary_colour_shade"
+                        android:id="@+id/edit_main_colour_shade"
                         style="@style/content_text_edit_item_standard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/edit_primary_colour_shade_hint"
+                        android:hint="@string/edit_main_colour_shade_hint"
                         android:inputType="textAutoComplete"
-                        tools:hint="@string/edit_primary_colour_shade_hint"/>
+                        tools:hint="@string/edit_main_colour_shade_hint"/>
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -261,13 +261,13 @@
                     android:layout_height="wrap_content">
 
                     <android.support.design.widget.TextInputEditText
-                        android:id="@+id/edit_secondary_colour"
+                        android:id="@+id/edit_accent_colour"
                         style="@style/content_text_edit_item_standard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/edit_secondary_colour_hint"
+                        android:hint="@string/edit_accent_colour_hint"
                         android:inputType="textAutoComplete"
-                        tools:hint="@string/edit_secondary_colour_hint"/>
+                        tools:hint="@string/edit_accent_colour_hint"/>
 
                 </android.support.design.widget.TextInputLayout>
 

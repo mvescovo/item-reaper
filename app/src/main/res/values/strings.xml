@@ -39,10 +39,10 @@
     <string name="edit_sub_type_hint">Sub Type</string>
     <string name="edit_sub_type2_hint">Sub Type 2</string>
     <string name="edit_sub_type3_hint">Sub Type 3</string>
-    <string name="edit_primary_colour_hint">Primary Colour</string>
-    <string name="edit_primary_colour_empty">\?</string>
-    <string name="edit_primary_colour_shade_hint">Primary Colour Shade</string>
-    <string name="edit_secondary_colour_hint">Secondary Colour</string>
+    <string name="edit_main_colour_hint">Main Colour</string>
+    <string name="edit_main_colour_empty">\?</string>
+    <string name="edit_main_colour_shade_hint">Main Colour Shade</string>
+    <string name="edit_accent_colour_hint">Accent Colour</string>
     <string name="edit_size_hint">Size</string>
     <string name="edit_brand_hint">Brand</string>
     <string name="edit_shop_hint">Shop</string>
@@ -77,9 +77,9 @@
     <string name="sub_type">Sub Type:&#160;</string>
     <string name="sub_type_2">Sub Type 2:&#160;</string>
     <string name="sub_type_3">Sub Type 3:&#160;</string>
-    <string name="primary_colour">Primary Colour:&#160;</string>
-    <string name="primary_colour_shade">Primary Colour Shade:&#160;</string>
-    <string name="secondary_colour">Secondary Colour:&#160;</string>
+    <string name="main_colour">Main Colour:&#160;</string>
+    <string name="main_colour_shade">Main Colour Shade:&#160;</string>
+    <string name="accent_colour">Accent Colour:&#160;</string>
     <string name="size">Size:&#160;</string>
     <string name="brand">Brand:&#160;</string>
     <string name="description">Description:&#160;</string>

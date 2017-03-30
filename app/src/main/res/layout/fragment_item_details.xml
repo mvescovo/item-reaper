@@ -302,14 +302,14 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/primary_colour"
+                        android:id="@+id/main_colour"
                         style="@style/content_text2.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/primary_colour"/>
+                        android:text="@string/main_colour"/>
 
                     <TextView
-                        android:id="@+id/primary_colour_value"
+                        android:id="@+id/main_colour_value"
                         style="@style/content_text1.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -323,14 +323,14 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/primary_colour_shade"
+                        android:id="@+id/main_colour_shade"
                         style="@style/content_text2.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/primary_colour_shade"/>
+                        android:text="@string/main_colour_shade"/>
 
                     <TextView
-                        android:id="@+id/primary_colour_shade_value"
+                        android:id="@+id/main_colour_shade_value"
                         style="@style/content_text1.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -344,14 +344,14 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/secondary_colour"
+                        android:id="@+id/accent_colour"
                         style="@style/content_text2.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/secondary_colour"/>
+                        android:text="@string/accent_colour"/>
 
                     <TextView
-                        android:id="@+id/secondary_colour_value"
+                        android:id="@+id/accent_colour_value"
                         style="@style/content_text1.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

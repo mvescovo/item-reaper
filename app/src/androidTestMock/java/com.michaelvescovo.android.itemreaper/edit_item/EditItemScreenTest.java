@@ -557,35 +557,35 @@ public class EditItemScreenTest {
     }
 
     @Test
-    public void primaryColourEditTextVisible() {
+    public void mainColourEditTextVisible() {
         Espresso.closeSoftKeyboard();
-        onView(withId(R.id.edit_primary_colour)).perform(scrollTo())
+        onView(withId(R.id.edit_main_colour)).perform(scrollTo())
                 .check(matches(isDisplayed()));
         mEspressoHelperMethods.rotateScreen();
         Espresso.closeSoftKeyboard();
-        onView(withId(R.id.edit_primary_colour)).perform(scrollTo())
+        onView(withId(R.id.edit_main_colour)).perform(scrollTo())
                 .check(matches(isDisplayed()));
     }
 
     @Test
-    public void primaryColourShadeEditTextVisible() {
+    public void mainColourShadeEditTextVisible() {
         Espresso.closeSoftKeyboard();
-        onView(withId(R.id.edit_primary_colour_shade)).perform(scrollTo())
+        onView(withId(R.id.edit_main_colour_shade)).perform(scrollTo())
                 .check(matches(isDisplayed()));
         mEspressoHelperMethods.rotateScreen();
         Espresso.closeSoftKeyboard();
-        onView(withId(R.id.edit_primary_colour_shade)).perform(scrollTo())
+        onView(withId(R.id.edit_main_colour_shade)).perform(scrollTo())
                 .check(matches(isDisplayed()));
     }
 
     @Test
-    public void secondaryColourEditTextVisible() {
+    public void accentColourEditTextVisible() {
         Espresso.closeSoftKeyboard();
-        onView(withId(R.id.edit_secondary_colour)).perform(scrollTo())
+        onView(withId(R.id.edit_accent_colour)).perform(scrollTo())
                 .check(matches(isDisplayed()));
         mEspressoHelperMethods.rotateScreen();
         Espresso.closeSoftKeyboard();
-        onView(withId(R.id.edit_secondary_colour)).perform(scrollTo())
+        onView(withId(R.id.edit_accent_colour)).perform(scrollTo())
                 .check(matches(isDisplayed()));
     }
 

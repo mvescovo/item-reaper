@@ -398,11 +398,11 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             } else {
                 holder.mType.setText(mItems.get(position).getType());
             }
-            String colour = mItems.get(position).getPrimaryColour();
+            String colour = mItems.get(position).getMainColour();
             if (colour == null || colour.equals("")) {
-                holder.mColour.setText(getString(R.string.edit_primary_colour_empty));
+                holder.mColour.setText(getString(R.string.edit_main_colour_empty));
             } else {
-                holder.mColour.setText(mItems.get(position).getPrimaryColour());
+                holder.mColour.setText(mItems.get(position).getMainColour());
             }
             long expiry = mItems.get(position).getExpiry();
             if (expiry == -1) {

@@ -150,10 +150,10 @@ public class ItemsScreenTestP {
         onView(withId(R.id.edit_type)).perform(scrollTo())
                 .perform(typeText(mItem.getType()), closeSoftKeyboard());
 
-        // Type primary colour
-        if (mItem.getPrimaryColour() != null) {
-            onView(withId(R.id.edit_primary_colour)).perform(scrollTo())
-                    .perform(typeText(mItem.getPrimaryColour()), closeSoftKeyboard());
+        // Type main colour
+        if (mItem.getMainColour() != null) {
+            onView(withId(R.id.edit_main_colour)).perform(scrollTo())
+                    .perform(typeText(mItem.getMainColour()), closeSoftKeyboard());
         }
 
         // Add image
@@ -196,9 +196,9 @@ public class ItemsScreenTestP {
         // Check type
         onView(withText(mItem.getType())).check(matches(isDisplayed()));
 
-        // Check primary colour
-        if (mItem.getPrimaryColour() != null) {
-            onView(withText(mItem.getPrimaryColour())).check(matches(isDisplayed()));
+        // Check main colour
+        if (mItem.getMainColour() != null) {
+            onView(withText(mItem.getMainColour())).check(matches(isDisplayed()));
         }
 
         // Check image is displayed

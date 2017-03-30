@@ -241,40 +241,40 @@ public class EditItemScreenTestP {
     }
 
     @Test
-    public void itemHasPrimaryColour_ShowsPrimaryColour() {
-        if (mItem.getPrimaryColour() != null) {
+    public void itemHasMainColour_ShowsMainColour() {
+        if (mItem.getMainColour() != null) {
             Espresso.closeSoftKeyboard();
-            onView(withText(mItem.getPrimaryColour())).perform(scrollTo())
+            onView(withText(mItem.getMainColour())).perform(scrollTo())
                     .check(matches(isDisplayed()));
             mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
-            onView(withText(mItem.getPrimaryColour())).perform(scrollTo())
+            onView(withText(mItem.getMainColour())).perform(scrollTo())
                     .check(matches(isDisplayed()));
         }
     }
 
     @Test
-    public void itemHasPrimaryColourShade_ShowsPrimaryColourShade() {
-        if (mItem.getPrimaryColourShade() != null) {
+    public void itemHasMainColourShade_ShowsMainColourShade() {
+        if (mItem.getMainColourShade() != null) {
             Espresso.closeSoftKeyboard();
-            onView(withText(mItem.getPrimaryColourShade())).perform(scrollTo())
+            onView(withText(mItem.getMainColourShade())).perform(scrollTo())
                     .check(matches(isDisplayed()));
             mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
-            onView(withText(mItem.getPrimaryColourShade())).perform(scrollTo())
+            onView(withText(mItem.getMainColourShade())).perform(scrollTo())
                     .check(matches(isDisplayed()));
         }
     }
 
     @Test
-    public void itemHasSecondaryColour_ShowsSecondaryColour() {
-        if (mItem.getSecondaryColour() != null) {
+    public void itemHasAccentColour_ShowsAccentColour() {
+        if (mItem.getAccentColour() != null) {
             Espresso.closeSoftKeyboard();
-            onView(withText(mItem.getSecondaryColour())).perform(scrollTo())
+            onView(withText(mItem.getAccentColour())).perform(scrollTo())
                     .check(matches(isDisplayed()));
             mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
-            onView(withText(mItem.getSecondaryColour())).perform(scrollTo())
+            onView(withText(mItem.getAccentColour())).perform(scrollTo())
                     .check(matches(isDisplayed()));
         }
     }

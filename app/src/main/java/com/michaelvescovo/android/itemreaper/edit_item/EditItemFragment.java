@@ -109,12 +109,12 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     TextView mSubType2;
     @BindView(R.id.edit_sub_type3)
     TextView mSubType3;
-    @BindView(R.id.edit_primary_colour)
-    TextView mPrimaryColour;
-    @BindView(R.id.edit_primary_colour_shade)
-    TextView mPrimaryColourShade;
-    @BindView(R.id.edit_secondary_colour)
-    TextView mSecondaryColour;
+    @BindView(R.id.edit_main_colour)
+    TextView mMainColour;
+    @BindView(R.id.edit_main_colour_shade)
+    TextView mMainColourShade;
+    @BindView(R.id.edit_accent_colour)
+    TextView mAccentColour;
     @BindView(R.id.edit_size)
     TextView mSize;
     @BindView(R.id.edit_brand)
@@ -504,14 +504,14 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                 !mSubType3.getText().toString().equals("")
                         ? mSubType3.getText().toString()
                         : null,
-                !mPrimaryColour.getText().toString().equals("")
-                        ? mPrimaryColour.getText().toString()
+                !mMainColour.getText().toString().equals("")
+                        ? mMainColour.getText().toString()
                         : null,
-                !mPrimaryColourShade.getText().toString().equals("")
-                        ? mPrimaryColourShade.getText().toString()
+                !mMainColourShade.getText().toString().equals("")
+                        ? mMainColourShade.getText().toString()
                         : null,
-                !mSecondaryColour.getText().toString().equals("")
-                        ? mSecondaryColour.getText().toString()
+                !mAccentColour.getText().toString().equals("")
+                        ? mAccentColour.getText().toString()
                         : null,
                 !mSize.getText().toString().equals("")
                         ? mSize.getText().toString()
@@ -652,17 +652,17 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                     && !item.getSubtype3().equals(mSubType3.getText().toString())) {
                 mSubType3.setText(item.getSubtype3());
             }
-            if (item.getPrimaryColour() != null
-                    && !item.getPrimaryColour().equals(mPrimaryColour.getText().toString())) {
-                mPrimaryColour.setText(item.getPrimaryColour());
+            if (item.getMainColour() != null
+                    && !item.getMainColour().equals(mMainColour.getText().toString())) {
+                mMainColour.setText(item.getMainColour());
             }
-            if (item.getPrimaryColourShade() != null
-                    && !item.getPrimaryColourShade().equals(mPrimaryColourShade.getText().toString())) {
-                mPrimaryColourShade.setText(item.getPrimaryColourShade());
+            if (item.getMainColourShade() != null
+                    && !item.getMainColourShade().equals(mMainColourShade.getText().toString())) {
+                mMainColourShade.setText(item.getMainColourShade());
             }
-            if (item.getSecondaryColour() != null
-                    && !item.getSecondaryColour().equals(mSecondaryColour.getText().toString())) {
-                mSecondaryColour.setText(item.getSecondaryColour());
+            if (item.getAccentColour() != null
+                    && !item.getAccentColour().equals(mAccentColour.getText().toString())) {
+                mAccentColour.setText(item.getAccentColour());
             }
             if (item.getSize() != null
                     && !item.getSize().equals(mSize.getText().toString())) {
@@ -707,9 +707,9 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         mSubType.removeTextChangedListener(this);
         mSubType2.removeTextChangedListener(this);
         mSubType3.removeTextChangedListener(this);
-        mPrimaryColour.removeTextChangedListener(this);
-        mPrimaryColourShade.removeTextChangedListener(this);
-        mSecondaryColour.removeTextChangedListener(this);
+        mMainColour.removeTextChangedListener(this);
+        mMainColourShade.removeTextChangedListener(this);
+        mAccentColour.removeTextChangedListener(this);
         mSize.removeTextChangedListener(this);
         mBrand.removeTextChangedListener(this);
         mDescription.removeTextChangedListener(this);
@@ -729,9 +729,9 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         mSubType.addTextChangedListener(this);
         mSubType2.addTextChangedListener(this);
         mSubType3.addTextChangedListener(this);
-        mPrimaryColour.addTextChangedListener(this);
-        mPrimaryColourShade.addTextChangedListener(this);
-        mSecondaryColour.addTextChangedListener(this);
+        mMainColour.addTextChangedListener(this);
+        mMainColourShade.addTextChangedListener(this);
+        mAccentColour.addTextChangedListener(this);
         mSize.addTextChangedListener(this);
         mBrand.addTextChangedListener(this);
         mDescription.addTextChangedListener(this);

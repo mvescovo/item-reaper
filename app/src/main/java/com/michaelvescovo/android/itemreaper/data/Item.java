@@ -32,11 +32,11 @@ public class Item implements Serializable, Comparable {
     @Nullable
     private String mSubtype3;
     @Nullable
-    private String mPrimaryColour;
+    private String mMainColour;
     @Nullable
-    private String mPrimaryColourShade;
+    private String mMainColourShade;
     @Nullable
-    private String mSecondaryColour;
+    private String mAccentColour;
     @Nullable
     private String mSize;
     @Nullable
@@ -63,8 +63,8 @@ public class Item implements Serializable, Comparable {
     public Item(@NonNull String id, long purchaseDate, int pricePaid, int discount,
                 long expiry, @Nullable String category, @Nullable String subCategory,
                 @NonNull String type, @Nullable String subtype, @Nullable String subtype2,
-                @Nullable String subtype3, @Nullable String primaryColour,
-                @Nullable String primaryColourShade, @Nullable String secondaryColour,
+                @Nullable String subtype3, @Nullable String mainColour,
+                @Nullable String mainColourShade, @Nullable String accentColour,
                 @Nullable String size, @Nullable String brand, @Nullable String shop,
                 @Nullable String description, @Nullable String note,
                 @Nullable String imageUrl, boolean deceased) {
@@ -79,9 +79,9 @@ public class Item implements Serializable, Comparable {
         mSubtype = subtype;
         mSubtype2 = subtype2;
         mSubtype3 = subtype3;
-        mPrimaryColour = primaryColour;
-        mPrimaryColourShade = primaryColourShade;
-        mSecondaryColour = secondaryColour;
+        mMainColour = mainColour;
+        mMainColourShade = mainColourShade;
+        mAccentColour = accentColour;
         mSize = size;
         mBrand = brand;
         mShop = shop;
@@ -187,30 +187,30 @@ public class Item implements Serializable, Comparable {
     }
 
     @Nullable
-    public String getPrimaryColour() {
-        return mPrimaryColour;
+    public String getMainColour() {
+        return mMainColour;
     }
 
-    public void setPrimaryColour(@Nullable String primaryColour) {
-        mPrimaryColour = primaryColour;
-    }
-
-    @Nullable
-    public String getPrimaryColourShade() {
-        return mPrimaryColourShade;
-    }
-
-    public void setPrimaryColourShade(@Nullable String primaryColourShade) {
-        mPrimaryColourShade = primaryColourShade;
+    public void setMainColour(@Nullable String mainColour) {
+        mMainColour = mainColour;
     }
 
     @Nullable
-    public String getSecondaryColour() {
-        return mSecondaryColour;
+    public String getMainColourShade() {
+        return mMainColourShade;
     }
 
-    public void setSecondaryColour(@Nullable String secondaryColour) {
-        mSecondaryColour = secondaryColour;
+    public void setMainColourShade(@Nullable String mainColourShade) {
+        mMainColourShade = mainColourShade;
+    }
+
+    @Nullable
+    public String getAccentColour() {
+        return mAccentColour;
+    }
+
+    public void setAccentColour(@Nullable String accentColour) {
+        mAccentColour = accentColour;
     }
 
     @Nullable
@@ -289,9 +289,9 @@ public class Item implements Serializable, Comparable {
         result.put("subType", mSubtype);
         result.put("subType2", mSubtype2);
         result.put("subType3", mSubtype3);
-        result.put("primaryColour", mPrimaryColour);
-        result.put("primaryColourShade", mPrimaryColourShade);
-        result.put("secondaryColour", mSecondaryColour);
+        result.put("mainColour", mMainColour);
+        result.put("mainColourShade", mMainColourShade);
+        result.put("accentColour", mAccentColour);
         result.put("size", mSize);
         result.put("brand", mBrand);
         result.put("shop", mShop);

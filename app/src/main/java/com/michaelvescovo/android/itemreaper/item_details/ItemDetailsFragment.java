@@ -72,12 +72,12 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
     TextView mSubType2;
     @BindView(R.id.sub_type3_value)
     TextView mSubType3;
-    @BindView(R.id.primary_colour_value)
-    TextView mPrimaryColour;
-    @BindView(R.id.primary_colour_shade_value)
-    TextView mPrimaryColourShade;
-    @BindView(R.id.secondary_colour_value)
-    TextView mSecondaryColour;
+    @BindView(R.id.main_colour_value)
+    TextView mMainColour;
+    @BindView(R.id.main_colour_shade_value)
+    TextView mMainColourShade;
+    @BindView(R.id.accent_colour_value)
+    TextView mAccentColour;
     @BindView(R.id.size_value)
     TextView mSize;
     @BindView(R.id.brand_value)
@@ -214,20 +214,20 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
             } else {
                 mSubType3.setText(getString(R.string.empty_value));
             }
-            if (item.getPrimaryColour() != null) {
-                mPrimaryColour.setText(item.getPrimaryColour());
+            if (item.getMainColour() != null) {
+                mMainColour.setText(item.getMainColour());
             } else {
-                mPrimaryColour.setText(getString(R.string.empty_value));
+                mMainColour.setText(getString(R.string.empty_value));
             }
-            if (item.getPrimaryColourShade() != null) {
-                mPrimaryColourShade.setText(item.getPrimaryColourShade());
+            if (item.getMainColourShade() != null) {
+                mMainColourShade.setText(item.getMainColourShade());
             } else {
-                mPrimaryColourShade.setText(getString(R.string.empty_value));
+                mMainColourShade.setText(getString(R.string.empty_value));
             }
-            if (item.getSecondaryColour() != null) {
-                mSecondaryColour.setText(item.getSecondaryColour());
+            if (item.getAccentColour() != null) {
+                mAccentColour.setText(item.getAccentColour());
             } else {
-                mSecondaryColour.setText(getString(R.string.empty_value));
+                mAccentColour.setText(getString(R.string.empty_value));
             }
             if (item.getSize() != null) {
                 mSize.setText(item.getSize());
