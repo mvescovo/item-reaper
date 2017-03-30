@@ -372,6 +372,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                     Glide.with(getContext())
                             .load(imageUrl)
                             .crossFade()
+                            .centerCrop()
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .into(new GlideDrawableImageViewTarget(holder.mItemImage) {
                                 @Override
