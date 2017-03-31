@@ -83,7 +83,7 @@ public class AuthFragment extends Fragment implements AuthContract.View,
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null) {
-                    mPresenter.handleFirebaseSignInResult(true);
+                    mPresenter.handleFirebaseSignInResult(true, user.getUid());
                 }
             }
         };
@@ -161,12 +161,11 @@ public class AuthFragment extends Fragment implements AuthContract.View,
         if (result.isSuccess()) {
             mGoogleSignInAccount = result.getSignInAccount();
             if (mGoogleSignInAccount != null) {
-                String userId = mGoogleSignInAccount.getId();
-                mPresenter.handleGoogleSignInResult(result.isSuccess(), userId);
+                mPresenter.handleGoogleSignInResult(result.isSuccess());
             }
         } else {
             mGoogleSignInAccount = null;
-            mPresenter.handleGoogleSignInResult(result.isSuccess(), null);
+            mPresenter.handleGoogleSignInResult(result.isSuccess());
         }
     }
 

@@ -29,8 +29,8 @@ public interface AuthContract {
 
         void googleSignIn();
 
-        void handleGoogleSignInResult(boolean signedIn, @Nullable String userId);
+        void handleGoogleSignInResult(boolean signedIn);
 
-        void handleFirebaseSignInResult(boolean signedIn);
+        void handleFirebaseSignInResult(boolean signedIn, @Nullable String userId);
     }
 }

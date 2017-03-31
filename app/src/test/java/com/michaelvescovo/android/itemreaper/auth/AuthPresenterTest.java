@@ -51,61 +51,61 @@ public class AuthPresenterTest {
 
     @Test
     public void googleSignInFails_ShowsFailMsg() {
-        mAuthPresenter.handleGoogleSignInResult(false, null);
+        mAuthPresenter.handleGoogleSignInResult(false);
         verify(mView).showFailMessage();
     }
 
     @Test
     public void googleSignInFails_ShowsSignInButton() {
-        mAuthPresenter.handleGoogleSignInResult(false, null);
+        mAuthPresenter.handleGoogleSignInResult(false);
         verify(mView).showSignInButton(true);
     }
 
     @Test
     public void googleSignInFails_HidesProgressBar() {
-        mAuthPresenter.handleGoogleSignInResult(false, null);
+        mAuthPresenter.handleGoogleSignInResult(false);
         verify(mView).setProgressIndicator(false);
     }
 
     @Test
-    public void googleSignInSucceeds_SetsUserId() {
-        mAuthPresenter.handleGoogleSignInResult(true, USER_ID);
-        verify(mSharedPreferencesHelper).saveUserId(USER_ID);
-    }
-
-    @Test
     public void googleSignInSucceeds_TriesToSignInWithFirebaseAuth() {
-        mAuthPresenter.handleGoogleSignInResult(true, USER_ID);
+        mAuthPresenter.handleGoogleSignInResult(true);
         verify(mView).showFireBaseAuthUi();
     }
 
     @Test
+    public void firebaseAuthSucceeds_SetsUserId() {
+        mAuthPresenter.handleFirebaseSignInResult(true, USER_ID);
+        verify(mSharedPreferencesHelper).saveUserId(USER_ID);
+    }
+
+    @Test
     public void firebaseAuthSignInFails_ShowsFailMsg() {
-        mAuthPresenter.handleFirebaseSignInResult(false);
+        mAuthPresenter.handleFirebaseSignInResult(false, USER_ID);
         verify(mView).showFailMessage();
     }
 
     @Test
     public void firebaseAuthSignInFails_ShowsSignInButton() {
-        mAuthPresenter.handleFirebaseSignInResult(false);
+        mAuthPresenter.handleFirebaseSignInResult(false, USER_ID);
         verify(mView).showSignInButton(true);
     }
 
     @Test
     public void firebaseAuthSignInFails_HidesProgressBar() {
-        mAuthPresenter.handleFirebaseSignInResult(false);
+        mAuthPresenter.handleFirebaseSignInResult(false, USER_ID);
         verify(mView).setProgressIndicator(false);
     }
 
     @Test
     public void firebaseAuthSignInSucceeds_HidesProgressBar() {
-        mAuthPresenter.handleFirebaseSignInResult(true);
+        mAuthPresenter.handleFirebaseSignInResult(true, USER_ID);
         verify(mView).setProgressIndicator(false);
     }
 
     @Test
     public void firebaseAuthSignInSucceeds_ShowsItemsUi() {
-        mAuthPresenter.handleFirebaseSignInResult(true);
+        mAuthPresenter.handleFirebaseSignInResult(true, USER_ID);
         verify(mView).showItemsUi();
     }
 }

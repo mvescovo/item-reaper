@@ -34,11 +34,8 @@ class AuthPresenter implements AuthContract.Presenter {
     }
 
     @Override
-    public void handleGoogleSignInResult(boolean signedIn, @Nullable String userId) {
+    public void handleGoogleSignInResult(boolean signedIn) {
         if (signedIn) {
-            if (userId != null) {
-                mSharedPreferencesHelper.saveUserId(userId);
-            }
             mView.showFireBaseAuthUi();
         } else {
             mView.setProgressIndicator(false);
@@ -48,7 +45,10 @@ class AuthPresenter implements AuthContract.Presenter {
     }
 
     @Override
-    public void handleFirebaseSignInResult(boolean signedIn) {
+    public void handleFirebaseSignInResult(boolean signedIn, @Nullable String userId) {
+        if (userId != null) {
+            mSharedPreferencesHelper.saveUserId(userId);
+        }
         mView.setProgressIndicator(false);
         if (signedIn) {
             mView.showItemsUi();
