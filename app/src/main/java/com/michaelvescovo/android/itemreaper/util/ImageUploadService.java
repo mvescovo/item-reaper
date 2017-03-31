@@ -73,7 +73,9 @@ public class ImageUploadService extends IntentService {
     private void uploadImage(final Item item) {
         if (item.getImageUrl() != null) {
             Uri uri = Uri.fromFile(new File(item.getImageUrl()));
-            StorageReference photoRef = mFirebaseStorage.getReference("item_photos")
+            StorageReference photoRef = mFirebaseStorage.getReference("users")
+                    .child(mSharedPreferencesHelper.getUserId())
+                    .child("itemPhotos")
                     .child(uri.getLastPathSegment());
             StorageMetadata metadata = new StorageMetadata.Builder()
                     .setContentType("image/webp")
