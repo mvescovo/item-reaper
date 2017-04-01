@@ -21,6 +21,8 @@ cache:
   - "$HOME/.gradle/wrapper/"
   - "$HOME/.android/build-cache"
 before_install:
+- openssl aes-256-cbc -K $encrypted_cddd94d4e3da_key -iv $encrypted_cddd94d4e3da_iv
+  -in keystore.properties.enc -out keystore.properties -d
 - openssl aes-256-cbc -K $encrypted_882bd0994e1a_key -iv $encrypted_882bd0994e1a_iv
   -in app/google-services.json.enc -out app/google-services.json -d
 - openssl aes-256-cbc -K $encrypted_cddd94d4e3da_key -iv $encrypted_cddd94d4e3da_iv
