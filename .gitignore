@@ -46,3 +46,6 @@ captures/
 # Google services with API key inside
 app/google-services.json
 keys.properties
+
+# Private keystore stuff
+keystore.properties
