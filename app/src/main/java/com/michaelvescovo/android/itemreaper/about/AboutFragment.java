@@ -35,6 +35,10 @@ public class AboutFragment extends AppCompatDialogFragment {
     TextView mAppbarTitle;
     @BindView(R.id.reaper_icon_attribution)
     TextView mReaperIconAttribution;
+    @BindView(R.id.decapitation_sound_attribution)
+    TextView mDecapitationSoundAttribution;
+    @BindView(R.id.privacy_policy)
+    TextView mPrivacyPolicy;
 
     private Callback mCallback;
     private Typeface mAppbarTypeface;
@@ -79,6 +83,8 @@ public class AboutFragment extends AppCompatDialogFragment {
         Pattern pattern = compile("");
         String scheme = "";
         Linkify.addLinks(mReaperIconAttribution, pattern, scheme);
+        Linkify.addLinks(mDecapitationSoundAttribution, pattern, scheme);
+        Linkify.addLinks(mPrivacyPolicy, pattern, scheme);
         return root;
     }
 

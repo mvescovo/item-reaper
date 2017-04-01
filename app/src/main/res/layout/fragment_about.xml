@@ -66,6 +66,19 @@
                 android:layout_height="wrap_content"
                 android:text="@string/decapitation_sound_attribution"/>
 
+            <TextView
+                style="@style/content_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_privacy_policy"/>
+
+            <TextView
+                android:id="@+id/privacy_policy"
+                style="@style/content_text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/privacy_policy"/>
+
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>

@@ -93,5 +93,7 @@
     <string name="title_attributions">Attributions</string>
     <string name="reaper_icon_attribution">Reaper and scythe icons made by Loc. Available on <a href="http://game-icons.net">http://game-icons.net</a>.</string>
     <string name="decapitation_sound_attribution">Decapitation sound effect by Mike Koenig. Available on <a href="http://soundbible.com">http://soundbible.com</a>.</string>
+    <string name="title_privacy_policy">Privacy Policy</string>
+    <string name="privacy_policy"><a href="https://mvescovo.github.io/item-reaper/">Privacy Policy</a>.</string>
 
 </resources>
