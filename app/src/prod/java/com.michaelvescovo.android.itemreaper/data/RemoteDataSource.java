@@ -1,7 +1,6 @@
 package com.michaelvescovo.android.itemreaper.data;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.common.collect.Lists;
 import com.google.firebase.database.DataSnapshot;
@@ -20,7 +19,6 @@ import java.util.Map;
 
 class RemoteDataSource implements DataSource {
 
-    private static final String TAG = "RemoteDataSource";
     private DatabaseReference mDatabase;
 
     RemoteDataSource() {
@@ -53,7 +51,6 @@ class RemoteDataSource implements DataSource {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.w(TAG, "loadUserData:onCancelled", databaseError.toException());
             }
         };
         mDatabase.removeEventListener(itemIdsListener);
@@ -77,7 +74,6 @@ class RemoteDataSource implements DataSource {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.w(TAG, "loadItemData:onCancelled", databaseError.toException());
             }
         };
         mDatabase.removeEventListener(itemListener);
