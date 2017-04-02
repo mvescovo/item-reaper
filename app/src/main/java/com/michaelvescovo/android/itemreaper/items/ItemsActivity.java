@@ -178,14 +178,17 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
             MenuItem searchMenuItem = menu.findItem(R.id.action_search);
-            MenuItemCompat.setOnActionExpandListener(searchMenuItem, new MenuItemCompat.OnActionExpandListener() {
+            MenuItemCompat.setOnActionExpandListener(searchMenuItem,
+                    new MenuItemCompat.OnActionExpandListener() {
                 @Override
                 public boolean onMenuItemActionExpand(MenuItem item) {
                     return true;
                 }
                 @Override
                 public boolean onMenuItemActionCollapse(MenuItem item) {
-                    Fragment itemsFragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_ITEMS);
+                    setIntent(null);
+                    Fragment itemsFragment = getSupportFragmentManager()
+                            .findFragmentByTag(FRAGMENT_ITEMS);
                     ((ItemsFragment)itemsFragment).searchItem(null);
                     return true;
                 }
