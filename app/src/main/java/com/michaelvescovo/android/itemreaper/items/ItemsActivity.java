@@ -1,5 +1,7 @@
 package com.michaelvescovo.android.itemreaper.items;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -14,8 +16,10 @@ import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -134,6 +138,22 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
         }
 
         mDialogResumed = false;
+
+        handleIntent(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            Fragment itemsFragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_ITEMS);
+            ((ItemsFragment)itemsFragment).searchItem(query);
+        }
     }
 
     private void initFragment(Fragment fragment) {
@@ -153,6 +173,24 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mDialogOpen) {
             getMenuInflater().inflate(R.menu.items_fragment_menu, menu);
+            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+            SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+            MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+            MenuItemCompat.setOnActionExpandListener(searchMenuItem, new MenuItemCompat.OnActionExpandListener() {
+                @Override
+                public boolean onMenuItemActionExpand(MenuItem item) {
+                    return true;
+                }
+                @Override
+                public boolean onMenuItemActionCollapse(MenuItem item) {
+                    Fragment itemsFragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_ITEMS);
+                    ((ItemsFragment)itemsFragment).searchItem(null);
+                    return true;
+                }
+            });
+
         } else if (mDialogResumed) {
             menu.clear();
             getMenuInflater().inflate(R.menu.items_fragment_menu, menu);

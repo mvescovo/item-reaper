@@ -59,6 +59,8 @@
     <string name="undo">Undo</string>
     <string name="item_unexpired">Item Revived</string>
     <string name="item_image">Item image</string>
+    <string name="search_title">Search</string>
+    <string name="search_hint">Search for an item</string>
 
     <!--ItemDetails-->
     <string name="title_activity_item_details">Item Details</string>
