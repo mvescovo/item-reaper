@@ -15,7 +15,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -56,6 +55,8 @@ import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getPr
 
 public class ItemsFragment extends Fragment implements ItemsContract.View {
 
+    private static String STATE_ITEM_QUERY = "item_query";
+
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
 
@@ -74,7 +75,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     private Item mDeletedItem;
     private MediaPlayer mMediaPlayer;
     private FirebaseStorage mFirebaseStorage;
-    private boolean mSearching;
+    private String mQuery;
 
     public ItemsFragment() {
     }
@@ -104,12 +105,16 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         mDividerItemDecoration.setDrawable(ContextCompat.getDrawable(getContext(),
                 R.drawable.divider));
 
-        if (savedInstanceState != null
-                && savedInstanceState.getSerializable(EXTRA_DELETED_ITEM) != null) {
-            mDeletedItem = (Item) savedInstanceState.getSerializable(EXTRA_DELETED_ITEM);
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getSerializable(EXTRA_DELETED_ITEM) != null) {
+                mDeletedItem = (Item) savedInstanceState.getSerializable(EXTRA_DELETED_ITEM);
+            }
+            if (savedInstanceState.getString(STATE_ITEM_QUERY) != null) {
+                mQuery = savedInstanceState.getString(STATE_ITEM_QUERY);
+            }
         }
         mFirebaseStorage = FirebaseStorage.getInstance();
-        mSearching = false;
+        mQuery = null;
     }
 
     @Nullable
@@ -130,7 +135,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         }
         mRecyclerView.setAdapter(mItemsAdapter);
         mRecyclerView.setHasFixedSize(true);
-
         setHasOptionsMenu(true);
 
         return root;
@@ -140,6 +144,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(EXTRA_DELETED_ITEM, mDeletedItem);
+        outState.putString(STATE_ITEM_QUERY, mQuery);
     }
 
     @Override
@@ -150,9 +155,10 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     @Override
     public void onResume() {
         super.onResume();
-        if (!mSearching) {
-            mItemsAdapter.clearItems();
-            mPresenter.getItems(true);
+        mItemsAdapter.clearItems();
+        mPresenter.getItems(true);
+        if (mQuery != null) {
+            mItemsAdapter.searchItem(mQuery);
         }
         final boolean[] snackbarShown = {false};
         if (mDeletedItem != null) {
@@ -205,12 +211,10 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     }
 
     public void searchItem(@Nullable String query) {
-        if (query == null) {
-            mSearching = false;
-            onResume();
-        } else {
-            mSearching = true;
-            mItemsAdapter.searchItem(query);
+        mQuery = query;
+        if (isResumed()) {
+            mItemsAdapter.clearItems();
+            mPresenter.getItems(true);
         }
     }
 
@@ -359,7 +363,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
     class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
 
-        private static final String TAG = "ItemsAdapter";
         private List<Item> mItems;
         private ItemListener mItemListener;
 
@@ -474,26 +477,14 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         }
 
         private void searchItem(@NonNull String query) {
-            Log.d(TAG, "searchItem: " + query);
-//            List<Item> itemsToFilter = new ArrayList<>();
-//            for (Item item : mItems) {
-//                if (item.getType() == null || !item.getType().contains(query)) {
-//                    itemsToFilter.add(item);
-//                }
-//            }
-//            mItems.removeAll(itemsToFilter);
             List<Item> matchedItems = new ArrayList<>();
             for (Item item : mItems) {
                 if (item.getType() != null) {
                     String type = item.getType().toLowerCase();
                     if (type.contains(query.toLowerCase())) {
-                        Log.d(TAG, "type: " + item.getType());
                         matchedItems.add(item);
                     }
                 }
-            }
-            for (Item item : matchedItems) {
-                Log.d(TAG, "searchItem: matched item: " + item.getType());
             }
             clearItems();
             mItems.addAll(matchedItems);
