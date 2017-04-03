@@ -59,14 +59,15 @@ import static com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity.E
 public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Callback,
         AboutFragment.Callback, EditItemFragment.Callback, ItemDetailsFragment.Callback {
 
+    public static final int REQUEST_CODE_ITEM_DELETED = 1;
+    public static final String EXTRA_DELETED_ITEM = "deleted_item";
     private static final String CURRENT_DIALOG_NAME = "current_dialog_name";
+    private static final String STATE_SEARCH_VIEW_OPEN = "search_view_open";
+    private static final String STATE_QUERY = "query";
     private static final String ABOUT_DIALOG = "about_dialog";
     private static final String EDIT_ITEM_DIALOG = "edit_item_dialog";
     private static final String ITEM_DETAILS_DIALOG = "item_details_dialog";
     private static final String FRAGMENT_ITEMS = "fragment_items";
-    public static final int REQUEST_CODE_ITEM_DELETED = 1;
-    public static final String EXTRA_DELETED_ITEM = "deleted_item";
-
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.appbar_title)
@@ -86,6 +87,8 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     private boolean mDialogResumed;
     private String mCurrentDialogName;
     private ItemDetailsFragment mItemDetailsFragment;
+    private boolean mSearchViewExpanded;
+    private String mQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,30 +133,17 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
             }
         });
 
-        if (savedInstanceState != null
-                && savedInstanceState.getString(CURRENT_DIALOG_NAME) != null) {
-            mCurrentDialogName = savedInstanceState.getString(CURRENT_DIALOG_NAME);
-        } else {
-            mCurrentDialogName = "";
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getString(CURRENT_DIALOG_NAME) != null) {
+                mCurrentDialogName = savedInstanceState.getString(CURRENT_DIALOG_NAME);
+            } else {
+                mCurrentDialogName = "";
+            }
+            mSearchViewExpanded = savedInstanceState.getBoolean(STATE_SEARCH_VIEW_OPEN, false);
+            mQuery = savedInstanceState.getString(STATE_QUERY);
         }
 
         mDialogResumed = false;
-
-        handleIntent(getIntent());
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        setIntent(intent);
-        handleIntent(intent);
-    }
-
-    private void handleIntent(Intent intent) {
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            Fragment itemsFragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_ITEMS);
-            ((ItemsFragment)itemsFragment).searchItem(query);
-        }
     }
 
     private void initFragment(Fragment fragment) {
@@ -167,6 +157,8 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(CURRENT_DIALOG_NAME, mCurrentDialogName);
+        outState.putBoolean(STATE_SEARCH_VIEW_OPEN, mSearchViewExpanded);
+        outState.putString(STATE_QUERY, mQuery);
     }
 
     @Override
@@ -176,24 +168,46 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
             SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
             SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
-            MenuItem searchMenuItem = menu.findItem(R.id.action_search);
-            MenuItemCompat.setOnActionExpandListener(searchMenuItem,
-                    new MenuItemCompat.OnActionExpandListener() {
+            searchView.setSubmitButtonEnabled(false);
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
-                public boolean onMenuItemActionExpand(MenuItem item) {
-                    return true;
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
                 }
+
                 @Override
-                public boolean onMenuItemActionCollapse(MenuItem item) {
-                    setIntent(null);
-                    Fragment itemsFragment = getSupportFragmentManager()
-                            .findFragmentByTag(FRAGMENT_ITEMS);
-                    ((ItemsFragment)itemsFragment).searchItem(null);
+                public boolean onQueryTextChange(String newText) {
+                    if (mSearchViewExpanded) {
+                        mQuery = newText;
+                        Fragment itemsFragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_ITEMS);
+                        ((ItemsFragment) itemsFragment).searchItem(mQuery);
+                    }
                     return true;
                 }
             });
+            MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+            MenuItemCompat.setOnActionExpandListener(searchMenuItem, new MenuItemCompat.OnActionExpandListener() {
+                @Override
+                public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                    mSearchViewExpanded = true;
+                    return true;
+                }
 
+                @Override
+                public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                    mSearchViewExpanded = false;
+                    invalidateOptionsMenu();
+                    mQuery = null;
+                    Fragment itemsFragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_ITEMS);
+                    ((ItemsFragment) itemsFragment).searchItem(mQuery);
+                    return true;
+                }
+            });
+            if (mSearchViewExpanded) {
+                String tempQuery = mQuery;
+                searchMenuItem.expandActionView();
+                searchView.setQuery(tempQuery, true);
+            }
         } else if (mDialogResumed) {
             menu.clear();
             getMenuInflater().inflate(R.menu.items_fragment_menu, menu);
@@ -322,7 +336,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     @Override
     public void onItemDeleted(@NonNull Item item) {
         Fragment itemsFragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_ITEMS);
-        ((ItemsFragment)itemsFragment).onItemDeleted(item);
+        ((ItemsFragment) itemsFragment).onItemDeleted(item);
         if (mItemDetailsFragment != null) {
             mItemDetailsFragment.dismiss();
         }
@@ -355,7 +369,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
             if (data != null) {
                 Item item = (Item) data.getSerializableExtra(EXTRA_DELETED_ITEM);
                 Fragment itemsFragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_ITEMS);
-                ((ItemsFragment)itemsFragment).onItemDeleted(item);
+                ((ItemsFragment) itemsFragment).onItemDeleted(item);
             }
         }
     }

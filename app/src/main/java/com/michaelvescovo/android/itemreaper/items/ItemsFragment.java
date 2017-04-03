@@ -216,6 +216,9 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             mItemsAdapter.clearItems();
             mPresenter.getItems(true);
         }
+        if (mQuery != null) {
+            mItemsAdapter.searchItem(mQuery);
+        }
     }
 
     @Override
@@ -481,8 +484,10 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             for (Item item : mItems) {
                 if (item.getType() != null) {
                     String type = item.getType().toLowerCase();
-                    if (type.contains(query.toLowerCase())) {
-                        matchedItems.add(item);
+                    if (!query.equals("")) {
+                        if (type.contains(query.toLowerCase())) {
+                            matchedItems.add(item);
+                        }
                     }
                 }
             }
