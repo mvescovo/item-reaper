@@ -18,6 +18,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEMS;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_ID_1;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -106,7 +107,8 @@ public class ItemsPresenterTest {
 
             // Stub a result for each getItem call
             for (int i = 0; i < mItemIds.size(); i++) {
-                mGetItemCallbackCaptor.getValue().onItemLoaded(any(Item.class));
+                String itemId = (String) mItemIds.get(i);
+                mGetItemCallbackCaptor.getValue().onItemLoaded(ITEMS.get(itemId));
             }
 
             // Show an item for each itemId.
