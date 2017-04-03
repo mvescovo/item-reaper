@@ -4,6 +4,7 @@ package com.michaelvescovo.android.itemreaper.items;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -158,7 +159,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         mItemsAdapter.clearItems();
         mPresenter.getItems(true);
         if (mQuery != null) {
-            mItemsAdapter.searchItem(mQuery);
+            mItemsAdapter.searchItem();
         }
         final boolean[] snackbarShown = {false};
         if (mDeletedItem != null) {
@@ -217,7 +218,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             mPresenter.getItems(true);
         }
         if (mQuery != null) {
-            mItemsAdapter.searchItem(mQuery);
+            mItemsAdapter.searchItem();
         }
     }
 
@@ -479,22 +480,17 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             mPresenter.itemsSizeChanged(mItems.size());
         }
 
-        private void searchItem(@NonNull String query) {
-            List<Item> matchedItems = new ArrayList<>();
-            for (Item item : mItems) {
-                if (item.getType() != null) {
-                    String type = item.getType().toLowerCase();
-                    if (!query.equals("")) {
-                        if (type.contains(query.toLowerCase())) {
-                            matchedItems.add(item);
-                        }
-                    }
-                }
-            }
+        private void searchItem() {
+            setProgressBar(true);
+            new SearchForItemTask().execute();
+        }
+
+        private void searchComplete(List<Item> matchedItems) {
             clearItems();
             mItems.addAll(matchedItems);
             notifyDataSetChanged();
             mPresenter.itemsSizeChanged(mItems.size());
+            setProgressBar(false);
         }
 
         private void sortItemsByExpiry() {
@@ -548,6 +544,27 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 Item item = mItems.get(getAdapterPosition());
                 mItemListener.onItemClick(item);
             }
+        }
+    }
+
+    private class SearchForItemTask extends AsyncTask<Void, Void, List<Item>> {
+        protected List<Item> doInBackground(Void... params) {
+            List<Item> matchedItems = new ArrayList<>();
+            for (Item item : mItemsAdapter.mItems) {
+                if (item.getType() != null) {
+                    String type = item.getType().toLowerCase();
+                    if (!mQuery.equals("")) {
+                        if (type.contains(mQuery.toLowerCase())) {
+                            matchedItems.add(item);
+                        }
+                    }
+                }
+            }
+            return matchedItems;
+        }
+
+        protected void onPostExecute(List<Item> matchedItems) {
+            mItemsAdapter.searchComplete(matchedItems);
         }
     }
 }
