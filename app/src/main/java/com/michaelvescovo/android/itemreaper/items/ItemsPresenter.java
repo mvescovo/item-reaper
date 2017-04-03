@@ -90,6 +90,9 @@ public class ItemsPresenter implements ItemsContract.Presenter {
             @Override
             public void onItemLoaded(@Nullable Item item) {
                 if (mItemsToLoad > 0) {
+                    if (mItemsToLoad == 1) {
+                        mView.itemLoadingFinished();
+                    }
                     mItemsToLoad--;
                     EspressoIdlingResource.decrement();
                 }

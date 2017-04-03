@@ -30,6 +30,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+import com.google.common.collect.ImmutableList;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.michaelvescovo.android.itemreaper.R;
@@ -157,13 +158,19 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     }
 
     @Override
+    public void itemLoadingFinished() {
+        if (mQuery != null) {
+            mItemsAdapter.searchItem();
+        } else {
+            mSearching = false;
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         mItemsAdapter.clearItems();
         mPresenter.getItems(true);
-        if (mQuery != null) {
-            mItemsAdapter.searchItem();
-        }
         final boolean[] snackbarShown = {false};
         if (mDeletedItem != null) {
             Snackbar snackbar = mCallback.onShowSnackbar(getString(R.string.delete_item_success),
@@ -219,9 +226,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         mSearching = true;
         if (isResumed()) {
             mPresenter.getItems(true);
-        }
-        if (mQuery != null) {
-            mItemsAdapter.searchItem();
         }
     }
 
@@ -557,7 +561,8 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         protected List<Item> doInBackground(Void... params) {
             List<Item> matchedItems = new ArrayList<>();
             if (!mQuery.equals("")) {
-                for (Item item : mItemsAdapter.mItems) {
+                List<Item> items = ImmutableList.copyOf(mItemsAdapter.mItems);
+                for (Item item : items) {
                     String format = getString(R.string.date_format);
                     if (item.getPurchaseDate() != -1) {
                         String purchaseDate = getDateFormat(format).format(item.getPurchaseDate())

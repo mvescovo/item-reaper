@@ -32,6 +32,8 @@ interface ItemsContract {
         void showItemExpiredMessage(int resourceId, int duration, @Nullable Item item);
 
         void clearItems();
+
+        void itemLoadingFinished();
     }
 
     interface Presenter {
