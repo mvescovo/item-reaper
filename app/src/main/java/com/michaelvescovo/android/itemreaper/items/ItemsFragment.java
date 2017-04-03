@@ -48,6 +48,7 @@ import butterknife.ButterKnife;
 
 import static com.michaelvescovo.android.itemreaper.R.id.expiry;
 import static com.michaelvescovo.android.itemreaper.items.ItemsActivity.EXTRA_DELETED_ITEM;
+import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getDateFormat;
 import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getPriceFromTotalCents;
 
 /**
@@ -555,11 +556,135 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     private class SearchForItemTask extends AsyncTask<Void, Void, List<Item>> {
         protected List<Item> doInBackground(Void... params) {
             List<Item> matchedItems = new ArrayList<>();
-            for (Item item : mItemsAdapter.mItems) {
-                if (item.getType() != null) {
-                    String type = item.getType().toLowerCase();
-                    if (!mQuery.equals("")) {
+            if (!mQuery.equals("")) {
+                for (Item item : mItemsAdapter.mItems) {
+                    String format = getString(R.string.date_format);
+                    if (item.getPurchaseDate() != -1) {
+                        String purchaseDate = getDateFormat(format).format(item.getPurchaseDate())
+                                .toLowerCase();
+                        if (purchaseDate.contains(mQuery.toLowerCase())) {
+                            matchedItems.add(item);
+                            continue;
+                        }
+                    }
+                    if (item.getShop() != null) {
+                        String shop = item.getShop().toLowerCase();
+                        if (shop.contains(mQuery.toLowerCase())) {
+                            matchedItems.add(item);
+                            continue;
+                        }
+                    }
+                    if (item.getPricePaid() != -1) {
+                        String pricePaid = "$" + getPriceFromTotalCents(item.getPricePaid())
+                                .toLowerCase();
+                        if (pricePaid.contains(mQuery.toLowerCase())) {
+                            matchedItems.add(item);
+                            continue;
+                        }
+                    }
+                    if (item.getDiscount() != -1) {
+                        String discount = "$" + getPriceFromTotalCents(item.getDiscount())
+                                .toLowerCase();
+                        if (discount.contains(mQuery.toLowerCase())) {
+                            matchedItems.add(item);
+                            continue;
+                        }
+                    }
+                    if (item.getExpiry() != -1) {
+                        String expiry = getDateFormat(format).format(item.getExpiry())
+                                .toLowerCase();
+                        if (expiry.contains(mQuery.toLowerCase())) {
+                            matchedItems.add(item);
+                            continue;
+                        }
+                    }
+                    if (item.getCategory() != null) {
+                        String category = item.getCategory().toLowerCase();
+                        if (category.contains(mQuery.toLowerCase())) {
+                            matchedItems.add(item);
+                            continue;
+                        }
+                    }
+                    if (item.getSubCategory() != null) {
+                        String subCategory = item.getSubCategory().toLowerCase();
+                        if (subCategory.contains(mQuery.toLowerCase())) {
+                            matchedItems.add(item);
+                            continue;
+                        }
+                    }
+                    if (item.getType() != null) {
+                        String type = item.getType().toLowerCase();
                         if (type.contains(mQuery.toLowerCase())) {
+                            matchedItems.add(item);
+                            continue;
+                        }
+                    }
+                    if (item.getSubtype() != null) {
+                        String subType = item.getSubtype().toLowerCase();
+                        if (subType.contains(mQuery.toLowerCase())) {
+                            matchedItems.add(item);
+                            continue;
+                        }
+                    }
+                    if (item.getSubtype2() != null) {
+                        String subType2 = item.getSubtype2().toLowerCase();
+                        if (subType2.contains(mQuery.toLowerCase())) {
+                            matchedItems.add(item);
+                            continue;
+                        }
+                    }
+                    if (item.getSubtype3() != null) {
+                        String subType3 = item.getSubtype3().toLowerCase();
+                        if (subType3.contains(mQuery.toLowerCase())) {
+                            matchedItems.add(item);
+                            continue;
+                        }
+                    }
+                    if (item.getMainColour() != null) {
+                        String mainColour = item.getMainColour().toLowerCase();
+                        if (mainColour.contains(mQuery.toLowerCase())) {
+                            matchedItems.add(item);
+                            continue;
+                        }
+                    }
+                    if (item.getMainColourShade() != null) {
+                        String mainColourShade = item.getMainColourShade().toLowerCase();
+                        if (mainColourShade.contains(mQuery.toLowerCase())) {
+                            matchedItems.add(item);
+                            continue;
+                        }
+                    }
+                    if (item.getAccentColour() != null) {
+                        String accentColour = item.getAccentColour().toLowerCase();
+                        if (accentColour.contains(mQuery.toLowerCase())) {
+                            matchedItems.add(item);
+                            continue;
+                        }
+                    }
+                    if (item.getSize() != null) {
+                        String size = item.getSize().toLowerCase();
+                        if (size.contains(mQuery.toLowerCase())) {
+                            matchedItems.add(item);
+                            continue;
+                        }
+                    }
+                    if (item.getBrand() != null) {
+                        String brand = item.getBrand().toLowerCase();
+                        if (brand.contains(mQuery.toLowerCase())) {
+                            matchedItems.add(item);
+                            continue;
+                        }
+                    }
+                    if (item.getDescription() != null) {
+                        String description = item.getDescription().toLowerCase();
+                        if (description.contains(mQuery.toLowerCase())) {
+                            matchedItems.add(item);
+                            continue;
+                        }
+                    }
+                    if (item.getNote() != null) {
+                        String note = item.getNote().toLowerCase();
+                        if (note.contains(mQuery.toLowerCase())) {
                             matchedItems.add(item);
                         }
                     }
