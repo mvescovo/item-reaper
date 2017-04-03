@@ -77,6 +77,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     private MediaPlayer mMediaPlayer;
     private FirebaseStorage mFirebaseStorage;
     private String mQuery;
+    private boolean mSearching;
 
     public ItemsFragment() {
     }
@@ -116,6 +117,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         }
         mFirebaseStorage = FirebaseStorage.getInstance();
         mQuery = null;
+        mSearching = false;
     }
 
     @Nullable
@@ -213,8 +215,8 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
     public void searchItem(@Nullable String query) {
         mQuery = query;
+        mSearching = true;
         if (isResumed()) {
-            mItemsAdapter.clearItems();
             mPresenter.getItems(true);
         }
         if (mQuery != null) {
@@ -476,7 +478,9 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 mItems.add(item);
                 sortItemsByExpiry();
             }
-            notifyDataSetChanged();
+            if (!mSearching) {
+                notifyDataSetChanged();
+            }
             mPresenter.itemsSizeChanged(mItems.size());
         }
 
@@ -490,6 +494,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             mItems.addAll(matchedItems);
             notifyDataSetChanged();
             mPresenter.itemsSizeChanged(mItems.size());
+            mSearching = false;
             setProgressBar(false);
         }
 
