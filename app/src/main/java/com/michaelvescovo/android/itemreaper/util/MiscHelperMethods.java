@@ -10,6 +10,8 @@ import java.util.Locale;
 
 /**
  * @author Michael Vescovo
+ *
+ * To and from byte array from http://www.java2s.com/Code/Java/File-Input-Output/Convertobjecttobytearrayandconvertbytearraytoobject.htm
  */
 
 public class MiscHelperMethods {
@@ -29,7 +31,7 @@ public class MiscHelperMethods {
         return new SimpleDateFormat(format, Locale.getDefault());
     }
 
-    public static byte[] toByteArray(Object obj) {
+    public static byte[] toByteArray(Object obj) throws IOException {
         byte[] bytes = null;
         ByteArrayOutputStream bos = null;
         ObjectOutputStream oos = null;
@@ -39,28 +41,18 @@ public class MiscHelperMethods {
             oos.writeObject(obj);
             oos.flush();
             bytes = bos.toByteArray();
-        } catch (IOException e) {
-            e.printStackTrace();
         } finally {
             if (oos != null) {
-                try {
-                    oos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                oos.close();
             }
             if (bos != null) {
-                try {
-                    bos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                bos.close();
             }
         }
         return bytes;
     }
 
-    public static Object toObject(byte[] bytes) {
+    public static Object toObject(byte[] bytes) throws IOException, ClassNotFoundException {
         Object obj = null;
         ByteArrayInputStream bis = null;
         ObjectInputStream ois = null;
@@ -68,22 +60,12 @@ public class MiscHelperMethods {
             bis = new ByteArrayInputStream(bytes);
             ois = new ObjectInputStream(bis);
             obj = ois.readObject();
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
         } finally {
             if (bis != null) {
-                try {
-                    bis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                bis.close();
             }
             if (ois != null) {
-                try {
-                    ois.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                ois.close();
             }
         }
         return obj;
