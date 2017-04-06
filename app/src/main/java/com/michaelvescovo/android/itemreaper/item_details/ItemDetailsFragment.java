@@ -199,18 +199,18 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
             } else {
                 mType.setText(getString(R.string.empty_value));
             }
-            if (item.getSubtype() != null) {
-                mSubType.setText(item.getSubtype());
+            if (item.getSubType() != null) {
+                mSubType.setText(item.getSubType());
             } else {
                 mSubType.setText(getString(R.string.empty_value));
             }
-            if (item.getSubtype2() != null) {
-                mSubType2.setText(item.getSubtype2());
+            if (item.getSubType2() != null) {
+                mSubType2.setText(item.getSubType2());
             } else {
                 mSubType2.setText(getString(R.string.empty_value));
             }
-            if (item.getSubtype3() != null) {
-                mSubType3.setText(item.getSubtype3());
+            if (item.getSubType3() != null) {
+                mSubType3.setText(item.getSubType3());
             } else {
                 mSubType3.setText(getString(R.string.empty_value));
             }

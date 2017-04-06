@@ -640,17 +640,17 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                     && !item.getType().equals(mType.getText().toString())) {
                 mType.setText(item.getType());
             }
-            if (item.getSubtype() != null
-                    && !item.getSubtype().equals(mSubType.getText().toString())) {
-                mSubType.setText(item.getSubtype());
+            if (item.getSubType() != null
+                    && !item.getSubType().equals(mSubType.getText().toString())) {
+                mSubType.setText(item.getSubType());
             }
-            if (item.getSubtype2() != null
-                    && !item.getSubtype2().equals(mSubType2.getText().toString())) {
-                mSubType2.setText(item.getSubtype2());
+            if (item.getSubType2() != null
+                    && !item.getSubType2().equals(mSubType2.getText().toString())) {
+                mSubType2.setText(item.getSubType2());
             }
-            if (item.getSubtype3() != null
-                    && !item.getSubtype3().equals(mSubType3.getText().toString())) {
-                mSubType3.setText(item.getSubtype3());
+            if (item.getSubType3() != null
+                    && !item.getSubType3().equals(mSubType3.getText().toString())) {
+                mSubType3.setText(item.getSubType3());
             }
             if (item.getMainColour() != null
                     && !item.getMainColour().equals(mMainColour.getText().toString())) {

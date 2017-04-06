@@ -624,22 +624,22 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                             continue;
                         }
                     }
-                    if (item.getSubtype() != null) {
-                        String subType = item.getSubtype().toLowerCase();
+                    if (item.getSubType() != null) {
+                        String subType = item.getSubType().toLowerCase();
                         if (subType.contains(mQuery.toLowerCase())) {
                             matchedItems.add(item);
                             continue;
                         }
                     }
-                    if (item.getSubtype2() != null) {
-                        String subType2 = item.getSubtype2().toLowerCase();
+                    if (item.getSubType2() != null) {
+                        String subType2 = item.getSubType2().toLowerCase();
                         if (subType2.contains(mQuery.toLowerCase())) {
                             matchedItems.add(item);
                             continue;
                         }
                     }
-                    if (item.getSubtype3() != null) {
-                        String subType3 = item.getSubtype3().toLowerCase();
+                    if (item.getSubType3() != null) {
+                        String subType3 = item.getSubType3().toLowerCase();
                         if (subType3.contains(mQuery.toLowerCase())) {
                             matchedItems.add(item);
                             continue;
