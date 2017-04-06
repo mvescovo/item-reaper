@@ -26,11 +26,11 @@ public class Item implements Serializable, Comparable {
     @Nullable
     private String mType;
     @Nullable
-    private String mSubtype;
+    private String mSubType;
     @Nullable
-    private String mSubtype2;
+    private String mSubType2;
     @Nullable
-    private String mSubtype3;
+    private String mSubType3;
     @Nullable
     private String mMainColour;
     @Nullable
@@ -62,8 +62,8 @@ public class Item implements Serializable, Comparable {
 
     public Item(@NonNull String id, long purchaseDate, int pricePaid, int discount,
                 long expiry, @Nullable String category, @Nullable String subCategory,
-                @NonNull String type, @Nullable String subtype, @Nullable String subtype2,
-                @Nullable String subtype3, @Nullable String mainColour,
+                @NonNull String type, @Nullable String subType, @Nullable String subType2,
+                @Nullable String subType3, @Nullable String mainColour,
                 @Nullable String mainColourShade, @Nullable String accentColour,
                 @Nullable String size, @Nullable String brand, @Nullable String shop,
                 @Nullable String description, @Nullable String note,
@@ -76,9 +76,9 @@ public class Item implements Serializable, Comparable {
         mCategory = category;
         mSubCategory = subCategory;
         mType = type;
-        mSubtype = subtype;
-        mSubtype2 = subtype2;
-        mSubtype3 = subtype3;
+        mSubType = subType;
+        mSubType2 = subType2;
+        mSubType3 = subType3;
         mMainColour = mainColour;
         mMainColourShade = mainColourShade;
         mAccentColour = accentColour;
@@ -160,30 +160,30 @@ public class Item implements Serializable, Comparable {
     }
 
     @Nullable
-    public String getSubtype() {
-        return mSubtype;
+    public String getSubType() {
+        return mSubType;
     }
 
-    public void setSubtype(@Nullable String subtype) {
-        mSubtype = subtype;
-    }
-
-    @Nullable
-    public String getSubtype2() {
-        return mSubtype2;
-    }
-
-    public void setSubtype2(@Nullable String subtype2) {
-        mSubtype2 = subtype2;
+    public void setSubType(@Nullable String subType) {
+        mSubType = subType;
     }
 
     @Nullable
-    public String getSubtype3() {
-        return mSubtype3;
+    public String getSubType2() {
+        return mSubType2;
     }
 
-    public void setSubtype3(@Nullable String subtype3) {
-        mSubtype3 = subtype3;
+    public void setSubType2(@Nullable String subType2) {
+        mSubType2 = subType2;
+    }
+
+    @Nullable
+    public String getSubType3() {
+        return mSubType3;
+    }
+
+    public void setSubType3(@Nullable String subType3) {
+        mSubType3 = subType3;
     }
 
     @Nullable
@@ -286,9 +286,9 @@ public class Item implements Serializable, Comparable {
         result.put("category", mCategory);
         result.put("subCategory", mSubCategory);
         result.put("type", mType);
-        result.put("subType", mSubtype);
-        result.put("subType2", mSubtype2);
-        result.put("subType3", mSubtype3);
+        result.put("subType", mSubType);
+        result.put("subType2", mSubType2);
+        result.put("subType3", mSubType3);
         result.put("mainColour", mMainColour);
         result.put("mainColourShade", mMainColourShade);
         result.put("accentColour", mAccentColour);
