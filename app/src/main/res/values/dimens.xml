@@ -30,4 +30,10 @@
     <dimen name="item_image_width">400dp</dimen>
     <dimen name="item_image_height">300dp</dimen>
 
+    <!--Widget-->
+    <dimen name="widget_default_height">110dp</dimen>
+    <dimen name="widget_default_width">180dp</dimen>
+    <dimen name="widget_margin">8dp</dimen>
+    <dimen name="widget_padding">4dp</dimen>
+
 </resources>

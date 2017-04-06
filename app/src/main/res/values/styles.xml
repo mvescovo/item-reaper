@@ -83,4 +83,36 @@
         <item name="android:layout_marginBottom">0dp</item>
     </style>
 
+    <!--Widget-->
+    <style name="ItemWidget" parent="AppTheme">
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="WidgetHeading">
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="WidgetTitle">
+        <item name="android:textSize">20sp</item>
+        <item name="android:padding">@dimen/widget_margin</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="WidgetUpdated">
+        <item name="android:textSize">12sp</item>
+        <item name="android:padding">@dimen/widget_margin</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="WidgetRefreshButton">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:padding">@dimen/widget_margin</item>
+    </style>
+
+    <style name="WidgetEmpty" parent="ItemWidget">
+        <item name="android:padding">@dimen/widget_margin</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+
 </resources>

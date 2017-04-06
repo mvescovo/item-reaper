@@ -1,0 +1,159 @@
+package com.michaelvescovo.android.itemreaper.widget;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.TypedArray;
+import android.support.v4.content.ContextCompat;
+import android.util.TypedValue;
+import android.widget.RemoteViews;
+import android.widget.RemoteViewsService;
+
+import com.michaelvescovo.android.itemreaper.R;
+import com.michaelvescovo.android.itemreaper.data.Item;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+
+import static com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity.EXTRA_ITEM_ID;
+import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getPriceFromTotalCents;
+import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.toObject;
+
+/**
+ * @author Michael Vescovo
+ */
+
+public class WidgetListService extends RemoteViewsService {
+
+    public static final String EXTRA_ITEMS = "com.michaelvescovo.android.itemreaper.widget.extra.items";
+
+    @Override
+    public RemoteViewsFactory onGetViewFactory(Intent intent) {
+        return new ListRemoteViewsFactory(this.getApplicationContext(), intent);
+    }
+
+    private class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
+        private Context mContext;
+        private List<Item> mItems;
+
+        ListRemoteViewsFactory(Context context, Intent intent) {
+            mContext = context;
+            mItems = new ArrayList<>();
+            if (intent != null) {
+                byte[] bytes = intent.getByteArrayExtra(EXTRA_ITEMS);
+                try {
+                    mItems.clear();
+                    //noinspection unchecked
+                    mItems = (List<Item>) toObject(bytes);
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        @Override
+        public void onCreate() {
+            // Nothing to do here.
+        }
+
+        @Override
+        public int getCount() {
+            return mItems.size();
+        }
+
+        @Override
+        public void onDataSetChanged() {
+            // Nothing to do here.
+        }
+
+        @Override
+        public RemoteViews getViewAt(int position) {
+            RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.widget_item);
+            String category = mItems.get(position).getCategory();
+            if (category == null || category.equals("")) {
+                rv.setTextViewText(R.id.category, getString(R.string.edit_category_empty));
+            } else {
+                rv.setTextViewText(R.id.category, category);
+            }
+            String type = mItems.get(position).getType();
+            if (type == null || type.equals("")) {
+                rv.setTextViewText(R.id.type, getString(R.string.edit_type_empty));
+            } else {
+                rv.setTextViewText(R.id.type, type);
+            }
+            String colour = mItems.get(position).getMainColour();
+            if (colour == null || colour.equals("")) {
+                rv.setTextViewText(R.id.colour, getString(R.string.edit_main_colour_empty));
+            } else {
+                rv.setTextViewText(R.id.colour, colour);
+            }
+            long expiry = mItems.get(position).getExpiry();
+            if (expiry == -1) {
+                rv.setTextViewText(R.id.expiry, getString(R.string.edit_expiry_date_empty));
+            } else {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(expiry);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(getString(
+                        R.string.edit_date_format), Locale.getDefault());
+                String expiryString = simpleDateFormat.format(calendar.getTime());
+                rv.setTextViewText(R.id.expiry, expiryString);
+                Calendar almostExpiredDate = Calendar.getInstance();
+                almostExpiredDate.add(Calendar.MONTH, 1);
+                if (calendar.compareTo(almostExpiredDate) < 1) {
+                    rv.setInt(R.id.expiry, "setTextColor", ContextCompat.getColor(mContext,
+                            R.color.red));
+                } else {
+                    TypedValue typedValue = new TypedValue();
+                    TypedArray typedArray = mContext.obtainStyledAttributes(
+                            typedValue.data, new int[]{android.R.attr.textColorPrimary}
+                    );
+                    int textColourPrimary = typedArray.getColor(0, 0);
+                    typedArray.recycle();
+                    rv.setInt(R.id.expiry, "setTextColor", textColourPrimary);
+                }
+            }
+            int price = mItems.get(position).getPricePaid();
+            String priceString;
+            if (price == -1) {
+                priceString = getString(R.string.edit_price_paid_empty);
+            } else {
+                priceString = getString(R.string.edit_price_paid_prefix)
+                        + getPriceFromTotalCents(price);
+            }
+            rv.setTextViewText(R.id.paid, priceString);
+
+            Intent fillInIntent = new Intent();
+            fillInIntent.putExtra(EXTRA_ITEM_ID, mItems.get(position).getId());
+            rv.setOnClickFillInIntent(R.id.widget_item, fillInIntent);
+            return rv;
+        }
+
+        @Override
+        public RemoteViews getLoadingView() {
+            return null;
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return 1;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return true;
+        }
+
+        @Override
+        public void onDestroy() {
+            // Nothing to do here.
+        }
+    }
+}
