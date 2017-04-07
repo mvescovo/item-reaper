@@ -212,9 +212,11 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
     private void removeImageFromFirebase() {
         if (mDeletedItem.getImageUrl() != null) {
-            StorageReference photoRef = mFirebaseStorage.getReferenceFromUrl(
-                    mDeletedItem.getImageUrl());
-            photoRef.delete();
+            if (mDeletedItem.getImageUrl().contains("https://firebasestorage")) {
+                StorageReference photoRef = mFirebaseStorage.getReferenceFromUrl(
+                        mDeletedItem.getImageUrl());
+                photoRef.delete();
+            }
         }
     }
 
