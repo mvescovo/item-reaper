@@ -203,39 +203,39 @@ public class EditItemScreenTestP {
 
     @Test
     public void itemHasSubType_ShowsSubType() {
-        if (mItem.getSubtype() != null) {
+        if (mItem.getSubType() != null) {
             Espresso.closeSoftKeyboard();
-            onView(withText(mItem.getSubtype())).perform(scrollTo())
+            onView(withText(mItem.getSubType())).perform(scrollTo())
                     .check(matches(isDisplayed()));
             mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
-            onView(withText(mItem.getSubtype())).perform(scrollTo())
+            onView(withText(mItem.getSubType())).perform(scrollTo())
                     .check(matches(isDisplayed()));
         }
     }
 
     @Test
     public void itemHasSubType2_ShowsSubType2() {
-        if (mItem.getSubtype2() != null) {
+        if (mItem.getSubType2() != null) {
             Espresso.closeSoftKeyboard();
-            onView(withText(mItem.getSubtype2())).perform(scrollTo())
+            onView(withText(mItem.getSubType2())).perform(scrollTo())
                     .check(matches(isDisplayed()));
             mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
-            onView(withText(mItem.getSubtype2())).perform(scrollTo())
+            onView(withText(mItem.getSubType2())).perform(scrollTo())
                     .check(matches(isDisplayed()));
         }
     }
 
     @Test
     public void itemHasSubType3_ShowsSubType() {
-        if (mItem.getSubtype3() != null) {
+        if (mItem.getSubType3() != null) {
             Espresso.closeSoftKeyboard();
-            onView(withText(mItem.getSubtype3())).perform(scrollTo())
+            onView(withText(mItem.getSubType3())).perform(scrollTo())
                     .check(matches(isDisplayed()));
             mEspressoHelperMethods.rotateScreen();
             Espresso.closeSoftKeyboard();
-            onView(withText(mItem.getSubtype3())).perform(scrollTo())
+            onView(withText(mItem.getSubType3())).perform(scrollTo())
                     .check(matches(isDisplayed()));
         }
     }
