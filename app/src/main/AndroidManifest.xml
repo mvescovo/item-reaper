@@ -72,11 +72,6 @@
             android:permission="android.permission.BIND_REMOTEVIEWS">
         </service>
 
-        <service
-            android:name=".widget.GetWidgetDataService"
-            android:exported="false">
-        </service>
-
     </application>
 
 </manifest>

@@ -1,24 +1,39 @@
 package com.michaelvescovo.android.itemreaper.widget;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
 import com.michaelvescovo.android.itemreaper.R;
+import com.michaelvescovo.android.itemreaper.data.DataSource;
 import com.michaelvescovo.android.itemreaper.data.Item;
+import com.michaelvescovo.android.itemreaper.data.Repository;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CountDownLatch;
+
+import javax.inject.Inject;
 
 import static com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity.EXTRA_ITEM_ID;
+import static com.michaelvescovo.android.itemreaper.items.ItemsPresenter.ITEMS_CALLER;
 import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getPriceFromTotalCents;
 import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.toObject;
 
@@ -28,30 +43,33 @@ import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.toObj
 
 public class WidgetListService extends RemoteViewsService {
 
-    public static final String EXTRA_ITEMS = "com.michaelvescovo.android.itemreaper.widget.extra.items";
+    @Inject
+    public Repository mRepository;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        DaggerWidgetComponent.builder()
+                .repositoryComponent(((ItemReaperApplication) getApplication())
+                        .getRepositoryComponent())
+                .build()
+                .inject(this);
+    }
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new ListRemoteViewsFactory(this.getApplicationContext(), intent);
+        return new ListRemoteViewsFactory(this.getApplicationContext());
     }
 
     private class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         private Context mContext;
         private List<Item> mItems;
+        private int mCount;
+        private CountDownLatch mCountDownLatch;
 
-        ListRemoteViewsFactory(Context context, Intent intent) {
+        ListRemoteViewsFactory(Context context) {
             mContext = context;
             mItems = new ArrayList<>();
-            if (intent != null) {
-                byte[] bytes = intent.getByteArrayExtra(EXTRA_ITEMS);
-                try {
-                    mItems.clear();
-                    //noinspection unchecked
-                    mItems = (List<Item>) toObject(bytes);
-                } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
         }
 
         @Override
@@ -66,7 +84,75 @@ public class WidgetListService extends RemoteViewsService {
 
         @Override
         public void onDataSetChanged() {
-            // Nothing to do here.
+            mCountDownLatch = new CountDownLatch(1);
+            getItems();
+            try {
+                mCountDownLatch.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private void getItems() {
+            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            if (firebaseUser != null) {
+                mRepository.getItemIds(firebaseUser.getUid(), new DataSource.GetItemIdsCallback() {
+                    @Override
+                    public void onItemIdsLoaded(@Nullable List<String> itemIds,
+                                                boolean itemRemoved) {
+                        if (mCountDownLatch.getCount() == 0) {
+                            Intent updateWidgetIntent = new Intent(mContext,
+                                    ItemWidgetProvider.class);
+                            updateWidgetIntent.setAction(ItemWidgetProvider
+                                    .ACTION_DATA_UPDATED);
+                            mContext.sendBroadcast(updateWidgetIntent);
+                        } else {
+                            if (itemIds != null) {
+                                mItems.clear();
+                                mCount = itemIds.size();
+                                for (final String itemId : itemIds) {
+                                    getItem(itemId);
+                                }
+                            } else {
+                                mCountDownLatch.countDown();
+                            }
+                        }
+                    }
+                });
+            } else {
+                mCountDownLatch.countDown();
+            }
+        }
+
+        private void getItem(final String itemId) {
+            mRepository.getItem(itemId, ITEMS_CALLER, new DataSource.GetItemCallback() {
+                @Override
+                public void onItemLoaded(@Nullable Item item) {
+                    if (mCountDownLatch.getCount() == 0) {
+                        Intent updateWidgetIntent = new Intent(mContext, ItemWidgetProvider.class);
+                        updateWidgetIntent.setAction(ItemWidgetProvider.ACTION_DATA_UPDATED);
+                        mContext.sendBroadcast(updateWidgetIntent);
+                    } else {
+                        if (item != null) {
+                            mItems.add(item);
+                        }
+                        if (mCount == mItems.size()) {
+                            sortItemsByExpiry();
+                            mCountDownLatch.countDown();
+                        }
+                    }
+                }
+            });
+        }
+
+        private void sortItemsByExpiry() {
+            // Sort ascending (earlier dates first)
+            Collections.sort(mItems, new Comparator<Item>() {
+                @Override
+                public int compare(Item item1, Item item2) {
+                    return item1.compareTo(item2);
+                }
+            });
         }
 
         @Override
@@ -97,7 +183,8 @@ public class WidgetListService extends RemoteViewsService {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(expiry);
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat(getString(
-                        R.string.edit_date_format), Locale.getDefault());
+                        R.string.edit_date_format),
+                        Locale.getDefault());
                 String expiryString = simpleDateFormat.format(calendar.getTime());
                 rv.setTextViewText(R.id.expiry, expiryString);
                 Calendar almostExpiredDate = Calendar.getInstance();

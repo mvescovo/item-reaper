@@ -1,18 +1,17 @@
 package com.michaelvescovo.android.itemreaper.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.RemoteViews;
-
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.item_details.ItemDetailsActivity;
-
+import com.michaelvescovo.android.itemreaper.items.ItemsActivity;
 import static com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity.EXTRA_ITEM_ID;
-import static com.michaelvescovo.android.itemreaper.widget.GetWidgetDataService.ACTION_GET_WIDGET_DATA;
-import static com.michaelvescovo.android.itemreaper.widget.GetWidgetDataService.EXTRA_APP_WIDGET_IDS;
 
 /**
  * @author Michael Vescovo
@@ -44,10 +43,27 @@ public class ItemWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-        Intent getDataIntent = new Intent(context, GetWidgetDataService.class);
-        getDataIntent.setAction(ACTION_GET_WIDGET_DATA);
-        getDataIntent.putExtra(EXTRA_APP_WIDGET_IDS, appWidgetIds);
-        context.startService(getDataIntent);
+        for (int appWidgetId : appWidgetIds) {
+            RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget);
+
+            // WidgetListService intent for populating collection views.
+            Intent collectionIntent = new Intent(context, WidgetListService.class);
+            rv.setRemoteAdapter(R.id.widget_list, collectionIntent);
+            rv.setEmptyView(R.id.widget_list, R.id.widget_empty);
+
+            // Intent for opening the main app from the widget title.
+            Intent itemReaperIntent = new Intent(context, ItemsActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, itemReaperIntent, 0);
+            rv.setOnClickPendingIntent(R.id.widget_title, pendingIntent);
+
+            // Collection for ItemDetailsActivity intent when opening individual list item.
+            Intent clickIntentTemplate = new Intent(context, ItemWidgetProvider.class);
+            clickIntentTemplate.setAction(ACTION_ITEM_CLICKED);
+            PendingIntent clickPendingIntentTemplate = PendingIntent.getBroadcast(context, 0,
+                    clickIntentTemplate, PendingIntent.FLAG_UPDATE_CURRENT);
+            rv.setPendingIntentTemplate(R.id.widget_list, clickPendingIntentTemplate);
+            appWidgetManager.updateAppWidget(appWidgetId, rv);
+        }
     }
 
     @Override

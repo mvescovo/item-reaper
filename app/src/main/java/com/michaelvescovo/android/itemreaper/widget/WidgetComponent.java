@@ -13,5 +13,5 @@ import dagger.Component;
 @Component(dependencies = {RepositoryComponent.class})
 interface WidgetComponent {
 
-    void inject(GetWidgetDataService service);
+    void inject(WidgetListService service);
 }

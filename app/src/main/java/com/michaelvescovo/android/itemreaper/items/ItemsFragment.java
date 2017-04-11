@@ -358,12 +358,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         });
     }
 
-    private void updateWidget() {
-        Intent updateWidgetIntent = new Intent(getActivity(), ItemWidgetProvider.class);
-        updateWidgetIntent.setAction(ItemWidgetProvider.ACTION_DATA_UPDATED);
-        getActivity().sendBroadcast(updateWidgetIntent);
-    }
-
     interface Callback {
 
         void onAboutSelected();
@@ -495,7 +489,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             }
             if (!mSearching) {
                 notifyDataSetChanged();
-                updateWidget();
             }
             mPresenter.itemsSizeChanged(mItems.size());
         }
@@ -509,7 +502,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             clearItems();
             mItems.addAll(matchedItems);
             notifyDataSetChanged();
-            updateWidget();
             mPresenter.itemsSizeChanged(mItems.size());
             mSearching = false;
             setProgressBar(false);
@@ -529,7 +521,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             mItems.clear();
             mImageUrl = null;
             notifyDataSetChanged();
-            updateWidget();
         }
 
         class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
