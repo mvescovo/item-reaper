@@ -101,6 +101,7 @@ public class WidgetListService extends RemoteViewsService {
                     public void onItemIdsLoaded(@Nullable List<String> itemIds,
                                                 boolean itemRemoved) {
                         if (mCountDownLatch.getCount() == 0) {
+                            // Item id's changed externally. Initiate refresh.
                             Intent updateWidgetIntent = new Intent(mContext,
                                     ItemWidgetProvider.class);
                             updateWidgetIntent.setAction(ItemWidgetProvider
@@ -129,6 +130,7 @@ public class WidgetListService extends RemoteViewsService {
                 @Override
                 public void onItemLoaded(@Nullable Item item) {
                     if (mCountDownLatch.getCount() == 0) {
+                        // Item changed externally. Initiate refresh.
                         Intent updateWidgetIntent = new Intent(mContext, ItemWidgetProvider.class);
                         updateWidgetIntent.setAction(ItemWidgetProvider.ACTION_DATA_UPDATED);
                         mContext.sendBroadcast(updateWidgetIntent);
