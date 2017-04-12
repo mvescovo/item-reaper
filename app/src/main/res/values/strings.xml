@@ -30,7 +30,7 @@
     <string name="edit_discount_hint">Discount ($)</string>
     <string name="edit_expiry_date_title">Expiry Date</string>
     <string name="edit_expiry_date_empty">\?</string>
-    <string name="edit_date_format">dd/MMMM/yy</string>
+    <string name="edit_date_format">dd/MMM/yy</string>
     <string name="edit_category_hint">Category</string>
     <string name="edit_category_empty">\?</string>
     <string name="edit_sub_category_hint">Sub Category</string>

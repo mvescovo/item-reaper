@@ -183,8 +183,7 @@ public class WidgetListService extends RemoteViewsService {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTimeInMillis(expiry);
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat(getString(
-                            R.string.edit_date_format),
-                            Locale.getDefault());
+                            R.string.edit_date_format), Locale.ENGLISH);
                     String expiryString = simpleDateFormat.format(calendar.getTime());
                     rv.setTextViewText(R.id.expiry, expiryString);
                     Calendar almostExpiredDate = Calendar.getInstance();

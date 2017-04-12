@@ -28,7 +28,7 @@ public class MiscHelperMethods {
     }
 
     public static SimpleDateFormat getDateFormat(String format) {
-        return new SimpleDateFormat(format, Locale.getDefault());
+        return new SimpleDateFormat(format, Locale.ENGLISH);
     }
 
     public static byte[] toByteArray(Object obj) throws IOException {

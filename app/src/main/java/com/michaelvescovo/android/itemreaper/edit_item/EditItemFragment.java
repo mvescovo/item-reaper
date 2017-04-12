@@ -818,7 +818,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
 
     private SimpleDateFormat getSimpleDateFormat() {
         return new SimpleDateFormat(
-                getString(R.string.edit_date_format), Locale.getDefault());
+                getString(R.string.edit_date_format), Locale.ENGLISH);
     }
 
     private String getTodayString() {
