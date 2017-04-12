@@ -8,10 +8,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.TaskStackBuilder;
 import android.widget.RemoteViews;
+
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
 import com.michaelvescovo.android.itemreaper.item_details.ItemDetailsActivity;
 import com.michaelvescovo.android.itemreaper.items.ItemsActivity;
+
+import static com.michaelvescovo.android.itemreaper.items.ItemsActivity.EXTRA_EDIT_NEW_ITEM;
 
 /**
  * @author Michael Vescovo
@@ -20,6 +23,7 @@ import com.michaelvescovo.android.itemreaper.items.ItemsActivity;
 public class ItemWidgetProvider extends AppWidgetProvider {
 
     public static final String ACTION_DATA_UPDATED = "data_updated";
+    public static final String ACTION_EDIT_NEW_ITEM = "action_edit_new_item";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -35,6 +39,7 @@ public class ItemWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
+        boolean largeScreen = context.getResources().getBoolean(R.bool.large_layout);
         for (int appWidgetId : appWidgetIds) {
             RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget);
 
@@ -45,16 +50,22 @@ public class ItemWidgetProvider extends AppWidgetProvider {
 
             // Intent for opening the main app from the widget title.
             Intent itemReaperIntent = new Intent(context, ItemsActivity.class);
-            PendingIntent itemReaperPendingIntent = PendingIntent.getActivity(context, 0, itemReaperIntent, 0);
+            PendingIntent itemReaperPendingIntent = PendingIntent.getActivity(context, 0,
+                    itemReaperIntent, 0);
             rv.setOnClickPendingIntent(R.id.widget_title, itemReaperPendingIntent);
 
             // Intent for adding an item when clicking the add item button.
-            Intent addItemIntent = new Intent(context, EditItemActivity.class);
-            PendingIntent addItemPendingIntent = PendingIntent.getActivity(context, 0, addItemIntent, 0);
+            Intent addItemIntent = largeScreen
+                    ? new Intent(context, ItemsActivity.class)
+                    : new Intent(context, EditItemActivity.class);
+            addItemIntent.putExtra(EXTRA_EDIT_NEW_ITEM, true);
+            addItemIntent.setAction(ACTION_EDIT_NEW_ITEM);
+            PendingIntent addItemPendingIntent = TaskStackBuilder.create(context)
+                    .addNextIntentWithParentStack(addItemIntent)
+                    .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
             rv.setOnClickPendingIntent(R.id.widget_add_item, addItemPendingIntent);
 
             // Collection for ItemDetailsActivity intent when opening individual list item.
-            boolean largeScreen = context.getResources().getBoolean(R.bool.large_layout);
             Intent clickIntentTemplate = largeScreen
                     ? new Intent(context, ItemsActivity.class)
                     : new Intent(context, ItemDetailsActivity.class);

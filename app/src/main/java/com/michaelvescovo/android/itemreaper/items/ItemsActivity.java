@@ -50,6 +50,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity.EXTRA_ITEM_ID;
+import static com.michaelvescovo.android.itemreaper.widget.ItemWidgetProvider.ACTION_EDIT_NEW_ITEM;
 
 
 /**
@@ -61,6 +62,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
 
     public static final int REQUEST_CODE_ITEM_DELETED = 1;
     public static final String EXTRA_DELETED_ITEM = "deleted_item";
+    public static final String EXTRA_EDIT_NEW_ITEM = "edit_new_item";
     private static final String CURRENT_DIALOG_NAME = "current_dialog_name";
     private static final String STATE_SEARCH_VIEW_OPEN = "search_view_open";
     private static final String STATE_QUERY = "query";
@@ -91,6 +93,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     private boolean mSearchViewExpanded;
     private String mQuery;
     private String mItemId;
+    private boolean mEditNewItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,9 +150,23 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
 
         if (getIntent() != null) {
             mItemId = getIntent().getStringExtra(EXTRA_ITEM_ID);
+            if (getIntent().getAction() != null
+                    && getIntent().getAction().contentEquals(ACTION_EDIT_NEW_ITEM)) {
+                mEditNewItem = getIntent().getBooleanExtra(EXTRA_EDIT_NEW_ITEM, false);
+            }
         }
 
         mDialogResumed = false;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        mItemId = intent.getStringExtra(EXTRA_ITEM_ID);
+        if (intent.getAction() != null
+                && intent.getAction().contentEquals(ACTION_EDIT_NEW_ITEM)) {
+            mEditNewItem = intent.getBooleanExtra(EXTRA_EDIT_NEW_ITEM, false);
+        }
     }
 
     @Override
@@ -159,6 +176,10 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
             onItemDetailsSelected(mItemId);
             getIntent().removeExtra(EXTRA_ITEM_ID);
             mItemId = null;
+        } else if (mEditNewItem) {
+            onEditItemSelected(null);
+            getIntent().removeExtra(EXTRA_EDIT_NEW_ITEM);
+            mEditNewItem = false;
         }
     }
 
