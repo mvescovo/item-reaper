@@ -60,7 +60,7 @@ public class ItemWidgetProvider extends AppWidgetProvider {
                     : new Intent(context, ItemDetailsActivity.class);
             PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
                     .addNextIntentWithParentStack(clickIntentTemplate)
-                    .getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
+                    .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
             rv.setPendingIntentTemplate(R.id.widget_list, clickPendingIntentTemplate);
             appWidgetManager.updateAppWidget(appWidgetId, rv);
         }

@@ -25,7 +25,6 @@ import static com.michaelvescovo.android.itemreaper.items.ItemsActivity.REQUEST_
 
 public class ItemDetailsActivity extends AppCompatActivity implements ItemDetailsFragment.Callback {
 
-    public static final String EXTRA_ITEM = "com.michaelvescovo.android.itemreaper.item";
     private static final String FRAGMENT_ITEM_DETAILS = "fragment_item_details";
 
     @Override

@@ -157,6 +157,8 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
         super.onResumeFragments();
         if (mItemId != null) {
             onItemDetailsSelected(mItemId);
+            getIntent().removeExtra(EXTRA_ITEM_ID);
+            mItemId = null;
         }
     }
 
