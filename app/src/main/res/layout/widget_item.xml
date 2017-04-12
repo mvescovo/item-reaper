@@ -53,7 +53,6 @@
             style="@style/card_content_secondary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/red"
             tools:text="1/1/1"/>
 
         <TextView
