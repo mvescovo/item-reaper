@@ -6,13 +6,12 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+import android.support.v4.app.TaskStackBuilder;
 import android.widget.RemoteViews;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
 import com.michaelvescovo.android.itemreaper.item_details.ItemDetailsActivity;
 import com.michaelvescovo.android.itemreaper.items.ItemsActivity;
-import static com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity.EXTRA_ITEM_ID;
 
 /**
  * @author Michael Vescovo
@@ -21,7 +20,6 @@ import static com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity.E
 public class ItemWidgetProvider extends AppWidgetProvider {
 
     public static final String ACTION_DATA_UPDATED = "data_updated";
-    public static final String ACTION_ITEM_CLICKED = "item_clicked";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -31,13 +29,6 @@ public class ItemWidgetProvider extends AppWidgetProvider {
             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(
                     new ComponentName(context, getClass()));
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list);
-        }
-
-        if (intent.getAction().equals(ACTION_ITEM_CLICKED)) {
-            String itemId = intent.getStringExtra(EXTRA_ITEM_ID);
-            Intent detailIntent = new Intent(context, ItemDetailsActivity.class);
-            detailIntent.putExtra(EXTRA_ITEM_ID, itemId);
-            context.startActivity(detailIntent);
         }
     }
 
@@ -63,10 +54,10 @@ public class ItemWidgetProvider extends AppWidgetProvider {
             rv.setOnClickPendingIntent(R.id.widget_add_item, addItemPendingIntent);
 
             // Collection for ItemDetailsActivity intent when opening individual list item.
-            Intent clickIntentTemplate = new Intent(context, ItemWidgetProvider.class);
-            clickIntentTemplate.setAction(ACTION_ITEM_CLICKED);
-            PendingIntent clickPendingIntentTemplate = PendingIntent.getBroadcast(context, 0,
-                    clickIntentTemplate, PendingIntent.FLAG_UPDATE_CURRENT);
+            Intent clickIntentTemplate = new Intent(context, ItemDetailsActivity.class);
+            PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
+                    .addNextIntentWithParentStack(clickIntentTemplate)
+                    .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
             rv.setPendingIntentTemplate(R.id.widget_list, clickPendingIntentTemplate);
             appWidgetManager.updateAppWidget(appWidgetId, rv);
         }
