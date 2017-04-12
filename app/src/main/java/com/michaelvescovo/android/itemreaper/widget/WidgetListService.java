@@ -130,8 +130,10 @@ public class WidgetListService extends RemoteViewsService {
                         updateWidgetIntent.setAction(ItemWidgetProvider.ACTION_DATA_UPDATED);
                         mContext.sendBroadcast(updateWidgetIntent);
                     } else {
-                        if (item != null) {
+                        if (item != null && !item.getDeceased()) {
                             mItems.add(item);
+                        } else {
+                            mCount--;
                         }
                         if (mCount == mItems.size()) {
                             sortItemsByExpiry();
