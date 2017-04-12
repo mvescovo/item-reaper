@@ -99,7 +99,7 @@
     <string name="privacy_policy"><a href="https://mvescovo.github.io/item-reaper/">Privacy Policy</a>.</string>
 
     <!--Widget-->
-    <string name="refresh_data">Refresh</string>
+    <string name="add_item">Add Item</string>
     <string name="time_updated">Updated&#160;</string>
 
 </resources>

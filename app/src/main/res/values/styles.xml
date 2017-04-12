@@ -98,13 +98,7 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="WidgetUpdated">
-        <item name="android:textSize">12sp</item>
-        <item name="android:padding">@dimen/widget_margin</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
-    <style name="WidgetRefreshButton">
+    <style name="WidgetAddItemButton">
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:padding">@dimen/widget_margin</item>
     </style>

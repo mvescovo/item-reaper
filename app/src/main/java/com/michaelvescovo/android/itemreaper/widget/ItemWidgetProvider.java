@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.RemoteViews;
 import com.michaelvescovo.android.itemreaper.R;
+import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
 import com.michaelvescovo.android.itemreaper.item_details.ItemDetailsActivity;
 import com.michaelvescovo.android.itemreaper.items.ItemsActivity;
 import static com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity.EXTRA_ITEM_ID;
@@ -53,8 +54,13 @@ public class ItemWidgetProvider extends AppWidgetProvider {
 
             // Intent for opening the main app from the widget title.
             Intent itemReaperIntent = new Intent(context, ItemsActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, itemReaperIntent, 0);
-            rv.setOnClickPendingIntent(R.id.widget_title, pendingIntent);
+            PendingIntent itemReaperPendingIntent = PendingIntent.getActivity(context, 0, itemReaperIntent, 0);
+            rv.setOnClickPendingIntent(R.id.widget_title, itemReaperPendingIntent);
+
+            // Intent for adding an item when clicking the add item button.
+            Intent addItemIntent = new Intent(context, EditItemActivity.class);
+            PendingIntent addItemPendingIntent = PendingIntent.getActivity(context, 0, addItemIntent, 0);
+            rv.setOnClickPendingIntent(R.id.widget_add_item, addItemPendingIntent);
 
             // Collection for ItemDetailsActivity intent when opening individual list item.
             Intent clickIntentTemplate = new Intent(context, ItemWidgetProvider.class);
