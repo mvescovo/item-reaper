@@ -68,6 +68,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     private static final String EDIT_ITEM_DIALOG = "edit_item_dialog";
     private static final String ITEM_DETAILS_DIALOG = "item_details_dialog";
     private static final String FRAGMENT_ITEMS = "fragment_items";
+
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.appbar_title)
@@ -89,6 +90,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     private ItemDetailsFragment mItemDetailsFragment;
     private boolean mSearchViewExpanded;
     private String mQuery;
+    private String mItemId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +145,19 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
             mQuery = savedInstanceState.getString(STATE_QUERY);
         }
 
+        if (getIntent() != null) {
+            mItemId = getIntent().getStringExtra(EXTRA_ITEM_ID);
+        }
+
         mDialogResumed = false;
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        if (mItemId != null) {
+            onItemDetailsSelected(mItemId);
+        }
     }
 
     private void initFragment(Fragment fragment) {

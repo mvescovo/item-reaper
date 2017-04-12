@@ -54,10 +54,13 @@ public class ItemWidgetProvider extends AppWidgetProvider {
             rv.setOnClickPendingIntent(R.id.widget_add_item, addItemPendingIntent);
 
             // Collection for ItemDetailsActivity intent when opening individual list item.
-            Intent clickIntentTemplate = new Intent(context, ItemDetailsActivity.class);
+            boolean largeScreen = context.getResources().getBoolean(R.bool.large_layout);
+            Intent clickIntentTemplate = largeScreen
+                    ? new Intent(context, ItemsActivity.class)
+                    : new Intent(context, ItemDetailsActivity.class);
             PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
                     .addNextIntentWithParentStack(clickIntentTemplate)
-                    .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                    .getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
             rv.setPendingIntentTemplate(R.id.widget_list, clickPendingIntentTemplate);
             appWidgetManager.updateAppWidget(appWidgetId, rv);
         }
