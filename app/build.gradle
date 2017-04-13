@@ -119,6 +119,7 @@ dependencies {
     compile "com.google.firebase:firebase-auth:$rootProject.firebaseVersion"
     compile "com.google.firebase:firebase-database:$rootProject.firebaseVersion"
     compile "com.google.firebase:firebase-storage:$rootProject.firebaseVersion"
+    compile "com.google.firebase:firebase-ads:$rootProject.firebaseVersion"
     provided 'org.glassfish:javax.annotation:10.0-b28'
 
     // Image downloading and caching
