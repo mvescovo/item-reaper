@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.michaelvescovo.android.itemreaper">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false"/>
@@ -13,6 +16,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
 
         <activity android:name=".auth.AuthActivity">
             <intent-filter>
@@ -50,6 +57,10 @@
             android:label="@string/title_activity_item_details"
             android:parentActivityName=".items.ItemsActivity">
         </activity>
+
+        <activity android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:theme="@android:style/Theme.Translucent" />
 
         <service
             android:name=".util.ImageUploadService"
