@@ -102,4 +102,7 @@
     <string name="add_item">Add Item</string>
     <string name="time_updated">Updated&#160;</string>
 
+    <!--AdMob-->
+    <string name="test_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
 </resources>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator_layout"
@@ -26,7 +25,7 @@
                 style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title_activity_item_details"/>
+                android:text="@string/title_activity_item_details" />
 
         </android.support.v7.widget.Toolbar>
 
@@ -35,6 +34,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/item_detail_ad_height"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <ScrollView
@@ -55,7 +55,7 @@
                     style="@style/content_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/purchase_details_title"/>
+                    android:text="@string/purchase_details_title" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -67,14 +67,14 @@
                         style="@style/content_text2.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/purchase_date"/>
+                        android:text="@string/purchase_date" />
 
                     <TextView
                         android:id="@+id/purchase_date_value"
                         style="@style/content_text1.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/empty_value"/>
+                        android:text="@string/empty_value" />
 
                 </LinearLayout>
 
@@ -88,14 +88,14 @@
                         style="@style/content_text2.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/shop"/>
+                        android:text="@string/shop" />
 
                     <TextView
                         android:id="@+id/shop_value"
                         style="@style/content_text1.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/empty_value"/>
+                        android:text="@string/empty_value" />
 
                 </LinearLayout>
 
@@ -109,14 +109,14 @@
                         style="@style/content_text2.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/price_paid"/>
+                        android:text="@string/price_paid" />
 
                     <TextView
                         android:id="@+id/price_paid_value"
                         style="@style/content_text1.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/empty_value"/>
+                        android:text="@string/empty_value" />
 
                 </LinearLayout>
 
@@ -130,14 +130,14 @@
                         style="@style/content_text2.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/discount"/>
+                        android:text="@string/discount" />
 
                     <TextView
                         android:id="@+id/discount_value"
                         style="@style/content_text1.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/empty_value"/>
+                        android:text="@string/empty_value" />
 
                 </LinearLayout>
 
@@ -147,7 +147,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_vertical"
-                    android:text="@string/item_details_title"/>
+                    android:text="@string/item_details_title" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -159,14 +159,14 @@
                         style="@style/content_text2.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/expiry_date"/>
+                        android:text="@string/expiry_date" />
 
                     <TextView
                         android:id="@+id/expiry_date_value"
                         style="@style/content_text1.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/empty_value"/>
+                        android:text="@string/empty_value" />
 
                 </LinearLayout>
 
@@ -180,14 +180,14 @@
                         style="@style/content_text2.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/category"/>
+                        android:text="@string/category" />
 
                     <TextView
                         android:id="@+id/category_value"
                         style="@style/content_text1.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/empty_value"/>
+                        android:text="@string/empty_value" />
 
                 </LinearLayout>
 
@@ -201,14 +201,14 @@
                         style="@style/content_text2.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/sub_category"/>
+                        android:text="@string/sub_category" />
 
                     <TextView
                         android:id="@+id/sub_category_value"
                         style="@style/content_text1.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/empty_value"/>
+                        android:text="@string/empty_value" />
 
                 </LinearLayout>
 
@@ -222,14 +222,14 @@
                         style="@style/content_text2.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/type"/>
+                        android:text="@string/type" />
 
                     <TextView
                         android:id="@+id/type_value"
                         style="@style/content_text1.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/empty_value"/>
+                        android:text="@string/empty_value" />
 
                 </LinearLayout>
 
@@ -243,14 +243,14 @@
                         style="@style/content_text2.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/sub_type"/>
+                        android:text="@string/sub_type" />
 
                     <TextView
                         android:id="@+id/sub_type_value"
                         style="@style/content_text1.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/empty_value"/>
+                        android:text="@string/empty_value" />
 
                 </LinearLayout>
 
@@ -264,14 +264,14 @@
                         style="@style/content_text2.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/sub_type_2"/>
+                        android:text="@string/sub_type_2" />
 
                     <TextView
                         android:id="@+id/sub_type2_value"
                         style="@style/content_text1.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/empty_value"/>
+                        android:text="@string/empty_value" />
 
                 </LinearLayout>
 
@@ -285,14 +285,14 @@
                         style="@style/content_text2.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/sub_type_3"/>
+                        android:text="@string/sub_type_3" />
 
                     <TextView
                         android:id="@+id/sub_type3_value"
                         style="@style/content_text1.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/empty_value"/>
+                        android:text="@string/empty_value" />
 
                 </LinearLayout>
 
@@ -306,14 +306,14 @@
                         style="@style/content_text2.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/main_colour"/>
+                        android:text="@string/main_colour" />
 
                     <TextView
                         android:id="@+id/main_colour_value"
                         style="@style/content_text1.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/empty_value"/>
+                        android:text="@string/empty_value" />
 
                 </LinearLayout>
 
@@ -327,14 +327,14 @@
                         style="@style/content_text2.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/main_colour_shade"/>
+                        android:text="@string/main_colour_shade" />
 
                     <TextView
                         android:id="@+id/main_colour_shade_value"
                         style="@style/content_text1.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/empty_value"/>
+                        android:text="@string/empty_value" />
 
                 </LinearLayout>
 
@@ -348,14 +348,14 @@
                         style="@style/content_text2.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/accent_colour"/>
+                        android:text="@string/accent_colour" />
 
                     <TextView
                         android:id="@+id/accent_colour_value"
                         style="@style/content_text1.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/empty_value"/>
+                        android:text="@string/empty_value" />
 
                 </LinearLayout>
 
@@ -369,14 +369,14 @@
                         style="@style/content_text2.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/size"/>
+                        android:text="@string/size" />
 
                     <TextView
                         android:id="@+id/size_value"
                         style="@style/content_text1.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/empty_value"/>
+                        android:text="@string/empty_value" />
 
                 </LinearLayout>
 
@@ -390,14 +390,14 @@
                         style="@style/content_text2.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/brand"/>
+                        android:text="@string/brand" />
 
                     <TextView
                         android:id="@+id/brand_value"
                         style="@style/content_text1.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/empty_value"/>
+                        android:text="@string/empty_value" />
 
                 </LinearLayout>
 
@@ -411,14 +411,14 @@
                         style="@style/content_text2.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/description"/>
+                        android:text="@string/description" />
 
                     <TextView
                         android:id="@+id/description_value"
                         style="@style/content_text1.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/empty_value"/>
+                        android:text="@string/empty_value" />
 
                 </LinearLayout>
 
@@ -432,14 +432,14 @@
                         style="@style/content_text2.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/note"/>
+                        android:text="@string/note" />
 
                     <TextView
                         android:id="@+id/note_value"
                         style="@style/content_text1.details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/empty_value"/>
+                        android:text="@string/empty_value" />
 
                 </LinearLayout>
 
@@ -450,7 +450,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/margin_vertical"
                     android:contentDescription="@string/item_image_description"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -461,8 +461,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/ad_view_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal" />
 
 </android.support.design.widget.CoordinatorLayout>

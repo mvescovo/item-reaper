@@ -35,4 +35,7 @@
     <dimen name="widget_default_width">180dp</dimen>
     <dimen name="widget_margin">8dp</dimen>
 
+    <!--AdMob-->
+    <dimen name="item_detail_ad_height">80dp</dimen>
+
 </resources>

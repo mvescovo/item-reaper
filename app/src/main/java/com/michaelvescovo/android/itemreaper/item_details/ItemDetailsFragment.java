@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -25,6 +26,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.NativeExpressAdView;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
@@ -41,6 +45,8 @@ import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getPr
  */
 
 public class ItemDetailsFragment extends AppCompatDialogFragment implements ItemDetailsContract.View {
+
+    private static final int NATIVE_EXPRESS_AD_HEIGHT = 80;
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -88,6 +94,8 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
     TextView mNote;
     @BindView(R.id.item_image)
     ImageView mItemImage;
+    @BindView(R.id.ad_view_container)
+    FrameLayout mAdViewContainer;
 
     private ItemDetailsContract.Presenter mPresenter;
     private Callback mCallback;
@@ -142,7 +150,31 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
                 mItemId = getArguments().getString(EXTRA_ITEM_ID);
             }
         }
+
+        setUpAndLoadNativeExpressAds();
+
         return root;
+    }
+
+    private void setUpAndLoadNativeExpressAds() {
+        mCoordinatorLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                NativeExpressAdView adView = new NativeExpressAdView(getContext());
+                float scale = getActivity().getResources().getDisplayMetrics().density;
+                int adWidth = mCoordinatorLayout.getWidth();
+                AdSize adSize = new AdSize((int) (adWidth / scale), NATIVE_EXPRESS_AD_HEIGHT);
+                adView.setAdSize(adSize);
+                adView.setAdUnitId(getString(R.string.test_ad_unit_id));
+                mAdViewContainer.addView(adView);
+
+                // Load the first Native Express ad in the items list.
+                AdRequest request = new AdRequest.Builder()
+                        .addTestDevice("872EB083722CD10CAB1DB046CEE82A2D")
+                        .build();
+                adView.loadAd(request);
+            }
+        });
     }
 
     @Override
