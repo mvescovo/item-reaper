@@ -12,6 +12,8 @@ import com.michaelvescovo.android.itemreaper.data.Item;
 
 public class Analytics {
 
+    private static final String LOGOUT = "logout";
+
     private static final String PURCHASE_DATE = "purchase_date";
     private static final String PRICE_PAID = "price_paid";
     private static final String DISCOUNT = "discount";
@@ -31,6 +33,10 @@ public class Analytics {
     private static final String DESCRIPTION = "description";
     private static final String NOTE = "note";
     private static final String DECEASED = "deceased";
+
+    public static void logEventLogout(Context context) {
+        FirebaseAnalytics.getInstance(context).logEvent(LOGOUT, null);
+    }
 
     public static void logEventViewItem(Context context, Item item) {
         Bundle params = new Bundle();

@@ -35,6 +35,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.Item;
+import com.michaelvescovo.android.itemreaper.util.Analytics;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -307,6 +308,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
     @Override
     public void showAuthUi() {
+        Analytics.logEventLogout(getContext());
         mCallback.onSignOutSelected();
     }
 
