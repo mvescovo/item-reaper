@@ -38,6 +38,10 @@ public class Analytics {
         FirebaseAnalytics.getInstance(context).logEvent(LOGOUT, null);
     }
 
+    public static void logEventViewItemList(Context context) {
+        FirebaseAnalytics.getInstance(context).logEvent(FirebaseAnalytics.Event.VIEW_ITEM_LIST, null);
+    }
+
     public static void logEventViewItem(Context context, Item item) {
         Bundle params = new Bundle();
         if (item.getPurchaseDate() != -1) {

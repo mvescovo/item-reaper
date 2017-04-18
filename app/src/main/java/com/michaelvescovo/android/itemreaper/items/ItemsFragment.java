@@ -170,6 +170,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     @Override
     public void onResume() {
         super.onResume();
+        Analytics.logEventViewItemList(getContext());
         mItemsAdapter.clearItems();
         mPresenter.getItems(true);
         final boolean[] snackbarShown = {false};
