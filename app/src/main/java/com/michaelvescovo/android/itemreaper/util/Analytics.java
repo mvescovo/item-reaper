@@ -34,12 +34,18 @@ public class Analytics {
     private static final String NOTE = "note";
     private static final String DECEASED = "deceased";
 
+    private static final String VIEW_ABOUT_PAGE = "view_about_page";
+
     public static void logEventLogout(Context context) {
         FirebaseAnalytics.getInstance(context).logEvent(LOGOUT, null);
     }
 
     public static void logEventViewItemList(Context context) {
         FirebaseAnalytics.getInstance(context).logEvent(FirebaseAnalytics.Event.VIEW_ITEM_LIST, null);
+    }
+
+    public static void logEventViewAboutPage(Context context) {
+        FirebaseAnalytics.getInstance(context).logEvent(VIEW_ABOUT_PAGE, null);
     }
 
     public static void logEventViewItem(Context context, Item item) {

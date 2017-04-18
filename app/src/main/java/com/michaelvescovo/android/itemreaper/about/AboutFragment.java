@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.michaelvescovo.android.itemreaper.R;
+import com.michaelvescovo.android.itemreaper.util.Analytics;
 
 import java.util.regex.Pattern;
 
@@ -92,6 +93,7 @@ public class AboutFragment extends AppCompatDialogFragment {
     public void onResume() {
         super.onResume();
         mCallback.onDialogResumed();
+        Analytics.logEventViewAboutPage(getContext());
     }
 
     public interface Callback {
