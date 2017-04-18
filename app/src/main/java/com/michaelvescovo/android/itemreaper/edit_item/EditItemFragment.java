@@ -219,6 +219,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
             @Override
             public void onClick(View view) {
                 mPresenter.deleteImage();
+                Analytics.logEventRemoveItemImage(getContext());
             }
         });
     }

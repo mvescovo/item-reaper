@@ -45,6 +45,7 @@ public class Analytics {
     private static final String EDIT_ITEM = "edit_item";
     private static final String TAKE_ITEM_PHOTO = "take_item_photo";
     private static final String SELECT_ITEM_IMAGE = "select_item_image";
+    private static final String REMOVE_ITEM_IMAGE = "remove_item_image";
 
     public static void logEventLogout(Context context) {
         FirebaseAnalytics.getInstance(context).logEvent(LOGOUT, null);
@@ -446,6 +447,10 @@ public class Analytics {
         }
         params.putBoolean(DECEASED, item.getDeceased());
         FirebaseAnalytics.getInstance(context).logEvent(SELECT_ITEM_IMAGE, params);
+    }
+
+    public static void logEventRemoveItemImage(Context context) {
+        FirebaseAnalytics.getInstance(context).logEvent(REMOVE_ITEM_IMAGE, null);
     }
 }
 
