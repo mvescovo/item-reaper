@@ -41,6 +41,7 @@ public class Analytics {
     private static final String UNDO_EXPIRE_LIST_ITEM = "undo_expire_list_item";
     private static final String ADD_ITEM = "add_item";
     private static final String EXPIRE_ITEM = "expire_item";
+    private static final String UNDO_EXPIRE_ITEM = "undo_expire_item";
 
     public static void logEventLogout(Context context) {
         FirebaseAnalytics.getInstance(context).logEvent(LOGOUT, null);
@@ -258,6 +259,10 @@ public class Analytics {
         }
         params.putBoolean(DECEASED, item.getDeceased());
         FirebaseAnalytics.getInstance(context).logEvent(EXPIRE_ITEM, params);
+    }
+
+    public static void logEventUndoExpireItem(Context context) {
+        FirebaseAnalytics.getInstance(context).logEvent(UNDO_EXPIRE_ITEM, null);
     }
 }
 

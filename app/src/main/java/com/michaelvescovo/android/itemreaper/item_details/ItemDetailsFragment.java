@@ -340,6 +340,7 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
                 @Override
                 public void onClick(View view) {
                     mPresenter.unexpireItem(item);
+                    Analytics.logEventUndoExpireItem(getContext());
                 }
             });
         }
