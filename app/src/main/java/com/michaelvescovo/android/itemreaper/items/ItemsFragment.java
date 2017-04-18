@@ -330,6 +330,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 @Override
                 public void onClick(View view) {
                     mPresenter.unexpireItem(item);
+                    Analytics.logEventUndoExpireListItem(getContext());
                 }
             });
         }

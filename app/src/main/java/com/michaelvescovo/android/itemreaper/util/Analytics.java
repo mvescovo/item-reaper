@@ -38,6 +38,7 @@ public class Analytics {
     private static final String VIEW_REAPER_ICON_ATTRIBUTION = "view_reaper_icon_attribution";
     private static final String VIEW_REAPER_SOUND_ATTRIBUTION = "view_reaper_sound_attribution";
     private static final String EXPIRE_LIST_ITEM = "expire_list_item";
+    private static final String UNDO_EXPIRE_LIST_ITEM = "undo_expire_list_item";
 
     public static void logEventLogout(Context context) {
         FirebaseAnalytics.getInstance(context).logEvent(LOGOUT, null);
@@ -127,6 +128,10 @@ public class Analytics {
         }
         params.putBoolean(DECEASED, item.getDeceased());
         FirebaseAnalytics.getInstance(context).logEvent(EXPIRE_LIST_ITEM, params);
+    }
+
+    public static void logEventUndoExpireListItem(Context context) {
+        FirebaseAnalytics.getInstance(context).logEvent(UNDO_EXPIRE_LIST_ITEM, null);
     }
 
     public static void logEventViewItem(Context context, Item item) {
