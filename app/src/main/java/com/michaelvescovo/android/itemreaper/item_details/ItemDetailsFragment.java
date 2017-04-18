@@ -31,6 +31,7 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.NativeExpressAdView;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.Item;
+import com.michaelvescovo.android.itemreaper.util.Analytics;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 
 import butterknife.BindView;
@@ -299,6 +300,7 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
             } else {
                 mItemImage.setVisibility(View.GONE);
             }
+            Analytics.logEventViewItem(getContext(), mItem);
         }
     }
 
