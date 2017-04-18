@@ -322,6 +322,7 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
                 break;
             case R.id.action_edit_item:
                 mPresenter.openEditItem();
+                Analytics.logEventEditItem(getContext(), mItem);
                 break;
         }
         return super.onOptionsItemSelected(item);
