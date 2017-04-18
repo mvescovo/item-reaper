@@ -550,6 +550,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                         playExpireItemSoundEffect();
                         Item item = mItems.get(getAdapterPosition());
                         mPresenter.expireItem(item);
+                        Analytics.logEventExpireListItem(getContext(), item);
                     }
                 });
                 itemView.setOnClickListener(this);
