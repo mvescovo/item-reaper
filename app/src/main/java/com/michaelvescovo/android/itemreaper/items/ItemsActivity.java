@@ -42,6 +42,7 @@ import com.michaelvescovo.android.itemreaper.item_details.ItemDetailsActivity;
 import com.michaelvescovo.android.itemreaper.item_details.ItemDetailsComponent;
 import com.michaelvescovo.android.itemreaper.item_details.ItemDetailsFragment;
 import com.michaelvescovo.android.itemreaper.item_details.ItemDetailsModule;
+import com.michaelvescovo.android.itemreaper.util.Analytics;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 
 import javax.inject.Inject;
@@ -135,6 +136,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
             @Override
             public void onClick(View view) {
                 mItemsPresenter.openAddItem();
+                Analytics.logEventAddItem(getApplicationContext());
             }
         });
 
