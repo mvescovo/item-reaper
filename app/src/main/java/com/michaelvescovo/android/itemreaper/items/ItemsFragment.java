@@ -184,6 +184,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                     Snackbar snackbarRestored = mCallback.onShowSnackbar(
                             getString(R.string.delete_item_undo_success), Snackbar.LENGTH_LONG);
                     snackbarRestored.show();
+                    Analytics.logEventUndoDeleteItem(getContext());
                 }
             });
             snackbar.addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {

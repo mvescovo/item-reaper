@@ -47,6 +47,7 @@ public class Analytics {
     private static final String SELECT_ITEM_IMAGE = "select_item_image";
     private static final String REMOVE_ITEM_IMAGE = "remove_item_image";
     private static final String DELETE_ITEM = "delete_item";
+    private static final String UNDO_DELETE_ITEM = "undo_delete_item";
 
     public static void logEventLogout(Context context) {
         FirebaseAnalytics.getInstance(context).logEvent(LOGOUT, null);
@@ -512,6 +513,10 @@ public class Analytics {
         }
         params.putBoolean(DECEASED, item.getDeceased());
         FirebaseAnalytics.getInstance(context).logEvent(DELETE_ITEM, params);
+    }
+
+    public static void logEventUndoDeleteItem(Context context) {
+        FirebaseAnalytics.getInstance(context).logEvent(UNDO_DELETE_ITEM, null);
     }
 }
 
