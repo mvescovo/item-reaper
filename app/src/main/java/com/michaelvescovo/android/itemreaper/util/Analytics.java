@@ -35,7 +35,8 @@ public class Analytics {
     private static final String DECEASED = "deceased";
     private static final String VIEW_ABOUT_PAGE = "view_about_page";
     private static final String VIEW_PRIVACY_POLICY = "view_privacy_policy";
-    private static final String VIEW_REAPER_ATTRIBUTION = "view_reaper_attribution";
+    private static final String VIEW_REAPER_ICON_ATTRIBUTION = "view_reaper_icon_attribution";
+    private static final String VIEW_REAPER_SOUND_ATTRIBUTION = "view_reaper_sound_attribution";
 
     public static void logEventLogout(Context context) {
         FirebaseAnalytics.getInstance(context).logEvent(LOGOUT, null);
@@ -53,8 +54,12 @@ public class Analytics {
         FirebaseAnalytics.getInstance(context).logEvent(VIEW_PRIVACY_POLICY, null);
     }
 
-    public static void logEventViewReaperAttribution(Context context) {
-        FirebaseAnalytics.getInstance(context).logEvent(VIEW_REAPER_ATTRIBUTION, null);
+    public static void logEventViewReaperIconAttribution(Context context) {
+        FirebaseAnalytics.getInstance(context).logEvent(VIEW_REAPER_ICON_ATTRIBUTION, null);
+    }
+
+    public static void logEventViewReaperSoundAttribution(Context context) {
+        FirebaseAnalytics.getInstance(context).logEvent(VIEW_REAPER_SOUND_ATTRIBUTION, null);
     }
 
     public static void logEventViewItem(Context context, Item item) {

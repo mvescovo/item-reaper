@@ -95,7 +95,13 @@ public class AboutFragment extends AppCompatDialogFragment {
         mReaperIconAttribution.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Analytics.logEventViewReaperAttribution(getContext());
+                Analytics.logEventViewReaperIconAttribution(getContext());
+            }
+        });
+        mDecapitationSoundAttribution.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Analytics.logEventViewReaperSoundAttribution(getContext());
             }
         });
         return root;
