@@ -42,6 +42,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.Item;
+import com.michaelvescovo.android.itemreaper.util.Analytics;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 import com.michaelvescovo.android.itemreaper.util.ImageFile;
 import com.michaelvescovo.android.itemreaper.util.ImageUploadService;
@@ -152,6 +153,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     private boolean mImageViewListener;
     private ImageFile mImageFile;
     private boolean mCompressing;
+    private Item mItem;
 
     public EditItemFragment() {
     }
@@ -169,6 +171,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        mItem = null;
     }
 
     @Override
@@ -597,6 +600,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
 
     @Override
     public void showExistingItem(Item item) {
+        mItem = item;
         // If the fragment is not active, don't allow callbacks to crash the app.
         if (getActivity() != null) {
             disableListeners();
@@ -847,6 +851,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         switch (item.getItemId()) {
             case R.id.action_take_photo:
                 mPresenter.takePicture(getContext());
+                Analytics.logEventTakeItemPhoto(getContext(), mItem);
                 break;
             case R.id.action_select_image:
                 mPresenter.selectImage();

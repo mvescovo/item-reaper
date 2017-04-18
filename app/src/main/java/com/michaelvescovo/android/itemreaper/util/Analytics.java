@@ -43,6 +43,7 @@ public class Analytics {
     private static final String EXPIRE_ITEM = "expire_item";
     private static final String UNDO_EXPIRE_ITEM = "undo_expire_item";
     private static final String EDIT_ITEM = "edit_item";
+    private static final String TAKE_ITEM_PHOTO = "take_item_photo";
 
     public static void logEventLogout(Context context) {
         FirebaseAnalytics.getInstance(context).logEvent(LOGOUT, null);
@@ -324,6 +325,66 @@ public class Analytics {
         }
         params.putBoolean(DECEASED, item.getDeceased());
         FirebaseAnalytics.getInstance(context).logEvent(EDIT_ITEM, params);
+    }
+
+    public static void logEventTakeItemPhoto(Context context, Item item) {
+        Bundle params = new Bundle();
+        if (item.getPurchaseDate() != -1) {
+            params.putLong(PURCHASE_DATE, item.getPurchaseDate());
+        }
+        if (item.getPricePaid() != -1) {
+            params.putInt(PRICE_PAID, item.getPricePaid());
+        }
+        if (item.getDiscount() != -1) {
+            params.putInt(DISCOUNT, item.getDiscount());
+        }
+        if (item.getExpiry() != -1) {
+            params.putLong(EXPIRY, item.getExpiry());
+        }
+        if (item.getCategory() != null) {
+            params.putString(CATEGORY, item.getCategory());
+        }
+        if (item.getSubCategory() != null) {
+            params.putString(SUB_CATEGORY, item.getSubCategory());
+        }
+        if (item.getType() != null) {
+            params.putString(TYPE, item.getType());
+        }
+        if (item.getSubType() != null) {
+            params.putString(SUB_TYPE, item.getSubType());
+        }
+        if (item.getSubType2() != null) {
+            params.putString(SUB_TYPE2, item.getSubType2());
+        }
+        if (item.getSubType3() != null) {
+            params.putString(SUB_TYPE3, item.getSubType3());
+        }
+        if (item.getMainColour() != null) {
+            params.putString(MAIN_COLOUR, item.getMainColour());
+        }
+        if (item.getMainColourShade() != null) {
+            params.putString(MAIN_COLOUR_SHADE, item.getMainColourShade());
+        }
+        if (item.getAccentColour() != null) {
+            params.putString(ACCENT_COLOUR, item.getAccentColour());
+        }
+        if (item.getSize() != null) {
+            params.putString(SIZE, item.getSize());
+        }
+        if (item.getBrand() != null) {
+            params.putString(BRAND, item.getBrand());
+        }
+        if (item.getShop() != null) {
+            params.putString(SHOP, item.getShop());
+        }
+        if (item.getDescription() != null) {
+            params.putString(DESCRIPTION, item.getDescription());
+        }
+        if (item.getNote() != null) {
+            params.putString(NOTE, item.getNote());
+        }
+        params.putBoolean(DECEASED, item.getDeceased());
+        FirebaseAnalytics.getInstance(context).logEvent(TAKE_ITEM_PHOTO, params);
     }
 }
 
