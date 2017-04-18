@@ -860,6 +860,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                 break;
             case R.id.action_delete_item:
                 mPresenter.deleteItem(createCurrentItem());
+                Analytics.logEventDeleteItem(getContext(), mItem);
         }
         return super.onOptionsItemSelected(item);
     }
