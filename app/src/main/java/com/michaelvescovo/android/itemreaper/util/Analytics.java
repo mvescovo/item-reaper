@@ -33,8 +33,8 @@ public class Analytics {
     private static final String DESCRIPTION = "description";
     private static final String NOTE = "note";
     private static final String DECEASED = "deceased";
-
     private static final String VIEW_ABOUT_PAGE = "view_about_page";
+    private static final String VIEW_PRIVACY_POLICY = "view_privacy_policy";
 
     public static void logEventLogout(Context context) {
         FirebaseAnalytics.getInstance(context).logEvent(LOGOUT, null);
@@ -46,6 +46,10 @@ public class Analytics {
 
     public static void logEventViewAboutPage(Context context) {
         FirebaseAnalytics.getInstance(context).logEvent(VIEW_ABOUT_PAGE, null);
+    }
+
+    public static void logEventViewPrivacyPolicy(Context context) {
+        FirebaseAnalytics.getInstance(context).logEvent(VIEW_PRIVACY_POLICY, null);
     }
 
     public static void logEventViewItem(Context context, Item item) {

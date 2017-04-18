@@ -86,6 +86,12 @@ public class AboutFragment extends AppCompatDialogFragment {
         Linkify.addLinks(mPrivacyPolicy, pattern, scheme);
         Linkify.addLinks(mReaperIconAttribution, pattern, scheme);
         Linkify.addLinks(mDecapitationSoundAttribution, pattern, scheme);
+        mPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Analytics.logEventViewPrivacyPolicy(getContext());
+            }
+        });
         return root;
     }
 
