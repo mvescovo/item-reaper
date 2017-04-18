@@ -92,6 +92,12 @@ public class AboutFragment extends AppCompatDialogFragment {
                 Analytics.logEventViewPrivacyPolicy(getContext());
             }
         });
+        mReaperIconAttribution.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Analytics.logEventViewReaperAttribution(getContext());
+            }
+        });
         return root;
     }
 
