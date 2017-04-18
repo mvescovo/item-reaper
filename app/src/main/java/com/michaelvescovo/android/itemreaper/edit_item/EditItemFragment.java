@@ -855,6 +855,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                 break;
             case R.id.action_select_image:
                 mPresenter.selectImage();
+                Analytics.logEventSelectItemImage(getContext(), mItem);
                 break;
             case R.id.action_delete_item:
                 mPresenter.deleteItem(createCurrentItem());
