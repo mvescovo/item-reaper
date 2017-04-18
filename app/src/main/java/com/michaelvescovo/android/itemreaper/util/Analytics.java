@@ -62,6 +62,12 @@ public class Analytics {
         FirebaseAnalytics.getInstance(context).logEvent(VIEW_REAPER_SOUND_ATTRIBUTION, null);
     }
 
+    public static void logEventViewSearchResults(Context context, String searchTerm) {
+        Bundle params = new Bundle();
+        params.putString(FirebaseAnalytics.Param.SEARCH_TERM, searchTerm);
+        FirebaseAnalytics.getInstance(context).logEvent(FirebaseAnalytics.Event.VIEW_SEARCH_RESULTS, params);
+    }
+
     public static void logEventViewItem(Context context, Item item) {
         Bundle params = new Bundle();
         if (item.getPurchaseDate() != -1) {

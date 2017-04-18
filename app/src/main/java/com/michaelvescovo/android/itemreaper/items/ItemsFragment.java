@@ -506,6 +506,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             mPresenter.itemsSizeChanged(mItems.size());
             mSearching = false;
             setProgressBar(false);
+            Analytics.logEventViewSearchResults(getContext(), mQuery);
         }
 
         private void sortItemsByExpiry() {
