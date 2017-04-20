@@ -43,7 +43,8 @@ class ItemDetailsPresenter implements ItemDetailsContract.Presenter {
     @Override
     public void displayItem(@NonNull String itemId) {
 
-        mRepository.getItem(itemId, ITEM_DETAILS_CALLER, new DataSource.GetItemCallback() {
+        mRepository.getItem(itemId, mSharedPreferencesHelper.getUserId(), ITEM_DETAILS_CALLER,
+                new DataSource.GetItemCallback() {
             @Override
             public void onItemLoaded(@Nullable Item item) {
                 if (item != null) {

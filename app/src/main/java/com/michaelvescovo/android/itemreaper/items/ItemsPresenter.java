@@ -86,7 +86,8 @@ public class ItemsPresenter implements ItemsContract.Presenter {
     private void getItem(String itemId) {
         mItemsToLoad++;
         EspressoIdlingResource.increment();
-        mRepository.getItem(itemId, ITEMS_CALLER, new DataSource.GetItemCallback() {
+        mRepository.getItem(itemId, mSharedPreferencesHelper.getUserId(), ITEMS_CALLER,
+                new DataSource.GetItemCallback() {
             @Override
             public void onItemLoaded(@Nullable Item item) {
                 if (mItemsToLoad > 0) {

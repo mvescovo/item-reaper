@@ -25,7 +25,8 @@ public interface DataSource {
     }
     void getItemIds(@NonNull String userId, @NonNull GetItemIdsCallback callback);
     void refreshItemIds();
-    void getItem(@NonNull String itemId, @NonNull String caller, @NonNull GetItemCallback callback);
+    void getItem(@NonNull String itemId, @NonNull String userId, @NonNull String caller,
+                 @NonNull GetItemCallback callback);
     void getNewItemId(@NonNull String userId, @NonNull GetNewItemIdCallback callback);
     void refreshItems();
     void refreshItem(@NonNull String itemId);

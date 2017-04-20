@@ -89,7 +89,7 @@ public class WidgetListService extends RemoteViewsService {
         }
 
         private void getItems() {
-            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
             if (firebaseUser != null) {
                 mRepository.getItemIds(firebaseUser.getUid(), new DataSource.GetItemIdsCallback() {
                     @Override
@@ -107,7 +107,7 @@ public class WidgetListService extends RemoteViewsService {
                                 mItems.clear();
                                 mCount = itemIds.size();
                                 for (final String itemId : itemIds) {
-                                    getItem(itemId);
+                                    getItem(itemId, firebaseUser.getUid());
                                 }
                             } else {
                                 mCountDownLatch.countDown();
@@ -120,8 +120,8 @@ public class WidgetListService extends RemoteViewsService {
             }
         }
 
-        private void getItem(final String itemId) {
-            mRepository.getItem(itemId, ITEMS_CALLER, new DataSource.GetItemCallback() {
+        private void getItem(final String itemId, String userId) {
+            mRepository.getItem(itemId, userId, ITEMS_CALLER, new DataSource.GetItemCallback() {
                 @Override
                 public void onItemLoaded(@Nullable Item item) {
                     if (mCountDownLatch.getCount() == 0) {

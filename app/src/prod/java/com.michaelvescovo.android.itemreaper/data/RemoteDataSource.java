@@ -63,7 +63,7 @@ class RemoteDataSource implements DataSource {
     }
 
     @Override
-    public void getItem(@NonNull String itemId, @NonNull String caller,
+    public void getItem(@NonNull String itemId, @NonNull String userId, @NonNull String caller,
                         @NonNull final GetItemCallback callback) {
         ValueEventListener itemListener = new ValueEventListener() {
             @Override
@@ -77,14 +77,13 @@ class RemoteDataSource implements DataSource {
             }
         };
         mDatabase.removeEventListener(itemListener);
-        mDatabase.child("items")
-                .child(itemId)
+        mDatabase.child("items").child(userId).child("private").child(itemId)
                 .addValueEventListener(itemListener);
     }
 
     @Override
     public void getNewItemId(@NonNull String userId, @NonNull GetNewItemIdCallback callback) {
-        String key = mDatabase.child("items").push().getKey();
+        String key = mDatabase.child("items").child(userId).child("private").push().getKey();
         callback.onNewItemIdLoaded(key);
     }
 
@@ -103,7 +102,7 @@ class RemoteDataSource implements DataSource {
         Map<String, Object> itemValues = item.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/users/" + userId + "/itemIds/" + item.getId(), true);
-        childUpdates.put("/items/" + item.getId(), itemValues);
+        childUpdates.put("/items/" + userId + "/private/" + item.getId(), itemValues);
         mDatabase.updateChildren(childUpdates);
     }
 
@@ -111,7 +110,7 @@ class RemoteDataSource implements DataSource {
     public void deleteItem(@NonNull String userId, @NonNull Item item) {
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/users/" + userId + "/itemIds/" + item.getId(), null);
-        childUpdates.put("/items/" + item.getId(), null);
+        childUpdates.put("/items/" + userId + "/private/" + item.getId(), null);
         mDatabase.updateChildren(childUpdates);
     }
 

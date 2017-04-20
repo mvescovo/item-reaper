@@ -22,6 +22,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
+import static com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity.EXTRA_ITEM_ID;
 
 /**
  * @author Michael Vescovo
@@ -42,7 +43,7 @@ public class ItemDetailsScreenTest {
     public void setup() {
         mItem = ITEM_1;
         Intent intent = new Intent();
-        intent.putExtra(ItemDetailsActivity.EXTRA_ITEM, mItem);
+        intent.putExtra(EXTRA_ITEM_ID, mItem.getId());
         mActivityRule.launchActivity(intent);
         mEspressoHelperMethods = new EspressoHelperMethods(
                 InstrumentationRegistry.getTargetContext(), mActivityRule.getActivity());

@@ -76,7 +76,8 @@ class EditItemPresenter implements EditItemContract.Presenter {
     private void loadExistingItem(String itemId) {
         itemLoaded = false;
         EspressoIdlingResource.increment();
-        mRepository.getItem(itemId, EDIT_ITEM_CALLER, new DataSource.GetItemCallback() {
+        mRepository.getItem(itemId, mSharedPreferencesHelper.getUserId(), EDIT_ITEM_CALLER,
+                new DataSource.GetItemCallback() {
             @Override
             public void onItemLoaded(@Nullable Item item) {
                 if (!itemLoaded) {

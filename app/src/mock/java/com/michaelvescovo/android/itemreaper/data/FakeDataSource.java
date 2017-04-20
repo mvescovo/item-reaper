@@ -146,8 +146,8 @@ public class FakeDataSource implements DataSource {
     }
 
     @Override
-    public void getItem(@NonNull final String itemId, @NonNull String caller,
-                        @NonNull final GetItemCallback callback) {
+    public void getItem(@NonNull final String itemId, @NonNull String userId,
+                        @NonNull String caller, @NonNull final GetItemCallback callback) {
         if (mItemCallbacks.get(itemId) == null) {
             @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
             Map<String, ItemChangedListener> changedListeners = new HashMap<>();

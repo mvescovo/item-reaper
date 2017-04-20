@@ -103,7 +103,7 @@ public class ItemsPresenterTest {
 
             // Get an item for each itemId.
             verify(mRepository, times(mItemIds.size())).getItem(anyString(), anyString(),
-                    mGetItemCallbackCaptor.capture());
+                    anyString(), mGetItemCallbackCaptor.capture());
 
             // Stub a result for each getItem call
             for (int i = 0; i < mItemIds.size(); i++) {

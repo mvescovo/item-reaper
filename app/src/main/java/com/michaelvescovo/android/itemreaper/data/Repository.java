@@ -60,11 +60,12 @@ public class Repository implements DataSource {
     }
 
     @Override
-    public void getItem(@NonNull final String itemId, @NonNull String caller, @NonNull final GetItemCallback callback) {
+    public void getItem(@NonNull final String itemId, @NonNull String userId,
+                        @NonNull String caller, @NonNull final GetItemCallback callback) {
         if (mCachedItems.containsKey(itemId)) {
             callback.onItemLoaded(mCachedItems.get(itemId));
         } else {
-            mRemoteDataSource.getItem(itemId, caller, new GetItemCallback() {
+            mRemoteDataSource.getItem(itemId, userId, caller, new GetItemCallback() {
                 @Override
                 public void onItemLoaded(@Nullable Item item) {
                     if (item != null) {
