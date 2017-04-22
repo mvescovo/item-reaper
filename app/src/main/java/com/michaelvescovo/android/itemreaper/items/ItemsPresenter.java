@@ -2,6 +2,7 @@ package com.michaelvescovo.android.itemreaper.items;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.Snackbar;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -12,9 +13,11 @@ import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.data.Repository;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 
-import java.util.List;
-
 import javax.inject.Inject;
+
+import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_ADDED;
+import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_CHANGED;
+import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_REMOVED;
 
 /**
  * @author Michael Vescovo
@@ -22,13 +25,13 @@ import javax.inject.Inject;
 
 public class ItemsPresenter implements ItemsContract.Presenter {
 
+    @SuppressWarnings("WeakerAccess")
+    @VisibleForTesting
     public final static String ITEMS_CALLER = "items";
     private ItemsContract.View mView;
     private Repository mRepository;
     private SharedPreferencesHelper mSharedPreferencesHelper;
     private FirebaseAuth mFirebaseAuth;
-    private int mItemsToLoad;
-    private boolean mItemsLoaded;
 
     @Inject
     ItemsPresenter(ItemsContract.View view, Repository repository,
@@ -45,63 +48,31 @@ public class ItemsPresenter implements ItemsContract.Presenter {
     }
 
     @Override
-    public void getItems(final boolean forceUpdate) {
+    public void getItems() {
         mView.setProgressBar(true);
-        if (forceUpdate) {
-            mRepository.refreshItemIds();
-        }
         String userId = mSharedPreferencesHelper.getUserId();
-        mItemsLoaded = false;
         EspressoIdlingResource.increment();
-        mRepository.getItemIds(userId, new DataSource.GetItemIdsCallback() {
+        mRepository.getItems(userId, ITEMS_CALLER, new DataSource.GetItemsCallback() {
             @Override
-            public void onItemIdsLoaded(@Nullable List<String> itemIds, boolean itemRemoved) {
-                if (!mItemsLoaded) {
-                    mItemsLoaded = true;
+            public void onItemLoaded(@Nullable Item item, @NonNull String action) {
+                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
                     EspressoIdlingResource.decrement();
                 }
-                if (itemIds != null) {
-                    if (itemRemoved) {
-                        mView.clearItems();
-                    }
-                    if (itemIds.size() > 0) {
-                        mView.showNoItemsText(false);
-                        for (final String itemId : itemIds) {
-                            getItem(itemId);
-                        }
-                        mView.setProgressBar(false);
-                    } else {
-                        mView.setProgressBar(false);
-                        mView.showNoItemsText(true);
-                    }
-                } else {
-                    mView.clearItems();
-                    mView.setProgressBar(false);
-                    mView.showNoItemsText(true);
+                switch (action) {
+                    case ITEM_ADDED:
+                        mView.addItem(item);
+                        break;
+                    case ITEM_CHANGED:
+                        mView.changeItem(item);
+                        break;
+                    case ITEM_REMOVED:
+                        mView.removeItem(item);
+                        break;
                 }
+                mView.setProgressBar(false);
             }
         });
     }
-
-    private void getItem(String itemId) {
-        mItemsToLoad++;
-        EspressoIdlingResource.increment();
-        mRepository.getItem(itemId, mSharedPreferencesHelper.getUserId(), ITEMS_CALLER,
-                new DataSource.GetItemCallback() {
-            @Override
-            public void onItemLoaded(@Nullable Item item) {
-                if (mItemsToLoad > 0) {
-                    if (mItemsToLoad == 1) {
-                        mView.itemLoadingFinished();
-                    }
-                    mItemsToLoad--;
-                    EspressoIdlingResource.decrement();
-                }
-                mView.showItem(item);
-            }
-        });
-    }
-
 
     @Override
     public void openItemDetails(String itemId) {

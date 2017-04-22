@@ -2,24 +2,33 @@ package com.michaelvescovo.android.itemreaper.data;
 
 import android.support.annotation.NonNull;
 
-import com.google.common.collect.Lists;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_ADDED;
+import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_CANCELLED;
+import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_CHANGED;
+import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_MOVED;
+import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_REMOVED;
 
 /**
  * @author Michael Vescovo
  */
 
-class RemoteDataSource implements DataSource {
+public class RemoteDataSource implements DataSource {
 
+    Query mCurrentItemsQuery;
     private DatabaseReference mDatabase;
+    private ChildEventListener mItemsListener;
+    private ValueEventListener mItemsListListener;
 
     RemoteDataSource() {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
@@ -27,39 +36,74 @@ class RemoteDataSource implements DataSource {
     }
 
     @Override
-    public void getItemIds(@NonNull String userId, @NonNull final GetItemIdsCallback callback) {
-        DatabaseReference itemIds = FirebaseDatabase.getInstance()
-                .getReference("users/" + userId + "/itemIds/");
-        itemIds.keepSynced(true);
-
-        String path = "users/" + userId + "/itemIds/";
-        ValueEventListener itemIdsListener = new ValueEventListener() {
+    public void getItemsList(@NonNull String userId, @NonNull final GetItemsListCallback callback) {
+        if (mCurrentItemsQuery == null) {
+            mCurrentItemsQuery = mDatabase.child("items").child(userId).child("private")
+                    .child("current").orderByChild("expiry");
+        } else {
+            if (mItemsListListener != null) {
+                mCurrentItemsQuery.removeEventListener(mItemsListListener);
+            }
+        }
+        mItemsListListener = mCurrentItemsQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() == null) {
-                    callback.onItemIdsLoaded(null, false);
-                } else {
-                    GenericTypeIndicator<Map<String, Boolean>> t =
-                            new GenericTypeIndicator<Map<String, Boolean>>() {
-                            };
-                    Map<String, Boolean> itemIds = dataSnapshot.getValue(t);
-                    if (itemIds != null) {
-                        callback.onItemIdsLoaded(Lists.newArrayList(itemIds.keySet()), false);
-                    }
+                List<Item> items = new ArrayList<>();
+                for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
+                    Item item = itemSnapshot.getValue(Item.class);
+                    items.add(item);
                 }
+                callback.onItemsLoaded(items);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+
             }
-        };
-        mDatabase.removeEventListener(itemIdsListener);
-        mDatabase.child(path).addValueEventListener(itemIdsListener);
+        });
     }
 
     @Override
-    public void refreshItemIds() {
-        // Nothing to do here.
+    public void getItems(@NonNull String userId, @NonNull String caller,
+                         @NonNull final GetItemsCallback callback) {
+        if (mCurrentItemsQuery == null) {
+            mCurrentItemsQuery = mDatabase.child("items").child(userId).child("private")
+                    .child("current").orderByChild("expiry");
+        } else {
+            if (mItemsListener != null) {
+                mCurrentItemsQuery.removeEventListener(mItemsListener);
+            }
+        }
+        mItemsListener = mCurrentItemsQuery.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Item item = dataSnapshot.getValue(Item.class);
+                callback.onItemLoaded(item, ITEM_ADDED);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Item item = dataSnapshot.getValue(Item.class);
+                callback.onItemLoaded(item, ITEM_CHANGED);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Item item = dataSnapshot.getValue(Item.class);
+                callback.onItemLoaded(item, ITEM_REMOVED);
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                Item item = dataSnapshot.getValue(Item.class);
+                callback.onItemLoaded(item, ITEM_MOVED);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.onItemLoaded(null, ITEM_CANCELLED);
+            }
+        });
     }
 
     @Override
@@ -77,47 +121,45 @@ class RemoteDataSource implements DataSource {
             }
         };
         mDatabase.removeEventListener(itemListener);
-        mDatabase.child("items").child(userId).child("private").child(itemId)
+        mDatabase.child("items").child(userId).child("private").child("current").child(itemId)
                 .addValueEventListener(itemListener);
     }
 
     @Override
     public void getNewItemId(@NonNull String userId, @NonNull GetNewItemIdCallback callback) {
-        String key = mDatabase.child("items").child(userId).child("private").push().getKey();
+        String key = mDatabase.child("items").child(userId).child("private").child("current")
+                .push().getKey();
         callback.onNewItemIdLoaded(key);
     }
 
     @Override
-    public void refreshItems() {
-        // Nothing to do here.
-    }
-
-    @Override
-    public void refreshItem(@NonNull String itemId) {
-        // Nothing to do here.
-    }
-
-    @Override
     public void saveItem(@NonNull String userId, @NonNull Item item) {
-        Map<String, Object> itemValues = item.toMap();
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/users/" + userId + "/itemIds/" + item.getId(), true);
-        childUpdates.put("/items/" + userId + "/private/" + item.getId(), itemValues);
-        mDatabase.updateChildren(childUpdates);
+        if (item.getDeceased()) {
+            mDatabase.child("items").child(userId).child("private").child("current")
+                    .child(item.getId()).removeValue();
+            mDatabase.child("items").child(userId).child("private").child("expired")
+                    .child(item.getId()).setValue(item);
+        } else {
+            mDatabase.child("items").child(userId).child("private").child("expired")
+                    .child(item.getId()).removeValue();
+            mDatabase.child("items").child(userId).child("private").child("current")
+                    .child(item.getId()).setValue(item);
+        }
     }
 
     @Override
     public void deleteItem(@NonNull String userId, @NonNull Item item) {
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/users/" + userId + "/itemIds/" + item.getId(), null);
-        childUpdates.put("/items/" + userId + "/private/" + item.getId(), null);
-        mDatabase.updateChildren(childUpdates);
+        if (item.getDeceased()) {
+            mDatabase.child("items").child(userId).child("private").child("expired")
+                    .child(item.getId()).removeValue();
+        } else {
+            mDatabase.child("items").child(userId).child("private").child("current")
+                    .child(item.getId()).removeValue();
+        }
     }
 
     @Override
     public void deleteAllItems(@NonNull String userId) {
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/users/" + userId + "/itemIds/", null);
-        mDatabase.updateChildren(childUpdates);
+        mDatabase.child("items").child(userId).removeValue();
     }
 }

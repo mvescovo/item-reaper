@@ -17,7 +17,11 @@ interface ItemsContract {
 
         void setProgressBar(boolean active);
 
-        void showItem(Item item);
+        void addItem(Item item);
+
+        void changeItem(Item item);
+
+        void removeItem(Item item);
 
         void showItemDetailsUi(String itemId);
 
@@ -30,15 +34,11 @@ interface ItemsContract {
         void showNoItemsText(boolean active);
 
         void showItemExpiredMessage(int resourceId, int duration, @Nullable Item item);
-
-        void clearItems();
-
-        void itemLoadingFinished();
     }
 
     interface Presenter {
 
-        void getItems(boolean forceUpdate);
+        void getItems();
 
         void openItemDetails(String itemId);
 

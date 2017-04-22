@@ -69,8 +69,6 @@ public interface EditItemContract {
 
         void deleteImage();
 
-        void clearEditItemCache(String itemId);
-
         void deleteItem(@NonNull Item item);
 
         void imageCompressed(@NonNull String imageUrl);

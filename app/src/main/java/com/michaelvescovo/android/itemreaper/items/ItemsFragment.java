@@ -40,8 +40,6 @@ import com.michaelvescovo.android.itemreaper.util.Analytics;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -154,24 +152,15 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     }
 
     @Override
-    public void clearItems() {
-        mItemsAdapter.clearItems();
-    }
-
-    @Override
-    public void itemLoadingFinished() {
-        if (mQuery != null) {
-            mItemsAdapter.searchItem();
-        } else {
-            mSearching = false;
-        }
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         mItemsAdapter.clearItems();
-        mPresenter.getItems(true);
+        mPresenter.getItems();
+        configureSnackbarForDeletedItem();
+        Analytics.logEventViewItemList(getContext());
+    }
+
+    private void configureSnackbarForDeletedItem() {
         final boolean[] snackbarShown = {false};
         if (mDeletedItem != null) {
             Snackbar snackbar = mCallback.onShowSnackbar(getString(R.string.delete_item_success),
@@ -208,7 +197,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             });
             snackbar.show();
         }
-        Analytics.logEventViewItemList(getContext());
     }
 
     private void removeImageFromFirebase() {
@@ -230,7 +218,13 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         mQuery = query;
         mSearching = true;
         if (isResumed()) {
-            mPresenter.getItems(true);
+            mItemsAdapter.clearItems();
+            mPresenter.getItems();
+        }
+        if (mQuery != null) {
+            mItemsAdapter.searchItem();
+        } else {
+            mSearching = false;
         }
     }
 
@@ -290,8 +284,18 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     }
 
     @Override
-    public void showItem(Item item) {
-        mItemsAdapter.replaceItem(item);
+    public void addItem(Item item) {
+        mItemsAdapter.addItem(item);
+    }
+
+    @Override
+    public void changeItem(Item item) {
+        mItemsAdapter.changeItem(item);
+    }
+
+    @Override
+    public void removeItem(Item item) {
+        mItemsAdapter.removeItem(item);
     }
 
     @Override
@@ -482,18 +486,30 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             return mItems.size();
         }
 
-        private void replaceItem(@NonNull Item item) {
-            if (mItems.contains(item)) {
+        void addItem(Item item) {
+            if (mItems.add(item)) {
+                if (!mSearching) {
+                    notifyItemInserted(mItems.size() - 1);
+                }
+                mPresenter.itemsSizeChanged(mItems.size());
+            }
+        }
+
+        void changeItem(Item item) {
+            int itemIndex = mItems.indexOf(item);
+            if (itemIndex != -1) {
+                mItems.set(itemIndex, item);
+                notifyItemChanged(itemIndex);
+            }
+        }
+
+        void removeItem(Item item) {
+            int itemIndex = mItems.indexOf(item);
+            if (itemIndex != -1) {
                 mItems.remove(item);
+                notifyItemRemoved(itemIndex);
+                mPresenter.itemsSizeChanged(mItems.size());
             }
-            if (!item.getDeceased()) {
-                mItems.add(item);
-                sortItemsByExpiry();
-            }
-            if (!mSearching) {
-                notifyDataSetChanged();
-            }
-            mPresenter.itemsSizeChanged(mItems.size());
         }
 
         private void searchItem() {
@@ -511,20 +527,9 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             Analytics.logEventViewSearchResults(getContext(), mQuery);
         }
 
-        private void sortItemsByExpiry() {
-            // Sort ascending (earlier dates first)
-            Collections.sort(mItems, new Comparator<Item>() {
-                @Override
-                public int compare(Item item1, Item item2) {
-                    return item1.compareTo(item2);
-                }
-            });
-        }
-
         private void clearItems() {
             mItems.clear();
             mImageUrl = null;
-            notifyDataSetChanged();
         }
 
         class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

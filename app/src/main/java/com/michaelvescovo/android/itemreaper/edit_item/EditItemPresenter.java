@@ -84,7 +84,9 @@ class EditItemPresenter implements EditItemContract.Presenter {
                     itemLoaded = true;
                     EspressoIdlingResource.decrement();
                 }
-                mView.showExistingItem(item);
+                if (item != null) {
+                    mView.showExistingItem(item);
+                }
             }
         });
     }
@@ -207,10 +209,5 @@ class EditItemPresenter implements EditItemContract.Presenter {
     @Override
     public void deleteImage() {
         mView.removeImage();
-    }
-
-    @Override
-    public void clearEditItemCache(@NonNull String itemId) {
-        mRepository.refreshItem(itemId);
     }
 }

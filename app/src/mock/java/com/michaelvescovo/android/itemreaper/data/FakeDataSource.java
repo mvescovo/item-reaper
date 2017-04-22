@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_ADDED;
+
 /**
  * @author Michael Vescovo
  */
@@ -20,14 +22,12 @@ import java.util.UUID;
 public class FakeDataSource implements DataSource {
 
     public final static String USER_ID = "testUser";
-    public final static List<String> ITEM_IDS = Lists.newArrayList();
-    public final static Map<String, Item> ITEMS = Maps.newHashMap();
+    public final static List<Item> ITEMS = Lists.newArrayList();
 
     /*
     * Test item 1.
     * - Has all fields filled in (each must be unique to prevent ambiguous matcher exceptions).
     * */
-    public final static String ITEM_ID_1 = "1";
     public final static Item ITEM_1 = new Item("1",
             1453554000000L, // purchase: 24/01/2016
             2000,
@@ -42,7 +42,6 @@ public class FakeDataSource implements DataSource {
     * Test item 2.
     * - Has some fields filled in but not all.
     * */
-    public final static String ITEM_ID_2 = "2";
     public final static Item ITEM_2 = new Item("2",
             -1, // purchase: unknown
             3000,
@@ -56,7 +55,6 @@ public class FakeDataSource implements DataSource {
     * Test item 3.
     * - For screenshots.
     * */
-    public final static String ITEM_ID_3 = "3";
     public final static Item ITEM_3 = new Item("3",
             -1, // purchase: unknown
             149900,
@@ -70,7 +68,6 @@ public class FakeDataSource implements DataSource {
     * Test item 4.
     * - For screenshots.
     * */
-    public final static String ITEM_ID_4 = "4";
     public final static Item ITEM_4 = new Item("4",
             -1, // purchase: unknown
             13500,
@@ -84,8 +81,6 @@ public class FakeDataSource implements DataSource {
     * Test item 5.
     * - For screenshots.
     * */
-    public final static String ITEM_ID_5 = "5";
-
     public final static Item ITEM_5 = new Item("5",
             -1, // purchase: unknown
             99900,
@@ -98,8 +93,6 @@ public class FakeDataSource implements DataSource {
     * Test item 6.
     * - For screenshots.
     * */
-    public final static String ITEM_ID_6 = "6";
-
     public final static Item ITEM_6 = new Item("6",
             -1, // purchase: unknown
             2000,
@@ -109,40 +102,27 @@ public class FakeDataSource implements DataSource {
             "Pillow", null, null, null, "White", null, null, null, null, null, null, null, null,
             false);
 
-    private ItemIdsListener mItemIdsListener;
     private Map<String, Map<String, ItemChangedListener>> mItemCallbacks = Maps.newHashMap();
 
     FakeDataSource() {
-        ITEM_IDS.add(ITEM_ID_1);
-        ITEM_IDS.add(ITEM_ID_2);
-        ITEM_IDS.add(ITEM_ID_3);
-        ITEM_IDS.add(ITEM_ID_4);
-        ITEM_IDS.add(ITEM_ID_5);
-        ITEM_IDS.add(ITEM_ID_6);
-        ITEMS.put(ITEM_ID_1, ITEM_1);
-        ITEMS.put(ITEM_ID_2, ITEM_2);
-        ITEMS.put(ITEM_ID_3, ITEM_3);
-        ITEMS.put(ITEM_ID_4, ITEM_4);
-        ITEMS.put(ITEM_ID_5, ITEM_5);
-        ITEMS.put(ITEM_ID_6, ITEM_6);
+        ITEMS.add(ITEM_1);
+        ITEMS.add(ITEM_2);
+        ITEMS.add(ITEM_3);
+        ITEMS.add(ITEM_4);
+        ITEMS.add(ITEM_5);
+        ITEMS.add(ITEM_6);
     }
 
     @Override
-    public void getItemIds(@NonNull String userId, @NonNull final GetItemIdsCallback callback) {
-        mItemIdsListener = new ItemIdsListener() {
-            @Override
-            public void itemIdsChanged(List<String> itemIds) {
-                if (itemIds != null) {
-                    callback.onItemIdsLoaded(itemIds, false);
-                }
-            }
-        };
-        mItemIdsListener.itemIdsChanged(ITEM_IDS);
+    public void getItemsList(@NonNull String userId, @NonNull GetItemsListCallback callback) {
+        callback.onItemsLoaded(ITEMS);
     }
 
     @Override
-    public void refreshItemIds() {
-        ITEM_IDS.clear();
+    public void getItems(@NonNull String userId, @NonNull String caller, @NonNull GetItemsCallback callback) {
+        for (Item item : ITEMS) {
+            callback.onItemLoaded(item, ITEM_ADDED);
+        }
     }
 
     @Override
@@ -155,7 +135,7 @@ public class FakeDataSource implements DataSource {
         }
         ItemChangedListener itemChangedListener = createItemChangedListener(callback);
         mItemCallbacks.get(itemId).put(caller, itemChangedListener);
-        mItemCallbacks.get(itemId).get(caller).itemChanged(ITEMS.get(itemId));
+        mItemCallbacks.get(itemId).get(caller).itemChanged(ITEMS.get(ITEMS.indexOf(new Item(itemId))));
     }
 
     private ItemChangedListener createItemChangedListener(final GetItemCallback callback) {
@@ -176,47 +156,24 @@ public class FakeDataSource implements DataSource {
     }
 
     @Override
-    public void refreshItems() {
-        ITEMS.clear();
-    }
-
-    @Override
-    public void refreshItem(@NonNull String itemId) {
-        // Nothing to do here.
-    }
-
-    @Override
     public void saveItem(@NonNull String userId, @NonNull Item item) {
-        ITEMS.put(item.getId(), item);
+        ITEMS.add(item);
         if (mItemCallbacks.get(item.getId()) != null) {
             for (ItemChangedListener listener :
                     mItemCallbacks.get(item.getId()).values()) {
-                listener.itemChanged(ITEMS.get(item.getId()));
-            }
-        }
-        if (!ITEM_IDS.contains(item.getId())) {
-            ITEM_IDS.add(item.getId());
-            if (mItemIdsListener != null) {
-                mItemIdsListener.itemIdsChanged(ITEM_IDS);
+                listener.itemChanged(ITEMS.get(ITEMS.indexOf(item)));
             }
         }
     }
 
     @Override
     public void deleteItem(@NonNull String userId, @NonNull Item item) {
-        ITEMS.remove(item.getId());
-        ITEM_IDS.remove(item.getId());
+        ITEMS.remove(item);
     }
 
     @Override
     public void deleteAllItems(@NonNull String userId) {
-        refreshItemIds();
-        refreshItems();
-    }
-
-    private interface ItemIdsListener {
-
-        void itemIdsChanged(List<String> itemIds);
+        ITEMS.clear();
     }
 
     private interface ItemChangedListener {

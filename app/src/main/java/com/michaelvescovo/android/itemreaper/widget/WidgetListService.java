@@ -9,6 +9,7 @@ import android.util.TypedValue;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.google.common.collect.ImmutableList;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
@@ -20,8 +21,6 @@ import com.michaelvescovo.android.itemreaper.data.Repository;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
@@ -29,7 +28,6 @@ import java.util.concurrent.CountDownLatch;
 import javax.inject.Inject;
 
 import static com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity.EXTRA_ITEM_ID;
-import static com.michaelvescovo.android.itemreaper.items.ItemsPresenter.ITEMS_CALLER;
 import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getPriceFromTotalCents;
 
 /**
@@ -59,7 +57,6 @@ public class WidgetListService extends RemoteViewsService {
     private class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         private Context mContext;
         private List<Item> mItems;
-        private int mCount;
         private CountDownLatch mCountDownLatch;
 
         ListRemoteViewsFactory(Context context) {
@@ -91,67 +88,28 @@ public class WidgetListService extends RemoteViewsService {
         private void getItems() {
             final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
             if (firebaseUser != null) {
-                mRepository.getItemIds(firebaseUser.getUid(), new DataSource.GetItemIdsCallback() {
-                    @Override
-                    public void onItemIdsLoaded(@Nullable List<String> itemIds,
-                                                boolean itemRemoved) {
-                        if (mCountDownLatch.getCount() == 0) {
-                            // Item id's changed externally. Initiate refresh.
-                            Intent updateWidgetIntent = new Intent(mContext,
-                                    ItemWidgetProvider.class);
-                            updateWidgetIntent.setAction(ItemWidgetProvider
-                                    .ACTION_DATA_UPDATED);
-                            mContext.sendBroadcast(updateWidgetIntent);
-                        } else {
-                            if (itemIds != null) {
-                                mItems.clear();
-                                mCount = itemIds.size();
-                                for (final String itemId : itemIds) {
-                                    getItem(itemId, firebaseUser.getUid());
+                mRepository.getItemsList(firebaseUser.getUid(),
+                        new DataSource.GetItemsListCallback() {
+                            @Override
+                            public void onItemsLoaded(@Nullable List<Item> items) {
+                                if (mCountDownLatch.getCount() == 0) {
+                                    // Item changed externally. Initiate refresh.
+                                    Intent updateWidgetIntent = new Intent(mContext,
+                                            ItemWidgetProvider.class);
+                                    updateWidgetIntent.setAction(
+                                            ItemWidgetProvider.ACTION_DATA_UPDATED);
+                                    mContext.sendBroadcast(updateWidgetIntent);
+                                } else {
+                                    if (items != null) {
+                                        mItems = ImmutableList.copyOf(items);
+                                    }
+                                    mCountDownLatch.countDown();
                                 }
-                            } else {
-                                mCountDownLatch.countDown();
                             }
-                        }
-                    }
-                });
+                        });
             } else {
                 mCountDownLatch.countDown();
             }
-        }
-
-        private void getItem(final String itemId, String userId) {
-            mRepository.getItem(itemId, userId, ITEMS_CALLER, new DataSource.GetItemCallback() {
-                @Override
-                public void onItemLoaded(@Nullable Item item) {
-                    if (mCountDownLatch.getCount() == 0) {
-                        // Item changed externally. Initiate refresh.
-                        Intent updateWidgetIntent = new Intent(mContext, ItemWidgetProvider.class);
-                        updateWidgetIntent.setAction(ItemWidgetProvider.ACTION_DATA_UPDATED);
-                        mContext.sendBroadcast(updateWidgetIntent);
-                    } else {
-                        if (item != null && !item.getDeceased()) {
-                            mItems.add(item);
-                        } else {
-                            mCount--;
-                        }
-                        if (mCount == mItems.size()) {
-                            sortItemsByExpiry();
-                            mCountDownLatch.countDown();
-                        }
-                    }
-                }
-            });
-        }
-
-        private void sortItemsByExpiry() {
-            // Sort ascending (earlier dates first)
-            Collections.sort(mItems, new Comparator<Item>() {
-                @Override
-                public int compare(Item item1, Item item2) {
-                    return item1.compareTo(item2);
-                }
-            });
         }
 
         @Override

@@ -4,13 +4,17 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 
-import com.google.common.collect.ImmutableList;
-
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
+
+import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_ADDED;
+import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_CHANGED;
+import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_MOVED;
+import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_REMOVED;
 
 /**
  * @author Michael Vescovo
@@ -19,62 +23,87 @@ import javax.inject.Inject;
 public class Repository implements DataSource {
 
     private final DataSource mRemoteDataSource;
+    @SuppressWarnings("WeakerAccess")
     @VisibleForTesting
-    List<String> mCachedItemIds;
-    @VisibleForTesting
-    Map<String, Item> mCachedItems;
+    List<Item> mCachedItems;
 
     @Inject
     Repository(DataSource remoteDataSource) {
         mRemoteDataSource = remoteDataSource;
-        mCachedItems = new HashMap<>();
     }
 
     @Override
-    public void getItemIds(@NonNull String userId, @NonNull final GetItemIdsCallback callback) {
-        if (mCachedItemIds != null) {
-            callback.onItemIdsLoaded(mCachedItemIds, false);
-        } else {
-            mRemoteDataSource.getItemIds(userId, new GetItemIdsCallback() {
+    public void getItemsList(@NonNull String userId, @NonNull final GetItemsListCallback callback) {
+        if (mCachedItems == null) {
+            mRemoteDataSource.getItemsList(userId, new GetItemsListCallback() {
                 @Override
-                public void onItemIdsLoaded(@Nullable List<String> itemIds, boolean itemRemoved) {
-                    if (itemIds != null) {
-                        if (mCachedItemIds != null && (mCachedItemIds.size() > itemIds.size())) {
-                            itemRemoved = true;
-                        }
-                        mCachedItemIds = ImmutableList.copyOf(itemIds);
-                        callback.onItemIdsLoaded(mCachedItemIds, itemRemoved);
-                    } else {
-                        callback.onItemIdsLoaded(null, false);
-                    }
+                public void onItemsLoaded(@Nullable List<Item> items) {
+                    callback.onItemsLoaded(items);
                 }
             });
+        } else {
+            callback.onItemsLoaded(mCachedItems);
         }
     }
 
     @Override
-    public void refreshItemIds() {
-        if (mCachedItemIds != null) {
-            mCachedItemIds =  null;
+    public void getItems(@NonNull String userId, @NonNull String caller,
+                         @NonNull final GetItemsCallback callback) {
+        if (mCachedItems == null) {
+            mCachedItems = new ArrayList<>();
+            mRemoteDataSource.getItems(userId, caller, new GetItemsCallback() {
+                @Override
+                public void onItemLoaded(@Nullable Item item, @NonNull String action) {
+                    int itemIndex;
+                    switch (action) {
+                        case ITEM_ADDED:
+                            mCachedItems.add(item);
+                            break;
+                        case ITEM_CHANGED:
+                            itemIndex = mCachedItems.indexOf(item);
+                            if (itemIndex != -1) {
+                                mCachedItems.set(itemIndex, item);
+                            }
+                            break;
+                        case ITEM_REMOVED:
+                            itemIndex = mCachedItems.indexOf(item);
+                            if (itemIndex != -1) {
+                                mCachedItems.remove(item);
+                            }
+                            break;
+                        case ITEM_MOVED:
+                            sortItemsByExpiry();
+                            break;
+                    }
+                    callback.onItemLoaded(item, action);
+                }
+            });
+        } else {
+            for (Item item : mCachedItems) {
+                callback.onItemLoaded(item, ITEM_ADDED);
+            }
         }
+    }
+
+    private void sortItemsByExpiry() {
+        // Sort ascending (earlier dates first)
+        Collections.sort(mCachedItems, new Comparator<Item>() {
+            @Override
+            public int compare(Item item1, Item item2) {
+                return item1.compareTo(item2);
+            }
+        });
     }
 
     @Override
     public void getItem(@NonNull final String itemId, @NonNull String userId,
                         @NonNull String caller, @NonNull final GetItemCallback callback) {
-        if (mCachedItems.containsKey(itemId)) {
-            callback.onItemLoaded(mCachedItems.get(itemId));
-        } else {
-            mRemoteDataSource.getItem(itemId, userId, caller, new GetItemCallback() {
-                @Override
-                public void onItemLoaded(@Nullable Item item) {
-                    if (item != null) {
-                        mCachedItems.put(itemId, item);
-                        callback.onItemLoaded(mCachedItems.get(itemId));
-                    }
-                }
-            });
-        }
+        mRemoteDataSource.getItem(itemId, userId, caller, new GetItemCallback() {
+            @Override
+            public void onItemLoaded(@Nullable Item item) {
+                callback.onItemLoaded(item);
+            }
+        });
     }
 
     @Override
@@ -90,18 +119,6 @@ public class Repository implements DataSource {
     }
 
     @Override
-    public void refreshItems() {
-        mCachedItems.clear();
-    }
-
-    @Override
-    public void refreshItem(@NonNull String itemId) {
-        if (mCachedItems.containsKey(itemId)) {
-            mCachedItems.remove(itemId);
-        }
-    }
-
-    @Override
     public void saveItem(@NonNull String userId, @NonNull Item item) {
         mRemoteDataSource.saveItem(userId, item);
     }
@@ -113,8 +130,6 @@ public class Repository implements DataSource {
 
     @Override
     public void deleteAllItems(@NonNull String userId) {
-        refreshItemIds();
-        refreshItems();
         mRemoteDataSource.deleteAllItems(userId);
     }
 }
