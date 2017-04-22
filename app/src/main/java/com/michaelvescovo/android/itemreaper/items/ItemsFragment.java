@@ -40,6 +40,8 @@ import com.michaelvescovo.android.itemreaper.util.Analytics;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -114,10 +116,11 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             }
             if (savedInstanceState.getString(STATE_ITEM_QUERY) != null) {
                 mQuery = savedInstanceState.getString(STATE_ITEM_QUERY);
+            } else {
+                mQuery = null;
             }
         }
         mFirebaseStorage = FirebaseStorage.getInstance();
-        mQuery = null;
         mSearching = false;
     }
 
@@ -156,6 +159,9 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         super.onResume();
         mItemsAdapter.clearItems();
         mPresenter.getItems();
+        if (mQuery != null) {
+            searchItem(mQuery);
+        }
         configureSnackbarForDeletedItem();
         Analytics.logEventViewItemList(getContext());
     }
@@ -296,6 +302,11 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     @Override
     public void removeItem(Item item) {
         mItemsAdapter.removeItem(item);
+    }
+
+    @Override
+    public void moveItem() {
+        mItemsAdapter.moveItem();
     }
 
     @Override
@@ -488,8 +499,9 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
         void addItem(Item item) {
             if (mItems.add(item)) {
+                int itemIndex = mItems.indexOf(item);
                 if (!mSearching) {
-                    notifyItemInserted(mItems.size() - 1);
+                    notifyItemInserted(itemIndex);
                 }
                 mPresenter.itemsSizeChanged(mItems.size());
             }
@@ -512,6 +524,20 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             }
         }
 
+        void moveItem() {
+            sortItemsByExpiry();
+        }
+
+        private void sortItemsByExpiry() {
+            // Sort ascending (earlier dates first)
+            Collections.sort(mItems, new Comparator<Item>() {
+                @Override
+                public int compare(Item item1, Item item2) {
+                    return item1.compareTo(item2);
+                }
+            });
+        }
+
         private void searchItem() {
             setProgressBar(true);
             new SearchForItemTask().execute();
@@ -529,6 +555,9 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
         private void clearItems() {
             mItems.clear();
+            if (!mSearching) {
+                notifyDataSetChanged();
+            }
             mImageUrl = null;
         }
 

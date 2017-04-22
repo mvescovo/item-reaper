@@ -23,6 +23,8 @@ interface ItemsContract {
 
         void removeItem(Item item);
 
+        void moveItem();
+
         void showItemDetailsUi(String itemId);
 
         void showEditItemUi();

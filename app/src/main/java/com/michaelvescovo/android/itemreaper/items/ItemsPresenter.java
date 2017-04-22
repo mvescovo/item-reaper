@@ -17,6 +17,7 @@ import javax.inject.Inject;
 
 import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_ADDED;
 import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_CHANGED;
+import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_MOVED;
 import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_REMOVED;
 
 /**
@@ -68,6 +69,8 @@ public class ItemsPresenter implements ItemsContract.Presenter {
                     case ITEM_REMOVED:
                         mView.removeItem(item);
                         break;
+                    case ITEM_MOVED:
+                        mView.moveItem();
                 }
                 mView.setProgressBar(false);
             }
