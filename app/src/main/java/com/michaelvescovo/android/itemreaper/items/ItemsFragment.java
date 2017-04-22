@@ -81,6 +81,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     private FirebaseStorage mFirebaseStorage;
     private String mQuery;
     private boolean mSearching;
+    private boolean mItemMoved;
 
     public ItemsFragment() {
     }
@@ -122,6 +123,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         }
         mFirebaseStorage = FirebaseStorage.getInstance();
         mSearching = false;
+        mItemMoved = false;
     }
 
     @Nullable
@@ -511,7 +513,12 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             int itemIndex = mItems.indexOf(item);
             if (itemIndex != -1) {
                 mItems.set(itemIndex, item);
-                notifyItemChanged(itemIndex);
+                if (mItemMoved) {
+                    sortItemsByExpiry();
+                    notifyDataSetChanged();
+                } else {
+                    notifyItemChanged(itemIndex);
+                }
             }
         }
 
@@ -525,7 +532,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         }
 
         void moveItem() {
-            sortItemsByExpiry();
+            mItemMoved = true;
         }
 
         private void sortItemsByExpiry() {
