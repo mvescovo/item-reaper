@@ -8,4 +8,9 @@
         <item>@string/edit_date_unknown</item>
     </string-array>
 
+    <string-array name="sort_methods">
+        <item>@string/sort_by_expiry</item>
+        <item>@string/sort_by_purchase_date</item>
+    </string-array>
+
 </resources>

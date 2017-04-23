@@ -13,6 +13,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.test.espresso.IdlingResource;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -59,7 +60,8 @@ import static com.michaelvescovo.android.itemreaper.widget.ItemWidgetProvider.AC
  */
 
 public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Callback,
-        AboutFragment.Callback, EditItemFragment.Callback, ItemDetailsFragment.Callback {
+        AboutFragment.Callback, EditItemFragment.Callback, ItemDetailsFragment.Callback,
+        SortItemsDialogFragment.SortItemsDialogListener {
 
     public static final int REQUEST_CODE_ITEM_DELETED = 1;
     public static final String EXTRA_DELETED_ITEM = "deleted_item";
@@ -268,6 +270,12 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     }
 
     @Override
+    public void onSortSelected() {
+        DialogFragment dialog = new SortItemsDialogFragment();
+        dialog.show(getSupportFragmentManager(), "SortItemsDialogFragment");
+    }
+
+    @Override
     public void onAboutSelected() {
         AboutFragment aboutFragment = AboutFragment.newInstance();
         if (mIsLargeLayout) {
@@ -416,5 +424,15 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     @VisibleForTesting
     public IdlingResource getCountingIdlingResource() {
         return EspressoIdlingResource.getIdlingResource();
+    }
+
+    @Override
+    public void onSortByExpirySelected() {
+
+    }
+
+    @Override
+    public void onSortByPurchaseDateSelected() {
+
     }
 }

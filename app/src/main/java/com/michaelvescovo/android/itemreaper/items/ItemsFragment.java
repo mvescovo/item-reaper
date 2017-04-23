@@ -270,6 +270,9 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_sort:
+                mCallback.onSortSelected();
+                break;
             case R.id.action_about:
                 mPresenter.openAbout();
                 break;
@@ -379,6 +382,8 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     }
 
     interface Callback {
+
+        void onSortSelected();
 
         void onAboutSelected();
 
