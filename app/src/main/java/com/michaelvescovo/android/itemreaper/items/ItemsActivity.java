@@ -3,6 +3,7 @@ package com.michaelvescovo.android.itemreaper.items;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -52,6 +55,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity.EXTRA_ITEM_ID;
+import static com.michaelvescovo.android.itemreaper.items.SortItemsDialogFragment.EXTRA_SORT_BY;
+import static com.michaelvescovo.android.itemreaper.items.SortItemsDialogFragment.SORT_BY_EXPIRY;
+import static com.michaelvescovo.android.itemreaper.items.SortItemsDialogFragment.SORT_BY_PURCHASE_DATE;
 import static com.michaelvescovo.android.itemreaper.widget.ItemWidgetProvider.ACTION_EDIT_NEW_ITEM;
 
 
@@ -61,7 +67,8 @@ import static com.michaelvescovo.android.itemreaper.widget.ItemWidgetProvider.AC
 
 public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Callback,
         AboutFragment.Callback, EditItemFragment.Callback, ItemDetailsFragment.Callback,
-        SortItemsDialogFragment.SortItemsDialogListener {
+        SortItemsDialogFragment.SortItemsDialogListener,
+        LoaderManager.LoaderCallbacks<SharedPreferences> {
 
     public static final int REQUEST_CODE_ITEM_DELETED = 1;
     public static final String EXTRA_DELETED_ITEM = "deleted_item";
@@ -73,6 +80,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     private static final String EDIT_ITEM_DIALOG = "edit_item_dialog";
     private static final String ITEM_DETAILS_DIALOG = "item_details_dialog";
     private static final String FRAGMENT_ITEMS = "fragment_items";
+    private static final String STATE_CURRENT_SORT = "current_sort";
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -97,6 +105,8 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     private String mQuery;
     private String mItemId;
     private boolean mEditNewItem;
+    private SharedPreferences mSharedPreferences;
+    private int mCurrentSort;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,6 +171,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
         }
 
         mDialogResumed = false;
+        getSupportLoaderManager().initLoader(0, null, this);
     }
 
     @Override
@@ -272,6 +283,9 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     @Override
     public void onSortSelected() {
         DialogFragment dialog = new SortItemsDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(EXTRA_SORT_BY, mCurrentSort);
+        dialog.setArguments(bundle);
         dialog.show(getSupportFragmentManager(), "SortItemsDialogFragment");
     }
 
@@ -421,18 +435,40 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
         }
     }
 
-    @VisibleForTesting
-    public IdlingResource getCountingIdlingResource() {
-        return EspressoIdlingResource.getIdlingResource();
-    }
-
     @Override
     public void onSortByExpirySelected() {
-
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putInt(STATE_CURRENT_SORT, SORT_BY_EXPIRY);
+        SharedPreferencesLoader.persist(editor);
+        mCurrentSort = SORT_BY_EXPIRY;
     }
 
     @Override
     public void onSortByPurchaseDateSelected() {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putInt(STATE_CURRENT_SORT, SORT_BY_PURCHASE_DATE);
+        SharedPreferencesLoader.persist(editor);
+        mCurrentSort = SORT_BY_PURCHASE_DATE;
+    }
 
+    @Override
+    public Loader<SharedPreferences> onCreateLoader(int id, Bundle args) {
+        return (new SharedPreferencesLoader(this));
+    }
+
+    @Override
+    public void onLoadFinished(Loader<SharedPreferences> loader, SharedPreferences preferences) {
+        mSharedPreferences = preferences;
+        mCurrentSort = preferences.getInt(STATE_CURRENT_SORT, SORT_BY_EXPIRY);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<SharedPreferences> loader) {
+        // Nothing to do here.
+    }
+
+    @VisibleForTesting
+    public IdlingResource getCountingIdlingResource() {
+        return EspressoIdlingResource.getIdlingResource();
     }
 }
