@@ -48,6 +48,8 @@ public class Analytics {
     private static final String REMOVE_ITEM_IMAGE = "remove_item_image";
     private static final String DELETE_ITEM = "delete_item";
     private static final String UNDO_DELETE_ITEM = "undo_delete_item";
+    private static final String SORT_EXPIRED = "sort_expired";
+    private static final String SORT_PURCHASE_DATE = "sort_purchase_date";
 
     public static void logEventLogout(Context context) {
         FirebaseAnalytics.getInstance(context).logEvent(LOGOUT, null);
@@ -521,6 +523,14 @@ public class Analytics {
 
     public static void logEventUndoDeleteItem(Context context) {
         FirebaseAnalytics.getInstance(context).logEvent(UNDO_DELETE_ITEM, null);
+    }
+
+    public static void logEventSortExpired(Context context) {
+        FirebaseAnalytics.getInstance(context).logEvent(SORT_EXPIRED, null);
+    }
+
+    public static void logEventSortPurchaseDate(Context context) {
+        FirebaseAnalytics.getInstance(context).logEvent(SORT_PURCHASE_DATE, null);
     }
 }
 

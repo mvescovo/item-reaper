@@ -56,6 +56,7 @@ import butterknife.ButterKnife;
 import static com.michaelvescovo.android.itemreaper.R.id.expiry;
 import static com.michaelvescovo.android.itemreaper.items.ItemsActivity.EXTRA_DELETED_ITEM;
 import static com.michaelvescovo.android.itemreaper.items.SortItemsDialogFragment.SORT_BY_EXPIRY;
+import static com.michaelvescovo.android.itemreaper.items.SortItemsDialogFragment.SORT_BY_PURCHASE_DATE;
 import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getDateFormat;
 import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getPriceFromTotalCents;
 
@@ -191,6 +192,11 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
     }
 
     public void onSortChanged(int sortBy) {
+        if (sortBy == SORT_BY_EXPIRY) {
+            Analytics.logEventSortExpired(getContext());
+        } else if (sortBy == SORT_BY_PURCHASE_DATE) {
+            Analytics.logEventSortPurchaseDate(getContext());
+        }
         loadData(sortBy);
         updateWidget();
     }
