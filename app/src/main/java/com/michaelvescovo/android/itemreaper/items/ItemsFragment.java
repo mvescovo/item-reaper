@@ -2,6 +2,8 @@ package com.michaelvescovo.android.itemreaper.items;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -11,7 +13,9 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,6 +40,7 @@ import com.google.firebase.storage.StorageReference;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.util.Analytics;
+import com.michaelvescovo.android.itemreaper.widget.ItemWidgetProvider;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,6 +55,7 @@ import butterknife.ButterKnife;
 
 import static com.michaelvescovo.android.itemreaper.R.id.expiry;
 import static com.michaelvescovo.android.itemreaper.items.ItemsActivity.EXTRA_DELETED_ITEM;
+import static com.michaelvescovo.android.itemreaper.items.SortItemsDialogFragment.SORT_BY_EXPIRY;
 import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getDateFormat;
 import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getPriceFromTotalCents;
 
@@ -57,16 +63,16 @@ import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getPr
  * @author Michael Vescovo
  */
 
-public class ItemsFragment extends Fragment implements ItemsContract.View {
+public class ItemsFragment extends Fragment implements ItemsContract.View,
+        LoaderManager.LoaderCallbacks<SharedPreferences>,
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
+    public static String STATE_CURRENT_SORT = "current_sort";
     private static String STATE_ITEM_QUERY = "item_query";
-
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
-
     @BindView(R.id.no_items)
     TextView mNoItems;
-
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
 
@@ -82,6 +88,8 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     private String mQuery;
     private boolean mSearching;
     private boolean mItemMoved;
+    private int mCurrentSort;
+    private SharedPreferences mSharedPreferences;
 
     public ItemsFragment() {
     }
@@ -120,10 +128,12 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             } else {
                 mQuery = null;
             }
+            mCurrentSort = savedInstanceState.getInt(STATE_CURRENT_SORT, -1);
         }
         mFirebaseStorage = FirebaseStorage.getInstance();
         mSearching = false;
         mItemMoved = false;
+        getActivity().getSupportLoaderManager().initLoader(0, null, this);
     }
 
     @Nullable
@@ -154,18 +164,41 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         super.onSaveInstanceState(outState);
         outState.putSerializable(EXTRA_DELETED_ITEM, mDeletedItem);
         outState.putString(STATE_ITEM_QUERY, mQuery);
+        outState.putInt(STATE_CURRENT_SORT, mCurrentSort);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        if (mCurrentSort != -1) {
+            loadData(mCurrentSort);
+        } // else it's the first load and loader will call loadData when ready.
+    }
+
+    private void loadData(int sortBy) {
+        if (sortBy == -1) {
+            mCurrentSort = mSharedPreferences.getInt(STATE_CURRENT_SORT, SORT_BY_EXPIRY);
+        } else {
+            mCurrentSort = sortBy;
+        }
         mItemsAdapter.clearItems();
-        mPresenter.getItems();
+        mPresenter.getItems(mCurrentSort);
         if (mQuery != null) {
             searchItem(mQuery);
         }
         configureSnackbarForDeletedItem();
         Analytics.logEventViewItemList(getContext());
+    }
+
+    public void onSortChanged(int sortBy) {
+        loadData(sortBy);
+        updateWidget();
+    }
+
+    private void updateWidget() {
+        Intent updateWidgetIntent = new Intent(getContext(), ItemWidgetProvider.class);
+        updateWidgetIntent.setAction(ItemWidgetProvider.ACTION_DATA_UPDATED);
+        getContext().sendBroadcast(updateWidgetIntent);
     }
 
     private void configureSnackbarForDeletedItem() {
@@ -225,20 +258,15 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     public void searchItem(@Nullable String query) {
         mQuery = query;
         mSearching = true;
+        mItemsAdapter.clearItems();
+        mPresenter.getItems(mCurrentSort);
         if (isResumed()) {
-            mItemsAdapter.clearItems();
-            mPresenter.getItems();
         }
         if (mQuery != null) {
             mItemsAdapter.searchItem();
         } else {
             mSearching = false;
         }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
     }
 
     @Override
@@ -271,7 +299,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_sort:
-                mCallback.onSortSelected();
+                mCallback.onSortSelected(mSharedPreferences);
                 break;
             case R.id.action_about:
                 mPresenter.openAbout();
@@ -381,9 +409,30 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         });
     }
 
+    @Override
+    public Loader<SharedPreferences> onCreateLoader(int id, Bundle args) {
+        return (new SharedPreferencesLoader(getContext()));
+    }
+
+    @Override
+    public void onLoadFinished(Loader<SharedPreferences> loader, SharedPreferences preferences) {
+        mSharedPreferences = preferences;
+        loadData(-1);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<SharedPreferences> loader) {
+        // Nothing to do here.
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        loadData(-1);
+    }
+
     interface Callback {
 
-        void onSortSelected();
+        void onSortSelected(SharedPreferences preferences);
 
         void onAboutSelected();
 
@@ -519,7 +568,11 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             if (itemIndex != -1) {
                 mItems.set(itemIndex, item);
                 if (mItemMoved) {
-                    sortItemsByExpiry();
+                    if (mCurrentSort == SORT_BY_EXPIRY) {
+                        sortItemsByExpiry();
+                    } else {
+                        sortItemsByPurchaseDate();
+                    }
                     notifyDataSetChanged();
                 } else {
                     notifyItemChanged(itemIndex);
@@ -548,6 +601,26 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                     return item1.compareTo(item2);
                 }
             });
+        }
+
+        private void sortItemsByPurchaseDate() {
+            // Sort ascending (earlier dates first)
+            Collections.sort(mItems, new Comparator<Item>() {
+                @Override
+                public int compare(Item item1, Item item2) {
+                    return compareByPurchaseDate(item1, item2);
+                }
+            });
+        }
+
+        private int compareByPurchaseDate(Item item1, Item item2) {
+            if (item1.getPurchaseDate() > item2.getPurchaseDate()) {
+                return 1;
+            } else if (item1.getPurchaseDate() == item2.getPurchaseDate()) {
+                return 0;
+            } else {
+                return -1;
+            }
         }
 
         private void searchItem() {

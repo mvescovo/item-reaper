@@ -2,7 +2,9 @@ package com.michaelvescovo.android.itemreaper.widget;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
@@ -28,6 +30,11 @@ import java.util.concurrent.CountDownLatch;
 import javax.inject.Inject;
 
 import static com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity.EXTRA_ITEM_ID;
+import static com.michaelvescovo.android.itemreaper.items.ItemsFragment.STATE_CURRENT_SORT;
+import static com.michaelvescovo.android.itemreaper.items.SortItemsDialogFragment.SORT_BY_EXPIRY;
+import static com.michaelvescovo.android.itemreaper.items.SortItemsDialogFragment.SORT_BY_PURCHASE_DATE;
+import static com.michaelvescovo.android.itemreaper.util.Constants.SORT_BY_EXPIRY_STRING;
+import static com.michaelvescovo.android.itemreaper.util.Constants.SORT_BY_PURCHASE_DATE_STRING;
 import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getPriceFromTotalCents;
 
 /**
@@ -38,6 +45,7 @@ public class WidgetListService extends RemoteViewsService {
 
     @Inject
     public Repository mRepository;
+    private SharedPreferences mSharedPreferences;
 
     @Override
     public void onCreate() {
@@ -47,6 +55,7 @@ public class WidgetListService extends RemoteViewsService {
                         .getRepositoryComponent())
                 .build()
                 .inject(this);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     }
 
     @Override
@@ -88,7 +97,14 @@ public class WidgetListService extends RemoteViewsService {
         private void getItems() {
             final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
             if (firebaseUser != null) {
-                mRepository.getItemsList(firebaseUser.getUid(),
+                int sortBy = mSharedPreferences.getInt(STATE_CURRENT_SORT, SORT_BY_EXPIRY);
+                String sortString;
+                if (sortBy == SORT_BY_PURCHASE_DATE) {
+                    sortString = SORT_BY_PURCHASE_DATE_STRING;
+                } else {
+                    sortString = SORT_BY_EXPIRY_STRING;
+                }
+                mRepository.getItemsList(firebaseUser.getUid(), sortString,
                         new DataSource.GetItemsListCallback() {
                             @Override
                             public void onItemsLoaded(@Nullable List<Item> items) {

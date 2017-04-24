@@ -15,6 +15,7 @@ import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_ADDED;
 import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_CHANGED;
 import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_MOVED;
 import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_REMOVED;
+import static com.michaelvescovo.android.itemreaper.util.Constants.SORT_BY_EXPIRY_STRING;
 
 /**
  * @author Michael Vescovo
@@ -26,6 +27,7 @@ public class Repository implements DataSource {
     @SuppressWarnings("WeakerAccess")
     @VisibleForTesting
     List<Item> mCachedItems;
+    private String mCurrentSort;
 
     @Inject
     Repository(DataSource remoteDataSource) {
@@ -33,9 +35,10 @@ public class Repository implements DataSource {
     }
 
     @Override
-    public void getItemsList(@NonNull String userId, @NonNull final GetItemsListCallback callback) {
+    public void getItemsList(@NonNull String userId, @NonNull String sortBy,
+                             @NonNull final GetItemsListCallback callback) {
         if (mCachedItems == null) {
-            mRemoteDataSource.getItemsList(userId, new GetItemsListCallback() {
+            mRemoteDataSource.getItemsList(userId, sortBy, new GetItemsListCallback() {
                 @Override
                 public void onItemsLoaded(@Nullable List<Item> items) {
                     callback.onItemsLoaded(items);
@@ -47,11 +50,12 @@ public class Repository implements DataSource {
     }
 
     @Override
-    public void getItems(@NonNull String userId, @NonNull String caller,
+    public void getItems(@NonNull String userId, @NonNull String caller, @NonNull String sortBy,
                          @NonNull final GetItemsCallback callback) {
-        if (mCachedItems == null) {
+        if (mCachedItems == null || (mCurrentSort == null || !mCurrentSort.equals(sortBy))) {
+            mCurrentSort = sortBy;
             mCachedItems = new ArrayList<>();
-            mRemoteDataSource.getItems(userId, caller, new GetItemsCallback() {
+            mRemoteDataSource.getItems(userId, caller, sortBy, new GetItemsCallback() {
                 @Override
                 public void onItemLoaded(@Nullable Item item, @NonNull String action) {
                     int itemIndex;
@@ -72,7 +76,11 @@ public class Repository implements DataSource {
                             }
                             break;
                         case ITEM_MOVED:
-                            sortItemsByExpiry();
+                            if (mCurrentSort.equals(SORT_BY_EXPIRY_STRING)) {
+                                sortItemsByExpiry();
+                            } else {
+                                sortItemsByPurchaseDate();
+                            }
                             break;
                     }
                     callback.onItemLoaded(item, action);
@@ -93,6 +101,26 @@ public class Repository implements DataSource {
                 return item1.compareTo(item2);
             }
         });
+    }
+
+    private void sortItemsByPurchaseDate() {
+        // Sort ascending (earlier dates first)
+        Collections.sort(mCachedItems, new Comparator<Item>() {
+            @Override
+            public int compare(Item item1, Item item2) {
+                return compareByPurchaseDate(item1, item2);
+            }
+        });
+    }
+
+    private int compareByPurchaseDate(Item item1, Item item2) {
+        if (item1.getPurchaseDate() > item2.getPurchaseDate()) {
+            return 1;
+        } else if (item1.getPurchaseDate() == item2.getPurchaseDate()) {
+            return 0;
+        } else {
+            return -1;
+        }
     }
 
     @Override

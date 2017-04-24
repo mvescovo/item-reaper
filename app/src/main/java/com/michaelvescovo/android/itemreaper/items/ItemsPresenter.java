@@ -15,10 +15,13 @@ import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 
 import javax.inject.Inject;
 
+import static com.michaelvescovo.android.itemreaper.items.SortItemsDialogFragment.SORT_BY_PURCHASE_DATE;
 import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_ADDED;
 import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_CHANGED;
 import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_MOVED;
 import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_REMOVED;
+import static com.michaelvescovo.android.itemreaper.util.Constants.SORT_BY_EXPIRY_STRING;
+import static com.michaelvescovo.android.itemreaper.util.Constants.SORT_BY_PURCHASE_DATE_STRING;
 
 /**
  * @author Michael Vescovo
@@ -49,11 +52,17 @@ public class ItemsPresenter implements ItemsContract.Presenter {
     }
 
     @Override
-    public void getItems() {
+    public void getItems(int sortBy) {
         mView.setProgressBar(true);
         String userId = mSharedPreferencesHelper.getUserId();
+        String sortString;
+        if (sortBy == SORT_BY_PURCHASE_DATE) {
+            sortString = SORT_BY_PURCHASE_DATE_STRING;
+        } else {
+            sortString = SORT_BY_EXPIRY_STRING;
+        }
         EspressoIdlingResource.increment();
-        mRepository.getItems(userId, ITEMS_CALLER, new DataSource.GetItemsCallback() {
+        mRepository.getItems(userId, ITEMS_CALLER, sortString, new DataSource.GetItemsCallback() {
             @Override
             public void onItemLoaded(@Nullable Item item, @NonNull String action) {
                 if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {

@@ -40,7 +40,7 @@ interface ItemsContract {
 
     interface Presenter {
 
-        void getItems();
+        void getItems(int sortBy);
 
         void openItemDetails(String itemId);
 

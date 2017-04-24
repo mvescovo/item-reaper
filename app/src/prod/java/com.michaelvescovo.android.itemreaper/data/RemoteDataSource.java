@@ -18,28 +18,32 @@ import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_CANCELLE
 import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_CHANGED;
 import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_MOVED;
 import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_REMOVED;
+import static com.michaelvescovo.android.itemreaper.util.Constants.SORT_BY_EXPIRY_STRING;
 
 /**
  * @author Michael Vescovo
  */
 
-public class RemoteDataSource implements DataSource {
+class RemoteDataSource implements DataSource {
 
-    Query mCurrentItemsQuery;
+    private Query mCurrentItemsQuery;
     private DatabaseReference mDatabase;
     private ChildEventListener mItemsListener;
     private ValueEventListener mItemsListListener;
+    private String mCurrentSort;
 
     RemoteDataSource() {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mCurrentSort = SORT_BY_EXPIRY_STRING;
     }
 
     @Override
-    public void getItemsList(@NonNull String userId, @NonNull final GetItemsListCallback callback) {
+    public void getItemsList(@NonNull String userId, @NonNull String sortBy,
+                             @NonNull final GetItemsListCallback callback) {
         if (mCurrentItemsQuery == null) {
             mCurrentItemsQuery = mDatabase.child("items").child(userId).child("private")
-                    .child("current").orderByChild("expiry");
+                    .child("current").orderByChild(sortBy);
         } else {
             if (mItemsListListener != null) {
                 mCurrentItemsQuery.removeEventListener(mItemsListListener);
@@ -64,11 +68,15 @@ public class RemoteDataSource implements DataSource {
     }
 
     @Override
-    public void getItems(@NonNull String userId, @NonNull String caller,
+    public void getItems(@NonNull String userId, @NonNull String caller, @NonNull String sortBy,
                          @NonNull final GetItemsCallback callback) {
-        if (mCurrentItemsQuery == null) {
+        if (mCurrentItemsQuery == null || !mCurrentSort.equals(sortBy)) {
+            mCurrentSort = sortBy;
+            if (mCurrentItemsQuery != null && mItemsListener != null) {
+                mCurrentItemsQuery.removeEventListener(mItemsListener);
+            }
             mCurrentItemsQuery = mDatabase.child("items").child(userId).child("private")
-                    .child("current").orderByChild("expiry");
+                    .child("current").orderByChild(sortBy);
         } else {
             if (mItemsListener != null) {
                 mCurrentItemsQuery.removeEventListener(mItemsListener);

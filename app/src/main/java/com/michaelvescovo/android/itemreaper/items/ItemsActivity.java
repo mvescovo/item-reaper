@@ -18,8 +18,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -55,6 +53,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity.EXTRA_ITEM_ID;
+import static com.michaelvescovo.android.itemreaper.items.ItemsFragment.STATE_CURRENT_SORT;
 import static com.michaelvescovo.android.itemreaper.items.SortItemsDialogFragment.EXTRA_SORT_BY;
 import static com.michaelvescovo.android.itemreaper.items.SortItemsDialogFragment.SORT_BY_EXPIRY;
 import static com.michaelvescovo.android.itemreaper.items.SortItemsDialogFragment.SORT_BY_PURCHASE_DATE;
@@ -67,20 +66,18 @@ import static com.michaelvescovo.android.itemreaper.widget.ItemWidgetProvider.AC
 
 public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Callback,
         AboutFragment.Callback, EditItemFragment.Callback, ItemDetailsFragment.Callback,
-        SortItemsDialogFragment.SortItemsDialogListener,
-        LoaderManager.LoaderCallbacks<SharedPreferences> {
+        SortItemsDialogFragment.SortItemsDialogListener {
 
-    public static final int REQUEST_CODE_ITEM_DELETED = 1;
     public static final String EXTRA_DELETED_ITEM = "deleted_item";
     public static final String EXTRA_EDIT_NEW_ITEM = "edit_new_item";
-    private static final String CURRENT_DIALOG_NAME = "current_dialog_name";
     private static final String STATE_SEARCH_VIEW_OPEN = "search_view_open";
     private static final String STATE_QUERY = "query";
+    public static final int REQUEST_CODE_ITEM_DELETED = 1;
+    private static final String CURRENT_DIALOG_NAME = "current_dialog_name";
     private static final String ABOUT_DIALOG = "about_dialog";
     private static final String EDIT_ITEM_DIALOG = "edit_item_dialog";
     private static final String ITEM_DETAILS_DIALOG = "item_details_dialog";
     private static final String FRAGMENT_ITEMS = "fragment_items";
-    private static final String STATE_CURRENT_SORT = "current_sort";
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -171,7 +168,6 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
         }
 
         mDialogResumed = false;
-        getSupportLoaderManager().initLoader(0, null, this);
     }
 
     @Override
@@ -278,15 +274,6 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
         mSelectImageMenuItem = menu.findItem(R.id.action_select_image);
         mDeleteItemMenuItem = menu.findItem(R.id.action_delete_item);
         return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public void onSortSelected() {
-        DialogFragment dialog = new SortItemsDialogFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt(EXTRA_SORT_BY, mCurrentSort);
-        dialog.setArguments(bundle);
-        dialog.show(getSupportFragmentManager(), "SortItemsDialogFragment");
     }
 
     @Override
@@ -436,35 +423,37 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     }
 
     @Override
+    public void onSortSelected(SharedPreferences preferences) {
+        mCurrentSort = preferences.getInt(STATE_CURRENT_SORT, SORT_BY_EXPIRY);
+        mSharedPreferences = preferences;
+        DialogFragment dialog = new SortItemsDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(EXTRA_SORT_BY, mCurrentSort);
+        dialog.setArguments(bundle);
+        dialog.show(getSupportFragmentManager(), "SortItemsDialogFragment");
+    }
+
+    @Override
     public void onSortByExpirySelected() {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putInt(STATE_CURRENT_SORT, SORT_BY_EXPIRY);
-        SharedPreferencesLoader.persist(editor);
+        editor.apply();
         mCurrentSort = SORT_BY_EXPIRY;
+        sort();
     }
 
     @Override
     public void onSortByPurchaseDateSelected() {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putInt(STATE_CURRENT_SORT, SORT_BY_PURCHASE_DATE);
-        SharedPreferencesLoader.persist(editor);
+        editor.apply();
         mCurrentSort = SORT_BY_PURCHASE_DATE;
+        sort();
     }
 
-    @Override
-    public Loader<SharedPreferences> onCreateLoader(int id, Bundle args) {
-        return (new SharedPreferencesLoader(this));
-    }
-
-    @Override
-    public void onLoadFinished(Loader<SharedPreferences> loader, SharedPreferences preferences) {
-        mSharedPreferences = preferences;
-        mCurrentSort = preferences.getInt(STATE_CURRENT_SORT, SORT_BY_EXPIRY);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<SharedPreferences> loader) {
-        // Nothing to do here.
+    private void sort() {
+        Fragment itemsFragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_ITEMS);
+        ((ItemsFragment) itemsFragment).onSortChanged(mCurrentSort);
     }
 
     @VisibleForTesting

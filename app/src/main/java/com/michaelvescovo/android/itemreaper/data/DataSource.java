@@ -11,9 +11,10 @@ import java.util.List;
 
 public interface DataSource {
 
-    void getItemsList(@NonNull String userId, @NonNull GetItemsListCallback callback);
+    void getItemsList(@NonNull String userId, @NonNull String sortBy,
+                      @NonNull GetItemsListCallback callback);
 
-    void getItems(@NonNull String userId, @NonNull String caller,
+    void getItems(@NonNull String userId, @NonNull String caller, @NonNull String sortBy,
                   @NonNull GetItemsCallback callback);
 
     void getItem(@NonNull String itemId, @NonNull String userId, @NonNull String caller,
