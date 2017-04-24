@@ -55,8 +55,6 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDetail
         // Sets itemDetailsPresenter as the presenter for itemDetailsFragment.
         ItemDetailsComponent itemDetailsComponent = DaggerItemDetailsComponent.builder()
                 .itemDetailsModule(new ItemDetailsModule(itemDetailsFragment))
-                .applicationComponent(((ItemReaperApplication) getApplication())
-                        .getApplicationComponent())
                 .repositoryComponent(((ItemReaperApplication) getApplication())
                         .getRepositoryComponent())
                 .build();

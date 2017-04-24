@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
@@ -34,6 +36,7 @@ public class ImageUploadService extends IntentService {
     @Inject
     public SharedPreferencesHelper mSharedPreferencesHelper;
     private FirebaseStorage mFirebaseStorage;
+    private FirebaseUser mFirebaseUser;
 
     public ImageUploadService() {
         super("ImageUploadService");
@@ -50,6 +53,7 @@ public class ImageUploadService extends IntentService {
                 .build()
                 .inject(this);
         mFirebaseStorage = FirebaseStorage.getInstance();
+        mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
     @Override
@@ -74,7 +78,7 @@ public class ImageUploadService extends IntentService {
         if (item.getImageUrl() != null) {
             Uri uri = Uri.fromFile(new File(item.getImageUrl()));
             StorageReference photoRef = mFirebaseStorage.getReference("users")
-                    .child(mSharedPreferencesHelper.getUserId())
+                    .child(mFirebaseUser.getUid())
                     .child("item_photos")
                     .child(uri.getLastPathSegment());
             StorageMetadata metadata = new StorageMetadata.Builder()
@@ -88,7 +92,7 @@ public class ImageUploadService extends IntentService {
                     if (downloadUrl != null) {
                         deleteItemFile(item);
                         item.setImageUrl(downloadUrl.toString());
-                        mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
+                        mRepository.saveItem(mFirebaseUser.getUid(), item);
                         mSharedPreferencesHelper.removeImageUploading(item.getId());
                     }
                 }
@@ -103,11 +107,11 @@ public class ImageUploadService extends IntentService {
                         item.getImageUrl());
                 photoRef.delete();
                 item.setImageUrl(null);
-                mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
+                mRepository.saveItem(mFirebaseUser.getUid(), item);
             } else {
                 deleteItemFile(item);
                 item.setImageUrl(null);
-                mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
+                mRepository.saveItem(mFirebaseUser.getUid(), item);
             }
         }
     }

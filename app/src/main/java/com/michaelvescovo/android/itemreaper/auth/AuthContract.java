@@ -1,7 +1,5 @@
 package com.michaelvescovo.android.itemreaper.auth;
 
-import android.support.annotation.Nullable;
-
 /**
  * @author Michael Vescovo
  */
@@ -31,6 +29,6 @@ public interface AuthContract {
 
         void handleGoogleSignInResult(boolean signedIn);
 
-        void handleFirebaseSignInResult(boolean signedIn, @Nullable String userId);
+        void handleFirebaseSignInResult(boolean signedIn);
     }
 }

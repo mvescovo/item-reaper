@@ -1,6 +1,5 @@
 package com.michaelvescovo.android.itemreaper.item_details;
 
-import com.michaelvescovo.android.itemreaper.ApplicationComponent;
 import com.michaelvescovo.android.itemreaper.data.RepositoryComponent;
 import com.michaelvescovo.android.itemreaper.util.FragmentScoped;
 
@@ -11,8 +10,7 @@ import dagger.Component;
  */
 
 @FragmentScoped
-@Component(modules = ItemDetailsModule.class, dependencies = {RepositoryComponent.class,
-        ApplicationComponent.class})
+@Component(modules = ItemDetailsModule.class, dependencies = {RepositoryComponent.class})
 public interface ItemDetailsComponent {
 
     ItemDetailsPresenter getItemDetailsPresenter();

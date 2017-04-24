@@ -852,7 +852,9 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         switch (item.getItemId()) {
             case R.id.action_take_photo:
                 mPresenter.takePicture(getContext());
-                Analytics.logEventTakeItemPhoto(getContext(), mItem);
+                if (mItem != null) {
+                    Analytics.logEventTakeItemPhoto(getContext(), mItem);
+                }
                 break;
             case R.id.action_select_image:
                 mPresenter.selectImage();

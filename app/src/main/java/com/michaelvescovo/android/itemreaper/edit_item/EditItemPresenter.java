@@ -5,7 +5,8 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.michaelvescovo.android.itemreaper.SharedPreferencesHelper;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.michaelvescovo.android.itemreaper.data.DataSource;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.data.Repository;
@@ -31,17 +32,16 @@ class EditItemPresenter implements EditItemContract.Presenter {
     private final static String EDIT_ITEM_CALLER = "edit_item";
     private EditItemContract.View mView;
     private Repository mRepository;
-    private SharedPreferencesHelper mSharedPreferencesHelper;
+    private FirebaseUser mFirebaseUser;
     private ImageFile mImageFile;
     private boolean itemLoaded;
 
     @Inject
     EditItemPresenter(@NonNull EditItemContract.View view, @NonNull Repository repository,
-                      @NonNull SharedPreferencesHelper sharedPreferencesHelper,
                       @NonNull ImageFile imageFile) {
         mView = view;
         mRepository = repository;
-        mSharedPreferencesHelper = sharedPreferencesHelper;
+        mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         mImageFile = imageFile;
     }
 
@@ -61,7 +61,7 @@ class EditItemPresenter implements EditItemContract.Presenter {
 
     private void createNewItem() {
         EspressoIdlingResource.increment();
-        mRepository.getNewItemId(mSharedPreferencesHelper.getUserId(), new DataSource.GetNewItemIdCallback() {
+        mRepository.getNewItemId(mFirebaseUser.getUid(), new DataSource.GetNewItemIdCallback() {
             @Override
             public void onNewItemIdLoaded(@Nullable String newItemId) {
                 EspressoIdlingResource.decrement();
@@ -76,29 +76,29 @@ class EditItemPresenter implements EditItemContract.Presenter {
     private void loadExistingItem(String itemId) {
         itemLoaded = false;
         EspressoIdlingResource.increment();
-        mRepository.getItem(itemId, mSharedPreferencesHelper.getUserId(), EDIT_ITEM_CALLER,
+        mRepository.getItem(itemId, mFirebaseUser.getUid(), EDIT_ITEM_CALLER,
                 new DataSource.GetItemCallback() {
-            @Override
-            public void onItemLoaded(@Nullable Item item) {
-                if (!itemLoaded) {
-                    itemLoaded = true;
-                    EspressoIdlingResource.decrement();
-                }
-                if (item != null) {
-                    mView.showExistingItem(item);
-                }
-            }
-        });
+                    @Override
+                    public void onItemLoaded(@Nullable Item item) {
+                        if (!itemLoaded) {
+                            itemLoaded = true;
+                            EspressoIdlingResource.decrement();
+                        }
+                        if (item != null) {
+                            mView.showExistingItem(item);
+                        }
+                    }
+                });
     }
 
     @Override
     public void saveItem(@NonNull Item item) {
-        mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
+        mRepository.saveItem(mFirebaseUser.getUid(), item);
     }
 
     @Override
     public void deleteItem(@NonNull Item item) {
-        mRepository.deleteItem(mSharedPreferencesHelper.getUserId(), item);
+        mRepository.deleteItem(mFirebaseUser.getUid(), item);
         mView.passDeletedItemToItemsUi();
         mView.showItemsUi();
     }

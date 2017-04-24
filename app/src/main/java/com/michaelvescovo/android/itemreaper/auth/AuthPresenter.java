@@ -1,9 +1,5 @@
 package com.michaelvescovo.android.itemreaper.auth;
 
-import android.support.annotation.Nullable;
-
-import com.michaelvescovo.android.itemreaper.SharedPreferencesHelper;
-
 import javax.inject.Inject;
 
 /**
@@ -13,12 +9,10 @@ import javax.inject.Inject;
 class AuthPresenter implements AuthContract.Presenter {
 
     private AuthContract.View mView;
-    private SharedPreferencesHelper mSharedPreferencesHelper;
 
     @Inject
-    AuthPresenter(AuthContract.View view, SharedPreferencesHelper sharedPreferencesHelper) {
+    AuthPresenter(AuthContract.View view) {
         mView = view;
-        mSharedPreferencesHelper = sharedPreferencesHelper;
     }
 
     @Inject
@@ -45,10 +39,7 @@ class AuthPresenter implements AuthContract.Presenter {
     }
 
     @Override
-    public void handleFirebaseSignInResult(boolean signedIn, @Nullable String userId) {
-        if (userId != null) {
-            mSharedPreferencesHelper.saveUserId(userId);
-        }
+    public void handleFirebaseSignInResult(boolean signedIn) {
         mView.setProgressIndicator(false);
         if (signedIn) {
             mView.showItemsUi();

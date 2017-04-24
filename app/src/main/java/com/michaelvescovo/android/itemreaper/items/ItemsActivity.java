@@ -133,8 +133,6 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
         // Sets itemsPresenter as the presenter for itemsFragment.
         DaggerItemsComponent.builder()
                 .itemsModule(new ItemsModule(itemsFragment))
-                .applicationComponent(((ItemReaperApplication) getApplication())
-                        .getApplicationComponent())
                 .repositoryComponent(((ItemReaperApplication) getApplication())
                         .getRepositoryComponent())
                 .build()
@@ -310,8 +308,6 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
             // from this Activity.
             EditItemComponent editItemComponent = DaggerEditItemComponent.builder()
                     .editItemModule(new EditItemModule(editItemFragment))
-                    .applicationComponent(((ItemReaperApplication) getApplication())
-                            .getApplicationComponent())
                     .repositoryComponent(((ItemReaperApplication) getApplication())
                             .getRepositoryComponent())
                     .build();
@@ -338,8 +334,6 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
             // from this Activity.
             ItemDetailsComponent itemDetailsComponent = DaggerItemDetailsComponent.builder()
                     .itemDetailsModule(new ItemDetailsModule(mItemDetailsFragment))
-                    .applicationComponent(((ItemReaperApplication) getApplication())
-                            .getApplicationComponent())
                     .repositoryComponent(((ItemReaperApplication) getApplication())
                             .getRepositoryComponent())
                     .build();

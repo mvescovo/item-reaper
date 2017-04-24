@@ -294,7 +294,9 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
                             public void onResourceReady(GlideDrawable resource,
                                                         GlideAnimation<? super GlideDrawable> animation) {
                                 super.onResourceReady(resource, animation);
-                                EspressoIdlingResource.decrement();
+                                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                                    EspressoIdlingResource.decrement();
+                                }
                             }
                         });
             } else {

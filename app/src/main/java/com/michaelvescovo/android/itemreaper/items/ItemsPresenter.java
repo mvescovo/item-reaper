@@ -6,8 +6,8 @@ import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.Snackbar;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.michaelvescovo.android.itemreaper.R;
-import com.michaelvescovo.android.itemreaper.SharedPreferencesHelper;
 import com.michaelvescovo.android.itemreaper.data.DataSource;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.data.Repository;
@@ -34,16 +34,15 @@ public class ItemsPresenter implements ItemsContract.Presenter {
     public final static String ITEMS_CALLER = "items";
     private ItemsContract.View mView;
     private Repository mRepository;
-    private SharedPreferencesHelper mSharedPreferencesHelper;
     private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
 
     @Inject
-    ItemsPresenter(ItemsContract.View view, Repository repository,
-                   SharedPreferencesHelper sharedPreferencesHelper, FirebaseAuth firebaseAuth) {
+    ItemsPresenter(ItemsContract.View view, Repository repository, FirebaseAuth firebaseAuth) {
         mView = view;
         mRepository = repository;
-        mSharedPreferencesHelper = sharedPreferencesHelper;
         mFirebaseAuth = firebaseAuth;
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
     }
 
     @Inject
@@ -54,7 +53,7 @@ public class ItemsPresenter implements ItemsContract.Presenter {
     @Override
     public void getItems(int sortBy) {
         mView.setProgressBar(true);
-        String userId = mSharedPreferencesHelper.getUserId();
+        String userId = mFirebaseUser.getUid();
         String sortString;
         if (sortBy == SORT_BY_PURCHASE_DATE) {
             sortString = SORT_BY_PURCHASE_DATE_STRING;
@@ -109,20 +108,20 @@ public class ItemsPresenter implements ItemsContract.Presenter {
 
     @Override
     public void restoreItem(@NonNull Item item) {
-        mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
+        mRepository.saveItem(mFirebaseUser.getUid(), item);
     }
 
     @Override
     public void expireItem(@NonNull Item item) {
         item.setDeceased(true);
-        mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
+        mRepository.saveItem(mFirebaseUser.getUid(), item);
         mView.showItemExpiredMessage(R.string.item_expired, Snackbar.LENGTH_LONG, item);
     }
 
     @Override
     public void unexpireItem(@NonNull Item item) {
         item.setDeceased(false);
-        mRepository.saveItem(mSharedPreferencesHelper.getUserId(), item);
+        mRepository.saveItem(mFirebaseUser.getUid(), item);
         mView.showItemExpiredMessage(R.string.item_unexpired, Snackbar.LENGTH_LONG, null);
     }
 

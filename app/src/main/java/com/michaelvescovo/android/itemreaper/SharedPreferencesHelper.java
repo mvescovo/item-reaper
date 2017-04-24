@@ -22,22 +22,11 @@ import android.content.SharedPreferences;
 
 public class SharedPreferencesHelper {
 
-    static final String KEY_USER_ID = "user_id";
     private static final String KEY_IMAGE_UPLOADING = "image_uploading_";
     private final SharedPreferences mSharedPreferences;
 
     SharedPreferencesHelper(SharedPreferences sharedPreferences) {
         mSharedPreferences = sharedPreferences;
-    }
-
-    public boolean saveUserId(String userId){
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putString(KEY_USER_ID, userId);
-        return editor.commit();
-    }
-
-    public String getUserId() {
-        return mSharedPreferences.getString(KEY_USER_ID, "unknown_user");
     }
 
     public boolean imageUploading(String itemId) {

@@ -83,7 +83,7 @@ public class AuthFragment extends Fragment implements AuthContract.View,
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null) {
-                    mPresenter.handleFirebaseSignInResult(true, user.getUid());
+                    mPresenter.handleFirebaseSignInResult(true);
                 }
             }
         };
