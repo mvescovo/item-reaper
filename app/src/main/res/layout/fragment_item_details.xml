@@ -31,10 +31,17 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <FrameLayout
+        android:id="@+id/ad_view_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/item_detail_ad_height"
+        android:layout_marginTop="@dimen/item_detail_ad_height"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <ScrollView
@@ -464,11 +471,5 @@
             android:visibility="gone" />
 
     </RelativeLayout>
-
-    <FrameLayout
-        android:id="@+id/ad_view_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal" />
 
 </android.support.design.widget.CoordinatorLayout>
