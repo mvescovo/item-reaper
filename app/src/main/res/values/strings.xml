@@ -3,7 +3,6 @@
     <!--Application-->
     <string name="menu_about">About</string>
     <string name="menu_sign_out">Sign Out</string>
-    <string name="dialog_ok">OK</string>
 
     <!--Auth-->
     <string name="auth_failed">Sign in failed.</string>

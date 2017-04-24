@@ -39,14 +39,9 @@ public class SortItemsDialogFragment extends AppCompatDialogFragment {
                                         mListener.onSortByPurchaseDateSelected();
                                         break;
                                 }
+                                dismiss();
                             }
-                        })
-                .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                        });
         return builder.create();
     }
 
