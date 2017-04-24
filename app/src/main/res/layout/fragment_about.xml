@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -25,7 +24,7 @@
                 style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title_activity_about"/>
+                android:text="@string/title_activity_about" />
 
         </android.support.v7.widget.Toolbar>
 
@@ -50,34 +49,47 @@
                 style="@style/content_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title_privacy_policy"/>
+                android:text="@string/title_item_reaper" />
+
+            <TextView
+                android:id="@+id/version"
+                style="@style/content_text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/version" />
+
+            <TextView
+                style="@style/content_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_privacy_policy" />
 
             <TextView
                 android:id="@+id/privacy_policy"
                 style="@style/content_text1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/privacy_policy"/>
+                android:text="@string/privacy_policy" />
 
             <TextView
                 style="@style/content_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title_attributions"/>
+                android:text="@string/title_attributions" />
 
             <TextView
                 android:id="@+id/reaper_icon_attribution"
                 style="@style/content_text1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/reaper_icon_attribution"/>
+                android:text="@string/reaper_icon_attribution" />
 
             <TextView
                 android:id="@+id/decapitation_sound_attribution"
                 style="@style/content_text1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/decapitation_sound_attribution"/>
+                android:text="@string/decapitation_sound_attribution" />
 
 
         </LinearLayout>
