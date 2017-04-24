@@ -114,12 +114,14 @@ public class FakeDataSource implements DataSource {
     }
 
     @Override
-    public void getItemsList(@NonNull String userId, @NonNull GetItemsListCallback callback) {
+    public void getItemsList(@NonNull String userId, @NonNull String sortString,
+                             @NonNull GetItemsListCallback callback) {
         callback.onItemsLoaded(ITEMS);
     }
 
     @Override
-    public void getItems(@NonNull String userId, @NonNull String caller, @NonNull GetItemsCallback callback) {
+    public void getItems(@NonNull String userId, @NonNull String sortString, @NonNull String caller,
+                         @NonNull GetItemsCallback callback) {
         for (Item item : ITEMS) {
             callback.onItemLoaded(item, ITEM_ADDED);
         }
