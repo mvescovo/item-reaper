@@ -4,13 +4,13 @@
 
     <item
         android:id="@+id/action_take_photo"
-        android:icon="@drawable/ic_add_a_photo_white_24dp"
+        android:icon="@drawable/ic_add_a_photo"
         android:title="@string/menu_take_photo"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/action_select_image"
-        android:icon="@drawable/ic_image_white_24dp"
+        android:icon="@drawable/ic_image"
         android:title="@string/menu_select_image"
         app:showAsAction="ifRoom"/>
 

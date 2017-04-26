@@ -180,7 +180,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         View root = inflater.inflate(R.layout.fragment_edit_item, container, false);
         ButterKnife.bind(this, root);
         mCallback.configureSupportActionBar(mToolbar, ContextCompat.getDrawable(getContext(),
-                R.drawable.ic_done_white_24dp));
+                R.drawable.ic_done));
         mAppbarTitle.setTypeface(mAppbarTypeface);
 
         mIsLargeScreen = getResources().getBoolean(R.bool.large_layout);

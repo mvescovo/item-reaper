@@ -131,7 +131,7 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
         View root = inflater.inflate(R.layout.fragment_item_details, container, false);
         ButterKnife.bind(this, root);
         mCallback.configureSupportActionBar(mToolbar, ContextCompat.getDrawable(getContext(),
-                R.drawable.ic_close_white_24dp));
+                R.drawable.ic_close));
         mAppbarTitle.setTypeface(mAppbarTypeface);
 
         mLargeScreen = getResources().getBoolean(R.bool.large_layout);
