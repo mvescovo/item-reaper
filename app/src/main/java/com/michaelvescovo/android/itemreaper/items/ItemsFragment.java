@@ -91,6 +91,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
     private boolean mItemMoved;
     private int mCurrentSort;
     private SharedPreferences mSharedPreferences;
+    private SearchForItemTask mSearchForItemTask;
 
     public ItemsFragment() {
     }
@@ -266,8 +267,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
         mSearching = true;
         mItemsAdapter.clearItems();
         mPresenter.getItems(mCurrentSort);
-        if (isResumed()) {
-        }
         if (mQuery != null) {
             mItemsAdapter.searchItem();
         } else {
@@ -631,7 +630,11 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
 
         private void searchItem() {
             setProgressBar(true);
-            new SearchForItemTask().execute();
+            if (mSearchForItemTask != null) {
+                mSearchForItemTask.cancel(true);
+            }
+            mSearchForItemTask = new SearchForItemTask();
+            mSearchForItemTask.execute();
         }
 
         private void searchComplete(List<Item> matchedItems) {
@@ -697,134 +700,138 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
             if (!mQuery.equals("")) {
                 List<Item> items = ImmutableList.copyOf(mItemsAdapter.mItems);
                 for (Item item : items) {
-                    String format = getString(R.string.date_format);
-                    if (item.getPurchaseDate() != -1) {
-                        String purchaseDate = getDateFormat(format).format(item.getPurchaseDate())
-                                .toLowerCase();
-                        if (purchaseDate.contains(mQuery.toLowerCase())) {
-                            matchedItems.add(item);
-                            continue;
+                    if (isCancelled()) {
+                        break;
+                    } else {
+                        String format = getString(R.string.date_format);
+                        if (item.getPurchaseDate() != -1) {
+                            String purchaseDate = getDateFormat(format).format(item.getPurchaseDate())
+                                    .toLowerCase();
+                            if (purchaseDate.contains(mQuery.toLowerCase())) {
+                                matchedItems.add(item);
+                                continue;
+                            }
                         }
-                    }
-                    if (item.getShop() != null) {
-                        String shop = item.getShop().toLowerCase();
-                        if (shop.contains(mQuery.toLowerCase())) {
-                            matchedItems.add(item);
-                            continue;
+                        if (item.getShop() != null) {
+                            String shop = item.getShop().toLowerCase();
+                            if (shop.contains(mQuery.toLowerCase())) {
+                                matchedItems.add(item);
+                                continue;
+                            }
                         }
-                    }
-                    if (item.getPricePaid() != -1) {
-                        String pricePaid = "$" + getPriceFromTotalCents(item.getPricePaid())
-                                .toLowerCase();
-                        if (pricePaid.contains(mQuery.toLowerCase())) {
-                            matchedItems.add(item);
-                            continue;
+                        if (item.getPricePaid() != -1) {
+                            String pricePaid = "$" + getPriceFromTotalCents(item.getPricePaid())
+                                    .toLowerCase();
+                            if (pricePaid.contains(mQuery.toLowerCase())) {
+                                matchedItems.add(item);
+                                continue;
+                            }
                         }
-                    }
-                    if (item.getDiscount() != -1) {
-                        String discount = "$" + getPriceFromTotalCents(item.getDiscount())
-                                .toLowerCase();
-                        if (discount.contains(mQuery.toLowerCase())) {
-                            matchedItems.add(item);
-                            continue;
+                        if (item.getDiscount() != -1) {
+                            String discount = "$" + getPriceFromTotalCents(item.getDiscount())
+                                    .toLowerCase();
+                            if (discount.contains(mQuery.toLowerCase())) {
+                                matchedItems.add(item);
+                                continue;
+                            }
                         }
-                    }
-                    if (item.getExpiry() != -1) {
-                        String expiry = getDateFormat(format).format(item.getExpiry())
-                                .toLowerCase();
-                        if (expiry.contains(mQuery.toLowerCase())) {
-                            matchedItems.add(item);
-                            continue;
+                        if (item.getExpiry() != -1) {
+                            String expiry = getDateFormat(format).format(item.getExpiry())
+                                    .toLowerCase();
+                            if (expiry.contains(mQuery.toLowerCase())) {
+                                matchedItems.add(item);
+                                continue;
+                            }
                         }
-                    }
-                    if (item.getCategory() != null) {
-                        String category = item.getCategory().toLowerCase();
-                        if (category.contains(mQuery.toLowerCase())) {
-                            matchedItems.add(item);
-                            continue;
+                        if (item.getCategory() != null) {
+                            String category = item.getCategory().toLowerCase();
+                            if (category.contains(mQuery.toLowerCase())) {
+                                matchedItems.add(item);
+                                continue;
+                            }
                         }
-                    }
-                    if (item.getSubCategory() != null) {
-                        String subCategory = item.getSubCategory().toLowerCase();
-                        if (subCategory.contains(mQuery.toLowerCase())) {
-                            matchedItems.add(item);
-                            continue;
+                        if (item.getSubCategory() != null) {
+                            String subCategory = item.getSubCategory().toLowerCase();
+                            if (subCategory.contains(mQuery.toLowerCase())) {
+                                matchedItems.add(item);
+                                continue;
+                            }
                         }
-                    }
-                    if (item.getType() != null) {
-                        String type = item.getType().toLowerCase();
-                        if (type.contains(mQuery.toLowerCase())) {
-                            matchedItems.add(item);
-                            continue;
+                        if (item.getType() != null) {
+                            String type = item.getType().toLowerCase();
+                            if (type.contains(mQuery.toLowerCase())) {
+                                matchedItems.add(item);
+                                continue;
+                            }
                         }
-                    }
-                    if (item.getSubType() != null) {
-                        String subType = item.getSubType().toLowerCase();
-                        if (subType.contains(mQuery.toLowerCase())) {
-                            matchedItems.add(item);
-                            continue;
+                        if (item.getSubType() != null) {
+                            String subType = item.getSubType().toLowerCase();
+                            if (subType.contains(mQuery.toLowerCase())) {
+                                matchedItems.add(item);
+                                continue;
+                            }
                         }
-                    }
-                    if (item.getSubType2() != null) {
-                        String subType2 = item.getSubType2().toLowerCase();
-                        if (subType2.contains(mQuery.toLowerCase())) {
-                            matchedItems.add(item);
-                            continue;
+                        if (item.getSubType2() != null) {
+                            String subType2 = item.getSubType2().toLowerCase();
+                            if (subType2.contains(mQuery.toLowerCase())) {
+                                matchedItems.add(item);
+                                continue;
+                            }
                         }
-                    }
-                    if (item.getSubType3() != null) {
-                        String subType3 = item.getSubType3().toLowerCase();
-                        if (subType3.contains(mQuery.toLowerCase())) {
-                            matchedItems.add(item);
-                            continue;
+                        if (item.getSubType3() != null) {
+                            String subType3 = item.getSubType3().toLowerCase();
+                            if (subType3.contains(mQuery.toLowerCase())) {
+                                matchedItems.add(item);
+                                continue;
+                            }
                         }
-                    }
-                    if (item.getMainColour() != null) {
-                        String mainColour = item.getMainColour().toLowerCase();
-                        if (mainColour.contains(mQuery.toLowerCase())) {
-                            matchedItems.add(item);
-                            continue;
+                        if (item.getMainColour() != null) {
+                            String mainColour = item.getMainColour().toLowerCase();
+                            if (mainColour.contains(mQuery.toLowerCase())) {
+                                matchedItems.add(item);
+                                continue;
+                            }
                         }
-                    }
-                    if (item.getMainColourShade() != null) {
-                        String mainColourShade = item.getMainColourShade().toLowerCase();
-                        if (mainColourShade.contains(mQuery.toLowerCase())) {
-                            matchedItems.add(item);
-                            continue;
+                        if (item.getMainColourShade() != null) {
+                            String mainColourShade = item.getMainColourShade().toLowerCase();
+                            if (mainColourShade.contains(mQuery.toLowerCase())) {
+                                matchedItems.add(item);
+                                continue;
+                            }
                         }
-                    }
-                    if (item.getAccentColour() != null) {
-                        String accentColour = item.getAccentColour().toLowerCase();
-                        if (accentColour.contains(mQuery.toLowerCase())) {
-                            matchedItems.add(item);
-                            continue;
+                        if (item.getAccentColour() != null) {
+                            String accentColour = item.getAccentColour().toLowerCase();
+                            if (accentColour.contains(mQuery.toLowerCase())) {
+                                matchedItems.add(item);
+                                continue;
+                            }
                         }
-                    }
-                    if (item.getSize() != null) {
-                        String size = item.getSize().toLowerCase();
-                        if (size.contains(mQuery.toLowerCase())) {
-                            matchedItems.add(item);
-                            continue;
+                        if (item.getSize() != null) {
+                            String size = item.getSize().toLowerCase();
+                            if (size.contains(mQuery.toLowerCase())) {
+                                matchedItems.add(item);
+                                continue;
+                            }
                         }
-                    }
-                    if (item.getBrand() != null) {
-                        String brand = item.getBrand().toLowerCase();
-                        if (brand.contains(mQuery.toLowerCase())) {
-                            matchedItems.add(item);
-                            continue;
+                        if (item.getBrand() != null) {
+                            String brand = item.getBrand().toLowerCase();
+                            if (brand.contains(mQuery.toLowerCase())) {
+                                matchedItems.add(item);
+                                continue;
+                            }
                         }
-                    }
-                    if (item.getDescription() != null) {
-                        String description = item.getDescription().toLowerCase();
-                        if (description.contains(mQuery.toLowerCase())) {
-                            matchedItems.add(item);
-                            continue;
+                        if (item.getDescription() != null) {
+                            String description = item.getDescription().toLowerCase();
+                            if (description.contains(mQuery.toLowerCase())) {
+                                matchedItems.add(item);
+                                continue;
+                            }
                         }
-                    }
-                    if (item.getNote() != null) {
-                        String note = item.getNote().toLowerCase();
-                        if (note.contains(mQuery.toLowerCase())) {
-                            matchedItems.add(item);
+                        if (item.getNote() != null) {
+                            String note = item.getNote().toLowerCase();
+                            if (note.contains(mQuery.toLowerCase())) {
+                                matchedItems.add(item);
+                            }
                         }
                     }
                 }
