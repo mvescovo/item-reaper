@@ -30,6 +30,7 @@ import com.michaelvescovo.android.itemreaper.BuildConfig;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.items.ItemsActivity;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
+import com.michaelvescovo.android.itemreaper.widget.ItemWidgetProvider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -193,6 +194,13 @@ public class AuthFragment extends Fragment implements AuthContract.View,
         Intent intent = new Intent(getContext(), ItemsActivity.class);
         startActivity(intent);
         getActivity().finish();
+    }
+
+    @Override
+    public void updateWidget() {
+        Intent updateWidgetIntent = new Intent(getContext(), ItemWidgetProvider.class);
+        updateWidgetIntent.setAction(ItemWidgetProvider.ACTION_DATA_UPDATED);
+        getContext().sendBroadcast(updateWidgetIntent);
     }
 
     @Override

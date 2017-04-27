@@ -43,6 +43,7 @@ class AuthPresenter implements AuthContract.Presenter {
         mView.setProgressIndicator(false);
         if (signedIn) {
             mView.showItemsUi();
+            mView.updateWidget();
         } else {
             mView.showSignInButton(true);
             mView.showFailMessage();

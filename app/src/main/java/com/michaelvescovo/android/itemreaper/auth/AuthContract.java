@@ -21,6 +21,8 @@ public interface AuthContract {
         void showFireBaseAuthUi();
 
         void showItemsUi();
+
+        void updateWidget();
     }
 
     interface Presenter {
