@@ -36,6 +36,8 @@ interface ItemsContract {
         void showNoItemsText(boolean active);
 
         void showItemExpiredMessage(int resourceId, int duration, @Nullable Item item);
+
+        void showSignIn();
     }
 
     interface Presenter {

@@ -38,6 +38,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.michaelvescovo.android.itemreaper.R;
+import com.michaelvescovo.android.itemreaper.auth.AuthActivity;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.util.Analytics;
 import com.michaelvescovo.android.itemreaper.widget.ItemWidgetProvider;
@@ -389,6 +390,13 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
             });
         }
         snackbar.show();
+    }
+
+    @Override
+    public void showSignIn() {
+        Intent intent = new Intent(getContext(), AuthActivity.class);
+        startActivity(intent);
+        getActivity().finish();
     }
 
     private void playExpireItemSoundEffect() {
