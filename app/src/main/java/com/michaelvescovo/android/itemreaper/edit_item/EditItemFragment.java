@@ -606,9 +606,12 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
         if (getActivity() != null) {
             disableListeners();
             showPurchaseDate(item);
-            if (item.getShop() != null
-                    && !item.getShop().equals(mShop.getText().toString())) {
-                mShop.setText(item.getShop());
+            if (item.getShop() != null) {
+                if (!item.getShop().equals(mShop.getText().toString())) {
+                    mShop.setText(item.getShop());
+                }
+            } else {
+                mShop.setText(null);
             }
             if (item.getPricePaid() != -1) {
                 int totalCentsInView = -1;
@@ -620,6 +623,8 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                     String priceString = getPriceFromTotalCents(item.getPricePaid());
                     mPricePaid.setText(priceString);
                 }
+            } else {
+                mPricePaid.setText("");
             }
             if (item.getDiscount() != -1) {
                 int totalCentsInView = -1;
@@ -631,60 +636,100 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                     String discountString = getPriceFromTotalCents(item.getDiscount());
                     mDiscount.setText(discountString);
                 }
+            } else {
+                mDiscount.setText("");
             }
             showExpiryDate(item);
-            if (item.getCategory() != null
-                    && !item.getCategory().equals(mCategory.getText().toString())) {
-                mCategory.setText(item.getCategory());
+            if (item.getCategory() != null) {
+                if (!item.getCategory().equals(mCategory.getText().toString())) {
+                    mCategory.setText(item.getCategory());
+                }
+            } else {
+                mCategory.setText(null);
             }
-            if (item.getSubCategory() != null
-                    && !item.getSubCategory().equals(mSubCategory.getText().toString())) {
-                mSubCategory.setText(item.getSubCategory());
+            if (item.getSubCategory() != null) {
+                if (!item.getSubCategory().equals(mSubCategory.getText().toString())) {
+                    mSubCategory.setText(item.getSubCategory());
+                }
+            } else {
+                mSubCategory.setText(null);
             }
-            if (item.getType() != null
-                    && !item.getType().equals(mType.getText().toString())) {
-                mType.setText(item.getType());
+            if (item.getType() != null) {
+                if (!item.getType().equals(mType.getText().toString())) {
+                    mType.setText(item.getType());
+                }
+            } else {
+                mType.setText(null);
             }
-            if (item.getSubType() != null
-                    && !item.getSubType().equals(mSubType.getText().toString())) {
-                mSubType.setText(item.getSubType());
+            if (item.getSubType() != null) {
+                if (!item.getSubType().equals(mSubType.getText().toString())) {
+                    mSubType.setText(item.getSubType());
+                }
+            } else {
+                mSubType.setText(null);
             }
-            if (item.getSubType2() != null
-                    && !item.getSubType2().equals(mSubType2.getText().toString())) {
-                mSubType2.setText(item.getSubType2());
+            if (item.getSubType2() != null) {
+                if (!item.getSubType2().equals(mSubType2.getText().toString())) {
+                    mSubType2.setText(item.getSubType2());
+                }
+            } else {
+                mSubType2.setText(null);
             }
-            if (item.getSubType3() != null
-                    && !item.getSubType3().equals(mSubType3.getText().toString())) {
-                mSubType3.setText(item.getSubType3());
+            if (item.getSubType3() != null) {
+                if (!item.getSubType3().equals(mSubType3.getText().toString())) {
+                    mSubType3.setText(item.getSubType3());
+                }
+            } else {
+                mSubType3.setText(null);
             }
-            if (item.getMainColour() != null
-                    && !item.getMainColour().equals(mMainColour.getText().toString())) {
-                mMainColour.setText(item.getMainColour());
+            if (item.getMainColour() != null) {
+                if (!item.getMainColour().equals(mMainColour.getText().toString())) {
+                    mMainColour.setText(item.getMainColour());
+                }
+            } else {
+                mMainColour.setText(null);
             }
-            if (item.getMainColourShade() != null
-                    && !item.getMainColourShade().equals(mMainColourShade.getText().toString())) {
-                mMainColourShade.setText(item.getMainColourShade());
+            if (item.getMainColourShade() != null) {
+                if (!item.getMainColourShade().equals(mMainColourShade.getText().toString())) {
+                    mMainColourShade.setText(item.getMainColourShade());
+                }
+            } else {
+                mMainColourShade.setText(null);
             }
-            if (item.getAccentColour() != null
-                    && !item.getAccentColour().equals(mAccentColour.getText().toString())) {
-                mAccentColour.setText(item.getAccentColour());
+            if (item.getAccentColour() != null) {
+                if (!item.getAccentColour().equals(mAccentColour.getText().toString())) {
+                    mAccentColour.setText(item.getAccentColour());
+                }
+            } else {
+                mAccentColour.setText(null);
             }
-            if (item.getSize() != null
-                    && !item.getSize().equals(mSize.getText().toString())) {
-                mSize.setText(item.getSize());
+            if (item.getSize() != null) {
+                if (!item.getSize().equals(mSize.getText().toString())) {
+                    mSize.setText(item.getSize());
+                }
+            } else {
+                mSize.setText(null);
             }
-            if (item.getBrand() != null
-                    && !item.getBrand().equals(mBrand.getText().toString())) {
-                mBrand.setText(item.getBrand());
+            if (item.getBrand() != null) {
+                if (!item.getBrand().equals(mBrand.getText().toString())) {
+                    mBrand.setText(item.getBrand());
+                }
+            } else {
+                mBrand.setText(null);
             }
-
-            if (item.getDescription() != null
-                    && !item.getDescription().equals(mDescription.getText().toString())) {
-                mDescription.setText(item.getDescription());
+            if (item.getDescription() != null) {
+                if (!item.getDescription().equals(mDescription.getText().toString())) {
+                    mDescription.setText(item.getDescription());
+                }
+            } else {
+                mDescription.setText(null);
             }
-            if (item.getNote() != null
-                    && !item.getNote().equals(mNote.getText().toString())) {
-                mNote.setText(item.getNote());
+            if (item.getNote() != null) {
+                if (!item.getNote().equals(mNote.getText().toString())) {
+                    mNote.setText(item.getNote());
+                }
+            } else {
+                mNote.setText(null);
             }
             if (item.getImageUrl() != null) {
                 if (!item.getImageUrl().equals(mImageUrl) || mItemImage.getVisibility() == View.GONE) {
