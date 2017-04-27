@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
 import com.michaelvescovo.android.itemreaper.R;
+import com.michaelvescovo.android.itemreaper.auth.AuthActivity;
 import com.michaelvescovo.android.itemreaper.data.DataSource;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.data.Repository;
@@ -125,6 +126,8 @@ public class WidgetListService extends RemoteViewsService {
                         });
             } else {
                 mCountDownLatch.countDown();
+                Intent intent = new Intent(mContext, AuthActivity.class);
+                mContext.startActivity(intent);
             }
         }
 
