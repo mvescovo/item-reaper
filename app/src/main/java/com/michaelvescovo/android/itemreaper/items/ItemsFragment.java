@@ -520,6 +520,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
             }
             long expiry = mItems.get(position).getExpiry();
             if (expiry == -1) {
+                setTextColourPrimary(holder);
                 holder.mExpiry.setText(getString(R.string.edit_expiry_date_empty));
             } else {
                 Calendar calendar = Calendar.getInstance();
@@ -533,13 +534,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
                 if (calendar.compareTo(almostExpiredDate) < 1) {
                     holder.mExpiry.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
                 } else {
-                    TypedValue typedValue = new TypedValue();
-                    TypedArray typedArray = getContext().obtainStyledAttributes(
-                            typedValue.data, new int[]{android.R.attr.textColorPrimary}
-                    );
-                    int textColourPrimary = typedArray.getColor(0, 0);
-                    typedArray.recycle();
-                    holder.mExpiry.setTextColor(textColourPrimary);
+                    setTextColourPrimary(holder);
                 }
             }
             int price = mItems.get(position).getPricePaid();
@@ -551,6 +546,16 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
                         + getPriceFromTotalCents(price);
             }
             holder.mPaid.setText(priceString);
+        }
+
+        private void setTextColourPrimary(ViewHolder holder) {
+            TypedValue typedValue = new TypedValue();
+            TypedArray typedArray = getContext().obtainStyledAttributes(
+                    typedValue.data, new int[]{android.R.attr.textColorPrimary}
+            );
+            int textColourPrimary = typedArray.getColor(0, 0);
+            typedArray.recycle();
+            holder.mExpiry.setTextColor(textColourPrimary);
         }
 
         @Override
