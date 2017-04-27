@@ -29,6 +29,27 @@ These are the types of questions Item Reaper intends to answer.
 - Displays Admob ad in detail view
 - Uses Firebase Analytics to try to understand user behavior within the app
 
+# Screenshots
+
+###### Phone:
+<img src="https://cloud.githubusercontent.com/assets/15829736/25464118/02028984-2b3e-11e7-93cd-4aee851f1117.png" height="500" width="281"> <img src="https://cloud.githubusercontent.com/assets/15829736/25464120/02160752-2b3e-11e7-8af3-646a09fed5df.png" height="500" width="281"> <img src="https://cloud.githubusercontent.com/assets/15829736/25464119/0204c49c-2b3e-11e7-9890-948f87f6c1b4.png" height="500" width="281">
+
+###### Tablet:
+
+<img src="https://cloud.githubusercontent.com/assets/15829736/25464136/16b29f9a-2b3e-11e7-9fec-6577cde9e994.png" height="500" width="667">
+<img src="https://cloud.githubusercontent.com/assets/15829736/25464137/16b7ed4c-2b3e-11e7-9002-728c9c9926ff.png" height="500" width="667">
+<img src="https://cloud.githubusercontent.com/assets/15829736/25464138/16b87abe-2b3e-11e7-9efe-ce11aa7bea10.png" height="500" width="667">
+
+###### 10" tablet:
+
+<img src="https://cloud.githubusercontent.com/assets/15829736/25464147/1fdbd6ae-2b3e-11e7-95cd-1636ef62d9c4.png" height="500" width="800">
+<img src="https://cloud.githubusercontent.com/assets/15829736/25464148/200b94ca-2b3e-11e7-938e-1be6f941dc0d.png" height="500" width="800">
+<img src="https://cloud.githubusercontent.com/assets/15829736/25464149/2046badc-2b3e-11e7-88c2-65db35a982ba.png" height="500" width="800">
+
+###### Widget:
+
+<img src="https://cloud.githubusercontent.com/assets/15829736/25464167/2a8a8dde-2b3e-11e7-80f2-2a9134ff80e4.png" height="200" width="300">
+
 # Install
 - Create a Firebase project with your debug key added to it
 - Download the "google-service.json" file and put it in the app directory
