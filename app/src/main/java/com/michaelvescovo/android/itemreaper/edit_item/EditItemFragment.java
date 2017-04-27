@@ -240,7 +240,7 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     }
 
     private InputFilter[] createCurrencyFilter() {
-        final Pattern pattern = Pattern.compile("(0|[1-9]+[0-9]*)?(\\.[0-9]{0,2})?");
+        final Pattern pattern = Pattern.compile("(0|[1-9][0-9]{0,8})?(\\.[0-9]{0,2})?");
         return new InputFilter[]{
                 new InputFilter() {
                     @Override
