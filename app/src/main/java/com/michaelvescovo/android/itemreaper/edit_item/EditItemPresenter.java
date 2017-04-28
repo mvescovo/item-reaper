@@ -34,7 +34,7 @@ class EditItemPresenter implements EditItemContract.Presenter {
     private Repository mRepository;
     private FirebaseUser mFirebaseUser;
     private ImageFile mImageFile;
-    private boolean itemLoaded;
+    private boolean mItemLoaded;
 
     @Inject
     EditItemPresenter(@NonNull EditItemContract.View view, @NonNull Repository repository,
@@ -74,18 +74,23 @@ class EditItemPresenter implements EditItemContract.Presenter {
     }
 
     private void loadExistingItem(String itemId) {
-        itemLoaded = false;
+        mItemLoaded = false;
         EspressoIdlingResource.increment();
         mRepository.getItem(itemId, mFirebaseUser.getUid(), EDIT_ITEM_CALLER,
                 new DataSource.GetItemCallback() {
                     @Override
                     public void onItemLoaded(@Nullable Item item) {
-                        if (!itemLoaded) {
-                            itemLoaded = true;
-                            EspressoIdlingResource.decrement();
+                        if (!mItemLoaded) {
+                            mItemLoaded = true;
+                            if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                                EspressoIdlingResource.decrement();
+                            }
                         }
                         if (item != null) {
                             mView.showExistingItem(item);
+                        } else {
+                            mView.passDeletedItemToItemsUi();
+                            mView.showItemsUi();
                         }
                     }
                 });
@@ -99,8 +104,10 @@ class EditItemPresenter implements EditItemContract.Presenter {
     @Override
     public void deleteItem(@NonNull Item item) {
         mRepository.deleteItem(mFirebaseUser.getUid(), item);
-        mView.passDeletedItemToItemsUi();
-        mView.showItemsUi();
+        if (!mItemLoaded) {
+            mView.passDeletedItemToItemsUi();
+            mView.showItemsUi();
+        }
     }
 
     @Override

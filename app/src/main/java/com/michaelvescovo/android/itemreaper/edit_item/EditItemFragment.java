@@ -885,10 +885,14 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     @Override
     public void showItemsUi() {
         if (mIsLargeScreen) {
-            mCallback.onDoneEditing();
-            dismiss();
+            if (mCallback != null) {
+                mCallback.onDoneEditing();
+                dismiss();
+            }
         } else {
-            getActivity().finish();
+            if (getActivity() != null) {
+                getActivity().finish();
+            }
         }
     }
 
@@ -1028,7 +1032,9 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
 
     @Override
     public void passDeletedItemToItemsUi() {
-        mCallback.onItemDeleted(createCurrentItem());
+        if (mCallback != null) {
+            mCallback.onItemDeleted(createCurrentItem());
+        }
     }
 
     @Override

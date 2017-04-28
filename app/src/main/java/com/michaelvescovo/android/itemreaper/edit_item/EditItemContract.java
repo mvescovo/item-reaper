@@ -44,7 +44,7 @@ public interface EditItemContract {
 
         void passDeletedItemToItemsUi();
 
-        void compressImage(@NonNull String imageUrl);
+        void compressImage( @NonNull String imageUrl);
     }
 
     interface Presenter {
