@@ -265,13 +265,11 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
 
     public void searchItem(@Nullable String query) {
         mQuery = query;
-        mSearching = true;
+        mSearching = mQuery != null;
         mItemsAdapter.clearItems();
         mPresenter.getItems(mCurrentSort);
         if (mQuery != null) {
             mItemsAdapter.searchItem();
-        } else {
-            mSearching = false;
         }
     }
 
