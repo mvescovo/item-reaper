@@ -192,6 +192,7 @@ public class AuthFragment extends Fragment implements AuthContract.View,
     @Override
     public void showItemsUi() {
         Intent intent = new Intent(getContext(), ItemsActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         getActivity().finish();
     }
