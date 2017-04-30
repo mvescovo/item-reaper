@@ -155,6 +155,7 @@ public class WidgetListService extends RemoteViewsService {
                 }
                 long expiry = mItems.get(position).getExpiry();
                 if (expiry == -1) {
+                    setTextColourPrimary(rv);
                     rv.setTextViewText(R.id.expiry, getString(R.string.edit_expiry_date_empty));
                 } else {
                     Calendar calendar = Calendar.getInstance();
@@ -169,13 +170,7 @@ public class WidgetListService extends RemoteViewsService {
                         rv.setInt(R.id.expiry, "setTextColor", ContextCompat.getColor(mContext,
                                 R.color.red));
                     } else {
-                        TypedValue typedValue = new TypedValue();
-                        TypedArray typedArray = mContext.obtainStyledAttributes(
-                                typedValue.data, new int[]{android.R.attr.textColorPrimary}
-                        );
-                        int textColourPrimary = typedArray.getColor(0, 0);
-                        typedArray.recycle();
-                        rv.setInt(R.id.expiry, "setTextColor", textColourPrimary);
+                        setTextColourPrimary(rv);
                     }
                 }
                 int price = mItems.get(position).getPricePaid();
@@ -194,6 +189,17 @@ public class WidgetListService extends RemoteViewsService {
             }
             return rv;
         }
+
+        private void setTextColourPrimary(RemoteViews rv) {
+            TypedValue typedValue = new TypedValue();
+            TypedArray typedArray = mContext.obtainStyledAttributes(
+                    typedValue.data, new int[]{android.R.attr.textColorPrimary}
+            );
+            int textColourPrimary = typedArray.getColor(0, 0);
+            typedArray.recycle();
+            rv.setInt(R.id.expiry, "setTextColor", textColourPrimary);
+        }
+
 
         @Override
         public RemoteViews getLoadingView() {
