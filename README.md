@@ -34,11 +34,11 @@ These are the types of questions Item Reaper intends to answer.
 ###### Phone:
 <img src="https://cloud.githubusercontent.com/assets/15829736/25562235/a3f27eca-2dc3-11e7-8eca-fc3f84e88597.png" height="500" width="281"> <img src="https://cloud.githubusercontent.com/assets/15829736/25464120/02160752-2b3e-11e7-8af3-646a09fed5df.png" height="500" width="281"> <img src="https://cloud.githubusercontent.com/assets/15829736/25464119/0204c49c-2b3e-11e7-9890-948f87f6c1b4.png" height="500" width="281">
 
-###### Tablet:
+###### 7" Tablet:
 
-<img src="https://cloud.githubusercontent.com/assets/15829736/25562245/dac3a4e2-2dc3-11e7-8789-e839d89be840.png" height="500" width="667">
-<img src="https://cloud.githubusercontent.com/assets/15829736/25562252/f74c5cda-2dc3-11e7-8c15-b28bdde5537b.png" height="500" width="667">
-<img src="https://cloud.githubusercontent.com/assets/15829736/25562253/07846ab6-2dc4-11e7-8f01-79620fd2aa90.png" height="500" width="667">
+<img src="https://cloud.githubusercontent.com/assets/15829736/25562245/dac3a4e2-2dc3-11e7-8789-e839d89be840.png" height="500" width="800">
+<img src="https://cloud.githubusercontent.com/assets/15829736/25562252/f74c5cda-2dc3-11e7-8c15-b28bdde5537b.png" height="500" width="800">
+<img src="https://cloud.githubusercontent.com/assets/15829736/25562253/07846ab6-2dc4-11e7-8f01-79620fd2aa90.png" height="500" width="800">
 
 ###### 10" tablet:
 
