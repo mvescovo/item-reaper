@@ -92,6 +92,11 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDetail
     }
 
     @Override
+    public void onDialogDismissed() {
+        // Nothing to do here.
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_ITEM_DELETED) {

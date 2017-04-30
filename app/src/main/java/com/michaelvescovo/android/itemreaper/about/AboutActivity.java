@@ -52,4 +52,9 @@ public class AboutActivity extends AppCompatActivity implements AboutFragment.Ca
     public void onDialogResumed() {
         // Nothing to do here.
     }
+
+    @Override
+    public void onDialogDismissed() {
+        // Nothing to do here.
+    }
 }

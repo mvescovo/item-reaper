@@ -1,6 +1,7 @@
 package com.michaelvescovo.android.itemreaper.item_details;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
@@ -123,6 +124,12 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        mCallback.onDialogDismissed();
+        super.onDismiss(dialog);
     }
 
     @Override
@@ -414,5 +421,7 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
         void configureSupportActionBar(Toolbar toolbar, Drawable icon);
 
         void onEditItemSelected(@Nullable String itemId);
+
+        void onDialogDismissed();
     }
 }

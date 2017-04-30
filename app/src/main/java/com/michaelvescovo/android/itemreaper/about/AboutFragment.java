@@ -1,6 +1,7 @@
 package com.michaelvescovo.android.itemreaper.about;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -63,6 +64,12 @@ public class AboutFragment extends AppCompatDialogFragment {
                 "Nosifer-Regular.ttf");
     }
 
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        mCallback.onDialogDismissed();
+        super.onDismiss(dialog);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -119,5 +126,7 @@ public class AboutFragment extends AppCompatDialogFragment {
         void configureSupportActionBar(Toolbar toolbar, Drawable icon);
 
         void onDialogResumed();
+
+        void onDialogDismissed();
     }
 }

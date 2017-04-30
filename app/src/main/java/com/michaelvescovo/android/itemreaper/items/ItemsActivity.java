@@ -376,6 +376,17 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     }
 
     @Override
+    public void onDialogDismissed() {
+        mDialogOpen = false;
+        setSupportActionBar(mToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
+        onCreateOptionsMenu(mToolbar.getMenu());
+    }
+
+    @Override
     public void onItemDeleted(@NonNull Item item) {
         Fragment itemsFragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_ITEMS);
         ((ItemsFragment) itemsFragment).onItemDeleted(item);
@@ -389,6 +400,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
         if (mItemDetailsFragment != null) {
             mCurrentDialogName = ITEM_DETAILS_DIALOG;
         }
+        onDialogDismissed();
     }
 
     @Override
