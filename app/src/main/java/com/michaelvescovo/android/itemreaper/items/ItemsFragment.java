@@ -199,8 +199,18 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
         } else if (sortBy == SORT_BY_PURCHASE_DATE) {
             Analytics.logEventSortPurchaseDate(getContext());
         }
-        loadData(sortBy);
-        updateWidget();
+        if (mQuery == null) {
+            loadData(sortBy);
+            updateWidget();
+        } else {
+            if (sortBy == SORT_BY_EXPIRY) {
+                mItemsAdapter.sortItemsByExpiry();
+                mItemsAdapter.notifyDataSetChanged();
+            } else if (sortBy == SORT_BY_PURCHASE_DATE) {
+                mItemsAdapter.sortItemsByPurchaseDate();
+                mItemsAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
     private void updateWidget() {
