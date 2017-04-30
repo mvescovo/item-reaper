@@ -65,6 +65,7 @@
     <string name="search_hint">Search for an item</string>
     <string name="sort_by_expiry">Expiry</string>
     <string name="sort_by_purchase_date">Purchase Date</string>
+    <string name="add_item">Add Item</string>
 
     <!--ItemDetails-->
     <string name="title_activity_item_details">Item Details</string>
@@ -103,10 +104,6 @@
     <string name="title_attributions">Attributions</string>
     <string name="reaper_icon_attribution">Reaper and scythe icons made by Loc. Available on <a href="http://game-icons.net">http://game-icons.net</a>.</string>
     <string name="decapitation_sound_attribution">Decapitation sound effect by Mike Koenig. Available on <a href="http://soundbible.com">http://soundbible.com</a>.</string>
-
-    <!--Widget-->
-    <string name="add_item">Add Item</string>
-    <string name="time_updated">Updated&#160;</string>
 
     <!--AdMob-->
     <string name="test_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
