@@ -32,19 +32,19 @@ These are the types of questions Item Reaper intends to answer.
 # Screenshots
 
 ###### Phone:
-<img src="https://cloud.githubusercontent.com/assets/15829736/25464118/02028984-2b3e-11e7-93cd-4aee851f1117.png" height="500" width="281"> <img src="https://cloud.githubusercontent.com/assets/15829736/25464120/02160752-2b3e-11e7-8af3-646a09fed5df.png" height="500" width="281"> <img src="https://cloud.githubusercontent.com/assets/15829736/25464119/0204c49c-2b3e-11e7-9890-948f87f6c1b4.png" height="500" width="281">
+<img src="https://cloud.githubusercontent.com/assets/15829736/25562235/a3f27eca-2dc3-11e7-8eca-fc3f84e88597.png" height="500" width="281"> <img src="https://cloud.githubusercontent.com/assets/15829736/25464120/02160752-2b3e-11e7-8af3-646a09fed5df.png" height="500" width="281"> <img src="https://cloud.githubusercontent.com/assets/15829736/25464119/0204c49c-2b3e-11e7-9890-948f87f6c1b4.png" height="500" width="281">
 
 ###### Tablet:
 
-<img src="https://cloud.githubusercontent.com/assets/15829736/25464136/16b29f9a-2b3e-11e7-9fec-6577cde9e994.png" height="500" width="667">
-<img src="https://cloud.githubusercontent.com/assets/15829736/25464137/16b7ed4c-2b3e-11e7-9002-728c9c9926ff.png" height="500" width="667">
-<img src="https://cloud.githubusercontent.com/assets/15829736/25464138/16b87abe-2b3e-11e7-9efe-ce11aa7bea10.png" height="500" width="667">
+<img src="https://cloud.githubusercontent.com/assets/15829736/25562245/dac3a4e2-2dc3-11e7-8789-e839d89be840.png" height="500" width="667">
+<img src="https://cloud.githubusercontent.com/assets/15829736/25562252/f74c5cda-2dc3-11e7-8c15-b28bdde5537b.png" height="500" width="667">
+<img src="https://cloud.githubusercontent.com/assets/15829736/25562253/07846ab6-2dc4-11e7-8f01-79620fd2aa90.png" height="500" width="667">
 
 ###### 10" tablet:
 
-<img src="https://cloud.githubusercontent.com/assets/15829736/25464147/1fdbd6ae-2b3e-11e7-95cd-1636ef62d9c4.png" height="500" width="800">
-<img src="https://cloud.githubusercontent.com/assets/15829736/25464148/200b94ca-2b3e-11e7-938e-1be6f941dc0d.png" height="500" width="800">
-<img src="https://cloud.githubusercontent.com/assets/15829736/25464149/2046badc-2b3e-11e7-88c2-65db35a982ba.png" height="500" width="800">
+<img src="https://cloud.githubusercontent.com/assets/15829736/25562256/1598e7bc-2dc4-11e7-9885-2a2b445c11c4.png" height="500" width="800">
+<img src="https://cloud.githubusercontent.com/assets/15829736/25562259/21a32004-2dc4-11e7-93f3-8918c8c30407.png" height="500" width="800">
+<img src="https://cloud.githubusercontent.com/assets/15829736/25562260/2e37d878-2dc4-11e7-8159-869dd830d714.png" height="500" width="800">
 
 ###### Widget:
 
