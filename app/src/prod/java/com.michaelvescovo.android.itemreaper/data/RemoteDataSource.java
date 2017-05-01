@@ -27,6 +27,7 @@ import static com.michaelvescovo.android.itemreaper.util.Constants.SORT_BY_EXPIR
 class RemoteDataSource implements DataSource {
 
     private Query mCurrentItemsQuery;
+    private Query mCheckItemsExistQuery;
     private DatabaseReference mDatabase;
     private ChildEventListener mItemsListener;
     private ValueEventListener mItemsListListener;
@@ -58,6 +59,29 @@ class RemoteDataSource implements DataSource {
                     items.add(item);
                 }
                 callback.onItemsLoaded(items);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
+    public void checkItemsExist(@NonNull String userId, @NonNull String caller, @NonNull String sortBy, @NonNull final CheckItemsExistCallback callback) {
+        if (mCheckItemsExistQuery == null) {
+            mCheckItemsExistQuery = mDatabase.child("items").child(userId).child("private")
+                    .child("current").orderByChild(sortBy).limitToFirst(1);
+        }
+        mCheckItemsExistQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() == 0) {
+                    callback.onCheckedItemsExist(false);
+                } else {
+                    callback.onCheckedItemsExist(true);
+                }
             }
 
             @Override

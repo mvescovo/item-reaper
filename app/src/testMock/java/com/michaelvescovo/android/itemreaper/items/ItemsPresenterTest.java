@@ -85,7 +85,7 @@
 //    @SuppressWarnings("unchecked")
 //    @Test
 //    public void getItemsFromRepositoryAndDisplayInView() {
-//        mItemsPresenter.getItems(true);
+//        mItemsPresenter.checkItemsExit(true);
 //
 //        verify(mView).setProgressBar(true);
 //

@@ -14,6 +14,9 @@ public interface DataSource {
     void getItemsList(@NonNull String userId, @NonNull String sortBy,
                       @NonNull GetItemsListCallback callback);
 
+    void checkItemsExist(@NonNull String userId, @NonNull String caller, @NonNull String sortBy,
+                  @NonNull CheckItemsExistCallback callback);
+
     void getItems(@NonNull String userId, @NonNull String caller, @NonNull String sortBy,
                   @NonNull GetItemsCallback callback);
 
@@ -30,6 +33,10 @@ public interface DataSource {
 
     interface GetItemsListCallback {
         void onItemsLoaded(@Nullable List<Item> items);
+    }
+
+    interface CheckItemsExistCallback {
+        void onCheckedItemsExist(boolean itemsExist);
     }
 
     interface GetItemsCallback {

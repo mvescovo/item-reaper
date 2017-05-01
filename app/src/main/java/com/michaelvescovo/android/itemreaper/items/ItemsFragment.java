@@ -185,7 +185,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
             mCurrentSort = sortBy;
         }
         mItemsAdapter.clearItems();
-        mPresenter.getItems(mCurrentSort);
+        mPresenter.checkItemsExit(mCurrentSort);
         if (mQuery != null) {
             searchItem(mQuery);
         }
@@ -277,7 +277,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
         mQuery = query;
         mSearching = mQuery != null;
         mItemsAdapter.clearItems();
-        mPresenter.getItems(mCurrentSort);
+        mPresenter.checkItemsExit(mCurrentSort);
         if (mQuery != null) {
             mItemsAdapter.searchItem();
         }

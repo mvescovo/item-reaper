@@ -42,7 +42,7 @@ interface ItemsContract {
 
     interface Presenter {
 
-        void getItems(int sortBy);
+        void checkItemsExit(int sortBy);
 
         void openItemDetails(String itemId);
 

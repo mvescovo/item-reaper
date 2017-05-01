@@ -50,6 +50,16 @@ public class Repository implements DataSource {
     }
 
     @Override
+    public void checkItemsExist(@NonNull String userId, @NonNull String caller, @NonNull String sortBy, @NonNull final CheckItemsExistCallback callback) {
+        mRemoteDataSource.checkItemsExist(userId, caller, sortBy, new CheckItemsExistCallback() {
+            @Override
+            public void onCheckedItemsExist(boolean itemsExist) {
+                callback.onCheckedItemsExist(itemsExist);
+            }
+        });
+    }
+
+    @Override
     public void getItems(@NonNull String userId, @NonNull String caller, @NonNull String sortBy,
                          @NonNull final GetItemsCallback callback) {
         if (mCachedItems == null || (mCurrentSort == null || !mCurrentSort.equals(sortBy))) {
