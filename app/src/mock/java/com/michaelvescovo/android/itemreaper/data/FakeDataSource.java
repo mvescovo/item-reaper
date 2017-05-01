@@ -120,6 +120,11 @@ public class FakeDataSource implements DataSource {
     }
 
     @Override
+    public void checkItemsExist(@NonNull String userId, @NonNull String caller, @NonNull String sortBy, @NonNull CheckItemsExistCallback callback) {
+
+    }
+
+    @Override
     public void getItems(@NonNull String userId, @NonNull String sortString, @NonNull String caller,
                          @NonNull GetItemsCallback callback) {
         for (Item item : ITEMS) {
