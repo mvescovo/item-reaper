@@ -32,7 +32,7 @@ These are the types of questions Item Reaper intends to answer.
 # Screenshots
 
 ###### Phone:
-<img src="https://cloud.githubusercontent.com/assets/15829736/25562235/a3f27eca-2dc3-11e7-8eca-fc3f84e88597.png" height="500" width="281"> <img src="https://cloud.githubusercontent.com/assets/15829736/25464120/02160752-2b3e-11e7-8af3-646a09fed5df.png" height="500" width="281"> <img src="https://cloud.githubusercontent.com/assets/15829736/25464119/0204c49c-2b3e-11e7-9890-948f87f6c1b4.png" height="500" width="281">
+<img src="https://cloud.githubusercontent.com/assets/15829736/25562235/a3f27eca-2dc3-11e7-8eca-fc3f84e88597.png" height="500" width="281"> <img src="https://cloud.githubusercontent.com/assets/15829736/25618780/9d5913ac-2f8b-11e7-8402-655851b943bc.png" height="500" width="281"> <img src="https://cloud.githubusercontent.com/assets/15829736/25464119/0204c49c-2b3e-11e7-9890-948f87f6c1b4.png" height="500" width="281">
 
 ###### 7" Tablet:
 
