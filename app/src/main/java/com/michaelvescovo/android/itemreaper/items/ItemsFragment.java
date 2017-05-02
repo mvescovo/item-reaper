@@ -270,7 +270,9 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
 
     public void onItemDeleted(@NonNull Item item) {
         mDeletedItem = item;
-        onResume();
+        if (mLargeScreen) {
+            onResume();
+        }
     }
 
     public void searchItem(@Nullable String query) {
