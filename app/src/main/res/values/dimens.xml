@@ -14,9 +14,6 @@
     <dimen name="padding">8dp</dimen>
     <dimen name="padding_text">4dp</dimen>
 
-    <!--Heights-->
-    <dimen name="height_list_item">88dp</dimen>
-
     <!--Items-->
     <dimen name="margin_horizontal_items">0dp</dimen>
     <dimen name="margin_vertical_items">0dp</dimen>
