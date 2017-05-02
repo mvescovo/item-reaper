@@ -72,6 +72,13 @@ public class Repository implements DataSource {
                     switch (action) {
                         case ITEM_ADDED:
                             mCachedItems.add(item);
+                            // Annoying but need to sort each time. Maybe childEventListener is not
+                            // such a good idea after all.
+                            if (mCurrentSort.equals(SORT_BY_EXPIRY_STRING)) {
+                                sortItemsByExpiry();
+                            } else {
+                                sortItemsByPurchaseDate();
+                            }
                             break;
                         case ITEM_CHANGED:
                             itemIndex = mCachedItems.indexOf(item);

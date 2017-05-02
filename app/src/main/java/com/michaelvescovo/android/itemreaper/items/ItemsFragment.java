@@ -587,6 +587,13 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
                 if (!mSearching) {
                     notifyItemInserted(itemIndex);
                 }
+                // Annoying but need to sort each time.
+                if (mCurrentSort == SORT_BY_EXPIRY) {
+                    sortItemsByExpiry();
+                } else {
+                    sortItemsByPurchaseDate();
+                }
+                notifyDataSetChanged();
                 mPresenter.itemsSizeChanged(mItems.size());
             }
         }
