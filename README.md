@@ -54,6 +54,7 @@ These are the types of questions Item Reaper intends to answer.
 - Create a Firebase project with your debug key added to it
 - Download the "google-service.json" file and put it in the app directory
 - You should then be able to build and install the app to a local device or emulator
+- Replace "keysProperties['WEB_CLIENT_ID']" in the app level build.gradle file with your web client id from the Google developers console credentials page - otherwise you won't be able to signin.
 
 # Licence
 
