@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_ADDED;
-
 /**
  * @author Michael Vescovo
  */
@@ -114,22 +112,9 @@ public class FakeDataSource implements DataSource {
     }
 
     @Override
-    public void getItemsList(@NonNull String userId, @NonNull String sortString,
-                             @NonNull GetItemsListCallback callback) {
-        callback.onItemsLoaded(ITEMS);
-    }
-
-    @Override
-    public void checkItemsExist(@NonNull String userId, @NonNull String caller, @NonNull String sortBy, @NonNull CheckItemsExistCallback callback) {
-
-    }
-
-    @Override
-    public void getItems(@NonNull String userId, @NonNull String sortString, @NonNull String caller,
+    public void getItems(@NonNull String userId, @NonNull String sortBy,
                          @NonNull GetItemsCallback callback) {
-        for (Item item : ITEMS) {
-            callback.onItemLoaded(item, ITEM_ADDED);
-        }
+        callback.onItemsLoaded(ITEMS);
     }
 
     @Override

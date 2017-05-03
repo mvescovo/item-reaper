@@ -89,7 +89,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
     private FirebaseStorage mFirebaseStorage;
     private String mQuery;
     private boolean mSearching;
-    private boolean mItemMoved;
     private int mCurrentSort;
     private SharedPreferences mSharedPreferences;
     private SearchForItemTask mSearchForItemTask;
@@ -135,7 +134,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
         }
         mFirebaseStorage = FirebaseStorage.getInstance();
         mSearching = false;
-        mItemMoved = false;
         getActivity().getSupportLoaderManager().initLoader(0, null, this);
     }
 
@@ -184,11 +182,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
         } else {
             mCurrentSort = sortBy;
         }
-        mItemsAdapter.clearItems();
-        mPresenter.checkItemsExit(mCurrentSort);
-        if (mQuery != null) {
-            searchItem(mQuery);
-        }
+        mPresenter.getItems(mCurrentSort);
         configureSnackbarForDeletedItem();
         Analytics.logEventViewItemList(getContext());
     }
@@ -278,11 +272,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
     public void searchItem(@Nullable String query) {
         mQuery = query;
         mSearching = mQuery != null;
-        mItemsAdapter.clearItems();
-        mPresenter.checkItemsExit(mCurrentSort);
-        if (mQuery != null) {
-            mItemsAdapter.searchItem();
-        }
+        mPresenter.getItems(mCurrentSort);
     }
 
     @Override
@@ -339,23 +329,11 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
     }
 
     @Override
-    public void addItem(Item item) {
-        mItemsAdapter.addItem(item);
-    }
-
-    @Override
-    public void changeItem(Item item) {
-        mItemsAdapter.changeItem(item);
-    }
-
-    @Override
-    public void removeItem(Item item) {
-        mItemsAdapter.removeItem(item);
-    }
-
-    @Override
-    public void moveItem() {
-        mItemsAdapter.moveItem();
+    public void showItems(List<Item> items) {
+        mItemsAdapter.replaceItems(items);
+        if (mQuery != null) {
+            mItemsAdapter.searchItem();
+        }
     }
 
     @Override
@@ -581,53 +559,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
             return mItems.size();
         }
 
-        void addItem(Item item) {
-            if (mItems.add(item)) {
-                int itemIndex = mItems.indexOf(item);
-                if (!mSearching) {
-                    notifyItemInserted(itemIndex);
-                }
-                // Annoying but need to sort each time.
-                if (mCurrentSort == SORT_BY_EXPIRY) {
-                    sortItemsByExpiry();
-                } else {
-                    sortItemsByPurchaseDate();
-                }
-                notifyDataSetChanged();
-                mPresenter.itemsSizeChanged(mItems.size());
-            }
-        }
-
-        void changeItem(Item item) {
-            int itemIndex = mItems.indexOf(item);
-            if (itemIndex != -1) {
-                mItems.set(itemIndex, item);
-                if (mItemMoved) {
-                    if (mCurrentSort == SORT_BY_EXPIRY) {
-                        sortItemsByExpiry();
-                    } else {
-                        sortItemsByPurchaseDate();
-                    }
-                    notifyDataSetChanged();
-                } else {
-                    notifyItemChanged(itemIndex);
-                }
-            }
-        }
-
-        void removeItem(Item item) {
-            int itemIndex = mItems.indexOf(item);
-            if (itemIndex != -1) {
-                mItems.remove(item);
-                notifyItemRemoved(itemIndex);
-                mPresenter.itemsSizeChanged(mItems.size());
-            }
-        }
-
-        void moveItem() {
-            mItemMoved = true;
-        }
-
         private void sortItemsByExpiry() {
             // Sort ascending (earlier dates first)
             Collections.sort(mItems, new Comparator<Item>() {
@@ -678,11 +609,19 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
         }
 
         private void clearItems() {
-            mItems.clear();
+            mItems = new ArrayList<>();
             if (!mSearching) {
                 notifyDataSetChanged();
             }
             mImageUrl = null;
+        }
+
+        void replaceItems(List<Item> items) {
+            mItems = items;
+            if (!mSearching) {
+                notifyDataSetChanged();
+            }
+            mPresenter.itemsSizeChanged(mItems.size());
         }
 
         class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

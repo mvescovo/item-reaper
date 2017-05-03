@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 
 import com.michaelvescovo.android.itemreaper.data.Item;
 
+import java.util.List;
+
 /**
  * @author Michael Vescovo
  */
@@ -17,13 +19,7 @@ interface ItemsContract {
 
         void setProgressBar(boolean active);
 
-        void addItem(Item item);
-
-        void changeItem(Item item);
-
-        void removeItem(Item item);
-
-        void moveItem();
+        void showItems(List<Item> items);
 
         void showItemDetailsUi(String itemId);
 
@@ -42,7 +38,7 @@ interface ItemsContract {
 
     interface Presenter {
 
-        void checkItemsExit(int sortBy);
+        void getItems(int sortBy);
 
         void openItemDetails(String itemId);
 

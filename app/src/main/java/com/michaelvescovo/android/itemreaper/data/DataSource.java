@@ -11,13 +11,7 @@ import java.util.List;
 
 public interface DataSource {
 
-    void getItemsList(@NonNull String userId, @NonNull String sortBy,
-                      @NonNull GetItemsListCallback callback);
-
-    void checkItemsExist(@NonNull String userId, @NonNull String caller, @NonNull String sortBy,
-                  @NonNull CheckItemsExistCallback callback);
-
-    void getItems(@NonNull String userId, @NonNull String caller, @NonNull String sortBy,
+    void getItems(@NonNull String userId, @NonNull String sortBy,
                   @NonNull GetItemsCallback callback);
 
     void getItem(@NonNull String itemId, @NonNull String userId, @NonNull String caller,
@@ -31,16 +25,8 @@ public interface DataSource {
 
     void deleteAllItems(@NonNull String userId);
 
-    interface GetItemsListCallback {
-        void onItemsLoaded(@Nullable List<Item> items);
-    }
-
-    interface CheckItemsExistCallback {
-        void onCheckedItemsExist(boolean itemsExist);
-    }
-
     interface GetItemsCallback {
-        void onItemLoaded(@Nullable Item item, @NonNull String action);
+        void onItemsLoaded(@Nullable List<Item> items);
     }
 
     interface GetItemCallback {

@@ -105,8 +105,8 @@ public class WidgetListService extends RemoteViewsService {
                 } else {
                     sortString = SORT_BY_EXPIRY_STRING;
                 }
-                mRepository.getItemsList(firebaseUser.getUid(), sortString,
-                        new DataSource.GetItemsListCallback() {
+                mRepository.getItems(firebaseUser.getUid(), sortString,
+                        new DataSource.GetItemsCallback() {
                             @Override
                             public void onItemsLoaded(@Nullable List<Item> items) {
                                 if (mCountDownLatch.getCount() == 0) {

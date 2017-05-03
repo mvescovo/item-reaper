@@ -13,13 +13,11 @@ import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.data.Repository;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import static com.michaelvescovo.android.itemreaper.items.SortItemsDialogFragment.SORT_BY_PURCHASE_DATE;
-import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_ADDED;
-import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_CHANGED;
-import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_MOVED;
-import static com.michaelvescovo.android.itemreaper.util.Constants.ITEM_REMOVED;
 import static com.michaelvescovo.android.itemreaper.util.Constants.SORT_BY_EXPIRY_STRING;
 import static com.michaelvescovo.android.itemreaper.util.Constants.SORT_BY_PURCHASE_DATE_STRING;
 
@@ -51,60 +49,27 @@ public class ItemsPresenter implements ItemsContract.Presenter {
     }
 
     @Override
-    public void checkItemsExit(final int sortBy) {
-        mView.setProgressBar(true);
+    public void getItems(int sortBy) {
         if (mFirebaseUser == null) {
             mView.showSignIn();
         } else {
+            mView.setProgressBar(true);
             final String userId = mFirebaseUser.getUid();
-            final String sortString;
+            String sortString;
             if (sortBy == SORT_BY_PURCHASE_DATE) {
                 sortString = SORT_BY_PURCHASE_DATE_STRING;
             } else {
                 sortString = SORT_BY_EXPIRY_STRING;
             }
             EspressoIdlingResource.increment();
-            mRepository.checkItemsExist(userId, ITEMS_CALLER, sortString,
-                    new DataSource.CheckItemsExistCallback() {
-                        @Override
-                        public void onCheckedItemsExist(boolean itemsExist) {
-                            if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-                                EspressoIdlingResource.decrement();
-                            }
-                            if (!itemsExist) {
-                                mView.setProgressBar(false);
-                                mView.showNoItemsText(true);
-                            }
-                            getItems(userId, sortString);
-                        }
-                    });
+            mRepository.getItems(userId, sortString, new DataSource.GetItemsCallback() {
+                @Override
+                public void onItemsLoaded(@Nullable List<Item> items) {
+                    mView.setProgressBar(false);
+                    mView.showItems(items);
+                }
+            });
         }
-    }
-
-    private void getItems(String userId, String sortString) {
-        EspressoIdlingResource.increment();
-        mRepository.getItems(userId, ITEMS_CALLER, sortString, new DataSource.GetItemsCallback() {
-            @Override
-            public void onItemLoaded(@Nullable Item item, @NonNull String action) {
-                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-                    EspressoIdlingResource.decrement();
-                }
-                switch (action) {
-                    case ITEM_ADDED:
-                        mView.addItem(item);
-                        break;
-                    case ITEM_CHANGED:
-                        mView.changeItem(item);
-                        break;
-                    case ITEM_REMOVED:
-                        mView.removeItem(item);
-                        break;
-                    case ITEM_MOVED:
-                        mView.moveItem();
-                }
-                mView.setProgressBar(false);
-            }
-        });
     }
 
     @Override
