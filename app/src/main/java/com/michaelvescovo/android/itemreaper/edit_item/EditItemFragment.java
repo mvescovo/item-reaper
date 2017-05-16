@@ -898,20 +898,20 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_take_photo:
-                mPresenter.takePicture(getContext());
-                if (mItem != null) {
+        if (mItem != null) {
+            switch (item.getItemId()) {
+                case R.id.action_take_photo:
+                    mPresenter.takePicture(getContext());
                     Analytics.logEventTakeItemPhoto(getContext(), mItem);
-                }
-                break;
-            case R.id.action_select_image:
-                mPresenter.selectImage();
-                Analytics.logEventSelectItemImage(getContext(), mItem);
-                break;
-            case R.id.action_delete_item:
-                mPresenter.deleteItem(createCurrentItem());
-                Analytics.logEventDeleteItem(getContext(), mItem);
+                    break;
+                case R.id.action_select_image:
+                    mPresenter.selectImage();
+                    Analytics.logEventSelectItemImage(getContext(), mItem);
+                    break;
+                case R.id.action_delete_item:
+                    mPresenter.deleteItem(createCurrentItem());
+                    Analytics.logEventDeleteItem(getContext(), mItem);
+            }
         }
         return super.onOptionsItemSelected(item);
     }
