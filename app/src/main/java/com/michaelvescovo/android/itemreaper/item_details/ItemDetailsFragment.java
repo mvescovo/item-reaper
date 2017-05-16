@@ -322,17 +322,19 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_expire_item:
-                mExpireMenuItem = item;
-                playExpireItemSoundEffect();
-                mPresenter.expireItem(mItem);
-                Analytics.logEventExpireItem(getContext(), mItem);
-                break;
-            case R.id.action_edit_item:
-                mPresenter.openEditItem();
-                Analytics.logEventEditItem(getContext(), mItem);
-                break;
+        if (mItem != null) {
+            switch (item.getItemId()) {
+                case R.id.action_expire_item:
+                    mExpireMenuItem = item;
+                    playExpireItemSoundEffect();
+                    mPresenter.expireItem(mItem);
+                    Analytics.logEventExpireItem(getContext(), mItem);
+                    break;
+                case R.id.action_edit_item:
+                    mPresenter.openEditItem();
+                    Analytics.logEventEditItem(getContext(), mItem);
+                    break;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
