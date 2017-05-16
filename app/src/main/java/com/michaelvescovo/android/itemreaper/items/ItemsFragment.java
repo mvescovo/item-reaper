@@ -330,9 +330,12 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
 
     @Override
     public void showItems(List<Item> items) {
-        mItemsAdapter.replaceItems(items);
-        if (mQuery != null) {
-            mItemsAdapter.searchItem();
+        // If the fragment is not active, don't allow callbacks to crash the app.
+        if (getActivity() != null) {
+            mItemsAdapter.replaceItems(items);
+            if (mQuery != null) {
+                mItemsAdapter.searchItem();
+            }
         }
     }
 
