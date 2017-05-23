@@ -98,6 +98,6 @@ public class AuthPresenterTest {
     @Test
     public void firebaseAuthSignInSucceeds_ShowsItemsUi() {
         mAuthPresenter.handleFirebaseSignInResult(true);
-        verify(mView).showItemsUi();
+        verify(mView).closeAuthUi();
     }
 }
