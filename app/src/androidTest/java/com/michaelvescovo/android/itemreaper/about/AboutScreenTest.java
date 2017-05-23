@@ -46,6 +46,34 @@ public class AboutScreenTest {
     }
 
     @Test
+    public void itemReaperTitleVisible() {
+        onView(withText(R.string.title_item_reaper)).check(matches(isDisplayed()));
+        mEspressoHelperMethods.rotateScreen();
+        onView(withText(R.string.title_item_reaper)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void versionVisible() {
+        onView(withText(R.string.version)).check(matches(isDisplayed()));
+        mEspressoHelperMethods.rotateScreen();
+        onView(withText(R.string.version)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void privacyPolicyTitleVisible() {
+        onView(withText(R.string.title_privacy_policy)).check(matches(isDisplayed()));
+        mEspressoHelperMethods.rotateScreen();
+        onView(withText(R.string.title_privacy_policy)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void privacyPolicyVisible() {
+        onView(withText(R.string.privacy_policy)).check(matches(isDisplayed()));
+        mEspressoHelperMethods.rotateScreen();
+        onView(withText(R.string.privacy_policy)).check(matches(isDisplayed()));
+    }
+
+    @Test
     public void attributionsTitleVisible() {
         onView(withText(R.string.title_attributions)).check(matches(isDisplayed()));
         mEspressoHelperMethods.rotateScreen();
@@ -57,5 +85,12 @@ public class AboutScreenTest {
         onView(withText(R.string.reaper_icon_attribution)).check(matches(isDisplayed()));
         mEspressoHelperMethods.rotateScreen();
         onView(withText(R.string.reaper_icon_attribution)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void decapitationSoundEffectAttributionVisible() {
+        onView(withText(R.string.decapitation_sound_attribution)).check(matches(isDisplayed()));
+        mEspressoHelperMethods.rotateScreen();
+        onView(withText(R.string.decapitation_sound_attribution)).check(matches(isDisplayed()));
     }
 }
