@@ -1,5 +1,6 @@
 package com.michaelvescovo.android.itemreaper.auth;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,7 +29,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.michaelvescovo.android.itemreaper.BuildConfig;
 import com.michaelvescovo.android.itemreaper.R;
-import com.michaelvescovo.android.itemreaper.items.ItemsActivity;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 import com.michaelvescovo.android.itemreaper.widget.ItemWidgetProvider;
 
@@ -190,18 +190,16 @@ public class AuthFragment extends Fragment implements AuthContract.View,
     }
 
     @Override
-    public void showItemsUi() {
-        Intent intent = new Intent(getContext(), ItemsActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        getActivity().finish();
-    }
-
-    @Override
     public void updateWidget() {
         Intent updateWidgetIntent = new Intent(getContext(), ItemWidgetProvider.class);
         updateWidgetIntent.setAction(ItemWidgetProvider.ACTION_DATA_UPDATED);
         getContext().sendBroadcast(updateWidgetIntent);
+    }
+
+    @Override
+    public void closeAuthUi() {
+        getActivity().setResult(Activity.RESULT_OK);
+        getActivity().finish();
     }
 
     @Override

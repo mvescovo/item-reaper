@@ -75,25 +75,29 @@ class EditItemPresenter implements EditItemContract.Presenter {
 
     private void loadExistingItem(String itemId) {
         mItemLoaded = false;
-        EspressoIdlingResource.increment();
-        mRepository.getItem(itemId, mFirebaseUser.getUid(), EDIT_ITEM_CALLER,
-                new DataSource.GetItemCallback() {
-                    @Override
-                    public void onItemLoaded(@Nullable Item item) {
-                        if (!mItemLoaded) {
-                            mItemLoaded = true;
-                            if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-                                EspressoIdlingResource.decrement();
+        if (mFirebaseUser == null) {
+            mView.showSignIn();
+        } else {
+            EspressoIdlingResource.increment();
+            mRepository.getItem(itemId, mFirebaseUser.getUid(), EDIT_ITEM_CALLER,
+                    new DataSource.GetItemCallback() {
+                        @Override
+                        public void onItemLoaded(@Nullable Item item) {
+                            if (!mItemLoaded) {
+                                mItemLoaded = true;
+                                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                                    EspressoIdlingResource.decrement();
+                                }
+                            }
+                            if (item != null) {
+                                mView.showExistingItem(item);
+                            } else {
+                                mView.passDeletedItemToItemsUi();
+                                mView.showItemsUi();
                             }
                         }
-                        if (item != null) {
-                            mView.showExistingItem(item);
-                        } else {
-                            mView.passDeletedItemToItemsUi();
-                            mView.showItemsUi();
-                        }
-                    }
-                });
+                    });
+        }
     }
 
     @Override

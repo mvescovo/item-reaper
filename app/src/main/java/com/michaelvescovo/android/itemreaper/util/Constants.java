@@ -13,4 +13,5 @@ public class Constants {
     public static final String ITEM_CANCELLED = "item_cancelled";
     public static final String SORT_BY_EXPIRY_STRING = "expiry";
     public static final String SORT_BY_PURCHASE_DATE_STRING = "purchaseDate";
+    public static final int REQUEST_CODE_SIGNIN = 3;
 }

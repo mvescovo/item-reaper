@@ -40,7 +40,6 @@ public class ItemsPresenter implements ItemsContract.Presenter {
         mView = view;
         mRepository = repository;
         mFirebaseAuth = firebaseAuth;
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
     }
 
     @Inject
@@ -50,6 +49,7 @@ public class ItemsPresenter implements ItemsContract.Presenter {
 
     @Override
     public void getItems(int sortBy) {
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
         if (mFirebaseUser == null) {
             mView.showSignIn();
         } else {

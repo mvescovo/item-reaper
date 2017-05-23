@@ -418,14 +418,14 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_ITEM_DELETED) {
-            if (data != null) {
+            if (resultCode == RESULT_OK && data != null) {
                 Item item = (Item) data.getSerializableExtra(EXTRA_DELETED_ITEM);
                 Fragment itemsFragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_ITEMS);
                 ((ItemsFragment) itemsFragment).onItemDeleted(item);
             }
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

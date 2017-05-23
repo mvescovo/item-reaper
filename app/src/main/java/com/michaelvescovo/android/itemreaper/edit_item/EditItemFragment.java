@@ -41,6 +41,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.michaelvescovo.android.itemreaper.R;
+import com.michaelvescovo.android.itemreaper.auth.AuthActivity;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.util.Analytics;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
@@ -63,7 +64,9 @@ import java.util.regex.Pattern;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static com.michaelvescovo.android.itemreaper.util.Constants.REQUEST_CODE_SIGNIN;
 import static com.michaelvescovo.android.itemreaper.util.ImageUploadService.ACTION_REMOVE_IMAGE;
 import static com.michaelvescovo.android.itemreaper.util.ImageUploadService.ACTION_UPLOAD_IMAGE;
 import static com.michaelvescovo.android.itemreaper.util.ImageUploadService.EXTRA_ITEM;
@@ -935,21 +938,29 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_IMAGE_CAPTURE) {
-            if (resultCode == RESULT_OK) {
-                mPresenter.imageAvailable(mImageFile);
-            } else {
-                mPresenter.imageCaptureFailed(getContext(), mImageFile);
-            }
-        } else if (requestCode == REQUEST_CODE_PHOTO_PICKER) {
-            if (resultCode == RESULT_OK) {
-                Uri selectedImageUri = data.getData();
-                mPresenter.imageSelected(getContext(), selectedImageUri);
-            } else {
-                mPresenter.imageCaptureFailed(getContext(), mImageFile);
-            }
+        switch (requestCode) {
+            case REQUEST_CODE_IMAGE_CAPTURE:
+                if (resultCode == RESULT_OK) {
+                    mPresenter.imageAvailable(mImageFile);
+                } else {
+                    mPresenter.imageCaptureFailed(getContext(), mImageFile);
+                }
+                break;
+            case REQUEST_CODE_PHOTO_PICKER:
+                if (resultCode == RESULT_OK) {
+                    Uri selectedImageUri = data.getData();
+                    mPresenter.imageSelected(getContext(), selectedImageUri);
+                } else {
+                    mPresenter.imageCaptureFailed(getContext(), mImageFile);
+                }
+                break;
+            case REQUEST_CODE_SIGNIN:
+                if (resultCode == RESULT_CANCELED) {
+                    getActivity().finish();
+                }
+                break;
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -1018,6 +1029,12 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
                 }
             }
         }).start();
+    }
+
+    @Override
+    public void showSignIn() {
+        Intent intent = new Intent(getContext(), AuthActivity.class);
+        startActivityForResult(intent, REQUEST_CODE_SIGNIN);
     }
 
     @Override

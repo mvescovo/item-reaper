@@ -54,10 +54,12 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.app.Activity.RESULT_CANCELED;
 import static com.michaelvescovo.android.itemreaper.R.id.expiry;
 import static com.michaelvescovo.android.itemreaper.items.ItemsActivity.EXTRA_DELETED_ITEM;
 import static com.michaelvescovo.android.itemreaper.items.SortItemsDialogFragment.SORT_BY_EXPIRY;
 import static com.michaelvescovo.android.itemreaper.items.SortItemsDialogFragment.SORT_BY_PURCHASE_DATE;
+import static com.michaelvescovo.android.itemreaper.util.Constants.REQUEST_CODE_SIGNIN;
 import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getDateFormat;
 import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getPriceFromTotalCents;
 
@@ -71,6 +73,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
 
     public static String STATE_CURRENT_SORT = "current_sort";
     private static String STATE_ITEM_QUERY = "item_query";
+
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.no_items)
@@ -98,6 +101,16 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
 
     public static ItemsFragment newInstance() {
         return new ItemsFragment();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_SIGNIN) {
+            if (resultCode == RESULT_CANCELED) {
+                getActivity().finish();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -386,8 +399,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
     @Override
     public void showSignIn() {
         Intent intent = new Intent(getContext(), AuthActivity.class);
-        startActivity(intent);
-        getActivity().finish();
+        startActivityForResult(intent, REQUEST_CODE_SIGNIN);
     }
 
     private void playExpireItemSoundEffect() {

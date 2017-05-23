@@ -2,6 +2,7 @@ package com.michaelvescovo.android.itemreaper.item_details;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
@@ -31,6 +32,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.NativeExpressAdView;
 import com.michaelvescovo.android.itemreaper.R;
+import com.michaelvescovo.android.itemreaper.auth.AuthActivity;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.util.Analytics;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
@@ -38,7 +40,9 @@ import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.app.Activity.RESULT_CANCELED;
 import static com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity.EXTRA_ITEM_ID;
+import static com.michaelvescovo.android.itemreaper.util.Constants.REQUEST_CODE_SIGNIN;
 import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getDateFormat;
 import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getPriceFromTotalCents;
 
@@ -109,6 +113,16 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
     private MenuItem mExpireMenuItem;
 
     public ItemDetailsFragment() {
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_SIGNIN) {
+            if (resultCode == RESULT_CANCELED) {
+                getActivity().finish();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public static ItemDetailsFragment newInstance() {
@@ -318,6 +332,12 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
         if (mExpireMenuItem != null) {
             mExpireMenuItem.setVisible(visible);
         }
+    }
+
+    @Override
+    public void showSignIn() {
+        Intent intent = new Intent(getContext(), AuthActivity.class);
+        startActivityForResult(intent, REQUEST_CODE_SIGNIN);
     }
 
     @Override

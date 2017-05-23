@@ -21,7 +21,6 @@ import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 
 import static com.michaelvescovo.android.itemreaper.items.ItemsActivity.EXTRA_DELETED_ITEM;
-import static com.michaelvescovo.android.itemreaper.items.ItemsActivity.REQUEST_CODE_ITEM_DELETED;
 
 /**
  * @author Michael Vescovo
@@ -107,7 +106,7 @@ public class EditItemActivity extends AppCompatActivity
     public void onItemDeleted(@NonNull Item item) {
         Intent intent = new Intent();
         intent.putExtra(EXTRA_DELETED_ITEM, item);
-        setResult(REQUEST_CODE_ITEM_DELETED, intent);
+        setResult(RESULT_OK, intent);
     }
 
     @Override

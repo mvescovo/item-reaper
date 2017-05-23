@@ -10,6 +10,7 @@ import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.DataSource;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.data.Repository;
+import com.michaelvescovo.android.itemreaper.util.EspressoIdlingResource;
 
 import javax.inject.Inject;
 
@@ -41,15 +42,23 @@ class ItemDetailsPresenter implements ItemDetailsContract.Presenter {
 
     @Override
     public void displayItem(@NonNull String itemId) {
-        mRepository.getItem(itemId, mFirebaseUser.getUid(), ITEM_DETAILS_CALLER,
-                new DataSource.GetItemCallback() {
-                    @Override
-                    public void onItemLoaded(@Nullable Item item) {
-                        if (item != null) {
-                            mView.showItem(item);
+        if (mFirebaseUser == null) {
+            mView.showSignIn();
+        } else {
+            EspressoIdlingResource.increment();
+            mRepository.getItem(itemId, mFirebaseUser.getUid(), ITEM_DETAILS_CALLER,
+                    new DataSource.GetItemCallback() {
+                        @Override
+                        public void onItemLoaded(@Nullable Item item) {
+                            if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                                EspressoIdlingResource.decrement();
+                            }
+                            if (item != null) {
+                                mView.showItem(item);
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     @Override

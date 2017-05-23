@@ -42,7 +42,7 @@ class AuthPresenter implements AuthContract.Presenter {
     public void handleFirebaseSignInResult(boolean signedIn) {
         mView.setProgressIndicator(false);
         if (signedIn) {
-            mView.showItemsUi();
+            mView.closeAuthUi();
             mView.updateWidget();
         } else {
             mView.showSignInButton(true);

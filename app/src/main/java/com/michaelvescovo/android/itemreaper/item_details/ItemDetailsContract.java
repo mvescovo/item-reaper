@@ -22,6 +22,8 @@ interface ItemDetailsContract {
         void showItem(@NonNull Item item);
 
         void showExpireMenuButton(boolean visible);
+
+        void showSignIn();
     }
 
     interface Presenter {

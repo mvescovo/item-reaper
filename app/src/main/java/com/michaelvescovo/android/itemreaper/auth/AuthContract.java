@@ -20,9 +20,9 @@ public interface AuthContract {
 
         void showFireBaseAuthUi();
 
-        void showItemsUi();
-
         void updateWidget();
+
+        void closeAuthUi();
     }
 
     interface Presenter {
