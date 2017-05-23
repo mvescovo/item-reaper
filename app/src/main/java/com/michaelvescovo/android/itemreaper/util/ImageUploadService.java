@@ -3,6 +3,7 @@ package com.michaelvescovo.android.itemreaper.util;
 import android.app.IntentService;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -12,6 +13,7 @@ import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
+import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.SharedPreferencesHelper;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.data.Repository;
@@ -19,6 +21,8 @@ import com.michaelvescovo.android.itemreaper.data.Repository;
 import java.io.File;
 
 import javax.inject.Inject;
+
+import static java.lang.Thread.sleep;
 
 
 /**
@@ -30,6 +34,7 @@ public class ImageUploadService extends IntentService {
     public static final String ACTION_UPLOAD_IMAGE = "com.michaelvescovo.android.itemreaper.util.action.UPLOAD_IMAGE";
     public static final String ACTION_REMOVE_IMAGE = "com.michaelvescovo.android.itemreaper.util.action.REMOVE_IMAGE";
     public static final String EXTRA_ITEM = "com.michaelvescovo.android.itemreaper.util.extra.ITEM";
+    public static final int ONGOING_NOTIFICATION_ID = 1;
 
     @Inject
     public Repository mRepository;
@@ -54,6 +59,11 @@ public class ImageUploadService extends IntentService {
                 .inject(this);
         mFirebaseStorage = FirebaseStorage.getInstance();
         mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.ic_grim_reaper)
+                        .setContentTitle(getText(R.string.title_uploading_or_removing_image));
+        startForeground(ONGOING_NOTIFICATION_ID, mBuilder.build());
     }
 
     @Override
