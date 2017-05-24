@@ -38,7 +38,7 @@ ext {
     daggerVersion = '2.7'
     easyPermissionsVersion = '0.1.9'
     butterKnifeVersion = '8.4.0'
-    googleAuthVersion = '10.2.0'
-    firebaseVersion = '10.2.0'
+    googleAuthVersion = '10.2.6'
+    firebaseVersion = '10.2.6'
     glide = '3.6.1'
 }
