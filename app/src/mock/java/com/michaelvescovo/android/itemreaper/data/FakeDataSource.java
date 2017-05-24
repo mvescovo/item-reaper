@@ -1,7 +1,6 @@
 package com.michaelvescovo.android.itemreaper.data;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -15,12 +14,10 @@ import java.util.UUID;
  * @author Michael Vescovo
  */
 
-@VisibleForTesting
-@SuppressWarnings("WeakerAccess")
 public class FakeDataSource implements DataSource {
 
     public final static String USER_ID = "testUser";
-    public final static List<Item> ITEMS = Lists.newArrayList();
+    private final static List<Item> ITEMS = Lists.newArrayList();
 
     /*
     * Test item 1.

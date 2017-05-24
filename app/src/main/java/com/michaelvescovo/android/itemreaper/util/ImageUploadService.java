@@ -22,8 +22,6 @@ import java.io.File;
 
 import javax.inject.Inject;
 
-import static java.lang.Thread.sleep;
-
 
 /**
  * @author Michael Vescovo
@@ -98,6 +96,7 @@ public class ImageUploadService extends IntentService {
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    @SuppressWarnings("VisibleForTests")
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     if (downloadUrl != null) {
                         deleteItemFile(item);
