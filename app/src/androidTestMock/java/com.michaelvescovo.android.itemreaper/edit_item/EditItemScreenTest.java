@@ -245,7 +245,7 @@ public class EditItemScreenTest {
         Calendar customDate = Calendar.getInstance();
         customDate.setTimeInMillis(ITEM_1.getPurchaseDate());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-                "dd/MMMM/YY", Locale.getDefault());
+                "dd/MMM/YY", Locale.ENGLISH);
         String customDateString = simpleDateFormat.format(customDate.getTime());
 
         selectDateCustom(R.id.purchase_date_spinner, customDate, true);
@@ -259,7 +259,7 @@ public class EditItemScreenTest {
         Calendar customDate = Calendar.getInstance();
         customDate.setTimeInMillis(ITEM_1.getExpiry());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-                "dd/MMMM/YY", Locale.getDefault());
+                "dd/MMM/YY", Locale.ENGLISH);
         String customDateString = simpleDateFormat.format(customDate.getTime());
 
         selectDateCustom(R.id.expiry_date_spinner, customDate, true);
@@ -295,7 +295,7 @@ public class EditItemScreenTest {
         Calendar customDate = Calendar.getInstance();
         customDate.setTimeInMillis(ITEM_1.getPurchaseDate());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-                "dd/MMMM/YY", Locale.getDefault());
+                "dd/MMM/YY", Locale.ENGLISH);
         String customDateString = simpleDateFormat.format(customDate.getTime());
 
         selectDateToday(R.id.purchase_date_spinner);
@@ -324,7 +324,7 @@ public class EditItemScreenTest {
         Calendar customDate = Calendar.getInstance();
         customDate.setTimeInMillis(ITEM_1.getExpiry());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-                "dd/MMMM/YY", Locale.getDefault());
+                "dd/MMM/YY", Locale.ENGLISH);
         String customDateString = simpleDateFormat.format(customDate.getTime());
 
         selectDateToday(R.id.expiry_date_spinner);
@@ -353,7 +353,7 @@ public class EditItemScreenTest {
         Calendar customDate = Calendar.getInstance();
         customDate.setTimeInMillis(1452776400000L); // 15/1/2016
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-                "dd/MMMM/YY", Locale.getDefault());
+                "dd/MMM/YY", Locale.ENGLISH);
         String customDateString = simpleDateFormat.format(customDate.getTime());
 
         Calendar customDate2 = Calendar.getInstance();
@@ -385,7 +385,7 @@ public class EditItemScreenTest {
         Calendar customDate = Calendar.getInstance();
         customDate.setTimeInMillis(1452776400000L); // 15/1/2016
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-                "dd/MMMM/YY", Locale.getDefault());
+                "dd/MMM/YY", Locale.ENGLISH);
         String customDateString = simpleDateFormat.format(customDate.getTime());
 
         Calendar customDate2 = Calendar.getInstance();
