@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public class FakeDataSource implements DataSource {
 
-    public final static String USER_ID = "testUser";
+    public final static String USER_ID = "testUID";
     private final static List<Item> ITEMS = Lists.newArrayList();
 
     /*
@@ -146,6 +146,9 @@ public class FakeDataSource implements DataSource {
 
     @Override
     public void saveItem(@NonNull String userId, @NonNull Item item) {
+        if (ITEMS.contains(item)) {
+            ITEMS.remove(item);
+        }
         ITEMS.add(item);
         if (mItemCallbacks.get(item.getId()) != null) {
             for (ItemChangedListener listener :
