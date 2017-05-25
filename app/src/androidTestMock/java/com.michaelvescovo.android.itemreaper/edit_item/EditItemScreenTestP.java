@@ -65,6 +65,11 @@ public class EditItemScreenTestP {
         );
     }
 
+    private static void confirmDateCustomSelected(int spinnerId, String customDateString) {
+        onView(withId(spinnerId))
+                .check(matches(withSpinnerText(containsString(customDateString))));
+    }
+
     @Before
     public void setup() {
         Intent intent = new Intent();
@@ -96,12 +101,12 @@ public class EditItemScreenTestP {
             Calendar purchaseDate = Calendar.getInstance();
             purchaseDate.setTimeInMillis(mItem.getPurchaseDate());
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-                    "dd/MMMM/YY", Locale.getDefault());
+                    "dd/MMM/YY", Locale.ENGLISH);
             String purchaseDateString = simpleDateFormat.format(purchaseDate.getTime());
 
             confirmDateCustomSelected(R.id.purchase_date_spinner, purchaseDateString);
-//                mEspressoHelperMethods.rotateScreen();
-//                confirmDateCustomSelected(R.id.purchase_date_spinner, purchaseDateString);
+            mEspressoHelperMethods.rotateScreen();
+            confirmDateCustomSelected(R.id.purchase_date_spinner, purchaseDateString);
         }
     }
 
@@ -112,12 +117,12 @@ public class EditItemScreenTestP {
             Calendar expiryDate = Calendar.getInstance();
             expiryDate.setTimeInMillis(mItem.getExpiry());
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-                    "dd/MMMM/YY", Locale.getDefault());
+                    "dd/MMM/YY", Locale.ENGLISH);
             String expiryDateString = simpleDateFormat.format(expiryDate.getTime());
 
             confirmDateCustomSelected(R.id.expiry_date_spinner, expiryDateString);
-//                mEspressoHelperMethods.rotateScreen();
-//                confirmDateCustomSelected(R.id.expiry_date_spinner, expiryDateString);
+            mEspressoHelperMethods.rotateScreen();
+            confirmDateCustomSelected(R.id.expiry_date_spinner, expiryDateString);
         }
     }
 
@@ -367,10 +372,5 @@ public class EditItemScreenTestP {
                             hasDrawable(),
                             isDisplayed())));
         }
-    }
-
-    private static void confirmDateCustomSelected(int spinnerId, String customDateString) {
-        onView(withId(spinnerId))
-                .check(matches(withSpinnerText(containsString(customDateString))));
     }
 }

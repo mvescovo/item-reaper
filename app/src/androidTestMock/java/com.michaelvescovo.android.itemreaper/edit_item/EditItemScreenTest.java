@@ -349,7 +349,7 @@ public class EditItemScreenTest {
     }
 
     @Test
-    public void selectCustomPurchaseDate_SelectDifferentOption_CustomDateRemovedFromSpinner() {
+    public void selectPurchaseDateCustom_SelectDifferentOption_CustomDateRemovedFromSpinner() {
         Calendar customDate = Calendar.getInstance();
         customDate.setTimeInMillis(1452776400000L); // 15/1/2016
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
