@@ -33,13 +33,15 @@ public class ItemsPresenter implements ItemsContract.Presenter {
     private ItemsContract.View mView;
     private Repository mRepository;
     private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
+    private String mUid;
 
     @Inject
-    ItemsPresenter(ItemsContract.View view, Repository repository, FirebaseAuth firebaseAuth) {
+    ItemsPresenter(@NonNull ItemsContract.View view, @NonNull Repository repository,
+                   @NonNull FirebaseAuth firebaseAuth, @NonNull String uid) {
         mView = view;
         mRepository = repository;
         mFirebaseAuth = firebaseAuth;
+        mUid = uid;
     }
 
     @Inject
@@ -47,31 +49,39 @@ public class ItemsPresenter implements ItemsContract.Presenter {
         mView.setPresenter(this);
     }
 
+    private boolean getUid() {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            mUid = firebaseUser.getUid();
+        }
+        return mUid != null;
+    }
+
     @Override
     public void getItems(int sortBy) {
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        if (mFirebaseUser == null) {
+        if (mUid == null) {
             mView.showSignIn();
         } else {
-            mView.setProgressBar(true);
-            final String userId = mFirebaseUser.getUid();
-            String sortString;
-            if (sortBy == SORT_BY_PURCHASE_DATE) {
-                sortString = SORT_BY_PURCHASE_DATE_STRING;
-            } else {
-                sortString = SORT_BY_EXPIRY_STRING;
-            }
-            EspressoIdlingResource.increment();
-            mRepository.getItems(userId, sortString, new DataSource.GetItemsCallback() {
-                @Override
-                public void onItemsLoaded(@Nullable List<Item> items) {
-                    if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-                        EspressoIdlingResource.decrement();
-                    }
-                    mView.setProgressBar(false);
-                    mView.showItems(items);
+            if (getUid()) {
+                mView.setProgressBar(true);
+                String sortString;
+                if (sortBy == SORT_BY_PURCHASE_DATE) {
+                    sortString = SORT_BY_PURCHASE_DATE_STRING;
+                } else {
+                    sortString = SORT_BY_EXPIRY_STRING;
                 }
-            });
+                EspressoIdlingResource.increment();
+                mRepository.getItems(mUid, sortString, new DataSource.GetItemsCallback() {
+                    @Override
+                    public void onItemsLoaded(@Nullable List<Item> items) {
+                        if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                            EspressoIdlingResource.decrement();
+                        }
+                        mView.setProgressBar(false);
+                        mView.showItems(items);
+                    }
+                });
+            }
         }
     }
 
@@ -98,20 +108,20 @@ public class ItemsPresenter implements ItemsContract.Presenter {
 
     @Override
     public void restoreItem(@NonNull Item item) {
-        mRepository.saveItem(mFirebaseUser.getUid(), item);
+        mRepository.saveItem(mUid, item);
     }
 
     @Override
     public void expireItem(@NonNull Item item) {
         item.setDeceased(true);
-        mRepository.saveItem(mFirebaseUser.getUid(), item);
+        mRepository.saveItem(mUid, item);
         mView.showItemExpiredMessage(R.string.item_expired, Snackbar.LENGTH_LONG, item);
     }
 
     @Override
     public void unexpireItem(@NonNull Item item) {
         item.setDeceased(false);
-        mRepository.saveItem(mFirebaseUser.getUid(), item);
+        mRepository.saveItem(mUid, item);
         mView.showItemExpiredMessage(R.string.item_unexpired, Snackbar.LENGTH_LONG, null);
     }
 

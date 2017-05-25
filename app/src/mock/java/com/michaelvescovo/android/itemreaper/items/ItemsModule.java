@@ -27,4 +27,9 @@ class ItemsModule {
     FirebaseAuth provideFirebaseAuth() {
         return FirebaseAuth.getInstance();
     }
+
+    @Provides
+    String provideUid() {
+        return "testUid";
+    }
 }
