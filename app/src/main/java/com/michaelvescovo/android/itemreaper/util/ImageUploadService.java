@@ -126,7 +126,8 @@ public class ImageUploadService extends IntentService {
     }
 
     private void deleteItemFile(Item item) {
-        if (item.getImageUrl() != null) {
+        if (item.getImageUrl() != null
+                && !item.getImageUrl().equals("file:///android_asset/black-t-shirt.jpg")) {
             String filename = item.getImageUrl().substring(item.getImageUrl()
                     .lastIndexOf("/") + 1);
             getApplicationContext().deleteFile(filename);
