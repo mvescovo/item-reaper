@@ -1,8 +1,9 @@
 package com.michaelvescovo.android.itemreaper.edit_item;
 
-import com.michaelvescovo.android.itemreaper.util.ImageFileImpl;
-import com.michaelvescovo.android.itemreaper.edit_item.EditItemContract;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.michaelvescovo.android.itemreaper.util.ImageFile;
+import com.michaelvescovo.android.itemreaper.util.ImageFileImpl;
 
 import dagger.Module;
 import dagger.Provides;
@@ -28,5 +29,15 @@ public class EditItemModule {
     @Provides
     ImageFile provideImageFile() {
         return new ImageFileImpl();
+    }
+
+    @Provides
+    String provideUid() {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            return firebaseUser.getUid();
+        } else {
+            return null;
+        }
     }
 }

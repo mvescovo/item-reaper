@@ -32,16 +32,16 @@ class EditItemPresenter implements EditItemContract.Presenter {
     private final static String EDIT_ITEM_CALLER = "edit_item";
     private EditItemContract.View mView;
     private Repository mRepository;
-    private FirebaseUser mFirebaseUser;
+    private String mUid;
     private ImageFile mImageFile;
     private boolean mItemLoaded;
 
     @Inject
     EditItemPresenter(@NonNull EditItemContract.View view, @NonNull Repository repository,
-                      @NonNull ImageFile imageFile) {
+                      @NonNull ImageFile imageFile, @Nullable String uid) {
         mView = view;
         mRepository = repository;
-        mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        mUid = uid;
         mImageFile = imageFile;
     }
 
@@ -59,58 +59,86 @@ class EditItemPresenter implements EditItemContract.Presenter {
         }
     }
 
+    private boolean getUid() {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            mUid = firebaseUser.getUid();
+        }
+        return mUid != null;
+    }
+
     private void createNewItem() {
-        EspressoIdlingResource.increment();
-        mRepository.getNewItemId(mFirebaseUser.getUid(), new DataSource.GetNewItemIdCallback() {
-            @Override
-            public void onNewItemIdLoaded(@Nullable String newItemId) {
-                EspressoIdlingResource.decrement();
-                if (newItemId != null) {
-                    mView.setNewItemId(newItemId);
-                    mView.setDefaultDates();
-                }
+        if (mUid == null) {
+            mView.showSignIn();
+        } else {
+            if (getUid()) {
+                EspressoIdlingResource.increment();
+                mRepository.getNewItemId(mUid, new DataSource.GetNewItemIdCallback() {
+                    @Override
+                    public void onNewItemIdLoaded(@Nullable String newItemId) {
+                        EspressoIdlingResource.decrement();
+                        if (newItemId != null) {
+                            mView.setNewItemId(newItemId);
+                            mView.setDefaultDates();
+                        }
+                    }
+                });
             }
-        });
+        }
     }
 
     private void loadExistingItem(String itemId) {
         mItemLoaded = false;
-        if (mFirebaseUser == null) {
+        if (mUid == null) {
             mView.showSignIn();
         } else {
-            EspressoIdlingResource.increment();
-            mRepository.getItem(itemId, mFirebaseUser.getUid(), EDIT_ITEM_CALLER,
-                    new DataSource.GetItemCallback() {
-                        @Override
-                        public void onItemLoaded(@Nullable Item item) {
-                            if (!mItemLoaded) {
-                                mItemLoaded = true;
-                                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-                                    EspressoIdlingResource.decrement();
+            if (getUid()) {
+                EspressoIdlingResource.increment();
+                mRepository.getItem(itemId, mUid, EDIT_ITEM_CALLER,
+                        new DataSource.GetItemCallback() {
+                            @Override
+                            public void onItemLoaded(@Nullable Item item) {
+                                if (!mItemLoaded) {
+                                    mItemLoaded = true;
+                                    if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                                        EspressoIdlingResource.decrement();
+                                    }
+                                }
+                                if (item != null) {
+                                    mView.showExistingItem(item);
+                                } else {
+                                    mView.passDeletedItemToItemsUi();
+                                    mView.showItemsUi();
                                 }
                             }
-                            if (item != null) {
-                                mView.showExistingItem(item);
-                            } else {
-                                mView.passDeletedItemToItemsUi();
-                                mView.showItemsUi();
-                            }
-                        }
-                    });
+                        });
+            }
         }
     }
 
     @Override
     public void saveItem(@NonNull Item item) {
-        mRepository.saveItem(mFirebaseUser.getUid(), item);
+        if (mUid == null) {
+            mView.showSignIn();
+        } else {
+            if (getUid()) {
+                mRepository.saveItem(mUid, item);
+            }
+        }
     }
 
     @Override
     public void deleteItem(@NonNull Item item) {
-        mRepository.deleteItem(mFirebaseUser.getUid(), item);
-        if (!mItemLoaded) {
-            mView.passDeletedItemToItemsUi();
-            mView.showItemsUi();
+        if (mUid == null) {
+            mView.showSignIn();
+        } else {
+            if (getUid()) {
+                mRepository.deleteItem(mUid, item);
+                if (!mItemLoaded) {
+                    mView.passDeletedItemToItemsUi();
+                    mView.showItemsUi();
+                }
+            }
         }
     }
 

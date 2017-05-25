@@ -28,4 +28,9 @@ public class EditItemModule {
     ImageFile provideImageFile() {
         return new FakeImageFileImpl();
     }
+
+    @Provides
+    String provideUid() {
+        return "testUid";
+    }
 }
