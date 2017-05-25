@@ -65,6 +65,9 @@ public class ItemsPresenter implements ItemsContract.Presenter {
             mRepository.getItems(userId, sortString, new DataSource.GetItemsCallback() {
                 @Override
                 public void onItemsLoaded(@Nullable List<Item> items) {
+                    if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                        EspressoIdlingResource.decrement();
+                    }
                     mView.setProgressBar(false);
                     mView.showItems(items);
                 }
