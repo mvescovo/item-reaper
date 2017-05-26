@@ -32,7 +32,7 @@ class RemoteDataSource implements DataSource {
     }
 
     @Override
-    public void getItems(@NonNull String userId, @NonNull String sortBy,
+    public void getItems(@NonNull String userId, @NonNull String sortBy, @NonNull String caller,
                          @NonNull final GetItemsCallback callback) {
         if (mCurrentItemsQuery == null || !mCurrentSort.equals(sortBy)) {
             mCurrentSort = sortBy;

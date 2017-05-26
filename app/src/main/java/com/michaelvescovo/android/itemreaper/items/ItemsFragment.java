@@ -145,6 +145,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
         mFirebaseStorage = FirebaseStorage.getInstance();
         mSearching = false;
         mSharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        setRetainInstance(true);
     }
 
     @Nullable
