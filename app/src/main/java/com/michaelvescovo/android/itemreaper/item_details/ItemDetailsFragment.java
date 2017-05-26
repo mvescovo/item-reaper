@@ -206,125 +206,130 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
     }
 
     @Override
-    public void showItem(@NonNull Item item) {
-        // If the fragment is not active, don't allow callbacks to crash the app.
-        if (getActivity() != null) {
-            mItem = item;
-            String format = getString(R.string.date_format);
-            if (item.getPurchaseDate() != -1) {
-                mPurchaseDate.setText(getDateFormat(format).format(item.getPurchaseDate()));
-            } else {
-                mPurchaseDate.setText(getString(R.string.empty_value));
+    public void showItem(@NonNull final Item item) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // If the fragment is not active, don't allow callbacks to crash the app.
+                if (getActivity() != null) {
+                    mItem = item;
+                    String format = getString(R.string.date_format);
+                    if (item.getPurchaseDate() != -1) {
+                        mPurchaseDate.setText(getDateFormat(format).format(item.getPurchaseDate()));
+                    } else {
+                        mPurchaseDate.setText(getString(R.string.empty_value));
+                    }
+                    if (item.getShop() != null) {
+                        mShop.setText(item.getShop());
+                    } else {
+                        mShop.setText(getString(R.string.empty_value));
+                    }
+                    if (item.getPricePaid() != -1) {
+                        String pricePaid = "$" + getPriceFromTotalCents(item.getPricePaid());
+                        mPricePaid.setText(pricePaid);
+                    } else {
+                        mPricePaid.setText(getString(R.string.empty_value));
+                    }
+                    if (item.getDiscount() != -1) {
+                        String discount = "$" + getPriceFromTotalCents(item.getDiscount());
+                        mDiscount.setText(discount);
+                    } else {
+                        mDiscount.setText(getString(R.string.empty_value));
+                    }
+                    if (item.getExpiry() != -1) {
+                        mExpiryDate.setText(getDateFormat(format).format(item.getExpiry()));
+                    } else {
+                        mExpiryDate.setText(getString(R.string.empty_value));
+                    }
+                    if (item.getCategory() != null) {
+                        mCategory.setText(item.getCategory());
+                    } else {
+                        mCategory.setText(getString(R.string.empty_value));
+                    }
+                    if (item.getSubCategory() != null) {
+                        mSubCategory.setText(item.getSubCategory());
+                    } else {
+                        mSubCategory.setText(getString(R.string.empty_value));
+                    }
+                    if (item.getType() != null) {
+                        mType.setText(item.getType());
+                    } else {
+                        mType.setText(getString(R.string.empty_value));
+                    }
+                    if (item.getSubType() != null) {
+                        mSubType.setText(item.getSubType());
+                    } else {
+                        mSubType.setText(getString(R.string.empty_value));
+                    }
+                    if (item.getSubType2() != null) {
+                        mSubType2.setText(item.getSubType2());
+                    } else {
+                        mSubType2.setText(getString(R.string.empty_value));
+                    }
+                    if (item.getSubType3() != null) {
+                        mSubType3.setText(item.getSubType3());
+                    } else {
+                        mSubType3.setText(getString(R.string.empty_value));
+                    }
+                    if (item.getMainColour() != null) {
+                        mMainColour.setText(item.getMainColour());
+                    } else {
+                        mMainColour.setText(getString(R.string.empty_value));
+                    }
+                    if (item.getMainColourShade() != null) {
+                        mMainColourShade.setText(item.getMainColourShade());
+                    } else {
+                        mMainColourShade.setText(getString(R.string.empty_value));
+                    }
+                    if (item.getAccentColour() != null) {
+                        mAccentColour.setText(item.getAccentColour());
+                    } else {
+                        mAccentColour.setText(getString(R.string.empty_value));
+                    }
+                    if (item.getSize() != null) {
+                        mSize.setText(item.getSize());
+                    } else {
+                        mSize.setText(getString(R.string.empty_value));
+                    }
+                    if (item.getBrand() != null) {
+                        mBrand.setText(item.getBrand());
+                    } else {
+                        mBrand.setText(getString(R.string.empty_value));
+                    }
+                    if (item.getDescription() != null) {
+                        mDescription.setText(item.getDescription());
+                    } else {
+                        mDescription.setText(getString(R.string.empty_value));
+                    }
+                    if (item.getNote() != null) {
+                        mNote.setText(item.getNote());
+                    } else {
+                        mNote.setText(getString(R.string.empty_value));
+                    }
+                    if (item.getImageUrl() != null) {
+                        mItemImage.setVisibility(View.VISIBLE);
+                        EspressoIdlingResource.increment();
+                        Glide.with(getContext())
+                                .load(item.getImageUrl())
+                                .crossFade()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .into(new GlideDrawableImageViewTarget(mItemImage) {
+                                    @Override
+                                    public void onResourceReady(GlideDrawable resource,
+                                                                GlideAnimation<? super GlideDrawable> animation) {
+                                        super.onResourceReady(resource, animation);
+                                        if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                                            EspressoIdlingResource.decrement();
+                                        }
+                                    }
+                                });
+                    } else {
+                        mItemImage.setVisibility(View.GONE);
+                    }
+                    Analytics.logEventViewItem(getContext(), mItem);
+                }
             }
-            if (item.getShop() != null) {
-                mShop.setText(item.getShop());
-            } else {
-                mShop.setText(getString(R.string.empty_value));
-            }
-            if (item.getPricePaid() != -1) {
-                String pricePaid = "$" + getPriceFromTotalCents(item.getPricePaid());
-                mPricePaid.setText(pricePaid);
-            } else {
-                mPricePaid.setText(getString(R.string.empty_value));
-            }
-            if (item.getDiscount() != -1) {
-                String discount = "$" + getPriceFromTotalCents(item.getDiscount());
-                mDiscount.setText(discount);
-            } else {
-                mDiscount.setText(getString(R.string.empty_value));
-            }
-            if (item.getExpiry() != -1) {
-                mExpiryDate.setText(getDateFormat(format).format(item.getExpiry()));
-            } else {
-                mExpiryDate.setText(getString(R.string.empty_value));
-            }
-            if (item.getCategory() != null) {
-                mCategory.setText(item.getCategory());
-            } else {
-                mCategory.setText(getString(R.string.empty_value));
-            }
-            if (item.getSubCategory() != null) {
-                mSubCategory.setText(item.getSubCategory());
-            } else {
-                mSubCategory.setText(getString(R.string.empty_value));
-            }
-            if (item.getType() != null) {
-                mType.setText(item.getType());
-            } else {
-                mType.setText(getString(R.string.empty_value));
-            }
-            if (item.getSubType() != null) {
-                mSubType.setText(item.getSubType());
-            } else {
-                mSubType.setText(getString(R.string.empty_value));
-            }
-            if (item.getSubType2() != null) {
-                mSubType2.setText(item.getSubType2());
-            } else {
-                mSubType2.setText(getString(R.string.empty_value));
-            }
-            if (item.getSubType3() != null) {
-                mSubType3.setText(item.getSubType3());
-            } else {
-                mSubType3.setText(getString(R.string.empty_value));
-            }
-            if (item.getMainColour() != null) {
-                mMainColour.setText(item.getMainColour());
-            } else {
-                mMainColour.setText(getString(R.string.empty_value));
-            }
-            if (item.getMainColourShade() != null) {
-                mMainColourShade.setText(item.getMainColourShade());
-            } else {
-                mMainColourShade.setText(getString(R.string.empty_value));
-            }
-            if (item.getAccentColour() != null) {
-                mAccentColour.setText(item.getAccentColour());
-            } else {
-                mAccentColour.setText(getString(R.string.empty_value));
-            }
-            if (item.getSize() != null) {
-                mSize.setText(item.getSize());
-            } else {
-                mSize.setText(getString(R.string.empty_value));
-            }
-            if (item.getBrand() != null) {
-                mBrand.setText(item.getBrand());
-            } else {
-                mBrand.setText(getString(R.string.empty_value));
-            }
-            if (item.getDescription() != null) {
-                mDescription.setText(item.getDescription());
-            } else {
-                mDescription.setText(getString(R.string.empty_value));
-            }
-            if (item.getNote() != null) {
-                mNote.setText(item.getNote());
-            } else {
-                mNote.setText(getString(R.string.empty_value));
-            }
-            if (item.getImageUrl() != null) {
-                mItemImage.setVisibility(View.VISIBLE);
-                EspressoIdlingResource.increment();
-                Glide.with(getContext())
-                        .load(item.getImageUrl())
-                        .crossFade()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(new GlideDrawableImageViewTarget(mItemImage) {
-                            @Override
-                            public void onResourceReady(GlideDrawable resource,
-                                                        GlideAnimation<? super GlideDrawable> animation) {
-                                super.onResourceReady(resource, animation);
-                                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-                                    EspressoIdlingResource.decrement();
-                                }
-                            }
-                        });
-            } else {
-                mItemImage.setVisibility(View.GONE);
-            }
-            Analytics.logEventViewItem(getContext(), mItem);
-        }
+        });
     }
 
     @Override
