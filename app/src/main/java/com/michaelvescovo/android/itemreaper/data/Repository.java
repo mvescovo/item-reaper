@@ -29,11 +29,11 @@ public class Repository implements DataSource {
     }
 
     @Override
-    public void getItems(@NonNull String userId, @NonNull String sortBy,
+    public void getItems(@NonNull String userId, @NonNull String sortBy, @NonNull String caller,
                          @NonNull final GetItemsCallback callback) {
         if (mCachedItems == null || (mCurrentSort == null || !mCurrentSort.equals(sortBy))) {
             mCurrentSort = sortBy;
-            mRemoteDataSource.getItems(userId, sortBy, new GetItemsCallback() {
+            mRemoteDataSource.getItems(userId, sortBy, caller, new GetItemsCallback() {
                 @Override
                 public void onItemsLoaded(@Nullable List<Item> items) {
                     if (items != null) {

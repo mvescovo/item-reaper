@@ -98,6 +98,8 @@ public class FakeDataSource implements DataSource {
             false);
 
     private Map<String, Map<String, ItemChangedListener>> mItemCallbacks = Maps.newHashMap();
+    private Map<String, ItemsChangedListener> mItemsCallbacks = Maps.newHashMap();
+
 
     FakeDataSource() {
         ITEMS.add(ITEM_1);
@@ -109,9 +111,17 @@ public class FakeDataSource implements DataSource {
     }
 
     @Override
-    public void getItems(@NonNull String userId, @NonNull String sortBy,
-                         @NonNull GetItemsCallback callback) {
-        callback.onItemsLoaded(ITEMS);
+    public void getItems(@NonNull String userId, @NonNull String sortBy, @NonNull String caller,
+                         @NonNull final GetItemsCallback callback) {
+        if (mItemsCallbacks.get(caller) == null) {
+            mItemsCallbacks.put(caller, new ItemsChangedListener() {
+                @Override
+                public void itemsChanged(List<Item> items) {
+                    callback.onItemsLoaded(ITEMS);
+                }
+            });
+            mItemsCallbacks.get(caller).itemsChanged(ITEMS);
+        }
     }
 
     @Override
@@ -151,9 +161,13 @@ public class FakeDataSource implements DataSource {
         }
         ITEMS.add(item);
         if (mItemCallbacks.get(item.getId()) != null) {
-            for (ItemChangedListener listener :
-                    mItemCallbacks.get(item.getId()).values()) {
+            for (ItemChangedListener listener : mItemCallbacks.get(item.getId()).values()) {
                 listener.itemChanged(ITEMS.get(ITEMS.indexOf(item)));
+            }
+        }
+        if (mItemsCallbacks.size() > 0) {
+            for (ItemsChangedListener itemsChangedListener : mItemsCallbacks.values()) {
+                itemsChangedListener.itemsChanged(ITEMS);
             }
         }
     }
@@ -171,5 +185,10 @@ public class FakeDataSource implements DataSource {
     private interface ItemChangedListener {
 
         void itemChanged(Item item);
+    }
+
+    private interface ItemsChangedListener {
+
+        void itemsChanged(List<Item> items);
     }
 }

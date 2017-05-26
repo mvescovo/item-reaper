@@ -71,7 +71,7 @@ public class ItemsPresenter implements ItemsContract.Presenter {
                     sortString = SORT_BY_EXPIRY_STRING;
                 }
                 EspressoIdlingResource.increment();
-                mRepository.getItems(mUid, sortString, new DataSource.GetItemsCallback() {
+                mRepository.getItems(mUid, sortString, ITEMS_CALLER, new DataSource.GetItemsCallback() {
                     @Override
                     public void onItemsLoaded(@Nullable List<Item> items) {
                         if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {

@@ -65,6 +65,7 @@ public class WidgetListService extends RemoteViewsService {
     }
 
     private class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
+        public final static String WIDGET_CALLER = "items";
         private Context mContext;
         private List<Item> mItems;
         private CountDownLatch mCountDownLatch;
@@ -105,7 +106,7 @@ public class WidgetListService extends RemoteViewsService {
                 } else {
                     sortString = SORT_BY_EXPIRY_STRING;
                 }
-                mRepository.getItems(firebaseUser.getUid(), sortString,
+                mRepository.getItems(firebaseUser.getUid(), sortString, WIDGET_CALLER,
                         new DataSource.GetItemsCallback() {
                             @Override
                             public void onItemsLoaded(@Nullable List<Item> items) {
