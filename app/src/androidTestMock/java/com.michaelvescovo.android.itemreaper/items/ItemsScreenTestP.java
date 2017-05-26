@@ -47,7 +47,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withContentDesc
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
-import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_2;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.USER_ID;
 import static com.michaelvescovo.android.itemreaper.matcher.ImageViewHasDrawableMatcher.hasDrawable;
 import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getPriceFromTotalCents;
@@ -85,8 +84,8 @@ public class ItemsScreenTestP {
     @Parameterized.Parameters
     public static Iterable<?> data() {
         return Arrays.asList(
-                ITEM_1,
-                ITEM_2
+                ITEM_1
+//                ,ITEM_2
         );
     }
 
