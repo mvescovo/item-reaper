@@ -120,7 +120,9 @@ public class ImageUploadService extends IntentService {
             } else {
                 deleteItemFile(item);
                 item.setImageUrl(null);
-                mRepository.saveItem(mFirebaseUser.getUid(), item);
+                if (mFirebaseUser != null) {
+                    mRepository.saveItem(mFirebaseUser.getUid(), item);
+                }
             }
         }
     }
