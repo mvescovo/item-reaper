@@ -120,8 +120,8 @@ public class FakeDataSource implements DataSource {
                     callback.onItemsLoaded(ITEMS);
                 }
             });
-            mItemsCallbacks.get(caller).itemsChanged(ITEMS);
         }
+        mItemsCallbacks.get(caller).itemsChanged(ITEMS);
     }
 
     @Override
