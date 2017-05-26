@@ -13,9 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.Loader;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -68,7 +66,6 @@ import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getPr
  */
 
 public class ItemsFragment extends Fragment implements ItemsContract.View,
-        LoaderManager.LoaderCallbacks<SharedPreferences>,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
     public static String STATE_CURRENT_SORT = "current_sort";
@@ -143,11 +140,11 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
             } else {
                 mQuery = null;
             }
-            mCurrentSort = savedInstanceState.getInt(STATE_CURRENT_SORT, -1);
+            mCurrentSort = savedInstanceState.getInt(STATE_CURRENT_SORT, SORT_BY_EXPIRY);
         }
         mFirebaseStorage = FirebaseStorage.getInstance();
         mSearching = false;
-        getActivity().getSupportLoaderManager().initLoader(0, null, this);
+        mSharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
     }
 
     @Nullable
@@ -156,7 +153,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_items, container, false);
         ButterKnife.bind(this, root);
-
         if (mLargeScreen) {
             int numColumns = getResources().getInteger(R.integer.card_item_columns);
             mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(numColumns,
@@ -169,7 +165,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
         mRecyclerView.setAdapter(mItemsAdapter);
         mRecyclerView.setHasFixedSize(true);
         setHasOptionsMenu(true);
-
         return root;
     }
 
@@ -184,17 +179,10 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
     @Override
     public void onResume() {
         super.onResume();
-        if (mCurrentSort != -1) {
-            loadData(mCurrentSort);
-        } // else it's the first load and loader will call loadData when ready.
+        loadData();
     }
 
-    private void loadData(int sortBy) {
-        if (sortBy == -1) {
-            mCurrentSort = mSharedPreferences.getInt(STATE_CURRENT_SORT, SORT_BY_EXPIRY);
-        } else {
-            mCurrentSort = sortBy;
-        }
+    private void loadData() {
         mPresenter.getItems(mCurrentSort);
         configureSnackbarForDeletedItem();
         Analytics.logEventViewItemList(getContext());
@@ -207,7 +195,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
             Analytics.logEventSortPurchaseDate(getContext());
         }
         if (mQuery == null) {
-            loadData(sortBy);
+            loadData();
             updateWidget();
         } else {
             if (sortBy == SORT_BY_EXPIRY) {
@@ -328,7 +316,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
                 Analytics.logEventLogout(getContext());
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -426,24 +413,9 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
     }
 
     @Override
-    public Loader<SharedPreferences> onCreateLoader(int id, Bundle args) {
-        return (new SharedPreferencesLoader(getContext()));
-    }
-
-    @Override
-    public void onLoadFinished(Loader<SharedPreferences> loader, SharedPreferences preferences) {
-        mSharedPreferences = preferences;
-        loadData(-1);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<SharedPreferences> loader) {
-        // Nothing to do here.
-    }
-
-    @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        loadData(-1);
+        mCurrentSort = mSharedPreferences.getInt(STATE_CURRENT_SORT, SORT_BY_EXPIRY);
+        loadData();
     }
 
     interface Callback {
