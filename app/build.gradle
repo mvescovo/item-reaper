@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'com.neenbedankt.android-apt'
 
 def keysPropertiesFile = rootProject.file("keys.properties")
@@ -28,6 +29,7 @@ android {
         versionName "1.0.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -128,5 +130,14 @@ dependencies {
     // Image downloading and caching
     compile "com.github.bumptech.glide:glide:$rootProject.glide"
 
+    // Kotlin
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+    // Multidex
+    compile "com.android.support:multidex:$rootProject.multidex"
+
 }
 apply plugin: 'com.google.gms.google-services'
+repositories {
+    mavenCentral()
+}
