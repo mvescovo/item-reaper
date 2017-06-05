@@ -27,6 +27,10 @@ class EditItemStaticDataRobot {
 
     private val mContext: Context = InstrumentationRegistry.getTargetContext()
 
+    fun upNavigation() {
+        onView(withContentDescription("Navigate up")).check(matches(isDisplayed()))
+    }
+
     fun title(title: Int) {
         onView(withText(title)).check(matches(isDisplayed()))
     }

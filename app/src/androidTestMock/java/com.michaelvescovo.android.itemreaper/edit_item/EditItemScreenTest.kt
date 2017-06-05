@@ -44,6 +44,7 @@ class EditItemScreenTest {
     @Test
     fun staticDataVisible() {
         staticData {
+            upNavigation()
             title(R.string.title_activity_edit_item)
             takePhotoMenuOption()
             selectImageMenuOption()
