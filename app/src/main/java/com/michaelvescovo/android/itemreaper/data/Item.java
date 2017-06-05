@@ -14,7 +14,7 @@ import java.util.Map;
 public class Item implements Serializable, Comparable {
 
     @NonNull
-    private String mId;
+    private String mId = "-1";
     private long mPurchaseDate;
     private int mPricePaid;
     private int mDiscount;
