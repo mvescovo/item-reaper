@@ -10,7 +10,7 @@ import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.about.AboutActivity;
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity;
-import com.michaelvescovo.android.itemreaper.util.EspressoHelperMethods;
+import com.michaelvescovo.android.itemreaper.util.EspressoHelper;
 
 import org.junit.After;
 import org.junit.Before;
@@ -51,12 +51,12 @@ public class ItemsScreenTest {
                             .getRepository().deleteAllItems(USER_ID);
                 }
             };
-    private EspressoHelperMethods mEspressoHelperMethods;
+    private EspressoHelper mEspressoHelper;
     private boolean mIsLargeScreen;
 
     @Before
     public void setup() {
-        mEspressoHelperMethods = new EspressoHelperMethods(InstrumentationRegistry.getTargetContext(),
+        mEspressoHelper = new EspressoHelper(InstrumentationRegistry.getTargetContext(),
                 mActivityRule.getActivity());
         mIsLargeScreen = mActivityRule.getActivity().getResources().getBoolean(R.bool.large_layout);
     }
@@ -76,14 +76,14 @@ public class ItemsScreenTest {
     @Test
     public void titleVisible() {
         onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
-        mEspressoHelperMethods.rotateScreen();
+        mEspressoHelper.rotateScreen();
         onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
     }
 
     @Test
     public void editItemButtonVisible() {
         onView(withId(R.id.edit_item)).check(matches(isDisplayed()));
-        mEspressoHelperMethods.rotateScreen();
+        mEspressoHelper.rotateScreen();
         onView(withId(R.id.edit_item)).check(matches(isDisplayed()));
     }
 
@@ -94,7 +94,7 @@ public class ItemsScreenTest {
             intended(hasComponent(hasClassName(EditItemActivity.class.getName())));
         }
         onView(withText(R.string.title_activity_edit_item)).check(matches(isDisplayed()));
-        mEspressoHelperMethods.rotateScreen();
+        mEspressoHelper.rotateScreen();
         onView(withText(R.string.title_activity_edit_item)).check(matches(isDisplayed()));
     }
 
@@ -103,7 +103,7 @@ public class ItemsScreenTest {
         onView(withId(R.id.edit_item)).perform(click());
         onView(withContentDescription("Navigate up")).perform(click());
         onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
-        mEspressoHelperMethods.rotateScreen();
+        mEspressoHelper.rotateScreen();
         onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
     }
 
@@ -111,7 +111,7 @@ public class ItemsScreenTest {
     public void aboutMenuItemVisible() {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         onView(withText(R.string.menu_about)).check(matches(isDisplayed()));
-        mEspressoHelperMethods.rotateScreen();
+        mEspressoHelper.rotateScreen();
         onView(withText(R.string.menu_about)).check(matches(isDisplayed()));
     }
 
@@ -121,7 +121,7 @@ public class ItemsScreenTest {
         onView(withText(R.string.menu_about)).perform(click());
         if (mIsLargeScreen) {
             onView(withText(R.string.title_activity_about)).check(matches(isDisplayed()));
-            mEspressoHelperMethods.rotateScreen();
+            mEspressoHelper.rotateScreen();
             onView(withText(R.string.title_activity_about)).check(matches(isDisplayed()));
         } else {
             intended(hasComponent(hasClassName(AboutActivity.class.getName())));
@@ -134,7 +134,7 @@ public class ItemsScreenTest {
         onView(withText(R.string.menu_about)).perform(click());
         onView(withContentDescription("Navigate up")).perform(click());
         onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
-        mEspressoHelperMethods.rotateScreen();
+        mEspressoHelper.rotateScreen();
         onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()));
     }
 
@@ -142,7 +142,7 @@ public class ItemsScreenTest {
     public void SignOutMenuItemVisible() {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         onView(withText(R.string.menu_sign_out)).check(matches(isDisplayed()));
-        mEspressoHelperMethods.rotateScreen();
+        mEspressoHelper.rotateScreen();
         onView(withText(R.string.menu_sign_out)).check(matches(isDisplayed()));
     }
 
@@ -151,14 +151,14 @@ public class ItemsScreenTest {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         onView(withText(R.string.menu_sign_out)).perform(click());
         onView(withText(R.string.app_name)).check(matches(isDisplayed()));
-        mEspressoHelperMethods.rotateScreen();
+        mEspressoHelper.rotateScreen();
         onView(withText(R.string.app_name)).check(matches(isDisplayed()));
     }
 
     @Test
     public void noItems_ShowsNoItemsText() {
         onView(withId(R.id.no_items)).check(matches(isDisplayed()));
-        mEspressoHelperMethods.rotateScreen();
+        mEspressoHelper.rotateScreen();
         onView(withId(R.id.no_items)).check(matches(isDisplayed()));
     }
 
@@ -169,7 +169,7 @@ public class ItemsScreenTest {
             onView(withId(R.id.edit_item)).perform(click());
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.action_take_photo)).check(matches(isDisplayed()));
-            mEspressoHelperMethods.rotateScreen();
+            mEspressoHelper.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.action_take_photo)).check(matches(isDisplayed()));
         }
@@ -182,7 +182,7 @@ public class ItemsScreenTest {
             onView(withId(R.id.edit_item)).perform(click());
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.action_select_image)).check(matches(isDisplayed()));
-            mEspressoHelperMethods.rotateScreen();
+            mEspressoHelper.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withId(R.id.action_select_image)).check(matches(isDisplayed()));
         }
@@ -194,7 +194,7 @@ public class ItemsScreenTest {
         if (mIsLargeScreen) {
             onView(withId(R.id.edit_item)).perform(click());
             Espresso.closeSoftKeyboard();
-            mEspressoHelperMethods.rotateScreen();
+            mEspressoHelper.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withContentDescription("Navigate up")).perform(click());
             openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
@@ -209,7 +209,7 @@ public class ItemsScreenTest {
             openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
             onView(withText(R.string.menu_about)).perform(click());
             Espresso.closeSoftKeyboard();
-            mEspressoHelperMethods.rotateScreen();
+            mEspressoHelper.rotateScreen();
             Espresso.closeSoftKeyboard();
             onView(withContentDescription("Navigate up")).perform(click());
             openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());

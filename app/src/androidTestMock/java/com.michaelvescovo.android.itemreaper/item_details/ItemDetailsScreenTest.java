@@ -9,7 +9,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.Item;
-import com.michaelvescovo.android.itemreaper.util.EspressoHelperMethods;
+import com.michaelvescovo.android.itemreaper.util.EspressoHelper;
 
 import org.junit.After;
 import org.junit.Before;
@@ -36,7 +36,7 @@ public class ItemDetailsScreenTest {
     public IntentsTestRule<ItemDetailsActivity> mActivityRule =
             new IntentsTestRule<>(ItemDetailsActivity.class, true, false);
 
-    private EspressoHelperMethods mEspressoHelperMethods;
+    private EspressoHelper mEspressoHelper;
     private Item mItem;
 
     @Before
@@ -45,7 +45,7 @@ public class ItemDetailsScreenTest {
         Intent intent = new Intent();
         intent.putExtra(EXTRA_ITEM_ID, mItem.getId());
         mActivityRule.launchActivity(intent);
-        mEspressoHelperMethods = new EspressoHelperMethods(
+        mEspressoHelper = new EspressoHelper(
                 InstrumentationRegistry.getTargetContext(), mActivityRule.getActivity());
     }
 
@@ -64,7 +64,7 @@ public class ItemDetailsScreenTest {
     @Test
     public void titleVisible() {
         onView(withId(R.id.appbar_title)).check(matches(isDisplayed()));
-        mEspressoHelperMethods.rotateScreen();
+        mEspressoHelper.rotateScreen();
         onView(withId(R.id.appbar_title)).check(matches(isDisplayed()));
     }
 }

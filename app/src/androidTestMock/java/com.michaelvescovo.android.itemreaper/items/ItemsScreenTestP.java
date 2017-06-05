@@ -2,6 +2,7 @@ package com.michaelvescovo.android.itemreaper.items;
 
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
@@ -14,7 +15,7 @@ import android.widget.DatePicker;
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.Item;
-import com.michaelvescovo.android.itemreaper.util.EspressoHelperMethods;
+import com.michaelvescovo.android.itemreaper.util.EspressoHelper;
 import com.michaelvescovo.android.itemreaper.util.FakeImageFileImpl;
 
 import org.junit.After;
@@ -48,7 +49,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.USER_ID;
-import static com.michaelvescovo.android.itemreaper.matcher.ImageViewHasDrawableMatcher.hasDrawable;
+import static com.michaelvescovo.android.itemreaper.matcher.CustomMatchers.hasDrawable;
 import static com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getPriceFromTotalCents;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
@@ -73,7 +74,8 @@ public class ItemsScreenTestP {
                             .getRepository().deleteAllItems(USER_ID);
                 }
             };
-    private EspressoHelperMethods mEspressoHelperMethods;
+    private Context mContext = InstrumentationRegistry.getTargetContext();
+    private EspressoHelper mEspressoHelper;
     private Item mItem;
     private boolean mIsLargeScreen;
 
@@ -91,7 +93,7 @@ public class ItemsScreenTestP {
 
     @Before
     public void setup() {
-        mEspressoHelperMethods = new EspressoHelperMethods(InstrumentationRegistry.getTargetContext(),
+        mEspressoHelper = new EspressoHelper(InstrumentationRegistry.getTargetContext(),
                 mActivityRule.getActivity());
         mIsLargeScreen = mActivityRule.getActivity().getResources().getBoolean(R.bool.large_layout);
     }
@@ -130,7 +132,7 @@ public class ItemsScreenTestP {
         expiry.setTimeInMillis(mItem.getExpiry());
         onView(withId(R.id.expiry_date_spinner)).perform(scrollTo()).perform(click());
         onData(allOf(is(instanceOf(String.class)),
-                is(mEspressoHelperMethods.getResourceString(R.string.edit_date_custom))))
+                is(mContext.getString(R.string.edit_date_custom))))
                 .inRoot(isPlatformPopup())
                 .perform(click());
         onView(isAssignableFrom(DatePicker.class)).perform(setDate(
@@ -167,7 +169,7 @@ public class ItemsScreenTestP {
         // Navigate back to the list
         onView(withContentDescription("Navigate up")).perform(click());
         confirmItemInList(expiry);
-        mEspressoHelperMethods.rotateScreen();
+        mEspressoHelper.rotateScreen();
         confirmItemInList(expiry);
     }
 

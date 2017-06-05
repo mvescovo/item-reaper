@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    android:id="@+id/coordinator_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -26,7 +25,7 @@
                 style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title_activity_edit_item"/>
+                android:text="@string/title_activity_edit_item" />
 
         </android.support.v7.widget.Toolbar>
 
@@ -55,20 +54,20 @@
                     style="@style/content_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/edit_purchase_details_title"/>
+                    android:text="@string/edit_purchase_details_title" />
 
                 <TextView
                     android:id="@+id/edit_purchase_date_title"
                     style="@style/caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/edit_purchase_date_title"/>
+                    android:text="@string/edit_purchase_date_title" />
 
                 <Spinner
                     android:id="@+id/purchase_date_spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/padding"/>
+                    android:paddingBottom="@dimen/padding" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -81,7 +80,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_shop_hint"
                         android:inputType="textAutoComplete"
-                        tools:hint="@string/edit_shop_hint"/>
+                        tools:hint="@string/edit_shop_hint" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -96,7 +95,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_price_paid_hint"
                         android:inputType="numberDecimal"
-                        tools:hint="@string/edit_price_paid_hint"/>
+                        tools:hint="@string/edit_price_paid_hint" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -111,7 +110,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_discount_hint"
                         android:inputType="numberDecimal"
-                        tools:hint="@string/edit_discount_hint"/>
+                        tools:hint="@string/edit_discount_hint" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -121,20 +120,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_vertical"
-                    android:text="@string/edit_item_details_title"/>
+                    android:text="@string/edit_item_details_title" />
 
                 <TextView
                     android:id="@+id/edit_expiry_date_title"
                     style="@style/caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/edit_expiry_date_title"/>
+                    android:text="@string/edit_expiry_date_title" />
 
                 <Spinner
                     android:id="@+id/expiry_date_spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/padding"/>
+                    android:paddingBottom="@dimen/padding" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -147,7 +146,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_category_hint"
                         android:inputType="textAutoComplete"
-                        tools:hint="@string/edit_category_hint"/>
+                        tools:hint="@string/edit_category_hint" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -162,7 +161,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_sub_category_hint"
                         android:inputType="textAutoComplete"
-                        tools:hint="@string/edit_sub_category_hint"/>
+                        tools:hint="@string/edit_sub_category_hint" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -177,7 +176,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_type_hint"
                         android:inputType="textAutoComplete"
-                        tools:hint="@string/edit_type_hint"/>
+                        tools:hint="@string/edit_type_hint" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -192,7 +191,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_sub_type_hint"
                         android:inputType="textAutoComplete"
-                        tools:hint="@string/edit_sub_type_hint"/>
+                        tools:hint="@string/edit_sub_type_hint" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -207,7 +206,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_sub_type2_hint"
                         android:inputType="textAutoComplete"
-                        tools:hint="@string/edit_sub_type2_hint"/>
+                        tools:hint="@string/edit_sub_type2_hint" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -222,7 +221,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_sub_type3_hint"
                         android:inputType="textAutoComplete"
-                        tools:hint="@string/edit_sub_type3_hint"/>
+                        tools:hint="@string/edit_sub_type3_hint" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -237,7 +236,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_main_colour_hint"
                         android:inputType="textAutoComplete"
-                        tools:hint="@string/edit_main_colour_hint"/>
+                        tools:hint="@string/edit_main_colour_hint" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -252,7 +251,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_main_colour_shade_hint"
                         android:inputType="textAutoComplete"
-                        tools:hint="@string/edit_main_colour_shade_hint"/>
+                        tools:hint="@string/edit_main_colour_shade_hint" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -267,7 +266,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_accent_colour_hint"
                         android:inputType="textAutoComplete"
-                        tools:hint="@string/edit_accent_colour_hint"/>
+                        tools:hint="@string/edit_accent_colour_hint" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -282,7 +281,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_size_hint"
                         android:inputType="textAutoComplete"
-                        tools:hint="@string/edit_size_hint"/>
+                        tools:hint="@string/edit_size_hint" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -297,7 +296,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_brand_hint"
                         android:inputType="textAutoComplete"
-                        tools:hint="@string/edit_brand_hint"/>
+                        tools:hint="@string/edit_brand_hint" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -312,7 +311,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_description_hint"
                         android:inputType="textAutoComplete"
-                        tools:hint="@string/edit_description_hint"/>
+                        tools:hint="@string/edit_description_hint" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -327,7 +326,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/edit_note_hint"
                         android:inputType="textAutoComplete"
-                        tools:hint="@string/edit_note_hint"/>
+                        tools:hint="@string/edit_note_hint" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -337,7 +336,7 @@
                     android:layout_height="@dimen/edit_item_image_height"
                     android:layout_marginTop="@dimen/margin_vertical"
                     android:contentDescription="@string/edit_item_image_description"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/edit_item_remove_image_button"
@@ -345,7 +344,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_vertical"
                     android:text="@string/edit_item_remove_image_button"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -356,7 +355,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </RelativeLayout>
 

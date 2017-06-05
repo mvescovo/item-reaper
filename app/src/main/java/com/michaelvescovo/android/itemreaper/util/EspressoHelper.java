@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.support.annotation.Nullable;
 
 import static java.lang.Thread.sleep;
 
@@ -11,13 +12,13 @@ import static java.lang.Thread.sleep;
  * @author Michael Vescovo
  */
 
-public class EspressoHelperMethods {
+public class EspressoHelper {
 
     private static final int ROTATION_TIME_OUT = 500;
     private Context mContext;
     private Activity mActivity;
 
-    public EspressoHelperMethods(Context context, Activity activity) {
+    public EspressoHelper(@Nullable Context context, @Nullable Activity activity) {
         mContext = context;
         mActivity = activity;
     }
@@ -52,9 +53,5 @@ public class EspressoHelperMethods {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    public String getResourceString(int id) {
-        return mContext.getResources().getString(id);
     }
 }
