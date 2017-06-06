@@ -22,8 +22,7 @@ import android.view.View
 import android.widget.DatePicker
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication
 import com.michaelvescovo.android.itemreaper.R
-import com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1
-import com.michaelvescovo.android.itemreaper.data.FakeDataSource.USER_ID
+import com.michaelvescovo.android.itemreaper.data.FakeDataSource.*
 import com.michaelvescovo.android.itemreaper.data.Item
 import com.michaelvescovo.android.itemreaper.matcher.CustomMatchers.hasDrawable
 import com.michaelvescovo.android.itemreaper.util.EspressoHelper
@@ -49,17 +48,31 @@ import java.util.*
 @LargeTest
 class ItemsScreenTestP(private val mItem: Item) {
 
-    @Rule
-    var mActivityRule: IntentsTestRule<ItemsActivity> = object : IntentsTestRule<ItemsActivity>(ItemsActivity::class.java) {
+    @Rule @JvmField
+    var mActivityRule: IntentsTestRule<ItemsActivity>
+            = object : IntentsTestRule<ItemsActivity>(ItemsActivity::class.java) {
         override fun beforeActivityLaunched() {
-            super.beforeActivityLaunched()
             (InstrumentationRegistry.getTargetContext()
                     .applicationContext as ItemReaperApplication).repositoryComponent
                     .repository.deleteAllItems(USER_ID)
+            super.beforeActivityLaunched()
         }
     }
+
     private val mContext = InstrumentationRegistry.getTargetContext()
     private var mEspressoHelper: EspressoHelper? = null
+
+    companion object {
+        @JvmStatic
+        @Parameterized.Parameters
+        fun data(): Iterable<*> {
+            return Arrays.asList(
+                    ITEM_1,
+                    ITEM_2
+            )
+        }
+    }
+
     private var mIsLargeScreen: Boolean = false
 
     @Before
@@ -67,6 +80,7 @@ class ItemsScreenTestP(private val mItem: Item) {
         mEspressoHelper = EspressoHelper(InstrumentationRegistry.getTargetContext(),
                 mActivityRule.activity)
         mIsLargeScreen = mActivityRule.activity.resources.getBoolean(R.bool.large_layout)
+        Espresso.closeSoftKeyboard()
     }
 
     @Before
@@ -190,16 +204,5 @@ class ItemsScreenTestP(private val mItem: Item) {
         resultData.data = selectedImageUri
         val result = Instrumentation.ActivityResult(Activity.RESULT_OK, resultData)
         intending(hasAction(Intent.ACTION_GET_CONTENT)).respondWith(result)
-    }
-
-    companion object {
-
-        @Parameterized.Parameters
-        fun data(): Iterable<*> {
-            return Arrays.asList(
-                    ITEM_1
-                    //                ,ITEM_2
-            )
-        }
     }
 }

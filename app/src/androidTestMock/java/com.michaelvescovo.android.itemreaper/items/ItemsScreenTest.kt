@@ -7,7 +7,7 @@ import android.support.test.filters.LargeTest
 import android.support.test.runner.AndroidJUnit4
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication
 import com.michaelvescovo.android.itemreaper.R
-import com.michaelvescovo.android.itemreaper.data.FakeDataSource
+import com.michaelvescovo.android.itemreaper.data.FakeDataSource.USER_ID
 import com.michaelvescovo.android.itemreaper.edit_item.editStaticData
 import com.michaelvescovo.android.itemreaper.util.EspressoHelper
 import org.junit.After
@@ -30,10 +30,11 @@ class ItemsScreenTest() {
         override fun beforeActivityLaunched() {
             (InstrumentationRegistry.getTargetContext()
                     .applicationContext as ItemReaperApplication).repositoryComponent
-                    .repository.deleteAllItems(FakeDataSource.USER_ID)
+                    .repository.deleteAllItems(USER_ID)
             super.beforeActivityLaunched()
         }
     }
+
     private var mEspressoHelper: EspressoHelper? = null
     private var mIsLargeScreen: Boolean = false
 
