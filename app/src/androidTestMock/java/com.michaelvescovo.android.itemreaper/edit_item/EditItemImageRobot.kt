@@ -42,28 +42,31 @@ class EditItemImageRobot {
         onView(withId(R.id.action_take_photo)).perform(click())
     }
 
-    fun showsPicture() {
-        onView(withId(R.id.edit_item_image)).perform(scrollTo())
-                .check(matches(allOf<View>(hasDrawable(), isDisplayed())))
-    }
-
     fun selectImage() {
         stubResultFromSelectingImagePicker()
         onView(withId(R.id.action_select_image)).perform(click())
-    }
-
-    fun showsSelectedImage() {
-        onView(withId(R.id.edit_item_image)).perform(scrollTo())
-                .check(matches(allOf<View>(hasDrawable(), isDisplayed())))
     }
 
     fun removeImage() {
         onView(withId(R.id.edit_item_remove_image_button)).perform(scrollTo()).perform(click())
     }
 
-    fun imageRemoved() {
+    fun imageNotShown() {
         onView(withId(R.id.edit_item_image)).check(matches(not(isDisplayed())))
         onView(withId(R.id.edit_item_remove_image_button)).check(matches(not(isDisplayed())))
+    }
+
+    fun showsImage() {
+        onView(withId(R.id.edit_item_image)).perform(scrollTo())
+                .check(matches(allOf<View>(hasDrawable(), isDisplayed())))
+    }
+
+    fun showsImage(imageUrl: String?) {
+        if (imageUrl == null) {
+            imageNotShown()
+        } else {
+            showsImage()
+        }
     }
 
     private fun stubResultFromSelectingImagePicker() {

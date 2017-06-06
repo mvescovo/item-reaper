@@ -29,6 +29,8 @@ fun date(func: EditItemDateRobot.() -> Unit): EditItemDateRobot {
 class EditItemDateRobot {
 
     private val mContext: Context = InstrumentationRegistry.getTargetContext()
+    private val PURCHASE_DATE: String = "purchaseDate"
+    private val EXPIRY_DATE: String = "expiryDate"
 
     fun selectPurchaseDateToday() {
         selectDate(R.id.purchase_date_spinner, mContext.getString(R.string.edit_date_today), null,
@@ -74,6 +76,10 @@ class EditItemDateRobot {
     fun purchaseDateUnknownSelected() {
         confirmDateSelected(R.id.purchase_date_spinner,
                 mContext.getString(R.string.edit_date_unknown))
+    }
+
+    fun correctPurchaseDateShown(date: Long) {
+        correctDateShown(date, PURCHASE_DATE)
     }
 
     fun selectExpiryDateToday() {
@@ -122,6 +128,10 @@ class EditItemDateRobot {
                 mContext.getString(R.string.edit_date_unknown))
     }
 
+    fun correctExpiryDateShown(date: Long) {
+        correctDateShown(date, EXPIRY_DATE)
+    }
+
     private fun selectDate(spinnerId: Int, spinnerOption: String, customDate: Calendar?,
                            ok: Boolean?) {
         onView(withId(spinnerId)).perform(scrollTo()).perform(click())
@@ -151,5 +161,41 @@ class EditItemDateRobot {
         onView(withId(spinnerId)).perform(scrollTo())
                 .check(matches(not<View>(withAdaptedData(allOf(
                         `is`(instanceOf<Any>(String::class.java)), `is`(customDateString))))))
+    }
+
+    fun correctDateShown(date: Long, dateType: String) {
+        val simpleDateFormat = SimpleDateFormat("dd/MMM/yy", Locale.ENGLISH)
+        val currentDate = Calendar.getInstance()
+        val todayDateString = simpleDateFormat.format(currentDate.time)
+        currentDate.add(Calendar.DAY_OF_YEAR, -1)
+        val yesterdayDateString = simpleDateFormat.format(currentDate.time)
+
+        if (date != -1L) {
+            val purchaseDate = Calendar.getInstance()
+            purchaseDate.timeInMillis = date
+            val purchaseDateString = simpleDateFormat.format(purchaseDate.time)
+
+            if (purchaseDateString == todayDateString) {
+                when (dateType) {
+                    PURCHASE_DATE -> purchaseDateTodaySelected()
+                    EXPIRY_DATE -> expiryDateTodaySelected()
+                }
+            } else if (purchaseDateString == yesterdayDateString) {
+                when (dateType) {
+                    PURCHASE_DATE -> purchaseDateYesterdaySelected()
+                    EXPIRY_DATE -> expiryDateYesterdaySelected()
+                }
+            } else {
+                when (dateType) {
+                    PURCHASE_DATE -> purchaseDateCustomSelected(purchaseDateString)
+                    EXPIRY_DATE -> expiryDateCustomSelected(purchaseDateString)
+                }
+            }
+        } else {
+            when (dateType) {
+                PURCHASE_DATE -> purchaseDateUnknownSelected()
+                EXPIRY_DATE -> expiryDateUnknownSelected()
+            }
+        }
     }
 }

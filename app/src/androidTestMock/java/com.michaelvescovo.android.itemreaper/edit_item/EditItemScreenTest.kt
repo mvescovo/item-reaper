@@ -216,9 +216,9 @@ class EditItemScreenTest {
     fun takePicture_ShowsPicture() {
         image {
             takePicture()
-            showsPicture()
+            showsImage()
             mEspressoHelper!!.rotateScreen()
-            showsPicture()
+            showsImage()
         }
     }
 
@@ -226,9 +226,9 @@ class EditItemScreenTest {
     fun selectImage_ShowsSelectedImage() {
         image {
             selectImage()
-            showsSelectedImage()
+            showsImage()
             mEspressoHelper!!.rotateScreen()
-            showsSelectedImage()
+            showsImage()
         }
     }
 
@@ -236,9 +236,9 @@ class EditItemScreenTest {
     fun removeImage_ImageRemoved() {
         image {
             selectImage()
-            showsSelectedImage()
+            showsImage()
             removeImage()
-            imageRemoved()
+            imageNotShown()
         }
     }
 }
