@@ -129,9 +129,9 @@ public class EditItemFragment extends AppCompatDialogFragment implements EditIte
     TextView mDescription;
     @BindView(R.id.edit_note)
     TextView mNote;
-    @BindView(R.id.edit_item_image)
+    @BindView(R.id.item_image)
     ImageView mItemImage;
-    @BindView(R.id.edit_item_remove_image_button)
+    @BindView(R.id.item_remove_image_button)
     Button mRemoveImageButton;
     @BindView(R.id.coordinator_layout)
     CoordinatorLayout mCoordinatorLayout;

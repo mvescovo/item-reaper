@@ -76,7 +76,7 @@
     <string name="purchase_date">Purchase Date:&#160;</string>
     <string name="shop">Shop:&#160;</string>
     <string name="price_paid">Price Paid:&#160;</string>
-    <string name="discount">Discount:&#160;</string>
+    <string name="editDiscount">Discount:&#160;</string>
     <string name="item_details_title">Item Details</string>
     <string name="expiry_date">Expiry Date:&#160;</string>
     <string name="category">Category:&#160;</string>

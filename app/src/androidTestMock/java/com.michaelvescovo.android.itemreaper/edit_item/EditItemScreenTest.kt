@@ -6,6 +6,7 @@ import android.support.test.espresso.intent.rule.IntentsTestRule
 import android.support.test.filters.LargeTest
 import android.support.test.runner.AndroidJUnit4
 import com.michaelvescovo.android.itemreaper.R
+import com.michaelvescovo.android.itemreaper.image
 import com.michaelvescovo.android.itemreaper.util.EspressoHelper
 import org.junit.After
 import org.junit.Before
@@ -238,7 +239,7 @@ class EditItemScreenTest {
             selectImage()
             showsImage()
             removeImage()
-            imageNotShown()
+            imageNotShown(EDIT_MODE)
         }
     }
 }

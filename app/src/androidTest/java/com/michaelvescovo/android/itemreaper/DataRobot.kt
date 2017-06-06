@@ -1,21 +1,43 @@
-package com.michaelvescovo.android.itemreaper.edit_item
+package com.michaelvescovo.android.itemreaper
 
 import android.support.test.espresso.Espresso.onView
+import android.support.test.espresso.action.ViewActions
 import android.support.test.espresso.action.ViewActions.scrollTo
 import android.support.test.espresso.assertion.ViewAssertions.matches
+import android.support.test.espresso.matcher.ViewMatchers
 import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.espresso.matcher.ViewMatchers.withText
-import com.michaelvescovo.android.itemreaper.util.MiscHelperMethods.getPriceFromTotalCents
+import com.michaelvescovo.android.itemreaper.util.MiscHelperMethods
+import org.hamcrest.Matchers
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Created by Michael Vescovo.
  */
 
-fun data(func: EditItemDataRobot.() -> Unit): EditItemDataRobot {
-    return EditItemDataRobot().apply { func() }
+fun data(func: DataRobot.() -> Unit): DataRobot {
+    return DataRobot().apply { func() }
 }
 
-class EditItemDataRobot {
+class DataRobot {
+
+    val EDIT_MODE: String = "editMode"
+    val DETAILS_MODE: String = "detailsMode"
+
+    fun purchaseDate(purchaseDate: Long) {
+        if (purchaseDate == -1L) {
+            onView(ViewMatchers.withId(R.id.purchase_date_value)).perform(ViewActions.scrollTo())
+                    .check(matches(Matchers.allOf(isDisplayed(), withText("-"))))
+        } else {
+            val simpleDateFormat = SimpleDateFormat("dd/MMMM/yy", Locale.ENGLISH)
+            val date = Calendar.getInstance()
+            date.timeInMillis = purchaseDate
+            val dateString = simpleDateFormat.format(date.time)
+            onView(ViewMatchers.withId(R.id.purchase_date_value)).perform(ViewActions.scrollTo())
+                    .check(matches(Matchers.allOf(isDisplayed(), withText(dateString))))
+        }
+    }
 
     fun shop(shop: String?) {
         if (shop != null) {
@@ -23,20 +45,44 @@ class EditItemDataRobot {
         }
     }
 
-    fun price(price: Int) {
+    fun price(price: Int, mode: String) {
         if (price != -1) {
-            val priceString = getPriceFromTotalCents(price)
-            onView(withText(priceString)).perform(scrollTo()).check(matches(isDisplayed()))
+            val priceString = MiscHelperMethods.getPriceFromTotalCents(price)
+            when (mode) {
+                EDIT_MODE -> onView(withText(priceString)).perform(scrollTo())
+                        .check(matches(isDisplayed()))
+                DETAILS_MODE -> onView(withText("$" + priceString)).perform(scrollTo())
+                        .check(matches(isDisplayed()))
+            }
         }
     }
 
-    fun discount(discount: Int) {
+    fun discount(discount: Int, mode: String) {
         if (discount != -1) {
-            val discountString = getPriceFromTotalCents(discount)
-            onView(withText(discountString)).perform(scrollTo()).check(matches(isDisplayed()))
+            val discountString = MiscHelperMethods.getPriceFromTotalCents(discount)
+            when (mode) {
+                EDIT_MODE -> onView(withText(discountString)).perform(scrollTo())
+                        .check(matches(isDisplayed()))
+                DETAILS_MODE -> onView(withText("$" + discountString)).perform(scrollTo())
+                        .check(matches(isDisplayed()))
+            }
+
         }
     }
 
+    fun expiryDate(expiryDate: Long) {
+        if (expiryDate == -1L) {
+            onView(ViewMatchers.withId(R.id.expiry_date_value)).perform(ViewActions.scrollTo())
+                    .check(matches(Matchers.allOf(isDisplayed(), withText("-"))))
+        } else {
+            val simpleDateFormat = SimpleDateFormat("dd/MMMM/yy", Locale.ENGLISH)
+            val date = Calendar.getInstance()
+            date.timeInMillis = expiryDate
+            val dateString = simpleDateFormat.format(date.time)
+            onView(ViewMatchers.withId(R.id.expiry_date_value)).perform(ViewActions.scrollTo())
+                    .check(matches(Matchers.allOf(isDisplayed(), withText(dateString))))
+        }
+    }
 
     fun category(category: String?) {
         if (category != null) {

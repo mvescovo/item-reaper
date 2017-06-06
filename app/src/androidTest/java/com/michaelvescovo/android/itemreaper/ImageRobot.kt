@@ -1,4 +1,4 @@
-package com.michaelvescovo.android.itemreaper.edit_item
+package com.michaelvescovo.android.itemreaper
 
 import android.app.Activity
 import android.app.Instrumentation
@@ -15,7 +15,6 @@ import android.support.test.espresso.intent.matcher.IntentMatchers.hasAction
 import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.view.View
-import com.michaelvescovo.android.itemreaper.R
 import com.michaelvescovo.android.itemreaper.matcher.CustomMatchers.hasDrawable
 import com.michaelvescovo.android.itemreaper.util.FakeImageFileImpl
 import org.hamcrest.Matchers.allOf
@@ -25,12 +24,14 @@ import org.hamcrest.Matchers.not
  * Created by Michael Vescovo.
  */
 
-fun image(func: EditItemImageRobot.() -> Unit): EditItemImageRobot {
-    return EditItemImageRobot().apply { func() }
+fun image(func: ImageRobot.() -> Unit): ImageRobot {
+    return ImageRobot().apply { func() }
 }
 
-class EditItemImageRobot {
+class ImageRobot {
 
+    val EDIT_MODE: String = "editMode"
+    val DETAILS_MODE: String = "detailsMode"
     private val mContext: Context = InstrumentationRegistry.getTargetContext()
 
     fun takePicture() {
@@ -48,22 +49,24 @@ class EditItemImageRobot {
     }
 
     fun removeImage() {
-        onView(withId(R.id.edit_item_remove_image_button)).perform(scrollTo()).perform(click())
+        onView(withId(R.id.item_remove_image_button)).perform(scrollTo()).perform(click())
     }
 
-    fun imageNotShown() {
-        onView(withId(R.id.edit_item_image)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.edit_item_remove_image_button)).check(matches(not(isDisplayed())))
+    fun imageNotShown(mode: String) {
+        onView(withId(R.id.item_image)).check(matches(not(isDisplayed())))
+        if (mode == EDIT_MODE) {
+            onView(withId(R.id.item_remove_image_button)).check(matches(not(isDisplayed())))
+        }
     }
 
     fun showsImage() {
-        onView(withId(R.id.edit_item_image)).perform(scrollTo())
+        onView(withId(R.id.item_image)).perform(scrollTo())
                 .check(matches(allOf<View>(hasDrawable(), isDisplayed())))
     }
 
-    fun showsImage(imageUrl: String?) {
+    fun showsImage(imageUrl: String?, mode: String) {
         if (imageUrl == null) {
-            imageNotShown()
+            imageNotShown(mode)
         } else {
             showsImage()
         }

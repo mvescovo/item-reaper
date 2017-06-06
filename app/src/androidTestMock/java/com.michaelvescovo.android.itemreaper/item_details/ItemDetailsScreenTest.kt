@@ -29,13 +29,12 @@ class ItemDetailsScreenTest {
     var mActivityRule = IntentsTestRule(ItemDetailsActivity::class.java, true, false)
 
     private var mEspressoHelper: EspressoHelper? = null
-    private var mItem: Item? = null
+    private var mItem: Item = ITEM_1
 
     @Before
     fun setup() {
-        mItem = ITEM_1
         val intent = Intent()
-        intent.putExtra(EXTRA_ITEM_ID, mItem!!.id)
+        intent.putExtra(EXTRA_ITEM_ID, mItem.id)
         mActivityRule.launchActivity(intent)
         mEspressoHelper = EspressoHelper(
                 InstrumentationRegistry.getTargetContext(), mActivityRule.activity)
@@ -43,20 +42,24 @@ class ItemDetailsScreenTest {
 
     @Before
     fun registerIdlingResource() {
-        Espresso.registerIdlingResources(
-                mActivityRule.activity.countingIdlingResource)
+        Espresso.registerIdlingResources(mActivityRule.activity.countingIdlingResource)
     }
 
     @After
     fun unregisterIdlingResource() {
-        Espresso.unregisterIdlingResources(
-                mActivityRule.activity.countingIdlingResource)
+        Espresso.unregisterIdlingResources(mActivityRule.activity.countingIdlingResource)
     }
 
     @Test
     fun staticDataVisible() {
         staticData {
-            title(R.id.appbar_title)
+            upNavigation()
+            title(R.string.title_activity_item_details)
+            expireItemMenuOption()
+            editItemMenuOption()
+            adMob()
+            purchaseDetailsTitle(R.string.purchase_details_title)
+            itemDetailsTitle(R.string.item_details_title)
         }
     }
 }

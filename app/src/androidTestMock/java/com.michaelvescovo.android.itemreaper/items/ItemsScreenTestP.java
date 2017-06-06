@@ -120,7 +120,7 @@ public class ItemsScreenTestP {
         onView(withId(R.id.edit_item)).perform(click());
         Espresso.closeSoftKeyboard();
 
-        // Type price paid
+        // Type editPrice paid
         if (mItem.getPricePaid() != -1) {
             String priceString = getPriceFromTotalCents(mItem.getPricePaid());
             onView(withId(R.id.edit_price_paid)).perform(scrollTo())
@@ -178,7 +178,7 @@ public class ItemsScreenTestP {
         onView(withId(R.id.recycler_view)).perform(RecyclerViewActions
                 .scrollTo(hasDescendant(withText(mItem.getCategory()))));
 
-        // Check price paid
+        // Check editPrice paid
         if (mItem.getPricePaid() != -1) {
             String priceString = getPriceFromTotalCents(mItem.getPricePaid());
             onView(withText("Paid: $" + priceString)).check(matches(isDisplayed()));
