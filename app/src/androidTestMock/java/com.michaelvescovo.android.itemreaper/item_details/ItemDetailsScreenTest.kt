@@ -52,7 +52,7 @@ class ItemDetailsScreenTest {
 
     @Test
     fun staticDataVisible() {
-        staticData {
+        detailsStaticData {
             upNavigation()
             title(R.string.title_activity_item_details)
             expireItemMenuOption()

@@ -100,7 +100,6 @@ public class FakeDataSource implements DataSource {
     private Map<String, Map<String, ItemChangedListener>> mItemCallbacks = Maps.newHashMap();
     private Map<String, ItemsChangedListener> mItemsCallbacks = Maps.newHashMap();
 
-
     FakeDataSource() {
         ITEMS.add(ITEM_1);
         ITEMS.add(ITEM_2);
@@ -141,9 +140,7 @@ public class FakeDataSource implements DataSource {
         return new ItemChangedListener() {
             @Override
             public void itemChanged(Item item) {
-                if (item != null) {
-                    callback.onItemLoaded(item);
-                }
+                callback.onItemLoaded(item);
             }
         };
     }
@@ -175,11 +172,28 @@ public class FakeDataSource implements DataSource {
     @Override
     public void deleteItem(@NonNull String userId, @NonNull Item item) {
         ITEMS.remove(item);
+        if (mItemCallbacks.get(item.getId()) != null) {
+            for (ItemChangedListener listener : mItemCallbacks.get(item.getId()).values()) {
+                listener.itemChanged(null);
+            }
+            mItemCallbacks.remove(item.getId());
+        }
+        if (mItemsCallbacks.size() > 0) {
+            for (ItemsChangedListener itemsChangedListener : mItemsCallbacks.values()) {
+                itemsChangedListener.itemsChanged(ITEMS);
+            }
+        }
     }
 
     @Override
     public void deleteAllItems(@NonNull String userId) {
         ITEMS.clear();
+        if (mItemsCallbacks.size() > 0) {
+            for (ItemsChangedListener itemsChangedListener : mItemsCallbacks.values()) {
+                itemsChangedListener.itemsChanged(ITEMS);
+            }
+            mItemsCallbacks.clear();
+        }
     }
 
     private interface ItemChangedListener {

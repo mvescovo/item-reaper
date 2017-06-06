@@ -19,7 +19,7 @@ import org.hamcrest.Matchers.*
  * Created by Michael Vescovo.
  */
 
-fun staticData(func: EditItemStaticDataRobot.() -> Unit): EditItemStaticDataRobot {
+fun editStaticData(func: EditItemStaticDataRobot.() -> Unit): EditItemStaticDataRobot {
     return EditItemStaticDataRobot().apply { func() }
 }
 

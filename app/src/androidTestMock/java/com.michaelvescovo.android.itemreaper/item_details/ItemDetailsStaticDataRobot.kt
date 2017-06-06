@@ -11,7 +11,7 @@ import org.hamcrest.Matchers.allOf
  * Created by Michael Vescovo.
  */
 
-fun staticData(func: ItemDetailsStaticDataRobot.() -> Unit): ItemDetailsStaticDataRobot {
+fun detailsStaticData(func: ItemDetailsStaticDataRobot.() -> Unit): ItemDetailsStaticDataRobot {
     return ItemDetailsStaticDataRobot().apply { func() }
 }
 
