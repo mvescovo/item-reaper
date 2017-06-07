@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView
 import com.michaelvescovo.android.itemreaper.R
 import com.michaelvescovo.android.itemreaper.about.AboutActivity
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity
+import org.hamcrest.Matchers.allOf
 
 /**
  * Created by Michael Vescovo.
@@ -33,7 +34,8 @@ class ItemsRobot {
     }
 
     fun addItemUiLaunched() {
-        onView(withText(R.string.title_activity_edit_item)).check(matches(isDisplayed()))
+        onView(withId(R.id.appbar_title))
+                .check(matches(allOf(withText(R.string.title_activity_edit_item), isDisplayed())))
     }
 
     fun deleteItem() {
