@@ -26,8 +26,7 @@ class ItemDetailsPresenter implements ItemDetailsContract.Presenter {
 
 
     @Inject
-    ItemDetailsPresenter(ItemDetailsContract.View view, Repository repository,
-                         String uid) {
+    ItemDetailsPresenter(ItemDetailsContract.View view, Repository repository, String uid) {
         mView = view;
         mRepository = repository;
         mUid = uid;

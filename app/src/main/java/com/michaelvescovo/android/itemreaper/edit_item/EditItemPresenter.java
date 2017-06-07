@@ -5,8 +5,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.michaelvescovo.android.itemreaper.data.DataSource;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.data.Repository;
@@ -59,31 +57,21 @@ class EditItemPresenter implements EditItemContract.Presenter {
         }
     }
 
-    private boolean getUid() {
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser != null) {
-            mUid = firebaseUser.getUid();
-        }
-        return mUid != null;
-    }
-
     private void createNewItem() {
         if (mUid == null) {
             mView.showSignIn();
         } else {
-            if (getUid()) {
-                EspressoIdlingResource.increment();
-                mRepository.getNewItemId(mUid, new DataSource.GetNewItemIdCallback() {
-                    @Override
-                    public void onNewItemIdLoaded(@Nullable String newItemId) {
-                        EspressoIdlingResource.decrement();
-                        if (newItemId != null) {
-                            mView.setNewItemId(newItemId);
-                            mView.setDefaultDates();
-                        }
+            EspressoIdlingResource.increment();
+            mRepository.getNewItemId(mUid, new DataSource.GetNewItemIdCallback() {
+                @Override
+                public void onNewItemIdLoaded(@Nullable String newItemId) {
+                    EspressoIdlingResource.decrement();
+                    if (newItemId != null) {
+                        mView.setNewItemId(newItemId);
+                        mView.setDefaultDates();
                     }
-                });
-            }
+                }
+            });
         }
     }
 
@@ -92,27 +80,25 @@ class EditItemPresenter implements EditItemContract.Presenter {
         if (mUid == null) {
             mView.showSignIn();
         } else {
-            if (getUid()) {
-                EspressoIdlingResource.increment();
-                mRepository.getItem(itemId, mUid, EDIT_ITEM_CALLER,
-                        new DataSource.GetItemCallback() {
-                            @Override
-                            public void onItemLoaded(@Nullable Item item) {
-                                if (!mItemLoaded) {
-                                    mItemLoaded = true;
-                                    if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-                                        EspressoIdlingResource.decrement();
-                                    }
-                                }
-                                if (item != null) {
-                                    mView.showExistingItem(item);
-                                } else {
-                                    mView.passDeletedItemToItemsUi();
-                                    mView.showItemsUi();
+            EspressoIdlingResource.increment();
+            mRepository.getItem(itemId, mUid, EDIT_ITEM_CALLER,
+                    new DataSource.GetItemCallback() {
+                        @Override
+                        public void onItemLoaded(@Nullable Item item) {
+                            if (!mItemLoaded) {
+                                mItemLoaded = true;
+                                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                                    EspressoIdlingResource.decrement();
                                 }
                             }
-                        });
-            }
+                            if (item != null) {
+                                mView.showExistingItem(item);
+                            } else {
+                                mView.passDeletedItemToItemsUi();
+                                mView.showItemsUi();
+                            }
+                        }
+                    });
         }
     }
 
@@ -121,9 +107,7 @@ class EditItemPresenter implements EditItemContract.Presenter {
         if (mUid == null) {
             mView.showSignIn();
         } else {
-            if (getUid()) {
-                mRepository.saveItem(mUid, item);
-            }
+            mRepository.saveItem(mUid, item);
         }
     }
 
@@ -132,12 +116,10 @@ class EditItemPresenter implements EditItemContract.Presenter {
         if (mUid == null) {
             mView.showSignIn();
         } else {
-            if (getUid()) {
-                mRepository.deleteItem(mUid, item);
-                if (!mItemLoaded) {
-                    mView.passDeletedItemToItemsUi();
-                    mView.showItemsUi();
-                }
+            mRepository.deleteItem(mUid, item);
+            if (!mItemLoaded) {
+                mView.passDeletedItemToItemsUi();
+                mView.showItemsUi();
             }
         }
     }
