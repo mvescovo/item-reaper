@@ -307,6 +307,10 @@ public class Item implements Serializable, Comparable {
         return obj instanceof Item && ((Item) obj).getId().equals(mId);
     }
 
+    @Override
+    public int hashCode() {
+        return mId.hashCode();
+    }
 
     @Override
     public int compareTo(@NonNull Object item2) {
