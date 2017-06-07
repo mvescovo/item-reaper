@@ -13,8 +13,6 @@ import com.michaelvescovo.android.itemreaper.R
 import com.michaelvescovo.android.itemreaper.matcher.CustomMatchers.withTextInputLayoutHint
 import org.hamcrest.Matchers.*
 
-
-
 /**
  * Created by Michael Vescovo.
  */
@@ -190,32 +188,4 @@ class EditItemStaticDataRobot {
         }
         pressBack();
     }
-
-    //
-//
-//    @Test
-//    fun takePhotoMenuOptionVisible() {
-//        Espresso.closeSoftKeyboard()
-//        onView(withId(R.id.action_take_photo)).check(matches(isDisplayed()))
-//        mEspressoHelper!!.rotateScreen()
-//        Espresso.closeSoftKeyboard()
-//        onView(withId(R.id.action_take_photo)).check(matches(isDisplayed()))
-//    }
-//
-//    @Test
-//    fun selectImageMenuOptionVisible() {
-//        Espresso.closeSoftKeyboard()
-//        onView(withId(R.id.action_select_image)).check(matches(isDisplayed()))
-//        mEspressoHelper!!.rotateScreen()
-//        Espresso.closeSoftKeyboard()
-//        onView(withId(R.id.action_select_image)).check(matches(isDisplayed()))
-//    }
-//
-//    @Test
-//    fun deleteItemMenuOptionVisible() {
-//        openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
-//        onView(withText(R.string.menu_delete_item)).check(matches(isDisplayed()))
-//        mEspressoHelper!!.rotateScreen()
-//        onView(withText(R.string.menu_delete_item)).check(matches(isDisplayed()))
-//    }
 }
