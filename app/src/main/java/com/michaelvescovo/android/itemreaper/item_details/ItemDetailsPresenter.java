@@ -4,8 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.DataSource;
 import com.michaelvescovo.android.itemreaper.data.Item;
@@ -24,15 +22,15 @@ class ItemDetailsPresenter implements ItemDetailsContract.Presenter {
 
     private ItemDetailsContract.View mView;
     private Repository mRepository;
-    private FirebaseUser mFirebaseUser;
+    private String mUid;
 
 
     @Inject
     ItemDetailsPresenter(ItemDetailsContract.View view, Repository repository,
-                         FirebaseAuth firebaseAuth) {
+                         String uid) {
         mView = view;
         mRepository = repository;
-        mFirebaseUser = firebaseAuth.getCurrentUser();
+        mUid = uid;
     }
 
     @Inject
@@ -42,11 +40,11 @@ class ItemDetailsPresenter implements ItemDetailsContract.Presenter {
 
     @Override
     public void displayItem(@NonNull String itemId) {
-        if (mFirebaseUser == null) {
+        if (mUid == null) {
             mView.showSignIn();
         } else {
             EspressoIdlingResource.increment();
-            mRepository.getItem(itemId, mFirebaseUser.getUid(), ITEM_DETAILS_CALLER,
+            mRepository.getItem(itemId, mUid, ITEM_DETAILS_CALLER,
                     new DataSource.GetItemCallback() {
                         @Override
                         public void onItemLoaded(@Nullable Item item) {
@@ -69,7 +67,7 @@ class ItemDetailsPresenter implements ItemDetailsContract.Presenter {
     @Override
     public void expireItem(@NonNull Item item) {
         item.setDeceased(true);
-        mRepository.saveItem(mFirebaseUser.getUid(), item);
+        mRepository.saveItem(mUid, item);
         mView.showItemExpiredMessage(R.string.item_expired, Snackbar.LENGTH_LONG, item);
         mView.showExpireMenuButton(false);
     }
@@ -77,7 +75,7 @@ class ItemDetailsPresenter implements ItemDetailsContract.Presenter {
     @Override
     public void unexpireItem(@NonNull Item item) {
         item.setDeceased(false);
-        mRepository.saveItem(mFirebaseUser.getUid(), item);
+        mRepository.saveItem(mUid, item);
         mView.showItemExpiredMessage(R.string.item_unexpired, Snackbar.LENGTH_LONG, null);
         mView.showExpireMenuButton(true);
     }

@@ -127,12 +127,10 @@ class ItemsScreenTestP(private val mItem: Item) {
         onView(withId(android.R.id.button1)).perform(click())
 
         // Type category
-
         onView(withId(R.id.edit_category)).perform(scrollTo())
                 .perform(typeText(mItem.category!!), closeSoftKeyboard())
 
         // Type type
-
         onView(withId(R.id.edit_type)).perform(scrollTo())
                 .perform(typeText(mItem.type!!), closeSoftKeyboard())
 
