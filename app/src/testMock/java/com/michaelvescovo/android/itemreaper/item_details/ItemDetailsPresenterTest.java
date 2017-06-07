@@ -18,6 +18,7 @@ import java.util.Arrays;
 
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_1;
 import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.ITEM_2;
+import static com.michaelvescovo.android.itemreaper.data.FakeDataSource.USER_ID;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -58,7 +59,7 @@ public class ItemDetailsPresenterTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        mPresenter = new ItemDetailsPresenter(mView, mRepository, mFirebaseAuth);
+        mPresenter = new ItemDetailsPresenter(mView, mRepository, USER_ID);
     }
 
 //    @Test
