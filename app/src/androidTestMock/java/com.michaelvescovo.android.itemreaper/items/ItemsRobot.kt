@@ -28,6 +28,7 @@ fun items(func: ItemsRobot.() -> Unit): ItemsRobot {
 class ItemsRobot {
 
     fun clickEditItemButton(isLargeScreen: Boolean) {
+        Espresso.closeSoftKeyboard()
         onView(withId(R.id.edit_item)).perform(click())
         if (!isLargeScreen) {
             intended(hasComponent(hasClassName(EditItemActivity::class.java.name)))
