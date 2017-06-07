@@ -1,6 +1,7 @@
 package com.michaelvescovo.android.itemreaper.items
 
 import android.support.test.InstrumentationRegistry.getInstrumentation
+import android.support.test.espresso.Espresso
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
 import android.support.test.espresso.action.ViewActions.click
@@ -31,6 +32,7 @@ class ItemsRobot {
         if (!isLargeScreen) {
             intended(hasComponent(hasClassName(EditItemActivity::class.java.name)))
         }
+        Espresso.closeSoftKeyboard()
     }
 
     fun addItemUiLaunched() {

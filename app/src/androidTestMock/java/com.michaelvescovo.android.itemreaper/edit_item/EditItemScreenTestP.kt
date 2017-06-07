@@ -52,7 +52,6 @@ class EditItemScreenTestP(private val mItem: Item) {
                 mActivityRule.activity)
 
         mEspressoHelper!!.setPortrait()
-        Espresso.closeSoftKeyboard()
     }
 
     @Before

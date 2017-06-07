@@ -59,7 +59,6 @@ class ItemsScreenTest() {
 
     @Test
     fun staticDataVisible() {
-        Espresso.closeSoftKeyboard()
         itemsStaticData {
             title(R.string.title_activity_items)
             sortMenuOption()
@@ -72,17 +71,15 @@ class ItemsScreenTest() {
 
     @Test
     fun clickEditItemButton_LaunchesAddItemUi() {
-        Espresso.closeSoftKeyboard()
         items {
             clickEditItemButton(mIsLargeScreen)
             addItemUiLaunched()
         }
     }
 
-        @Test
+    @Test
     fun clickEditItemButtonAndThenClickUpButton_NavigatesBackHere() {
-            Espresso.closeSoftKeyboard()
-            items {
+        items {
             clickEditItemButton(mIsLargeScreen)
             clickUpNavButton()
             showsItemsFeatureUi()
@@ -91,7 +88,6 @@ class ItemsScreenTest() {
 
     @Test
     fun clickAboutMenuItem_LaunchesAboutUi() {
-        Espresso.closeSoftKeyboard()
         items {
             clickAboutMenu()
             showsAboutFeatureUi(mIsLargeScreen)
@@ -100,7 +96,6 @@ class ItemsScreenTest() {
 
     @Test
     fun clickAboutMenuItemAndThenClickUpButton_NavigatesBackHere() {
-        Espresso.closeSoftKeyboard()
         items {
             clickAboutMenu()
             clickUpNavButton()
