@@ -6,7 +6,6 @@ import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.Snackbar;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.data.DataSource;
 import com.michaelvescovo.android.itemreaper.data.Item;
@@ -49,39 +48,34 @@ public class ItemsPresenter implements ItemsContract.Presenter {
         mView.setPresenter(this);
     }
 
-    private boolean getUid() {
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser != null) {
-            mUid = firebaseUser.getUid();
-        }
-        return mUid != null;
-    }
-
     @Override
     public void getItems(int sortBy) {
         if (mUid == null) {
             mView.showSignIn();
         } else {
-            if (getUid()) {
-                mView.setProgressBar(true);
-                String sortString;
-                if (sortBy == SORT_BY_PURCHASE_DATE) {
-                    sortString = SORT_BY_PURCHASE_DATE_STRING;
-                } else {
-                    sortString = SORT_BY_EXPIRY_STRING;
-                }
-                EspressoIdlingResource.increment();
-                mRepository.getItems(mUid, sortString, ITEMS_CALLER, new DataSource.GetItemsCallback() {
-                    @Override
-                    public void onItemsLoaded(@Nullable List<Item> items) {
-                        if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-                            EspressoIdlingResource.decrement();
-                        }
-                        mView.setProgressBar(false);
-                        mView.showItems(items);
-                    }
-                });
+            mView.setProgressBar(true);
+            String sortString;
+            if (sortBy == SORT_BY_PURCHASE_DATE) {
+                sortString = SORT_BY_PURCHASE_DATE_STRING;
+            } else {
+                sortString = SORT_BY_EXPIRY_STRING;
             }
+            EspressoIdlingResource.increment();
+            mRepository.getItems(mUid, sortString, ITEMS_CALLER, new DataSource.GetItemsCallback() {
+                @Override
+                public void onItemsLoaded(@Nullable List<Item> items) {
+                    if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                        EspressoIdlingResource.decrement();
+                    }
+                    if (items != null && items.size() > 0) {
+                        mView.showNoItemsText(false);
+                    } else {
+                        mView.showNoItemsText(true);
+                    }
+                    mView.setProgressBar(false);
+                    mView.showItems(items);
+                }
+            });
         }
     }
 
