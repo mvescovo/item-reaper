@@ -366,11 +366,18 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
     }
 
     @Override
-    public void showNoItemsText(boolean active) {
-        if (active) {
-            mNoItems.setVisibility(View.VISIBLE);
-        } else {
-            mNoItems.setVisibility(View.GONE);
+    public void showNoItemsText(final boolean active) {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (active) {
+                        mNoItems.setVisibility(View.VISIBLE);
+                    } else {
+                        mNoItems.setVisibility(View.GONE);
+                    }
+                }
+            });
         }
     }
 
