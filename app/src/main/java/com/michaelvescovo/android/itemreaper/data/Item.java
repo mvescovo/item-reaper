@@ -312,6 +312,33 @@ public class Item implements Serializable, Comparable {
         return mId.hashCode();
     }
 
+    public boolean equalsAllFields(Object obj) {
+        boolean result = false;
+        if (obj instanceof Item) {
+            Item item = (Item) obj;
+            result = mId.equals(item.mId) && mPurchaseDate == item.mPurchaseDate
+                    && mPricePaid == item.mPricePaid && mDiscount == item.mDiscount
+                    && mExpiry == item.mExpiry
+                    && (mCategory != null && mCategory.equals(item.mCategory))
+                    && (mSubCategory != null && mSubCategory.equals(item.mSubCategory))
+                    && (mType != null && mType.equals(item.mType))
+                    && (mSubType != null && mSubType.equals(item.mSubType))
+                    && (mSubType2 != null && mSubType2.equals(item.mSubType2))
+                    && (mSubType3 != null && mSubType3.equals(item.mSubType3))
+                    && (mMainColour != null && mMainColour.equals(item.mMainColour))
+                    && (mMainColourShade != null && mMainColourShade.equals(item.mMainColourShade))
+                    && (mAccentColour != null && mAccentColour.equals(item.mAccentColour))
+                    && (mSize != null && mSize.equals(item.mSize))
+                    && (mBrand != null && mBrand.equals(item.mBrand))
+                    && (mShop != null && mShop.equals(item.mShop))
+                    && (mDescription != null && mDescription.equals(item.mDescription))
+                    && (mNote != null && mNote.equals(item.mNote))
+                    && (mImageUrl != null && mImageUrl.equals(item.mImageUrl))
+                    && mDeceased == item.mDeceased;
+        }
+        return result;
+    }
+
     @Override
     public int compareTo(@NonNull Object item2) {
         if (mExpiry > ((Item) item2).getExpiry()) {

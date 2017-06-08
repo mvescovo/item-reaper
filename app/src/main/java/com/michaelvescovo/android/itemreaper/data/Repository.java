@@ -2,7 +2,6 @@ package com.michaelvescovo.android.itemreaper.data;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 
 import com.google.common.collect.ImmutableList;
 
@@ -18,20 +17,21 @@ import javax.inject.Inject;
 public class Repository implements DataSource {
 
     private final DataSource mRemoteDataSource;
-    @SuppressWarnings("WeakerAccess")
-    @VisibleForTesting
     List<Item> mCachedItems;
     private String mCurrentSort;
+    List<String> mItemCallers;
 
     @Inject
     Repository(DataSource remoteDataSource) {
         mRemoteDataSource = remoteDataSource;
+        mCachedItems = new ArrayList<>();
+        mItemCallers = new ArrayList<>();
     }
 
     @Override
     public void getItems(@NonNull String userId, @NonNull String sortBy, @NonNull String caller,
                          @NonNull final GetItemsCallback callback) {
-        if (mCachedItems == null || (mCurrentSort == null || !mCurrentSort.equals(sortBy))) {
+        if (mCurrentSort == null || !mCurrentSort.equals(sortBy)) {
             mCurrentSort = sortBy;
             mRemoteDataSource.getItems(userId, sortBy, caller, new GetItemsCallback() {
                 @Override
@@ -52,12 +52,35 @@ public class Repository implements DataSource {
     @Override
     public void getItem(@NonNull final String itemId, @NonNull String userId,
                         @NonNull String caller, @NonNull final GetItemCallback callback) {
-        mRemoteDataSource.getItem(itemId, userId, caller, new GetItemCallback() {
-            @Override
-            public void onItemLoaded(@Nullable Item item) {
+        // Use cache if possible
+        for (Item item : mCachedItems) {
+            if (item.getId().equals(itemId)) {
                 callback.onItemLoaded(item);
+                break;
             }
-        });
+        }
+
+        // Need to make sure a callback is established with the remote data source, even if the
+        // item was cached. Item may have been cached from a call to getItems.
+        if (!mItemCallers.contains(caller)) {
+            mRemoteDataSource.getItem(itemId, userId, caller, new GetItemCallback() {
+                @Override
+                public void onItemLoaded(@Nullable Item item) {
+                    if (!mCachedItems.contains(item)) {
+                        mCachedItems.add(item);
+                        callback.onItemLoaded(item);
+                    } else {
+                        int index = mCachedItems.indexOf(item);
+                        // If the item has changed since it was cached, replace the cached version.
+                        if (!mCachedItems.get(index).equalsAllFields(item)) {
+                            mCachedItems.set(index, item);
+                            callback.onItemLoaded(item);
+                        }
+                    }
+                }
+            });
+            mItemCallers.add(caller);
+        }
     }
 
     @Override

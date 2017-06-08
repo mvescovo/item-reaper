@@ -17,7 +17,7 @@ import java.util.UUID;
 public class FakeDataSource implements DataSource {
 
     public final static String USER_ID = "testUID";
-    private final static List<Item> ITEMS = Lists.newArrayList();
+    final static List<Item> ITEMS = Lists.newArrayList();
 
     /*
     * Test item 1.
@@ -50,7 +50,7 @@ public class FakeDataSource implements DataSource {
     * Test item 3.
     * - For screenshots.
     * */
-    public final static Item ITEM_3 = new Item("3",
+    private final static Item ITEM_3 = new Item("3",
             -1, // purchase: unknown
             149900,
             -1,
@@ -63,7 +63,7 @@ public class FakeDataSource implements DataSource {
     * Test item 4.
     * - For screenshots.
     * */
-    public final static Item ITEM_4 = new Item("4",
+    private final static Item ITEM_4 = new Item("4",
             -1, // purchase: unknown
             13500,
             -1,
@@ -76,7 +76,7 @@ public class FakeDataSource implements DataSource {
     * Test item 5.
     * - For screenshots.
     * */
-    public final static Item ITEM_5 = new Item("5",
+    private final static Item ITEM_5 = new Item("5",
             -1, // purchase: unknown
             99900,
             -1,
@@ -88,7 +88,7 @@ public class FakeDataSource implements DataSource {
     * Test item 6.
     * - For screenshots.
     * */
-    public final static Item ITEM_6 = new Item("6",
+    private final static Item ITEM_6 = new Item("6",
             -1, // purchase: unknown
             2000,
             -1,

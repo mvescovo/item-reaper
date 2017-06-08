@@ -16,14 +16,12 @@ import javax.inject.Inject;
  * @author Michael Vescovo
  */
 
-class ItemDetailsPresenter implements ItemDetailsContract.Presenter {
+public class ItemDetailsPresenter implements ItemDetailsContract.Presenter {
 
-    private final static String ITEM_DETAILS_CALLER = "item_details";
-
+    public final static String ITEM_DETAILS_CALLER = "item_details";
     private ItemDetailsContract.View mView;
     private Repository mRepository;
     private String mUid;
-
 
     @Inject
     ItemDetailsPresenter(ItemDetailsContract.View view, Repository repository, String uid) {
