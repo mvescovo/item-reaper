@@ -36,6 +36,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.michaelvescovo.android.itemreaper.R;
+import com.michaelvescovo.android.itemreaper.SharedPreferencesHelper;
 import com.michaelvescovo.android.itemreaper.auth.AuthActivity;
 import com.michaelvescovo.android.itemreaper.data.Item;
 import com.michaelvescovo.android.itemreaper.util.Analytics;
@@ -90,7 +91,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
     private String mQuery;
     private boolean mSearching;
     private int mCurrentSort;
-    private SharedPreferences mSharedPreferences;
+    private SharedPreferencesHelper mSharedPreferencesHelper;
     private SearchForItemTask mSearchForItemTask;
 
     public ItemsFragment() {
@@ -144,7 +145,8 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
         }
         mFirebaseStorage = FirebaseStorage.getInstance();
         mSearching = false;
-        mSharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        mSharedPreferencesHelper
+                = new SharedPreferencesHelper(getActivity().getPreferences(Context.MODE_PRIVATE));
         setRetainInstance(true);
     }
 
@@ -307,7 +309,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_sort:
-                mCallback.onSortSelected(mSharedPreferences);
+                mCallback.onSortSelected(mSharedPreferencesHelper);
                 break;
             case R.id.action_about:
                 mPresenter.openAbout();
@@ -427,13 +429,13 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        mCurrentSort = mSharedPreferences.getInt(STATE_CURRENT_SORT, SORT_BY_EXPIRY);
+        mCurrentSort = mSharedPreferencesHelper.getSortBy();
         loadData();
     }
 
     interface Callback {
 
-        void onSortSelected(SharedPreferences preferences);
+        void onSortSelected(SharedPreferencesHelper preferences);
 
         void onAboutSelected();
 

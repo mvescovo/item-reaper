@@ -3,7 +3,6 @@ package com.michaelvescovo.android.itemreaper.items;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -30,6 +29,7 @@ import android.widget.TextView;
 
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
 import com.michaelvescovo.android.itemreaper.R;
+import com.michaelvescovo.android.itemreaper.SharedPreferencesHelper;
 import com.michaelvescovo.android.itemreaper.about.AboutActivity;
 import com.michaelvescovo.android.itemreaper.about.AboutFragment;
 import com.michaelvescovo.android.itemreaper.auth.AuthActivity;
@@ -53,7 +53,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity.EXTRA_ITEM_ID;
-import static com.michaelvescovo.android.itemreaper.items.ItemsFragment.STATE_CURRENT_SORT;
 import static com.michaelvescovo.android.itemreaper.items.SortItemsDialogFragment.EXTRA_SORT_BY;
 import static com.michaelvescovo.android.itemreaper.items.SortItemsDialogFragment.SORT_BY_EXPIRY;
 import static com.michaelvescovo.android.itemreaper.items.SortItemsDialogFragment.SORT_BY_PURCHASE_DATE;
@@ -70,9 +69,9 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
 
     public static final String EXTRA_DELETED_ITEM = "deleted_item";
     public static final String EXTRA_EDIT_NEW_ITEM = "edit_new_item";
+    public static final int REQUEST_CODE_ITEM_DELETED = 1;
     private static final String STATE_SEARCH_VIEW_OPEN = "search_view_open";
     private static final String STATE_QUERY = "query";
-    public static final int REQUEST_CODE_ITEM_DELETED = 1;
     private static final String CURRENT_DIALOG_NAME = "current_dialog_name";
     private static final String ABOUT_DIALOG = "about_dialog";
     private static final String EDIT_ITEM_DIALOG = "edit_item_dialog";
@@ -102,7 +101,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     private String mQuery;
     private String mItemId;
     private boolean mEditNewItem;
-    private SharedPreferences mSharedPreferences;
+    private SharedPreferencesHelper mSharedPreferencesHelper;
     private int mCurrentSort;
 
     @Override
@@ -429,9 +428,9 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     }
 
     @Override
-    public void onSortSelected(SharedPreferences preferences) {
-        mCurrentSort = preferences.getInt(STATE_CURRENT_SORT, SORT_BY_EXPIRY);
-        mSharedPreferences = preferences;
+    public void onSortSelected(SharedPreferencesHelper preferences) {
+        mSharedPreferencesHelper = preferences;
+        mCurrentSort = preferences.getSortBy();
         DialogFragment dialog = new SortItemsDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(EXTRA_SORT_BY, mCurrentSort);
@@ -441,18 +440,14 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
 
     @Override
     public void onSortByExpirySelected() {
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putInt(STATE_CURRENT_SORT, SORT_BY_EXPIRY);
-        editor.apply();
+        mSharedPreferencesHelper.saveSortBy(SORT_BY_EXPIRY);
         mCurrentSort = SORT_BY_EXPIRY;
         sort();
     }
 
     @Override
     public void onSortByPurchaseDateSelected() {
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putInt(STATE_CURRENT_SORT, SORT_BY_PURCHASE_DATE);
-        editor.apply();
+        mSharedPreferencesHelper.saveSortBy(SORT_BY_PURCHASE_DATE);
         mCurrentSort = SORT_BY_PURCHASE_DATE;
         sort();
     }

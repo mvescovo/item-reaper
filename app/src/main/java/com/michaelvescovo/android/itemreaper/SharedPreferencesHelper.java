@@ -20,13 +20,26 @@ package com.michaelvescovo.android.itemreaper;
 
 import android.content.SharedPreferences;
 
+import static com.michaelvescovo.android.itemreaper.items.ItemsFragment.STATE_CURRENT_SORT;
+import static com.michaelvescovo.android.itemreaper.items.SortItemsDialogFragment.SORT_BY_EXPIRY;
+
 public class SharedPreferencesHelper {
 
     private static final String KEY_IMAGE_UPLOADING = "image_uploading_";
     private final SharedPreferences mSharedPreferences;
 
-    SharedPreferencesHelper(SharedPreferences sharedPreferences) {
+    public SharedPreferencesHelper(SharedPreferences sharedPreferences) {
         mSharedPreferences = sharedPreferences;
+    }
+
+    public boolean saveSortBy(int sortBy) {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putInt(STATE_CURRENT_SORT, sortBy);
+        return editor.commit();
+    }
+
+    public int getSortBy() {
+        return mSharedPreferences.getInt(STATE_CURRENT_SORT, SORT_BY_EXPIRY);
     }
 
     public boolean imageUploading(String itemId) {
@@ -36,12 +49,12 @@ public class SharedPreferencesHelper {
     public void setImageUploading(String itemId) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putBoolean(KEY_IMAGE_UPLOADING + itemId, true);
-        editor.commit();
+        editor.apply();
     }
 
     public void removeImageUploading(String itemId) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.remove(KEY_IMAGE_UPLOADING + itemId);
-        editor.commit();
+        editor.apply();
     }
 }
