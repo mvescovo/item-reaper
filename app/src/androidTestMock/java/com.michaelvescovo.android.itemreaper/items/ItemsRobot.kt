@@ -71,7 +71,7 @@ class ItemsRobot {
 
     fun deleteListItem(itemNumber: Int) {
         onView(withId(R.id.recycler_view))
-                .perform(actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()));
+                .perform(actionOnItemAtPosition<RecyclerView.ViewHolder>(itemNumber, click()));
         deleteItem()
     }
 
