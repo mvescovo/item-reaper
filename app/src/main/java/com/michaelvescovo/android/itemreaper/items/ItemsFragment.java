@@ -192,6 +192,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
     }
 
     public void onSortChanged(int sortBy) {
+        mCurrentSort = sortBy;
         if (sortBy == SORT_BY_EXPIRY) {
             Analytics.logEventSortExpired(getContext());
         } else if (sortBy == SORT_BY_PURCHASE_DATE) {
