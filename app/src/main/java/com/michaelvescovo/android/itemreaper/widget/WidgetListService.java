@@ -159,17 +159,21 @@ public class WidgetListService extends RemoteViewsService {
                     setTextColourPrimary(rv);
                     rv.setTextViewText(R.id.expiry, getString(R.string.edit_expiry_date_empty));
                 } else {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTimeInMillis(expiry);
+                    Calendar expiryDate = Calendar.getInstance();
+                    expiryDate.setTimeInMillis(expiry);
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat(getString(
-                            R.string.edit_date_format), Locale.ENGLISH);
-                    String expiryString = simpleDateFormat.format(calendar.getTime());
+                            R.string.edit_date_format),
+                            Locale.ENGLISH);
+                    String expiryString = simpleDateFormat.format(expiryDate.getTime());
                     rv.setTextViewText(R.id.expiry, expiryString);
                     Calendar almostExpiredDate = Calendar.getInstance();
                     almostExpiredDate.add(Calendar.MONTH, 1);
-                    if (calendar.compareTo(almostExpiredDate) < 1) {
+                    if (expiryDate.compareTo(Calendar.getInstance()) < 1) {
                         rv.setInt(R.id.expiry, "setTextColor", ContextCompat.getColor(mContext,
                                 R.color.red));
+                    } else if (expiryDate.compareTo(almostExpiredDate) < 1) {
+                        rv.setInt(R.id.expiry, "setTextColor", ContextCompat.getColor(mContext,
+                                R.color.orange));
                     } else {
                         setTextColourPrimary(rv);
                     }
