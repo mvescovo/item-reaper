@@ -19,6 +19,9 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven {
+            url "https://maven.google.com"
+        }
     }
 }
 
@@ -28,7 +31,7 @@ task clean(type: Delete) {
 
 // Define versions in a single place
 ext {
-    supportLibraryVersion = '25.3.1'
+    supportLibraryVersion = '25.4.0'
     guavaVersion = '20.0'
     junitVersion = '4.12'
     mockitoVersion = '1.10.19'
@@ -40,8 +43,8 @@ ext {
     daggerVersion = '2.7'
     easyPermissionsVersion = '0.1.9'
     butterKnifeVersion = '8.4.0'
-    googleAuthVersion = '10.2.6'
-    firebaseVersion = '10.2.6'
+    googleAuthVersion = '11.0.0'
+    firebaseVersion = '11.0.0'
     glide = '3.6.1'
     multidex = '1.0.1'
 }
