@@ -27,6 +27,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
 import com.michaelvescovo.android.itemreaper.R;
 import com.michaelvescovo.android.itemreaper.SharedPreferencesHelper;
@@ -56,6 +58,7 @@ import static com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity.E
 import static com.michaelvescovo.android.itemreaper.items.SortItemsDialogFragment.EXTRA_SORT_BY;
 import static com.michaelvescovo.android.itemreaper.items.SortItemsDialogFragment.SORT_BY_EXPIRY;
 import static com.michaelvescovo.android.itemreaper.items.SortItemsDialogFragment.SORT_BY_PURCHASE_DATE;
+import static com.michaelvescovo.android.itemreaper.util.Constants.REQUEST_CODE_SIGNIN;
 import static com.michaelvescovo.android.itemreaper.widget.ItemWidgetProvider.ACTION_EDIT_NEW_ITEM;
 
 
@@ -288,8 +291,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     @Override
     public void onSignOutSelected() {
         Intent intent = new Intent(this, AuthActivity.class);
-        startActivity(intent);
-        finish();
+        startActivityForResult(intent, REQUEST_CODE_SIGNIN);
     }
 
     @Override
@@ -422,6 +424,18 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
                 Item item = (Item) data.getSerializableExtra(EXTRA_DELETED_ITEM);
                 Fragment itemsFragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_ITEMS);
                 ((ItemsFragment) itemsFragment).onItemDeleted(item);
+            }
+        }
+        if (requestCode == REQUEST_CODE_SIGNIN) {
+            if (resultCode == RESULT_CANCELED) {
+                finish();
+            } else {
+                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                if (firebaseUser != null) {
+                    mItemsPresenter.setUid(firebaseUser.getUid());
+                } else {
+                    mItemsPresenter.setUid(null);
+                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

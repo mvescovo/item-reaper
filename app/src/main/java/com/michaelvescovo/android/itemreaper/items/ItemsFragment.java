@@ -53,7 +53,6 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.app.Activity.RESULT_CANCELED;
 import static com.michaelvescovo.android.itemreaper.R.id.expiry;
 import static com.michaelvescovo.android.itemreaper.items.ItemsActivity.EXTRA_DELETED_ITEM;
 import static com.michaelvescovo.android.itemreaper.items.SortItemsDialogFragment.SORT_BY_EXPIRY;
@@ -99,16 +98,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
 
     public static ItemsFragment newInstance() {
         return new ItemsFragment();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_SIGNIN) {
-            if (resultCode == RESULT_CANCELED) {
-                getActivity().finish();
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -402,7 +391,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
     @Override
     public void showSignIn() {
         Intent intent = new Intent(getContext(), AuthActivity.class);
-        startActivityForResult(intent, REQUEST_CODE_SIGNIN);
+        getActivity().startActivityForResult(intent, REQUEST_CODE_SIGNIN);
     }
 
     private void playExpireItemSoundEffect() {

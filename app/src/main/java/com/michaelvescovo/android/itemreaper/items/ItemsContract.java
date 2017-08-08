@@ -55,5 +55,7 @@ interface ItemsContract {
         void unexpireItem(@NonNull Item item);
 
         void itemsSizeChanged(int newSize);
+
+        void setUid(String uid);
     }
 }

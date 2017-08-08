@@ -36,7 +36,7 @@ public class ItemsPresenter implements ItemsContract.Presenter {
 
     @Inject
     ItemsPresenter(@NonNull ItemsContract.View view, @NonNull Repository repository,
-                   @NonNull FirebaseAuth firebaseAuth, @NonNull String uid) {
+                   @NonNull FirebaseAuth firebaseAuth, @Nullable String uid) {
         mView = view;
         mRepository = repository;
         mFirebaseAuth = firebaseAuth;
@@ -96,6 +96,7 @@ public class ItemsPresenter implements ItemsContract.Presenter {
 
     @Override
     public void openSignOut() {
+        setUid(null);
         mFirebaseAuth.signOut();
         mView.showAuthUi();
     }
@@ -126,5 +127,10 @@ public class ItemsPresenter implements ItemsContract.Presenter {
         } else {
             mView.showNoItemsText(false);
         }
+    }
+
+    @Override
+    public void setUid(String uid) {
+        mUid = uid;
     }
 }

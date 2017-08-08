@@ -185,6 +185,7 @@ public class AuthFragment extends Fragment implements AuthContract.View,
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         EspressoIdlingResource.decrement();
+                        // onAuthStateChanged is called at this point
                     }
                 });
     }

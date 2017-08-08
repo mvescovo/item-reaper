@@ -1,5 +1,7 @@
 package com.michaelvescovo.android.itemreaper.items;
 
+import android.support.annotation.Nullable;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -29,6 +31,7 @@ class ItemsModule {
         return FirebaseAuth.getInstance();
     }
 
+    @Nullable
     @Provides
     String provideUid() {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
