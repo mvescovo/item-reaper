@@ -111,6 +111,7 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
     private Item mItem;
     private MediaPlayer mMediaPlayer;
     private MenuItem mExpireMenuItem;
+    private NativeExpressAdView mNativeExpressAdView;
 
     public ItemDetailsFragment() {
     }
@@ -182,19 +183,19 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
         mCoordinatorLayout.post(new Runnable() {
             @Override
             public void run() {
-                NativeExpressAdView adView = new NativeExpressAdView(getContext());
+                mNativeExpressAdView = new NativeExpressAdView(getContext());
                 float scale = getActivity().getResources().getDisplayMetrics().density;
                 int adWidth = mCoordinatorLayout.getWidth();
                 AdSize adSize = new AdSize((int) (adWidth / scale), NATIVE_EXPRESS_AD_HEIGHT);
-                adView.setAdSize(adSize);
-                adView.setAdUnitId(getString(R.string.test_ad_unit_id));
-                mAdViewContainer.addView(adView);
+                mNativeExpressAdView.setAdSize(adSize);
+                mNativeExpressAdView.setAdUnitId(getString(R.string.test_ad_unit_id));
+                mAdViewContainer.addView(mNativeExpressAdView);
 
                 // Load the first Native Express ad in the items list.
                 AdRequest request = new AdRequest.Builder()
                         .addTestDevice("872EB083722CD10CAB1DB046CEE82A2D")
                         .build();
-                adView.loadAd(request);
+                mNativeExpressAdView.loadAd(request);
             }
         });
     }
@@ -203,6 +204,15 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
     public void onResume() {
         super.onResume();
         mPresenter.displayItem(mItemId);
+        if (mNativeExpressAdView != null) {
+            mNativeExpressAdView.resume();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mNativeExpressAdView.pause();
     }
 
     @Override
