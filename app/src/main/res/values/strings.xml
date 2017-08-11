@@ -9,7 +9,7 @@
     <string name="user_id">userId</string>
 
     <!--EditItem-->
-    <string name="title_activity_edit_item">Edit Item</string>
+    <string name="title_activity_edit_item">Edit</string>
     <string name="menu_take_photo">Take Photo</string>
     <string name="image_capture_failed">Image capture failed</string>
     <string name="menu_select_image">Select Image</string>
@@ -69,7 +69,7 @@
     <string name="add_item">Add Item</string>
 
     <!--ItemDetails-->
-    <string name="title_activity_item_details">Item Details</string>
+    <string name="title_activity_item_details">Details</string>
     <string name="menu_expire_item">Expire Item</string>
     <string name="menu_edit_item">Edit Item</string>
     <string name="purchase_details_title">Purchase Details</string>
