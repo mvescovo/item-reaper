@@ -212,7 +212,9 @@ public class ItemDetailsFragment extends AppCompatDialogFragment implements Item
     @Override
     public void onPause() {
         super.onPause();
-        mNativeExpressAdView.pause();
+        if (mNativeExpressAdView != null) {
+            mNativeExpressAdView.pause();
+        }
     }
 
     @Override
