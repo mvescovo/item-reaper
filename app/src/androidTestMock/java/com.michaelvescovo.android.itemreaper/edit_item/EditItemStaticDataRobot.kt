@@ -5,6 +5,7 @@ import android.support.test.InstrumentationRegistry
 import android.support.test.InstrumentationRegistry.getInstrumentation
 import android.support.test.espresso.Espresso
 import android.support.test.espresso.Espresso.*
+import android.support.test.espresso.NoMatchingViewException
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.action.ViewActions.scrollTo
 import android.support.test.espresso.assertion.ViewAssertions.matches
@@ -42,7 +43,15 @@ class EditItemStaticDataRobot {
 
     fun selectImageMenuOption() {
         Espresso.closeSoftKeyboard()
-        onView(withId(R.id.action_select_image)).check(matches(isDisplayed()))
+        try {
+            // First check if the menu option is displayed as an icon
+            onView(withId(R.id.action_select_image)).check(matches(isDisplayed()))
+        } catch (e: NoMatchingViewException) {
+            // If the icon check failed, check if the menu option is displayed in the overflow
+            openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
+            onView(withText(R.string.menu_select_image)).check(matches(isDisplayed()))
+            pressBack()
+        }
     }
 
     fun deleteItemMenuOption() {

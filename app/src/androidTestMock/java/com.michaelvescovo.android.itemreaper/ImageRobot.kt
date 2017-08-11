@@ -8,11 +8,13 @@ import android.provider.MediaStore
 import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso
 import android.support.test.espresso.Espresso.onView
+import android.support.test.espresso.NoMatchingViewException
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.action.ViewActions.scrollTo
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.intent.Intents.intending
 import android.support.test.espresso.intent.matcher.IntentMatchers.hasAction
+import android.support.test.espresso.matcher.ViewMatchers
 import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.view.View
@@ -48,7 +50,14 @@ class ImageRobot {
     fun selectImage() {
         Espresso.closeSoftKeyboard()
         stubResultFromSelectingImagePicker()
-        onView(withId(R.id.action_select_image)).perform(click())
+        try {
+            // First check if the menu option is displayed as an icon
+            onView(withId(R.id.action_select_image)).perform(click())
+        } catch (e: NoMatchingViewException) {
+            // If the icon check failed, check if the menu option is displayed in the overflow
+            Espresso.openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().targetContext)
+            onView(ViewMatchers.withText(R.string.menu_select_image)).perform(click())
+        }
     }
 
     fun removeImage() {
