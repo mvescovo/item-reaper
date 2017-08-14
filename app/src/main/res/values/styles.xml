@@ -109,4 +109,18 @@
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
+    <!--Need to set widget text colour explicitly since "?android:attr/textColorPrimary" returns
+    different results on pre API 24 vs 24+. The same goes for other "?android:attr"'s-->
+    <style name="widget_card_caption" parent="card_caption">
+        <item name="android:textColor">@android:color/tertiary_text_light</item>
+    </style>
+
+    <style name="widget_card_content_primary" parent="card_content_primary">
+        <item name="android:textColor">@android:color/primary_text_light</item>
+    </style>
+
+    <style name="widget_card_content_secondary" parent="card_content_secondary">
+        <item name="android:textColor">@android:color/primary_text_light</item>
+    </style>
+
 </resources>

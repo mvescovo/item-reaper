@@ -19,21 +19,21 @@
 
         <TextView
             android:id="@+id/category"
-            style="@style/card_caption"
+            style="@style/widget_card_caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Clothing" />
 
         <TextView
             android:id="@+id/type"
-            style="@style/card_content_primary"
+            style="@style/widget_card_content_primary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="T-shirt" />
 
         <TextView
             android:id="@+id/colour"
-            style="@style/card_content_secondary"
+            style="@style/widget_card_content_secondary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Black" />
@@ -49,14 +49,14 @@
 
         <TextView
             android:id="@+id/expiry"
-            style="@style/card_content_secondary"
+            style="@style/widget_card_content_secondary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="1/1/1" />
 
         <TextView
             android:id="@+id/paid"
-            style="@style/card_caption"
+            style="@style/widget_card_caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="$20" />
