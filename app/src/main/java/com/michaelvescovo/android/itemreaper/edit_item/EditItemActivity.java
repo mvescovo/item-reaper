@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.michaelvescovo.android.itemreaper.ItemReaperApplication;
 import com.michaelvescovo.android.itemreaper.R;
@@ -34,6 +35,12 @@ public class EditItemActivity extends AppCompatActivity
     MenuItem mTakePhotoMenuItem;
     MenuItem mSelectImageMenuItem;
     MenuItem mDeleteItemMenuItem;
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, getString(R.string.press_back_while_editing),
+                Toast.LENGTH_LONG).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
