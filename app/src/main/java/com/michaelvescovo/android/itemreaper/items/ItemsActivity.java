@@ -100,6 +100,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     private String mCurrentDialogName;
     private ItemDetailsFragment mItemDetailsFragment;
     private boolean mSearchViewExpanded;
+    private boolean mSearchViewResumed;
     private String mQuery;
     private String mItemId;
     private boolean mEditNewItem;
@@ -167,6 +168,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
         }
 
         mDialogResumed = false;
+        mSearchViewResumed = false;
     }
 
     @Override
@@ -225,7 +227,15 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     if (mSearchViewExpanded) {
-                        mQuery = newText;
+                        if (!mSearchViewResumed) {
+                            // For some reason when the activity is resumed it always thinks the
+                            // new text is "" even when I've restored the saved value in mQuery.
+                            // By not updating mQuery with this empty string the search can restore
+                            // correctly after the user presses back from selecting one of the
+                            // searched items.
+                            mQuery = newText;
+                        }
+                        mSearchViewResumed = false;
                         Fragment itemsFragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_ITEMS);
                         ((ItemsFragment) itemsFragment).searchItem(mQuery);
                     }
@@ -254,6 +264,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
                 String tempQuery = mQuery;
                 searchMenuItem.expandActionView();
                 searchView.setQuery(tempQuery, true);
+                mSearchViewResumed = true;
             }
         } else if (mDialogResumed) {
             menu.clear();
