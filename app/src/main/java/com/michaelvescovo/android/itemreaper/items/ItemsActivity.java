@@ -17,7 +17,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -234,7 +233,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
                 }
             });
             MenuItem searchMenuItem = menu.findItem(R.id.action_search);
-            MenuItemCompat.setOnActionExpandListener(searchMenuItem, new MenuItemCompat.OnActionExpandListener() {
+            searchMenuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
                 @Override
                 public boolean onMenuItemActionExpand(MenuItem menuItem) {
                     mSearchViewExpanded = true;
