@@ -368,16 +368,6 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     }
 
     @Override
-    public void hideAddItemFAB() {
-        mAddItemButton.hide();
-    }
-
-    @Override
-    public void showAddItemFAB() {
-        mAddItemButton.show();
-    }
-
-    @Override
     public void configureSupportActionBar(Toolbar toolbar, Drawable icon) {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
@@ -15,7 +13,7 @@
         android:paddingBottom="@dimen/margin_vertical_items"
         android:paddingEnd="@dimen/margin_horizontal_items"
         android:paddingStart="@dimen/margin_horizontal_items"
-        android:paddingTop="@dimen/margin_vertical_items"/>
+        android:paddingTop="@dimen/margin_vertical_items" />
 
     <TextView
         android:id="@+id/no_items"
@@ -28,7 +26,7 @@
         android:text="@string/no_items"
         android:visibility="gone"
         tools:text="@string/no_items"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -36,6 +34,6 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="gone"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
 </RelativeLayout>

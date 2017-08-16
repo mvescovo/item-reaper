@@ -35,7 +35,7 @@
         android:id="@+id/contentFrame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?actionBarSize" />
+        app:layout_behavior="com.michaelvescovo.android.itemreaper.util.FABAwareScrollingViewBehavior"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/edit_item"
