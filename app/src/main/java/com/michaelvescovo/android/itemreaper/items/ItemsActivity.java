@@ -85,7 +85,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     @BindView(R.id.appbar_title)
     TextView mAppbarTitle;
     @BindView(R.id.edit_item)
-    FloatingActionButton mEditItemButton;
+    FloatingActionButton mAddItemButton;
     @BindView(R.id.coordinator_layout)
     CoordinatorLayout mCoordinatorLayout;
     MenuItem mTakePhotoMenuItem;
@@ -141,7 +141,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
                 .inject(this);
 
         // Setup FAB
-        mEditItemButton.setOnClickListener(new View.OnClickListener() {
+        mAddItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mItemsPresenter.openAddItem();
@@ -365,6 +365,16 @@ public class ItemsActivity extends AppCompatActivity implements ItemsFragment.Ca
     public Snackbar onShowSnackbar(String text, int duration) {
         return Snackbar.make(mCoordinatorLayout, text,
                 duration);
+    }
+
+    @Override
+    public void hideAddItemFAB() {
+        mAddItemButton.hide();
+    }
+
+    @Override
+    public void showAddItemFAB() {
+        mAddItemButton.show();
     }
 
     @Override

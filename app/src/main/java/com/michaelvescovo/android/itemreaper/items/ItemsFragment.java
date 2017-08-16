@@ -156,6 +156,15 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
         }
         mRecyclerView.setAdapter(mItemsAdapter);
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0)
+                    mCallback.hideAddItemFAB();
+                else if (dy < 0)
+                    mCallback.showAddItemFAB();
+            }
+        });
         setHasOptionsMenu(true);
         return root;
     }
@@ -436,6 +445,10 @@ public class ItemsFragment extends Fragment implements ItemsContract.View,
         void onItemDetailsSelected(@NonNull String itemId);
 
         Snackbar onShowSnackbar(String text, int duration);
+
+        void hideAddItemFAB();
+
+        void showAddItemFAB();
     }
 
     private interface ItemListener {
