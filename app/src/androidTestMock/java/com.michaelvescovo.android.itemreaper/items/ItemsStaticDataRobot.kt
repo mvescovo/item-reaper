@@ -40,15 +40,21 @@ class ItemsStaticDataRobot {
         }
     }
 
+    fun signOutMenuOption() {
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
+        onView(withText(R.string.menu_sign_out)).check(matches(isDisplayed()))
+        pressBack()
+    }
+
     fun aboutMenuOption() {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
         onView(withText(R.string.menu_about)).check(matches(isDisplayed()))
         pressBack()
     }
 
-    fun signOutMenuOption() {
+    fun settingsMenuOption() {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
-        onView(withText(R.string.menu_sign_out)).check(matches(isDisplayed()))
+        onView(withText(R.string.menu_settings)).check(matches(isDisplayed()))
         pressBack()
     }
 

@@ -16,13 +16,18 @@
         app:showAsAction="collapseActionView|ifRoom" />
 
     <item
+        android:id="@+id/action_sign_out"
+        android:title="@string/menu_sign_out"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_about"
         android:title="@string/menu_about"
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_sign_out"
-        android:title="@string/menu_sign_out"
+        android:id="@+id/action_settings"
+        android:title="@string/menu_settings"
         app:showAsAction="never" />
 
 </menu>

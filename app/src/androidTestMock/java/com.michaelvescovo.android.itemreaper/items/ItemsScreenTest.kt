@@ -63,8 +63,9 @@ class ItemsScreenTest() {
             title(R.string.title_activity_items)
             sortMenuOption()
             searchMenuOption()
-            aboutMenuOption()
             signOutMenuOption()
+            aboutMenuOption()
+            settingsMenuOption()
             editItemButton()
         }
     }
