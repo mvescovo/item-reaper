@@ -29,6 +29,7 @@ import com.michaelvescovo.android.itemreaper.about.AboutActivity
 import com.michaelvescovo.android.itemreaper.data.Item
 import com.michaelvescovo.android.itemreaper.edit_item.EditItemActivity
 import com.michaelvescovo.android.itemreaper.matcher.CustomMatchers
+import com.michaelvescovo.android.itemreaper.settings.SettingsActivity
 import com.michaelvescovo.android.itemreaper.util.FakeImageFileImpl
 import com.michaelvescovo.android.itemreaper.util.MiscHelperMethods
 import org.hamcrest.CoreMatchers.`is`
@@ -83,6 +84,15 @@ class ItemsRobot {
         onView(withText(R.string.title_activity_items)).check(matches(isDisplayed()))
     }
 
+    fun clickSignOutMenu() {
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
+        onView(withText(R.string.menu_sign_out)).perform(click())
+    }
+
+    fun showsAuthFeatureUi() {
+        onView(withText(R.string.app_name)).check(matches(isDisplayed()))
+    }
+
     fun clickAboutMenu() {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
         onView(withText(R.string.menu_about)).perform(click())
@@ -95,13 +105,14 @@ class ItemsRobot {
         }
     }
 
-    fun clickSignOutMenu() {
+    fun clickSettingsMenu() {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
-        onView(withText(R.string.menu_sign_out)).perform(click())
+        onView(withText(R.string.menu_settings)).perform(click())
     }
 
-    fun showsAuthFeatureUi() {
-        onView(withText(R.string.app_name)).check(matches(isDisplayed()))
+    fun showsSettingsFeatureUi() {
+        onView(withText(R.string.title_activity_settings)).check(matches(isDisplayed()))
+        intended(hasComponent(hasClassName(SettingsActivity::class.java.name)))
     }
 
     fun showsNoItemsText() {

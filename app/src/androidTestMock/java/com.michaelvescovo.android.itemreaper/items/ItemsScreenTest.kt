@@ -88,6 +88,14 @@ class ItemsScreenTest() {
     }
 
     @Test
+    fun clickSignOutMenuItem_SignsOutAndShowsAuthUi() {
+        items {
+            clickSignOutMenu()
+            showsAuthFeatureUi()
+        }
+    }
+
+    @Test
     fun clickAboutMenuItem_LaunchesAboutUi() {
         items {
             clickAboutMenu()
@@ -105,10 +113,19 @@ class ItemsScreenTest() {
     }
 
     @Test
-    fun clickSignOutMenuItem_SignsOutAndShowsAuthUi() {
+    fun clickSettingsMenuItem_LaunchesSettingsUi() {
         items {
-            clickSignOutMenu()
-            showsAuthFeatureUi()
+            clickSettingsMenu()
+            showsSettingsFeatureUi()
+        }
+    }
+
+    @Test
+    fun clickSettingsMenuItemAndThenClickUpButton_NavigatesBackHere() {
+        items {
+            clickSettingsMenu()
+            clickUpNavButton()
+            showsItemsFeatureUi()
         }
     }
 

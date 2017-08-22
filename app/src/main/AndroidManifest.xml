@@ -60,6 +60,9 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent" />
 
+        <activity android:name=".settings.SettingsActivity"
+            android:parentActivityName=".items.ItemsActivity"/>
+
         <service
             android:name=".util.ImageUploadService"
             android:exported="false">
