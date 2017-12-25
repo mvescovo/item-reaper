@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.neenbedankt.android-apt'
 
 def keysPropertiesFile = rootProject.file("keys.properties")
 def keysProperties = new Properties()
@@ -19,12 +18,11 @@ android {
             storePassword keystoreProperties['storePassword']
         }
     }
-    compileSdkVersion 26
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 27
     defaultConfig {
         applicationId "com.michaelvescovo.android.itemreaper"
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 18
         versionName "1.0.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -41,13 +39,16 @@ android {
     buildTypes.each {
         it.buildConfigField 'String', 'WEB_CLIENT_ID', keysProperties['WEB_CLIENT_ID']
     }
+    flavorDimensions "mode"
     productFlavors {
         mock {
             applicationIdSuffix = ".mock"
             resValue "string", "app_name", "MOCK Item Reaper"
+            dimension "mode"
         }
         prod {
             resValue "string", "app_name", "Item Reaper"
+            dimension "mode"
         }
     }
     // Remove mockRelease as it's not needed.
@@ -85,11 +86,11 @@ dependencies {
 
     // Butter knife for getting view references easily
     compile "com.jakewharton:butterknife:$rootProject.butterKnifeVersion"
-    apt "com.jakewharton:butterknife-compiler:$rootProject.butterKnifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterKnifeVersion"
 
     // Dagger for dependency injection
-    apt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
     compile "com.google.dagger:dagger:$rootProject.daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
 
     // Unit tests
     testCompile "junit:junit:$rootProject.ext.junitVersion"
