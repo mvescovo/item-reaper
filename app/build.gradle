@@ -19,6 +19,7 @@ android {
         }
     }
     compileSdkVersion 27
+    buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.michaelvescovo.android.itemreaper"
         minSdkVersion 21
